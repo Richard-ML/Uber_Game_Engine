@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Worlds>
+  <World name="TestWorld">
+    <WorldTileLayer path="assets/WorldTileImages/Layer0.png"/> <!-- Each can contain multiple tile layers. -->
+    <WorldTileLayer path="assets/WorldTileImages/Layer1.png"/>
+    <WorldTileLayer path="assets/WorldTileImages/Layer2.png"/>
+    <WorldTileLayer path="assets/WorldTileImages/Layer3.png"/>
+  </World>
+</Worlds>
+<Textures>
+  <Texture name="Wall" pathDif="assets/TileMeshes/WallTiles/textures/wall_DIF.tga" pathNrm="assets/TileMeshes/WallTiles/textures/wall_NRM.tga" pathSpec="assets/TileMeshes/WallTiles/textures/wall_SPEC.tga" />
+  <Texture name="Floor" pathDif="assets/TileMeshes/Textures/floor_DIF.tga" pathNrm="assets/TileMeshes/Textures/floor_NRM.tga" pathSpec="assets/TileMeshes/Textures/floor_SPEC.tga" />
+  <Texture name="Dirt" pathDif="assets/TileMeshes/Textures/Dirt_DIF.tga" pathNrm="assets/TileMeshes/Textures/Dirt_NRM.tga" pathSpec="assets/TileMeshes/Textures/Dirt_SPEC.tga" />
+  <Texture name="Spider" pathDif="assets/textures/spider1_diffuse.tga" pathNrm="assets/textures/spider1_normal.tga" pathSpec="assets/textures/spider1_spec.tga" />
+  <Texture name="Skeleton" pathDif="assets/Skeleton/Skeleton_dif.tga" pathNrm="assets/Skeleton/Skeleton_norm.tga" pathSpec="assets/Skeleton/Skeleton_spec.tga" />
+</Textures>
+<TileMeshes>
+  <TileMesh path="assets/TileMeshes/FloorTile.obj" scale="1.0f" name="FloorTile" tileR="0" tileG="255" tileB="0" isStationary="false" />
+  <TileMesh path="assets/TileMeshes/DirtTile.obj" scale="1.0f" name="DirtTile" tileR="120" tileG="120" tileB="120" isStationary="false" />
+  <TileMesh path="assets/TileMeshes/WallTiles/WallLH.obj" scale="1.0f" name="WallTileLH" tileR="255" tileG="255" tileB="0" isStationary="false" />
+  <TileMesh path="assets/TileMeshes/WallTiles/WallRH.obj" scale="1.0f" name="WallTileRH" tileR="255" tileG="120" tileB="0" isStationary="false" />
+  <TileMesh path="assets/TileMeshes/WallTiles/WallFWD.obj" scale="1.0f" name="WallTileFWD" tileR="120" tileG="120" tileB="0" isStationary="false" />
+  <TileMesh path="assets/TileMeshes/WallTiles/WallBCK.obj" scale="1.0f" name="WallTileBCK" tileR="120" tileG="255" tileB="0" isStationary="false" />
+</TileMeshes>
+<Meshes>
+  <Mesh path="assets/spider.obj" scale="10.0f" name="Spider" isStationary="false"  />
+  <Mesh path="assets/Bunny.obj" scale="10.0f" name="Bunny" isStationary="false"  />
+  <Mesh path="assets/fox.obj" scale="10.0f" name="Fox" isStationary="false"  />
+  <Mesh path="assets/Tiger.obj" scale="10.0f" name="Tiger" isStationary="false"  />
+  <Mesh path="assets/x-axis.obj" scale="1.0f" name="X-Axis" isStationary="false"  />
+  <Mesh path="assets/y-axis.obj" scale="1.0f" name="Y-Axis" isStationary="false"  />
+  <Mesh path="assets/z-axis.obj" scale="1.0f" name="Z-Axis" isStationary="false"  />
+  <Mesh path="assets/pige.obj" scale="1.0f" name="Pige" isStationary="false"  />
+  <Mesh path="assets/cube.obj" scale="1.0f" name="Cube" isStationary="false"  />
+  <Mesh path="assets/sphere.obj" scale="10.0f" name="Sphere" isStationary="false"  />
+  <Mesh path="assets/Skeleton/Skeleton.obj" scale="1.0f" name="Skeleton" isStationary="false"  />
+
+</Meshes>
+
+<CubeMaps>
+  <CubeMap>
+    <Face path="assets/CubeMaps/Skybox_right1_posX.png" />
+    <Face path="assets/CubeMaps/Skybox_left2_negX.png" />
+    <Face path="assets/CubeMaps/Skybox_bottom4_negY.png" />
+    <Face path="assets/CubeMaps/Skybox_top3_posY.png" />
+    <Face path="assets/CubeMaps/Skybox_front5_posZ.png" />
+    <Face path="assets/CubeMaps/Skybox_back6_negZ.png" />
+  </CubeMap>
+</CubeMaps>
+<Sounds>
+  <Sound path="assets/drumloop.wav" mode="FMOD_3D" isStream="false" boolLoop="true" name="Drum"/>
+  <Sound path="assets/cartoon_boing.wav" mode="FMOD_3D" isStream="false" boolLoop="true" name="Boing"/>
+  <Sound path="assets/jaguar.wav" mode="FMOD_3D" isStream="false" boolLoop="true" name="Jaguar"/>
+  <Sound path="assets/musical_spider.wav" mode="FMOD_3D" isStream="false" boolLoop="true" name="MusicalSpider"/>
+</Sounds>
+<Cameras>
+  <Camera offsetX="0.0f"   offsetY="2.0f" offsetZ="-12.0f" />
+</Cameras>
+<AreaInfos>
+  <AreaInfo minX="0.0f" minY="-0.01f" minZ="0.0f" maxX="65536.0f" maxY="258.0f" maxZ="65536.0f"/>
+</AreaInfos>
+<GameEntities>
+  <Entity name="Room1">
+    <RenderingComponent>
+      <!--<MeshComponent meshName="Plane" r="1.0f" g="1.0f" b="1.0f" alpha="1.0f" isWireframe="0" offsetX="0.0f" offsetY="0.0f" offsetZ="0.0f" preRotX="0.0f"/>-->
+     <MeshComponent offsetX="0.0f"   offsetY="0.0f" offsetZ="0.0f"    scale="1.0f" r="0.85f" g="0.64f" b="0.125f" alpha="1.0f" isWireframe="false" preRotX="0.0f" meshName="TestWorld"  />-->
+      <!--<LightComponent type="PointLight" offsetX="0.0f" offsetY="10.0f" offsetZ="0.0f" ambientR="0.5f" ambientG="0.5f" ambientB="0.5f" diffuseR="0.4f" diffuseG="0.3f" diffuseB="0.1f" specularR="0.6f" specularG="0.0f" specularB="0.0f" attenConst="1.0f" attenLinear="0.00091427f" attenQuad="0.000065429f" />-->
+    </RenderingComponent>
+  </Entity>
+  <Entity name="Player">
+    <PlayerControlComponent componentID="-2" offsetX="21859.0f" offsetY="15.0f" offsetZ="51979.0f" speed="6.0f">
+      <CollisionControlComponent/>
+      <RenderingComponent>
+        <MeshComponent  offsetX="0.0f" offsetY="-3.0f" offsetZ="0.0f"  scale="5.0f" r="1.0f" g="1.0f" b="1.0f" alpha="1.0f" isWireframe="false" preRotX="0.0f" radius="2.0f"  meshName="Skeleton"/>
+        <LightComponent type="PointLight" isEnabled="true" coneAngle="0.9f" specularPower="1.0f" directionX="0.0f" directionY="-5.0f" directionZ="20.0f" offsetX="0.0f" offsetY="40.0f" offsetZ="0.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.3f" diffuseG="0.3f" diffuseB="0.3f" specularR="0.3f" specularG="0.3f" specularB="0.3f" attenConst="0.3f" attenLinear="0.000091427f" attenQuad="0.0000065429f" />
+        <LightComponent type="SpotLight" isEnabled="false" coneAngle="0.75f" specularPower="1.0f" directionX="0.0f" directionY="-5.0f" directionZ="20.0f" offsetX="0.0f" offsetY="20.0f" offsetZ="0.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.3f" diffuseG="0.3f" diffuseB="0.3f" specularR="0.3f" specularG="0.3f" specularB="0.3f" attenConst="0.3f" attenLinear="0.000091427f" attenQuad="0.0000065429f" />
+        <LightComponent type="DirectionalLight" isEnabled="false" coneAngle="0.9f" specularPower="1.0f" directionX="0.0f" directionY="-5.0f" directionZ="20.0f" offsetX="0.0f" offsetY="20.0f" offsetZ="0.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.3f" diffuseG="0.3f" diffuseB="0.3f" specularR="0.3f" specularG="0.3f" specularB="0.3f" attenConst="0.3f" attenLinear="0.000091427f" attenQuad="0.0000065429f" />
+      </RenderingComponent>
+    </PlayerControlComponent>
+  </Entity>
+  
+  <Entity name="Spider" >
+    <LuaComponent offsetX="30759.0f" offsetY="0.0f" offsetZ="51600.0f" targetID="-2">
+      <LuaScript name="Spider" path="spider.lua" />
+      <!--  <LuaScript name="moveLeft" path="move.lua"/>-->
+    <RenderingComponent>
+      <MeshComponent offsetX="0.0f"   offsetY="3.0f" offsetZ="0.0f" scale="10.0f" r="0.85f" g="0.64f" b="0.225f" alpha="1.0f" isWireframe="false" preRotX="0.0f" meshName="Spider" />
+      <LightComponent type="PointLight" isEnabled="true" specularPower="1.0f" directionX="0.0f" directionY="0.0f" directionZ="0.5f" offsetX="0.0f" offsetY="10.0f" offsetZ="0.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.6f" diffuseG="0.3f" diffuseB="0.1f" specularR="0.6f" specularG="0.3f" specularB="0.1f" attenConst="0.3f" attenLinear="0.00091427f" attenQuad="0.000065429f" />
+    </RenderingComponent>
+    </LuaComponent>
+  </Entity>
+<Entity name="MoveTo_Spider" >
+  <LuaComponent offsetX="21859.0f" offsetY="0.0f" offsetZ="51979.0f"  targetID="-2">
+    <!--<LuaScript name="BaseController" path="BaseController.lua" />-->
+    <LuaScript name="SpiderMove" path="MoveTo.lua" />
+    <!--  <LuaScript name="moveLeft" path="move.lua"/>-->
+    <RenderingComponent>
+      <MeshComponent offsetX="0.0f"   offsetY="3.0f" offsetZ="0.0f" scale="10.0f" r="0.35f" g="0.34f" b="0.525f" alpha="1.0f" isWireframe="false" preRotX="0.0f" meshName="Spider" />
+      <LightComponent type="PointLight" isEnabled="true" specularPower="1.0f" directionX="0.0f" directionY="0.0f" directionZ="0.5f" offsetX="0.0f" offsetY="10.0f" offsetZ="0.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.3f" diffuseG="0.3f" diffuseB="0.6f" specularR="0.3f" specularG="0.3f" specularB="0.1f" attenConst="0.3f" attenLinear="0.00091427f" attenQuad="0.000065429f" />
+    </RenderingComponent>
+  </LuaComponent>
+</Entity>
+</GameEntities>

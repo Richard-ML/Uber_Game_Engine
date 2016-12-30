@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CCBE53EE-83DF-4021-9EB3-BB4AE37F93FC}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>GettingStarted</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>GameEngine</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)Extern\Lua5.3.3;$(SolutionDir)Extern\fmod;$(SolutionDir)Extern\rapidxml;$(SolutionDir)Extern\GLM;$(SolutionDir)Extern\glfw\include;$(SolutionDir)Extern\glew\include;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\FreeImage;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Extern\Lua5.3.3\lib debug;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\rapidxml;$(SolutionDir)Extern\fmod;$(SolutionDir)Extern\FreeImage;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)Extern\Lua5.3.3;$(SolutionDir)Extern\fmod;$(SolutionDir)Extern\rapidxml\;$(SolutionDir)Extern\GLM;$(SolutionDir)Extern\glfw\include;$(SolutionDir)Extern\glew\include;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\FreeImage;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Extern\Lua5.3.3\lib release;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\rapidxml;$(SolutionDir)Extern\FreeImage;$(SolutionDir)Extern\fmod;$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;GLEW_1130.lib;opengl32.lib;Assimp.lib;lua5.3.3-static.lib;FreeImage.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Extern\glfw\lib\$(Configuration);$(SolutionDir)Extern\glew\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(SolutionDir)Extern\Assimp\Assimp32.dll" "$(TargetDir)Assimp32.dll"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glfw3.lib;GLEW_1130.lib;opengl32.lib;Assimp.lib;lua5.3.3-static.lib;FreeImage.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Extern\glfw\lib\$(Configuration);$(SolutionDir)Extern\glew\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <StackReserveSize>
+      </StackReserveSize>
+      <StackCommitSize>
+      </StackCommitSize>
+      <HeapReserveSize>
+      </HeapReserveSize>
+      <HeapCommitSize>
+      </HeapCommitSize>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(SolutionDir)Extern\Assimp\Assimp32.dll" "$(TargetDir)Assimp32.dll"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="cPathFindingManager.cpp" />
+    <ClCompile Include="cXML_Utils.cpp" />
+    <ClCompile Include="LuaComponents.cpp" />
+    <ClCompile Include="ControlComponents.cpp" />
+    <ClCompile Include="callbacks.cpp" />
+    <ClCompile Include="cWorld.cpp" />
+    <ClCompile Include="cCamera.cpp" />
+    <ClCompile Include="cComponentManager.cpp" />
+    <ClCompile Include="cEntityManager.cpp" />
+    <ClCompile Include="cMeshManager.cpp" />
+    <ClCompile Include="cShaderManager.cpp" />
+    <ClCompile Include="cSoundManager.cpp" />
+    <ClCompile Include="cTextureManager.cpp" />
+    <ClCompile Include="global.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="RenderableComponents.cpp" />
+    <ClCompile Include="EmitterComponents.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cWorld.h" />
+    <ClInclude Include="cCamera.h" />
+    <ClInclude Include="cEntityManager.h" />
+    <ClInclude Include="cPathFindingManager.h" />
+    <ClInclude Include="cLight.h" />
+    <ClInclude Include="cMeshManager.h" />
+    <ClInclude Include="cComponentDetails.h" />
+    <ClInclude Include="cComponentManager.h" />
+    <ClInclude Include="cShaderManager.h" />
+    <ClInclude Include="cSoundManager.h" />
+    <ClInclude Include="cTextureManager.h" />
+    <ClInclude Include="externals.h" />
+    <ClInclude Include="global.h" />
+    <ClInclude Include="cMesh.h" />
+    <ClInclude Include="cTexture.h" />
+    <ClInclude Include="cXML_Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BaseController.lua" />
+    <None Include="MoveTo.lua" />
+    <None Include="Physics.frag" />
+    <None Include="Physics.geom" />
+    <None Include="Physics.vert" />
+    <None Include="SimpleShader.frag" />
+    <None Include="SimpleShader.geom" />
+    <None Include="SimpleShader.vert" />
+    <None Include="Skybox.fs.glsl" />
+    <None Include="Skybox.vs.glsl" />
+    <None Include="spider.lua" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="GameAssets.xml" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
