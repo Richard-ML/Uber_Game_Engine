@@ -1,6 +1,7 @@
 # Uber Game Engine
 ###OpenGL 3D Game-Engine
-####Controls:
+More information available in the <a href="https://github.com/Richard-ML/Uber_Game_Engine/wiki">Wiki</a>
+####In-Game Controls:
 - Up and down arrows to zoom in and out. 
 - Left and right arrows to pan.
 - Hold up to look up once you are zoomed all the way in. (temp)
@@ -55,6 +56,7 @@ Role: Professor
  Role: Professor
  Course: INFO-6024-01 - Game Component Integration
 ```
-<a href=https://ca.linkedin.com/in/richard-mills-laursen-b6470a79>Connect on LinkedIn</a>
-
 <a href="https://www.youtube.com/watch?v=67xIrz-cNlM" target="_blank">Footage<br/><img src="https://i.ytimg.com/vi/67xIrz-cNlM/hqdefault.jpg?custom=true&w=480&h=270&stc=true&jpg444=true&jpgq=90&sp=68&sigh=NPzB5mMBHPNYGJ2HY-ym8fANM8o" alt="Footage" border="0"/></a>
+<br/>
+<a href=https://ca.linkedin.com/in/richard-mills-laursen-b6470a79>Connect on LinkedIn - Richard Mills-Laursen</a>
+
