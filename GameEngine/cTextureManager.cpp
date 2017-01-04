@@ -13,7 +13,7 @@ Author(s):
         E-mail: R_MillsLaursen@FanshaweOnline.ca | Revolut1on1ze@Hotmail.ca
 
     Name: Michael Feeney
-    E-mail: MFeeney@FanshaweC.on.ca
+    E-mail: MFeeney@FanshaweC.ca
         Role(s): Coordinator & Professor
         Course(s): INFO-6044-01 - Game Engine Framework/Patterns
                            INFO-6028-01 - Graphics 1
@@ -47,12 +47,7 @@ cTextureManager *cTextureManager::instance() {
     s_cTextureManager = new cTextureManager();
   return s_cTextureManager;
 }
-//    _                    _  _____            _
-//   | |  ___    __ _   __| ||_   _|___ __  __| |_  _   _  _ __  ___
-//   | | / _ \  / _` | / _` |  | | / _ \\ \/ /| __|| | | || '__|/ _ \
-//   | || (_) || (_| || (_| |  | ||  __/ >  < | |_ | |_| || |  |  __/
-//   |_| \___/  \__,_| \__,_|  |_| \___|/_/\_\ \__| \__,_||_|   \___|
-//
+
 void cTextureManager::loadTexture(rapidxml::xml_node<> *textureNode) {
 
   std::string path = textureNode->first_attribute("path")->value();

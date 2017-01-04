@@ -16,7 +16,7 @@ Author(s):
         E-mail: R_MillsLaursen@FanshaweOnline.ca | Revolut1on1ze@Hotmail.ca
 
         Name: Michael Feeney
-        E-mail: MFeeney@FanshaweC.on.ca
+        E-mail: MFeeney@FanshaweC.ca
         Role(s): Coordinator & Professor
         Course(s): INFO-6044-01 - Game Engine Framework/Patterns
                            INFO-6028-01 - Graphics 1
@@ -210,7 +210,7 @@ void cMeshManager::loadWorldTiles(cMeshEntry &entryOut) {
           for (int VOXEL_ROW = 0; VOXEL_ROW < numZCells; VOXEL_ROW++) {
             float depthOfAABB = max.z - min.z;
             float rowOffset = glm::distance(
-                (float)(gVoxelSize * VOXEL_ROW),
+                (float)(gVoxelSize * VOXEL_ROW + (gVoxelSize * 0.75f)),
                 glm::distance(g_pAreaInfo->minPos.z, min.z + depthOfAABB));
 
             if (std::abs(rowOffset) < ((gVoxelSize) + depthOfAABB))
@@ -219,7 +219,7 @@ void cMeshManager::loadWorldTiles(cMeshEntry &entryOut) {
                 // Each cell has a width and length of 1.25* voxel cell size..
                 // (they overlap) Trifaces can reside in multiple cells weww!
                 float colOffset = glm::distance(
-                    (float)(gVoxelSize * VOXEL_COL),
+                    (float)(gVoxelSize * VOXEL_COL + (gVoxelSize * 0.75f)),
                     glm::distance(g_pAreaInfo->minPos.x, min.x + widthOfAABB));
                 if (std::abs(colOffset) < ((gVoxelSize) + widthOfAABB))
                   g_multimap_VoxelGrid.insert(
@@ -245,17 +245,7 @@ void cMeshManager::loadWorldTiles(cMeshEntry &entryOut) {
   entryOut.NumgVertices = sumNumVertices;
 }
 
-//    _                    _  __  __             _      _____  _  _        ___
-//    _           ____  _      ____           __   __
-//   | |  ___    __ _   __| ||  \/  |  ___  ___ | |__  |  ___|(_)| |  ___ |_ _|
-//   _ __  | |_  ___   / ___|| |    | __ )  _   _  / _| / _|  ___  _ __
-//   | | / _ \  / _` | / _` || |\/| | / _ \/ __|| '_ \ | |_   | || | / _ \ | | |
-//   '_ \ | __|/ _ \ | |  _ | |    |  _ \ | | | || |_ | |_  / _ \| '__|
-//   | || (_) || (_| || (_| || |  | ||  __/\__ \| | | ||  _|  | || ||  __/ | | |
-//   | | || |_| (_) || |_| || |___ | |_) || |_| ||  _||  _||  __/| |
-//   |_| \___/  \__,_| \__,_||_|  |_| \___||___/|_| |_||_|    |_||_|
-//   \___||___||_| |_| \__|\___/  \____||_____||____/  \__,_||_|  |_|   \___||_|
-//
+
 //////////////////////////////////////////////////////////////////
 //////   loadPlyFileIntoGLBuffer Method - ply file loader   //////
 /////////////////////////////////////////////////////////////////

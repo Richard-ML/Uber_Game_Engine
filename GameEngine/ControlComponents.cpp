@@ -611,8 +611,8 @@ void CollisionControlComponent::draw() {
   mat = glm::translate(
       mat, glm::vec3(g_pAreaInfo->minPos.x, 0.0f, g_pAreaInfo->minPos.z));
   mat = glm::translate(
-      mat, glm::vec3(glm::vec3(gVoxelSize * cellCol, 0, gVoxelSize * cellRow)));
-  mat = glm::scale(mat, glm::vec3(gVoxelSize * 1.25f));
+      mat, glm::vec3(glm::vec3(gVoxelSize * cellCol + (gVoxelSize * 0.5f), 0, gVoxelSize * cellRow + (gVoxelSize * 0.5f))));
+  mat = glm::scale(mat, glm::vec3(gVoxelSize * 1.0f));
 
   glUniformMatrix4fv(gUniformId_ModelMatrix, 1, GL_FALSE, glm::value_ptr(mat));
   glDrawElementsBaseVertex(
@@ -683,7 +683,7 @@ bool IntersectSegmentTriangle(glm::vec3 p, glm::vec3 q, glm::vec3 a,
     return 0;
 
   // Compute intersection t value of pq with plane of triangle. A ray
-  // intersects iff 0 <= t. Segment intersects iff 0 <= t <= 1. Delay
+  // intersects if 0 <= t. Segment intersects if 0 <= t <= 1. Delay
   // dividing by d until intersection has been found to pierce triangle
   glm::vec3 ap = p - a;
   t = glm::dot(ap, n);
@@ -744,13 +744,13 @@ void CollisionControlComponent::update() {
 
   for (int VOXEL_ROW = 0; VOXEL_ROW < gNumZCells; VOXEL_ROW++) {
     float rowOffset = glm::distance(
-        (float)(gVoxelSize * VOXEL_ROW),
+        (float)(gVoxelSize * VOXEL_ROW + (gVoxelSize * 0.5f)),
         glm::distance(g_pAreaInfo->minPos.z, this->getTransform()[3].z));
     if (std::abs(rowOffset) < (gVoxelSize / 2))
       for (int VOXEL_COL = 0; VOXEL_COL < gNumXCells; VOXEL_COL++) {
         // AABBs can reside in multiple cells
         float colOffset = glm::distance(
-            (float)(gVoxelSize * VOXEL_COL),
+            (float)(gVoxelSize * VOXEL_COL + (gVoxelSize * 0.5f)),
             glm::distance(g_pAreaInfo->minPos.x, this->getTransform()[3].x));
         if (std::abs(colOffset) < (gVoxelSize / 2)) {
           cellCol = VOXEL_COL;

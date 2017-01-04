@@ -9,7 +9,7 @@ Role(s): Student
 E-mail: R_MillsLaursen@FanshaweOnline.ca | Revolut1on1ze@Hotmail.ca
 
 Name: Michael Feeney
-E-mail: MFeeney@FanshaweC.on.ca
+E-mail: MFeeney@FanshaweC.ca
 Role(s): Coordinator & Professor
 Course(s): INFO-6044-01 - Game Engine Framework/Patterns
 INFO-6028-01 - Graphics 1
@@ -47,39 +47,15 @@ cCamera::cCamera() {
   mOffset = glm::vec3(0.f, 7.f, -6.f);
 }
 cCamera::~cCamera() {}
-//                 _    ____               _              _    _
-//                 __  __         _          _
-//     __ _   ___ | |_ |  _ \  _ __  ___  (_)  ___   ___ | |_ (_)  ___   _ __  |
-//     \/  |  __ _ | |_  _ __ (_)__  __
-//    / _` | / _ \| __|| |_) || '__|/ _ \ | | / _ \ / __|| __|| | / _ \ | '_ \ |
-//    |\/| | / _` || __|| '__|| |\ \/ /
-//   | (_| ||  __/| |_ |  __/ | |  | (_) || ||  __/| (__ | |_ | || (_) || | | ||
-//   |  | || (_| || |_ | |   | | >  <
-//    \__, | \___| \__||_|    |_|   \___/_/ | \___| \___| \__||_| \___/ |_| |_||_|  |_| \__,_| \__||_|   |_|/_/\_\
-//    |___/                             |__/
+
 void cCamera::getProjectionMatrix(glm::mat4 &projOut) {
   // set up the projection matrix
   projOut =
       glm::perspective(1.0f, (float)mWidth / (float)mHeight, 0.1f, 100000.f);
 }
-//                 _  __     __ _                  __  __         _          _
-//     __ _   ___ | |_\ \   / /(_)  ___ __      __|  \/  |  __ _ | |_  _ __
-//     (_)__  __
-//    / _` | / _ \| __|\ \ / / | | / _ \\ \ /\ / /| |\/| | / _` || __|| '__|| |\
-//    \/ /
-//   | (_| ||  __/| |_  \ V /  | ||  __/ \ V  V / | |  | || (_| || |_ | |   | |
-//   >  <
-//    \__, | \___| \__|  \_/   |_| \___|  \_/\_/  |_|  |_| \__,_| \__||_|   |_|/_/\_\
-//    |___/
+
 void cCamera::getViewMatrix(glm::mat4 &viewOut) { viewOut = mViewMatrix; }
-//                 _    _____              ____              _  _    _
-//     __ _   ___ | |_ | ____|_   _   ___ |  _ \  ___   ___ (_)| |_ (_)  ___   _
-//     __
-//    / _` | / _ \| __||  _| | | | | / _ \| |_) |/ _ \ / __|| || __|| | / _ \ | '_ \ 
-//   | (_| ||  __/| |_ | |___| |_| ||  __/|  __/| (_) |\__ \| || |_ | || (_) || | | |
-//    \__, | \___| \__||_____|\__, | \___||_|    \___/ |___/|_| \__||_| \___/
-//    |_| |_|
-//    |___/                   |___/
+
 void cCamera::getEyePosition(glm::vec4 &eyeOut) {
   eyeOut.x = mViewMatrix[3].x;
   eyeOut.y = mViewMatrix[3].y;
@@ -87,12 +63,7 @@ void cCamera::getEyePosition(glm::vec4 &eyeOut) {
   eyeOut.w = 1.f;
 }
 glm::vec4 cCamera::getEyePosition() { return mViewMatrix[3]; }
-//              _             _                  ____             _
-//   __      __(_) _ __    __| |  ___ __      __|  _ \  ___  ___ (_) ____ ___
-//   \ \ /\ / /| || '_ \  / _` | / _ \\ \ /\ / /| |_) |/ _ \/ __|| ||_  // _ \
-//    \ V  V / | || | | || (_| || (_) |\ V  V / |  _ <|  __/\__ \| | / /|  __/
-//     \_/\_/  |_||_| |_| \__,_| \___/  \_/\_/  |_| \_\\___||___/|_|/___|\___|
-//
+
 void cCamera::windowResize(int width, int height) {
   mWidth = width;
   mHeight = height;
@@ -111,12 +82,6 @@ void cCamera::loadDataFromXML(rapidxml::xml_node<> *entityNode) {
                 std::stof(entityNode->first_attribute("offsetZ")->value()));
 }
 
-//                      _         _
-//    _   _  _ __    __| |  __ _ | |_  ___
-//   | | | || '_ \  / _` | / _` || __|/ _ \
-//   | |_| || |_) || (_| || (_| || |_|  __/
-//    \__,_|| .__/  \__,_| \__,_| \__|\___|
-//          |_|
 void cCamera::update(float dt) {
   bool pressUp = glfwGetKey(gWindow, GLFW_KEY_UP) == GLFW_PRESS;
   bool pressDown = glfwGetKey(gWindow, GLFW_KEY_DOWN) == GLFW_PRESS;
@@ -249,12 +214,7 @@ void cCamera::update(float dt) {
     mViewMatrix = glm::lookAtRH(eye, target, up);
   }
 }
-//                      _         _       __     __ _
-//    _   _  _ __    __| |  __ _ | |_  ___\ \   / /(_)  ___ __      __
-//   | | | || '_ \  / _` | / _` || __|/ _ \\ \ / / | | / _ \\ \ /\ / /
-//   | |_| || |_) || (_| || (_| || |_|  __/ \ V /  | ||  __/ \ V  V /
-//    \__,_|| .__/  \__,_| \__,_| \__|\___|  \_/   |_| \___|  \_/\_/
-//          |_|
+
 void cCamera::updateView() {
   glm::vec3 up(0.f, 1.f, 0.f);
 

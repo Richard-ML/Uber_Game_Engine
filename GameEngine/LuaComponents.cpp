@@ -1,8 +1,3 @@
-extern "C" {
-#include <lauxlib.h>
-#include <lua.h>
-#include <lualib.h>
-}
 
 #include "cComponentManager.h"
 #include "externals.h"
@@ -14,6 +9,27 @@ extern "C" {
 #include <sstream>
 #include <string>
 #include <vector>
+#include <list>
+
+extern "C" {
+
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
+
+	// http://rubenlaguna.com/wp/2012/12/09/accessing-cpp-objects-from-lua/
+	// Still looking for optimal solution for exchanging lists from LUA to C. 
+	// The parameters will a list of function queue elements containing a string which maps to a C++ function and its list of arguments. 
+	// Push elements from LUA 
+	//static int l_queue_push(lua_State *L) {
+		//assert(lua_gettop(L) == 2); // confirm that the number of arguments is 2 
+		//std::list<int> **ud = static_cast<std::list<int> **>(luaL_checkudata(L, 1, "ListMT")); // The first argument is a list
+		//int v = luaL_checkint(L, 2); // seconds argument is the integer to be pushed to the std::list<int>
+		//(*ud)->push_back(v); // perform the push on C++ object through the pointer stored in user data
+		//return 0;
+	//}
+}
+
 typedef int (*lua_CFunction)(lua_State *L);
 struct locationTrigger {
   glm::vec3 position;
@@ -51,7 +67,7 @@ public:
   // static void moveTo(int componentID, glm::vec3 destination, glm::vec3
   // maxVelocity);
 
-  // End of methods called from Lua
+  // End of methods called from LUA
 
   // Miscellaneous functions that belong in a utilities class
   void load_Script(std::string scriptName, const char *scriptPath);
@@ -69,7 +85,7 @@ REGISTER_COMPONENT(LuaComponent, "LuaComponent")
 
 /* Used to load a script from a .lua file */
 std::string get_file_contents(const char *filename) {
-  std::ifstream theFile(filename); // load the xml data into the buffer
+  std::ifstream theFile(filename); // load the XML data into the buffer
   std::vector<char> bufData((std::istreambuf_iterator<char>(theFile)),
                             std::istreambuf_iterator<char>());
   bufData.push_back('\0');
@@ -85,7 +101,7 @@ LuaComponent::LuaComponent() {
   this->minVelocity = glm::vec3(-3.0f);
 
   this->m_pLuaState = luaL_newstate();
-  luaL_openlibs(this->m_pLuaState); // Lua v5.3.3
+  luaL_openlibs(this->m_pLuaState); // LUA v5.3.3
 
   // Core component information exchange methods
   lua_pushcfunction(this->m_pLuaState, LuaComponent::l_SetComponentState);
@@ -160,8 +176,8 @@ void LuaComponent::update() {
     // execute funtion in "protected mode", where problems are
     //  caught and placed on the stack for investigation
     error = lua_pcall(
-        this->m_pLuaState, /* lua state */
-        0,  /* nargs: number of arguments pushed onto the lua stack */
+        this->m_pLuaState, /* LUA state */
+        0,  /* nargs: number of arguments pushed onto the LUA stack */
         0,  /* nresults: number of results that should be on stack at end*/
         0); /* errfunc: location, in stack, of error function.
             if 0, results are on top of stack. */
@@ -176,7 +192,7 @@ void LuaComponent::update() {
       // Make error message a little more clear
       std::cout << "-------------------------------------------------------"
                 << std::endl;
-      std::cout << "Error running Lua script: ";
+      std::cout << "Error running LUA script: ";
       std::cout << itScript->first << std::endl;
       std::cout << luaError << std::endl;
       std::cout << "-------------------------------------------------------"
@@ -219,7 +235,7 @@ void LuaComponent::RunScriptImmediately(std::string script) {
   if (error != 0 /*no error*/) {
     std::cout << "-------------------------------------------------------"
               << std::endl;
-    std::cout << "Error running Lua script: ";
+    std::cout << "Error running LUA script: ";
     std::cout << this->m_decodeLuaErrorToString(error) << std::endl;
     std::cout << "-------------------------------------------------------"
               << std::endl;
@@ -229,7 +245,7 @@ void LuaComponent::RunScriptImmediately(std::string script) {
   // execute function in "protected mode", where problems are
   //  caught and placed on the stack for investigation
   error = lua_pcall(
-      this->m_pLuaState, /* lua state */
+      this->m_pLuaState, /* LUA state */
       0,  /* nargs: number of arguments pushed onto the lua stack */
       0,  /* nresults: number of results that should be on stack at end*/
       0); /* errfunc: location, in stack, of error function.
@@ -308,33 +324,33 @@ lua_State *LuaComponent::get_LuaState() { return this->m_pLuaState; }
 std::string LuaComponent::m_decodeLuaErrorToString(int error) {
   switch (error) {
   case 0:
-    return "Lua: no error";
+    return "LUA: no error";
     break;
   case LUA_ERRSYNTAX:
-    return "Lua: syntax error";
+    return "LUA: syntax error";
     break;
   case LUA_ERRMEM:
-    return "Lua: memory allocation error";
+    return "LUA: memory allocation error";
     break;
   case LUA_ERRRUN:
-    return "Lua: Runtime error";
+    return "LUA: Runtime error";
     break;
   case LUA_ERRERR:
-    return "Lua: Error while running the error handler function";
+    return "LUA: Error while running the error handler function";
     break;
   } // switch ( error )
 
   // Who knows what this error is?
-  return "Lua: UNKNOWN error";
+  return "LUA: UNKNOWN error";
 }
 
-// Called by Lua
+// Called by LUA
 // Passes object ID, new velocity, etc.
 // Returns valid (true or false)
 // Passes:
 // - position (xyz)
 // - velocity (xyz)
-// called "setObjectState" in lua
+// called "setObjectState" in LUA
 int LuaComponent::l_SetComponentState(lua_State *L) {
   int componentID = (int)lua_tonumber(L, 1); /* get argument */
   cComponent *currentCommponent =
@@ -361,7 +377,7 @@ int LuaComponent::l_SetComponentState(lua_State *L) {
 // Returns valid (true or false)
 // - position (xyz)
 // - velocity (xyz)
-// called "getObjectState" in lua
+// called "getObjectState" in LUA
 int LuaComponent::l_GetComponentState(lua_State *L) {
   int componentID = (int)lua_tonumber(L, 1); /* get argument */
   cComponent *currentCommponent =
@@ -415,7 +431,7 @@ int LuaComponent::l_Wander(lua_State *L) {
     curDestPositionOffset = glm::vec3(currentTransform[3]) -
                             glm::vec3(curTargetX, curTargetY, curTargetZ);
   }
-  // TODO: Setup moveTo : l_MoveTo(L) accepts current Lua state
+  // TODO: Setup moveTo : l_MoveTo(L) accepts current LUA state
   lua_pushnumber(L, curTargetX);
   lua_pushnumber(L, curTargetY);
   lua_pushnumber(L, curTargetZ);
@@ -571,14 +587,14 @@ int LuaComponent::l_MoveTo(lua_State *L) {
             curComponent->minVelocity, // Should be zero since object will
                                        // always be moving towards an object
                                        // since acceleration is not currently a
-                                       // method arguement
+                                       // method argument
             maxVelocity);
         lua_pushboolean(L, false); // still traveling to destination
       } else {
         curComponent->m_Transform[3] = glm::vec4(
             waypoint,
             curComponent->m_Transform[3]
-                .w); // Make sure the component is at the excat destination
+                .w); // Make sure the component is at the exact destination
         curComponent->velocity = glm::vec3(0.0f);
         lua_pushboolean(L, true); // arrived at waypoint
       }
@@ -678,7 +694,7 @@ int LuaComponent::l_OrientTo(lua_State *L) {
   return 1;
 }
 int LuaComponent::l_SetCameraOffset(lua_State *L) {
-  // Get the values that lua pushed and update object
+  // Get the values that LUA pushed and update object
   int componentID = (int)lua_tonumber(L, 1); /* get argument */
   float x = (float)lua_tonumber(L, 2);       /* get argument */
   float y = (float)lua_tonumber(L, 3);       /* get argument */

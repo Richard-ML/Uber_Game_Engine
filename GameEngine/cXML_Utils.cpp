@@ -15,7 +15,8 @@ bool cXML_Utils::attributeToBool(rapidxml::xml_attribute<> *attribute) {
   for (std::string::size_type i = 0; i < sValue.length(); ++i)
     sValue[i] = std::toupper(sValue[i], loc);
 
-  (sValue == "1" || sValue == "TRUE")
+  (sValue == "1" 
+	  | sValue == "TRUE")
       ? result = true
       : (sValue == "0" || sValue == "FALSE") ? result = false :
                                              // TODO: Throw things

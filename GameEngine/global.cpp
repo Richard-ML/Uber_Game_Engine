@@ -6,10 +6,12 @@ File:
 Author(s):
 Name: Richard Mills-Laursen
 Role(s): Student
-E-mail: R_MillsLaursen@FanshaweOnline.ca | Revolut1on1ze@Hotmail.ca
+E-mail: R_MillsLaursen@FanshaweOnline.ca 
+
+Revolut1on1ze@Hotmail.ca
 
 Name: Michael Feeney
-E-mail: MFeeney@FanshaweC.on.ca
+E-mail: MFeeney@FanshaweC.ca
 Role(s): Coordinator & Professor
 Course(s): INFO-6044-01 - Game Engine Framework/Patterns
 INFO-6028-01 - Graphics 1
@@ -48,7 +50,7 @@ int gNextPointLightID = 0;
 int gNextSpotLightID = 0;
 int gNextDirectionalLightID = 0;
 
-int gVoxelSize = 384;
+int gVoxelSize = 128;
 // int gCurrentMipmapLevel = 0;
 std::map<std::string, GLuint> gMap_TextureNameToMipmapLevel;
 std::vector<cLight *> gLights;

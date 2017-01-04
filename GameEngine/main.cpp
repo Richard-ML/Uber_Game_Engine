@@ -20,7 +20,7 @@ Role(s): Student
 E-mail: R_MillsLaursen@FanshaweOnline.ca | Revolut1on1ze@Hotmail.ca
 
 Name: Michael Feeney
-E-mail: MFeeney@FanshaweC.on.ca
+E-mail: MFeeney@FanshaweC.ca
 Role(s): Coordinator & Professor
 Course(s): INFO-6044-01 - Game Engine Framework/Patterns
 INFO-6028-01 - Graphics 1
@@ -52,12 +52,7 @@ void bindTheBuffers();
 bool setupTheShader();
 void drawScene();
 
-//                      _
-//    _ __ ___    __ _ (_) _ __
-//   | '_ ` _ \  / _` || || '_ \ 
-//   | | | | | || (_| || || | | |
-//   |_| |_| |_| \__,_||_||_| |_|
-//
+
 int main() {
   // Initialize GLFW
   if (!glfwInit()) {
@@ -297,12 +292,7 @@ struct mesh_to_camera_less_than {
   }
 };
 
-//        _                        ____
-//     __| | _ __  __ _ __      __/ ___|   ___  ___  _ __    ___
-//    / _` || '__|/ _` |\ \ /\ / /\___ \  / __|/ _ \| '_ \  / _ \
-//   | (_| || |  | (_| | \ V  V /  ___) || (__|  __/| | | ||  __/
-//    \__,_||_|   \__,_|  \_/\_/  |____/  \___|\___||_| |_| \___|
-//
+
 void drawScene() {
   glm::mat4 projectionMatrix;
   glm::mat4 viewMatrix;
@@ -384,16 +374,7 @@ void drawScene() {
       gTransparentMeshes.erase(iter);
   }
 }
-//               _                _____  _            ____   _                 _
-//    ___   ___ | |_  _   _  _ __|_   _|| |__    ___ / ___| | |__    __ _   __|
-//    |  ___  _ __
-//   / __| / _ \| __|| | | || '_ \ | |  | '_ \  / _ \\___ \ | '_ \  / _` | / _`
-//   | / _ \| '__|
-//   \__ \|  __/| |_ | |_| || |_) || |  | | | ||  __/ ___) || | | || (_| || (_|
-//   ||  __/| |
-//   |___/ \___| \__| \__,_|| .__/ |_|  |_| |_| \___||____/ |_| |_| \__,_|
-//   \__,_| \___||_|
-//                          |_|
+
 bool setupTheShader() {
   // Create and compile our GLSL program from the shaders
   gProgramID = ::g_pShaderManager->loadShaders(
@@ -459,14 +440,6 @@ bool setupTheShader() {
   return true;
 }
 
-//                            _        _____  _            ____           __ __
-//     ___  _ __  ___   __ _ | |_  ___|_   _|| |__    ___ | __ )  _   _  / _| /
-//     _|  ___  _ __  ___
-//    / __|| '__|/ _ \ / _` || __|/ _ \ | |  | '_ \  / _ \|  _ \ | | | || |_ |
-//    |_  / _ \| '__|/ __|
-//   | (__ | |  |  __/| (_| || |_|  __/ | |  | | | ||  __/| |_) || |_| ||  _||  _||  __/| |   \__ \
-//    \___||_|   \___| \__,_| \__|\___| |_|  |_| |_| \___||____/  \__,_||_|  |_|   \___||_|   |___/
-//
 void createTheBuffers() {
   glGenVertexArrays(1, &gVertexBufferID);
   glBindVertexArray(gVertexBufferID);
@@ -496,14 +469,7 @@ void createTheBuffers() {
 
   bindTheBuffers();
 }
-//    _      _             _  _____  _            ____           __   __
-//   | |__  (_) _ __    __| ||_   _|| |__    ___ | __ )  _   _  / _| / _|  ___
-//   _ __  ___
-//   | '_ \ | || '_ \  / _` |  | |  | '_ \  / _ \|  _ \ | | | || |_ | |_  / _ \|
-//   '__|/ __|
-//   | |_) || || | | || (_| |  | |  | | | ||  __/| |_) || |_| ||  _||  _||  __/| |   \__ \
-//   |_.__/ |_||_| |_| \__,_|  |_|  |_| |_| \___||____/  \__,_||_|  |_|   \___||_|   |___/
-//
+
 void bindTheBuffers() {
   glBindVertexArray(gVertexBufferID);
   glBindBuffer(GL_ARRAY_BUFFER, gTexCoordBufferID);

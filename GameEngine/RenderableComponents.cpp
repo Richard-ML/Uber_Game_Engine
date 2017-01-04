@@ -5,7 +5,7 @@
 
 // THE FOLLOWING CODE WAS CREATED BY:
 // Name: Michael Feeney
-// E-mail : MFeeney@FanshaweC.on.ca
+// E-mail : MFeeney@FanshaweC.ca
 #include "windows.h"
 #include <stdlib.h> // srand, rand
 class lightMath {

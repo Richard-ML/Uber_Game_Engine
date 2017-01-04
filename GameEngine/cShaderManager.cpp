@@ -14,7 +14,7 @@ Role(s): Student
 E-mail: R_MillsLaursen@FanshaweOnline.ca | Revolut1on1ze@Hotmail.ca
 
 Name: Michael Feeney
-E-mail: MFeeney@FanshaweC.on.ca
+E-mail: MFeeney@FanshaweC.ca
 Role(s): Coordinator & Professor
 Course(s): INFO-6044-01 - Game Engine Framework/Patterns
 INFO-6028-01 - Graphics 1
@@ -49,12 +49,6 @@ cShaderManager *cShaderManager::instance() {
   return s_cShaderManager;
 }
 
-//    _                    _  ____   _                 _
-//   | |  ___    __ _   __| |/ ___| | |__    __ _   __| |  ___  _ __  ___
-//   | | / _ \  / _` | / _` |\___ \ | '_ \  / _` | / _` | / _ \| '__|/ __|
-//   | || (_) || (_| || (_| | ___) || | | || (_| || (_| ||  __/| |   \__ \
-//   |_| \___/  \__,_| \__,_||____/ |_| |_| \__,_| \__,_| \___||_|   |___/
-//
 GLuint cShaderManager::loadShaders(const char *vertex_file_path,
                                    const char *fragment_file_path) {
   // Create the shader
@@ -149,12 +143,6 @@ GLuint cShaderManager::loadShaders(const char *vertex_file_path,
   return ProgramID;
 }
 
-//    _                    _  ____   _                 _
-//   | |  ___    __ _   __| |/ ___| | |__    __ _   __| |  ___  _ __  ___
-//   | | / _ \  / _` | / _` |\___ \ | '_ \  / _` | / _` | / _ \| '__|/ __|
-//   | || (_) || (_| || (_| | ___) || | | || (_| || (_| ||  __/| |   \__ \
-//   |_| \___/  \__,_| \__,_||____/ |_| |_| \__,_| \__,_| \___||_|   |___/
-//
 GLuint cShaderManager::loadShaders(const char *vertex_file_path,
                                    const char *fragment_file_path,
                                    const char *geometry_file_path) {

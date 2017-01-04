@@ -17,7 +17,7 @@ Author(s):
  E-mail: R_MillsLaursen@FanshaweOnline.ca | Revolut1on1ze@Hotmail.ca
  
  Name: Michael Feeney
- E-mail: MFeeney@FanshaweC.on.ca
+ E-mail: MFeeney@FanshaweC.ca
  Role(s): Coordinator & Professor
  Course(s):
   INFO-6044-01 - Game Engine Framework/Patterns
