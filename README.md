@@ -57,4 +57,4 @@ Role: Professor
 ```
 <a href=https://ca.linkedin.com/in/richard-mills-laursen-b6470a79>Connect on LinkedIn</a>
 
-<a href="https://www.youtube.com/watch?v=67xIrz-cNlM" target="_blank"><img src="https://i.ytimg.com/vi/67xIrz-cNlM/hqdefault.jpg?custom=true&w=480&h=270&stc=true&jpg444=true&jpgq=90&sp=68&sigh=NPzB5mMBHPNYGJ2HY-ym8fANM8o" alt="AI Final Footage" border="0"/></a>
+<a href="https://www.youtube.com/watch?v=67xIrz-cNlM" target="_blank">Footage<br/><img src="https://i.ytimg.com/vi/67xIrz-cNlM/hqdefault.jpg?custom=true&w=480&h=270&stc=true&jpg444=true&jpgq=90&sp=68&sigh=NPzB5mMBHPNYGJ2HY-ym8fANM8o" alt="Footage" border="0"/></a>
