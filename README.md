@@ -55,6 +55,6 @@ Role: Professor
  Role: Professor
  Course: INFO-6024-01 - Game Component Integration
 ```
+<a href=https://ca.linkedin.com/in/richard-mills-laursen-b6470a79>Connect on LinkedIn</a>
 
-<a href="https://youtu.be/05beERapl1Y" target="_blank"><img src="https://youtu.be/05beERapl1Y/0.jpg" 
-alt="Physics Final" width="240" height="180" border="10" /></a>
+<a href="https://www.youtube.com/watch?v=67xIrz-cNlM" target="_blank"><img alt="AI Final Footage" width="480" height="270" border="0" src=https://i.ytimg.com/vi/67xIrz-cNlM/hqdefault.jpg?custom=true&w=480&h=270&stc=true&jpg444=true&jpgq=90&sp=68&sigh=NPzB5mMBHPNYGJ2HY-ym8fANM8o"/></a>
