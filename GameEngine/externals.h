@@ -1,6 +1,9 @@
 #ifndef _externals_HG_
 #define _externals_HG_
 #include <limits>
+// glfw needs these guys ;)
+#include <stdio.h>
+#include <stdlib.h>
 //#define GLM_MESSAGES
 #include <glm\glm.hpp>
 

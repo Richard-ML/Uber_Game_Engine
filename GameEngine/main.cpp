@@ -1,10 +1,6 @@
-// glfw needs these guys :(
+
 #define GLM_FORCE_SWIZZLE
-#include <stdio.h>
-#include <stdlib.h>
-
 #include <iostream>
-
 #include "externals.h"
 #include "global.h"
 #include <Windows.h>
