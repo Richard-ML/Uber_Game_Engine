@@ -29,7 +29,7 @@ Author(s):
  Name: Ben McIlmoyle
  E-Mail: B_McIlmoyle@FanshaweOnline.ca
  Role: Professor
-  Course: INFO-6016-01 - Network Programming
+ Course: INFO-6016-01 - Network Programming
  
  Name: James Lucas
  E-Mail: J_Lucas@FanshaweOnline.ca
