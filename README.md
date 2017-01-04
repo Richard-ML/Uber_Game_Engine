@@ -1,12 +1,6 @@
 # Uber Game Engine
 ###OpenGL 3D Game-Engine
 More information available in the <a href="https://github.com/Richard-ML/Uber_Game_Engine/wiki">Wiki</a>
-####In-Game Controls:
-- Up and down arrows to zoom in and out. 
-- Left and right arrows to pan.
-- Hold up to look up once you are zoomed all the way in. (temp)
-- WASD to move around. (Controller coming soon)
-- 1-3 to navigate player light type (Directional, Spot, Point)
 
 ```
        __  __ __                   ______                           ______               _
