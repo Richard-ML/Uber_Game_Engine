@@ -11,25 +11,25 @@ More information available at the <a href="https://github.com/Richard-ML/Uber_Ga
                                                                               /____/
                                                                          
 Author(s):
-Name: Richard Mills-Laursen
-Role(s): Student
-E-mail: R_MillsLaursen@FanshaweOnline.ca | Revolut1on1ze@Hotmail.ca
-
-Name: Michael Feeney
-E-mail: MFeeney@FanshaweC.ca
-Role(s): Coordinator & Professor
-Course(s):
- - INFO-6044-01 - Game Engine Framework/Patterns
- - INFO-6028-01 - Graphics 1
- - INFO-6019-01 - Physics & Simulation 1
- - INFO-6045-01 - Animation
- - INFO-6023-01 - Game Algorithms & Gems
- - INFO-6020-01 - Graphics 2
-
-Name: Ben McIlmoyle
-E-Mail: B_McIlmoyle@FanshaweOnline.ca
-Role: Professor
- Course: INFO-6016-01 - Network Programming
+ Name: Richard Mills-Laursen
+ Role(s): Student
+ E-mail: R_MillsLaursen@FanshaweOnline.ca | Revolut1on1ze@Hotmail.ca
+ 
+ Name: Michael Feeney
+ E-mail: MFeeney@FanshaweC.ca
+ Role(s): Coordinator & Professor
+ Course(s):
+  - INFO-6044-01 - Game Engine Framework/Patterns
+  - INFO-6028-01 - Graphics 1
+  - INFO-6019-01 - Physics & Simulation 1
+  - INFO-6045-01 - Animation
+  - INFO-6023-01 - Game Algorithms & Gems
+  - INFO-6020-01 - Graphics 2
+ 
+ Name: Ben McIlmoyle
+ E-Mail: B_McIlmoyle@FanshaweOnline.ca
+ Role: Professor
+  Course: INFO-6016-01 - Network Programming
  
  Name: James Lucas
  E-Mail: J_Lucas@FanshaweOnline.ca
@@ -51,6 +51,7 @@ Role: Professor
  Course: INFO-6024-01 - Game Component Integration
 ```
 <a href="https://www.youtube.com/watch?v=67xIrz-cNlM" target="_blank">Footage<br/><img src="https://i.ytimg.com/vi/67xIrz-cNlM/hqdefault.jpg?custom=true&w=480&h=270&stc=true&jpg444=true&jpgq=90&sp=68&sigh=NPzB5mMBHPNYGJ2HY-ym8fANM8o" alt="Footage" border="0"/></a>
+<br/>
 <br/>
 <a href=https://ca.linkedin.com/in/richard-mills-laursen-b6470a79>Connect on LinkedIn - Richard Mills-Laursen</a>
 
