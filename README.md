@@ -1,6 +1,6 @@
 # Uber Game Engine
 ###OpenGL 3D Game-Engine
-More information available in the <a href="https://github.com/Richard-ML/Uber_Game_Engine/wiki">Wiki</a>
+More information available at the <a href="https://github.com/Richard-ML/Uber_Game_Engine/wiki">Wiki</a>
 
 ```
        __  __ __                   ______                           ______               _
