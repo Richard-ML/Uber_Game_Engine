@@ -215,6 +215,8 @@ void cEntityManager::createSpiderAtPos(float x, float y, float z) {
   // cEntityManager_Impl::vec_Entities.at(cEntityManager_Impl::vec_Entities.size()
   // - 1)->vec_m_components.at(0)->setTransform(tempMatrix);
 
+	
+
   cGameObject *tempGameObject = new cGameObject();
   cEntityManager_Impl::vec_Entities.push_back(tempGameObject);
 

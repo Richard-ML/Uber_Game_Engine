@@ -179,6 +179,7 @@ extern cShaderManager *g_pShaderManager;
 extern cEntityManager *g_pEntityManager;
 extern cSoundManager *g_pSoundManager;
 extern cPathNodeGrid *g_pPathFindingManager;
+extern PhysicsEngine::cPhysicsEngine *g_pPhysicsEngine;
 
 /* Callback Functions */
 void callback_windowResize(GLFWwindow *window, int width, int height);

@@ -132,3 +132,5 @@ cSoundManager *cSoundManager::s_cSoundManager =
     0; // Allocating pointer to static instance of cSoundManager (singleton)
 cSoundManager *g_pSoundManager = cSoundManager::instance();
 cPathNodeGrid *g_pPathFindingManager = 0;
+
+PhysicsEngine::cPhysicsEngine *g_pPhysicsEngine = PhysicsEngine::cPhysicsEngine::instance();

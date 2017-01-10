@@ -1,15 +1,12 @@
-#ifndef _cCollisionObject_HG_
-#define _cCollisionObject_HG_
+#ifndef _cCollisionShape_HG_
+#define _cCollisionShape_HG_
 #include "stdafx.h"
-#include "cCollisionShape.h"
 #include <string>
-
-#ifdef PHYSICSLIBRARY_EXPORTS
-#define PHYSICSLIBRARY_API __declspec(dllexport)
+#ifdef PhysicsEngine_EXPORTS
+#define PhysicsEngine_API __declspec(dllexport)
 #else
-#define PHYSICSLIBRARY_API __declspec(dllimport)
-#endif // PHYSICSLIBRARY_EXPORTS
-
+#define PhysicsEngine_API __declspec(dllimport)
+#endif // PhysicsEngine_EXPORTS
 /**
 *       __  __ __                   ______                           ______               _
 *      / / / // /_   ___   _____   / ____/____ _ ____ ___   ___     / ____/____   ____ _ (_)____   ___
@@ -17,8 +14,8 @@
 *    / /_/ // /_/ //  __// /     / /_/ // /_/ // / / / / //  __/  / /___ / / / // /_/ // // / / //  __/
 *    \____//_.___/ \___//_/      \____/ \__,_//_/ /_/ /_/ \___/  /_____//_/ /_/ \__, //_//_/ /_/ \___/
 *                                                                              /____/
-//===-- cCollisionObject.h - Collision Object Information ---------*- C++ -*-===//
-Description: Maintains all information that is needed for a collision detection: Object, Transform and AABB proxy. Added to the cCollisionWorld.
+//===-- cCollisionShape.h - Collision Shape Information ---------*- C++ -*-===//
+Description: Provides an interface for collision shapes that can be shared among cCollisionObject(s).
 //===----------------------------------------------------------------------===//
 Author(s):
 Name: Richard Mills-Laursen
@@ -64,31 +61,10 @@ Status: Version 1.8 Alpha
 (c) Copyright(s): Fanshawe College
 //===----------------------------------------------------------------------===//
 */
-namespace PhysicsLibrary {
-	class cCollisionObject {
+namespace PhysicsEngine {
+	class cCollisionShape {
 	public:
-		struct sAABB {
-		public:
-			sAABB(glm::vec3 min, glm::vec3 max) {
-				this->halfWidths =
-					glm::abs(max - min) * glm::vec3(0.5f); // Extent computation
-				this->center = max - halfWidths; // Center position of AABB
-				this->min = min;
-				this->max = max;
-			};
-			sAABB() {};
-			glm::vec3 center;
-			glm::vec3 halfWidths;
-			glm::vec3 min;
-			glm::vec3 max;
-		};
-	private:
-		sAABB m_broadPhase; // Pointer to parent AABB.. 
-		glm::mat4 m_transform;
-		int m_collisionFlag;
-		bool m_disableGravity;
-		cCollisionShape* m_collisionShape; // Shape used for narrow phase collision detection. Reuse shapes as much as possible!
-
+		static PhysicsEngine_API void getBoundingSphere(glm::vec3 min, glm::vec3 max, glm::vec3& center, glm::vec3& radius);
 	};
 }
 #endif

@@ -1,4 +1,5 @@
-#include "cPhysicsLibrary.h"
+#include "stdafx.h"  
+#include "cPhysicsEngine.h"
 
 // cGameObject Component Based Design Prototype
 //class cGameObject {
@@ -13,27 +14,31 @@
 // The PIMPL idiom aka Compilation Firewall
 // Purpose: Encapsulate private member variables. Reduces make-time,
 // compile-time, and the Fragile Binary Interface Problem.
-namespace PhysicsLibrary {
-	class cPhysicsLibrary_Impl : public cPhysicsLibrary {
+namespace PhysicsEngine {
+	cPhysicsEngine *cPhysicsEngine::s_cPhysicsEngine =
+		0; // Allocating pointer to static instance of cPhysicsEngine (singleton)
+
+	class cPhysicsEngine_Impl : public cPhysicsEngine {
 		// Boilerplate
-		friend class cPhysicsLibrary;
+		friend class cPhysicsEngine;
 
 	public:
 		//static std::vector<cGameObject *> vec_Entities;
 		//static rapidxml::xml_node<> *spiderNode;
 	};
-	inline const cPhysicsLibrary_Impl *cPhysicsLibrary::impl() const {
-		return static_cast<const cPhysicsLibrary_Impl *>(this);
+	inline const cPhysicsEngine_Impl *cPhysicsEngine::impl() const {
+		return static_cast<const cPhysicsEngine_Impl *>(this);
 	}
-	inline cPhysicsLibrary_Impl *cPhysicsLibrary::impl() {
-		return static_cast<cPhysicsLibrary_Impl *>(this);
+	inline cPhysicsEngine_Impl *cPhysicsEngine::impl() {
+		return static_cast<cPhysicsEngine_Impl *>(this);
 	}
 	// Initialize vectors
 	//std::vector<cGameObject *> cEntityManager_Impl::vec_Entities;
 	//rapidxml::xml_node<> *cEntityManager_Impl::spiderNode;
-	cPhysicsLibrary * cPhysicsLibrary::instance() {
-		if (!s_cPhysicsLibrary)
-			s_cPhysicsLibrary = new cPhysicsLibrary();
-		return s_cPhysicsLibrary;
+	cPhysicsEngine * cPhysicsEngine::instance() {
+		if (!s_cPhysicsEngine)
+			s_cPhysicsEngine = new cPhysicsEngine();
+		return s_cPhysicsEngine;
 	}
+
 }

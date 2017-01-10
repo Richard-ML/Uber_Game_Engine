@@ -45,12 +45,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)PhysicsLibrary;$(SolutionDir)Extern\Lua5.3.3;$(SolutionDir)Extern\fmod;$(SolutionDir)Extern\rapidxml;$(SolutionDir)Extern\GLM;$(SolutionDir)Extern\glfw\include;$(SolutionDir)Extern\glew\include;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\FreeImage;$(IncludePath);$(SolutionDir)PhysicsEngine</IncludePath>
+    <IncludePath>$(SolutionDir)Extern\Lua5.3.3;$(SolutionDir)Extern\fmod;$(SolutionDir)Extern\rapidxml;$(SolutionDir)Extern\GLM;$(SolutionDir)Extern\glfw\include;$(SolutionDir)Extern\glew\include;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\FreeImage;$(IncludePath);$(SolutionDir)PhysicsEngine</IncludePath>
     <LibraryPath>$(SolutionDir)Extern\Lua5.3.3\lib debug;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\rapidxml;$(SolutionDir)Extern\fmod;$(SolutionDir)Extern\FreeImage;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)PhysicsLibrary;$(SolutionDir)Extern\Lua5.3.3;$(SolutionDir)Extern\fmod;$(SolutionDir)Extern\rapidxml\;$(SolutionDir)Extern\GLM;$(SolutionDir)Extern\glfw\include;$(SolutionDir)Extern\glew\include;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\FreeImage;$(IncludePath);$(SolutionDir)PhysicsEngine</IncludePath>
+    <IncludePath>$(SolutionDir)PhysicsEngine;$(SolutionDir)Extern\Lua5.3.3;$(SolutionDir)Extern\fmod;$(SolutionDir)Extern\rapidxml\;$(SolutionDir)Extern\GLM;$(SolutionDir)Extern\glfw\include;$(SolutionDir)Extern\glew\include;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\FreeImage;$(IncludePath);$(SolutionDir)PhysicsEngine</IncludePath>
     <LibraryPath>$(SolutionDir)Extern\Lua5.3.3\lib release;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\rapidxml;$(SolutionDir)Extern\FreeImage;$(SolutionDir)Extern\fmod;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -64,12 +64,13 @@
       <SDLCheck>true</SDLCheck>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)PhysicsEngine;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3.lib;GLEW_1130.lib;opengl32.lib;Assimp.lib;lua5.3.3-static.lib;FreeImage.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)PhysicsEngine\$(Configuration);$(SolutionDir)Extern\glfw\lib\$(Configuration);$(SolutionDir)Extern\glew\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Extern\glfw\lib\$(Configuration);$(SolutionDir)Extern\glew\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)Extern\Assimp\Assimp32.dll" "$(TargetDir)Assimp32.dll"</Command>
@@ -159,6 +160,11 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="GameAssets.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PhysicsEngine\PhysicsEngine.vcxproj">
+      <Project>{ee6b6d96-c2ea-46c8-80b9-fe691c37ea16}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

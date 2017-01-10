@@ -1,11 +1,11 @@
 #ifndef _cRigidBody_HG_
 #define _cRigidBody_HG_
 #include "cCollisionObject.h"
-#ifdef PHYSICSLIBRARY_EXPORTS
-#define PHYSICSLIBRARY_API __declspec(dllexport)
+#ifdef PhysicsEngine_EXPORTS
+#define PhysicsEngine_API __declspec(dllexport)
 #else
-#define PHYSICSLIBRARY_API __declspec(dllimport)
-#endif // PHYSICSLIBRARY_EXPORTS
+#define PhysicsEngine_API __declspec(dllimport)
+#endif // PhysicsEngine_EXPORTS
 /**
 *       __  __ __                   ______                           ______               _
 *      / / / // /_   ___   _____   / ____/____ _ ____ ___   ___     / ____/____   ____ _ (_)____   ___
@@ -60,13 +60,13 @@ Status: Version 1.8 Alpha
 (c) Copyright(s): Fanshawe College
 //===----------------------------------------------------------------------===//
 */
-namespace PhysicsLibrary {
+namespace PhysicsEngine {
 
 	class cRigidBody : public cCollisionObject {
 	public:
-		static PHYSICSLIBRARY_API glm::quat getOrientation();
-		static PHYSICSLIBRARY_API void translate(glm::vec3 translation);
-		static PHYSICSLIBRARY_API void applyGravity(); // If gravity is enabled for parent object
+		static PhysicsEngine_API glm::quat getOrientation();
+		static PhysicsEngine_API void translate(glm::vec3 translation);
+		static PhysicsEngine_API void applyGravity(); // If gravity is enabled for parent object
 	private:
 		int m_motionState;
 		glm::vec3 m_turnVelocity;

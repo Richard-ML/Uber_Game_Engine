@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngine", "GameEngine\GameEngine.vcxproj", "{CCBE53EE-83DF-4021-9EB3-BB4AE37F93FC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicsLibrary", "PhysicsLibrary\PhysicsLibrary.vcxproj", "{C1ACE3A3-6E88-47A1-B943-17798D6605AE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhysicsEngine", "PhysicsEngine\PhysicsEngine.vcxproj", "{EE6B6D96-C2EA-46C8-80B9-FE691C37EA16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,16 +25,16 @@ Global
 		{CCBE53EE-83DF-4021-9EB3-BB4AE37F93FC}.Release|x64.ActiveCfg = Release|Win32
 		{CCBE53EE-83DF-4021-9EB3-BB4AE37F93FC}.Release|x86.ActiveCfg = Release|Win32
 		{CCBE53EE-83DF-4021-9EB3-BB4AE37F93FC}.Release|x86.Build.0 = Release|Win32
-		{C1ACE3A3-6E88-47A1-B943-17798D6605AE}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{C1ACE3A3-6E88-47A1-B943-17798D6605AE}.Debug|x64.ActiveCfg = Debug|x64
-		{C1ACE3A3-6E88-47A1-B943-17798D6605AE}.Debug|x64.Build.0 = Debug|x64
-		{C1ACE3A3-6E88-47A1-B943-17798D6605AE}.Debug|x86.ActiveCfg = Debug|Win32
-		{C1ACE3A3-6E88-47A1-B943-17798D6605AE}.Debug|x86.Build.0 = Debug|Win32
-		{C1ACE3A3-6E88-47A1-B943-17798D6605AE}.Release|Any CPU.ActiveCfg = Release|Win32
-		{C1ACE3A3-6E88-47A1-B943-17798D6605AE}.Release|x64.ActiveCfg = Release|x64
-		{C1ACE3A3-6E88-47A1-B943-17798D6605AE}.Release|x64.Build.0 = Release|x64
-		{C1ACE3A3-6E88-47A1-B943-17798D6605AE}.Release|x86.ActiveCfg = Release|Win32
-		{C1ACE3A3-6E88-47A1-B943-17798D6605AE}.Release|x86.Build.0 = Release|Win32
+		{EE6B6D96-C2EA-46C8-80B9-FE691C37EA16}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{EE6B6D96-C2EA-46C8-80B9-FE691C37EA16}.Debug|x64.ActiveCfg = Debug|x64
+		{EE6B6D96-C2EA-46C8-80B9-FE691C37EA16}.Debug|x64.Build.0 = Debug|x64
+		{EE6B6D96-C2EA-46C8-80B9-FE691C37EA16}.Debug|x86.ActiveCfg = Debug|Win32
+		{EE6B6D96-C2EA-46C8-80B9-FE691C37EA16}.Debug|x86.Build.0 = Debug|Win32
+		{EE6B6D96-C2EA-46C8-80B9-FE691C37EA16}.Release|Any CPU.ActiveCfg = Release|Win32
+		{EE6B6D96-C2EA-46C8-80B9-FE691C37EA16}.Release|x64.ActiveCfg = Release|x64
+		{EE6B6D96-C2EA-46C8-80B9-FE691C37EA16}.Release|x64.Build.0 = Release|x64
+		{EE6B6D96-C2EA-46C8-80B9-FE691C37EA16}.Release|x86.ActiveCfg = Release|Win32
+		{EE6B6D96-C2EA-46C8-80B9-FE691C37EA16}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

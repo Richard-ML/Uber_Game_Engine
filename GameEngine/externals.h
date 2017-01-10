@@ -20,7 +20,7 @@
 #include <GLFW\glfw3.h>
 
 #include <FreeImage.h>
-#include "cPhysicsLibrary.h"  
+#include "cPhysicsEngine.h"  
 #define _CRT_SECURE_NO_WARNINGS
 //#define RAPIDXML_NO_EXCEPTIONS
 
@@ -82,7 +82,6 @@ Status: Version 1.8 Alpha
 inline void Set(glm::vec2 &v, float x, float y) {
   v.x = x;
   v.y = y;
- 
 }
 inline void Set(glm::vec3 &v, float x, float y, float z) {
   v.x = x;
