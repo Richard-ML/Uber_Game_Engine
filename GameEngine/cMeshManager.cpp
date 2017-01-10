@@ -8,41 +8,6 @@
 #include <assimp/scene.h>
 #include <iostream>
 #include <limits>
-/**
-File:
-Author(s):
-        Name: Richard Mills-Laursen
-        Role(s): Student
-        E-mail: R_MillsLaursen@FanshaweOnline.ca | Revolut1on1ze@Hotmail.ca
-
-        Name: Michael Feeney
-        E-mail: MFeeney@FanshaweC.ca
-        Role(s): Coordinator & Professor
-        Course(s): INFO-6044-01 - Game Engine Framework/Patterns
-                           INFO-6028-01 - Graphics 1
-                           INFO-6019-01 - Physics & Simulation 1
-
-
-        Name: Ben McIlmoyle
-        E-Mail: B_McIlmoyle@FanshaweOnline.ca
-        Role: Professor
-        Course: INFO-6016-01 - Network Programming
-
-        Name: James Lucas
-        E-Mail: J_Lucas@FanshaweOnline.ca
-        Role: Professor
-        Course: INFO-6017-01 - Artificial Intelligence
-
-        Name: Oscar Lara
-        E-Mail: O_Lara@FanshaweOnline.ca
-        Role: Professor
-        Course: INFO-6046-01 - Media Fundamentals
-
-Status: Version 1.7 Alpha
-(c) Copyright(s): Fanshawe College
-
-Description:
-*/
 
 // The PIMPL idiom aka Compilation Firewall
 // Purpose: Encapsulate private member variables. Reduces make-time,

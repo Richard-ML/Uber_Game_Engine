@@ -7,41 +7,59 @@
 #include <algorithm>
 #include <ctime>
 #include <sstream> // "String Stream", used for setting the windows title
-
 /**
-File:
+*       __  __ __                   ______                           ______               _
+*      / / / // /_   ___   _____   / ____/____ _ ____ ___   ___     / ____/____   ____ _ (_)____   ___
+*     / / / // __ \ / _ \ / ___/  / / __ / __ `// __ `__ \ / _ \   / __/  / __ \ / __ `// // __ \ / _ \
+*    / /_/ // /_/ //  __// /     / /_/ // /_/ // / / / / //  __/  / /___ / / / // /_/ // // / / //  __/
+*    \____//_.___/ \___//_/      \____/ \__,_//_/ /_/ /_/ \___/  /_____//_/ /_/ \__, //_//_/ /_/ \___/
+*                                                                              /____/
+//===-- main.cpp - Entry Point ----------------------------------*- C++ -*-===//
+Description: Execution starts here!
+//===----------------------------------------------------------------------===//
 Author(s):
-Name: Richard Mills-Laursen
-Role(s): Student
-E-mail: R_MillsLaursen@FanshaweOnline.ca | Revolut1on1ze@Hotmail.ca
-
-Name: Michael Feeney
-E-mail: MFeeney@FanshaweC.ca
-Role(s): Coordinator & Professor
-Course(s): INFO-6044-01 - Game Engine Framework/Patterns
-INFO-6028-01 - Graphics 1
-INFO-6019-01 - Physics & Simulation 1
-
-Name: Ben McIlmoyle
-E-Mail: B_McIlmoyle@FanshaweOnline.ca
-Role: Professor
-Course: INFO-6016-01 - Network Programming
-
-Name: James Lucas
-E-Mail: J_Lucas@FanshaweOnline.ca
-Role: Professor
-Course: INFO-6017-01 - Artificial Intelligence
-
-Name: Oscar Lara
-E-Mail: O_Lara@FanshaweOnline.ca
-Role: Professor
-Course: INFO-6046-01 - Media Fundamentals
-
-Status: Version 1.7 Alpha
+ Name: Richard Mills-Laursen
+ Role(s): Student
+ E-mail: R_MillsLaursen@FanshaweOnline.ca | Revolut1on1ze@Hotmail.ca
+ 
+ Name: Michael Feeney
+ E-mail: MFeeney@FanshaweC.ca
+ Role(s): Coordinator & Professor
+ Course(s):
+  INFO-6044-01 - Game Engine Framework/Patterns
+  INFO-6028-01 - Graphics 1
+  INFO-6019-01 - Physics & Simulation 1
+  INFO-6045-01 - Animation
+  INFO-6023-01 - Game Algorithms & Gems
+  INFO-6020-01 - Graphics 2
+ 
+ Name: Ben McIlmoyle
+ E-Mail: B_McIlmoyle@FanshaweOnline.ca
+ Role: Professor
+ Course: INFO-6016-01 - Network Programming
+ 
+ Name: James Lucas
+ E-Mail: J_Lucas@FanshaweOnline.ca
+ Role: Professor
+ Course(s):
+  INFO-6017-01 - Artificial Intelligence
+  INFO-6022-01 - Physics & Simulation 2
+ 
+ Name: Oscar Lara
+ E-Mail: O_Lara@FanshaweOnline.ca
+ Role: Professor
+ Course(s):
+  INFO-6046-01 - Media Fundamentals
+  INFO-6025-01 - Configuration & Deployment
+ 
+ Name: Lucas Gustafson
+ E-Mail: L_Gustafson@FanshaweOnline.ca
+ Role: Professor
+ Course: INFO-6024-01 - Game Component Integration
+//===----------------------------------------------------------------------===//
+Status: Version 1.8 Alpha
 (c) Copyright(s): Fanshawe College
-
-Description:
-
+//===----------------------------------------------------------------------===//
 */
 void createTheBuffers();
 void bindTheBuffers();
@@ -119,15 +137,15 @@ int main() {
                  7680, 7680);   // 512 x 512 texels
   //////////////////////
 
-  // Load game data from xml
+  // Load game data from XML
   g_pEntityManager->loadGameFromXML(
-      "GameAssets.xml"); // Load the data stored in the xml file
+      "GameAssets.xml"); // Load the data stored in the XML file
   srand((unsigned)time(NULL));
 
   createTheBuffers();
 
-  // Intialize AStar Pathfinding Information
-  std::cout << "Processing Pathfinding data.." << std::endl;
+  // Initialize AStar Path finding Information
+  std::cout << "Processing Path-finding data.." << std::endl;
   g_pPathFindingManager =
       new cPathNodeGrid(128.f, 512, 512, glm::vec3(0.0f),
                         glm::vec3(g_pAreaInfo->maxPos.x, 0.0f, 0.0f),

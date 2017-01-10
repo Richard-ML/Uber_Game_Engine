@@ -63,7 +63,7 @@ Author(s):
   INFO-6046-01 - Media Fundamentals
   INFO-6025-01 - Configuration & Deployment
  
- Name: L. Gustafson
+ Name: Lucas Gustafson
  E-Mail: L_Gustafson@FanshaweOnline.ca
  Role: Professor
  Course: INFO-6024-01 - Game Component Integration
@@ -77,17 +77,17 @@ extern GLFWwindow *gWindow;
 extern cCamera *gCamera;
 extern std::vector<cMesh *> gTransparentMeshes;
 extern std::vector<cLight *> gLights;
-
-// This will be replaced by the soundEmiterComponent when I get around to it..
-// :)                //
-extern FMOD::System *gSoundSystem;         //
-extern FMOD_RESULT gFMODResult;            //
-extern float gVolume;                      //
-extern std::vector<FMOD::Sound *> gSounds; //
+////////////////////////////////////////////////////////////////
+// This will be replaced by the soundEmiterComponent when I get around to it..               
+extern FMOD::System *gSoundSystem;         
+extern FMOD_RESULT gFMODResult;            
+extern float gVolume;                      
+extern std::vector<FMOD::Sound *> gSounds; 
 extern std::vector<FMOD::Channel *>
-    gChannels; // Channels define the position of the sound		 //
+    gChannels; // Channels define the position of the sound		
 extern std::map<std::string, FMOD::Sound *>
     map_gSounds; // This will be inside the sound manager
+////////////////////////////////////////////////////////////////
 
 extern int gEntityNextID;
 extern int gNextMeshID;

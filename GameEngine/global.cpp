@@ -1,44 +1,6 @@
 #include "global.h"
 #include <iostream>
 
-/**
-File:
-Author(s):
-Name: Richard Mills-Laursen
-Role(s): Student
-E-mail: R_MillsLaursen@FanshaweOnline.ca 
-
-Revolut1on1ze@Hotmail.ca
-
-Name: Michael Feeney
-E-mail: MFeeney@FanshaweC.ca
-Role(s): Coordinator & Professor
-Course(s): INFO-6044-01 - Game Engine Framework/Patterns
-INFO-6028-01 - Graphics 1
-INFO-6019-01 - Physics & Simulation 1
-
-
-Name: Ben McIlmoyle
-E-Mail: B_McIlmoyle@FanshaweOnline.ca
-Role: Professor
-Course: INFO-6016-01 - Network Programming
-
-Name: James Lucas
-E-Mail: J_Lucas@FanshaweOnline.ca
-Role: Professor
-Course: INFO-6017-01 - Artificial Intelligence
-
-Name: Oscar Lara
-E-Mail: O_Lara@FanshaweOnline.ca
-Role: Professor
-Course: INFO-6046-01 - Media Fundamentals
-
-Status: Version 1.7 Alpha
-(c) Copyright(s): Fanshawe College
-
-Description:
-
-*/
 GLFWwindow *gWindow = 0;
 GLuint gSkyboxShaderID = 0;
 GLuint gSkyboxVMID = 0;
@@ -51,12 +13,10 @@ int gNextSpotLightID = 0;
 int gNextDirectionalLightID = 0;
 
 int gVoxelSize = 128;
-// int gCurrentMipmapLevel = 0;
 std::map<std::string, GLuint> gMap_TextureNameToMipmapLevel;
 std::vector<cLight *> gLights;
 bool g_bool_DebugShapes = false;
-GLuint cubeVAO = 0; // , cubeVBO = 0;
-// GLuint skyboxVAO, skyboxVBO = 0;
+GLuint cubeVAO = 0; 
 GLuint gUniformId_SamplerCube = 0;
 GLuint gUniformId_ToggleTextures = 0;
 FMOD::System *gSoundSystem;
@@ -75,8 +35,6 @@ bool gEffect_dspflange_Bypass = 1;
 int curChannel = 0;
 
 std::multimap<std::pair<int, int>, AABB *> g_multimap_VoxelGrid;
-// std::multimap<std::pair< int, int >, std::tuple< float, float, float > >
-// g_multimap_WorldTilesRGB;
 std::vector<std::vector<std::vector<glm::vec3>>> g_vec_WorldTiles;
 std::map<std::tuple<float, float, float>, cMeshEntry *> g_map_RGBToMesh;
 int gNextComponentID = 0;
@@ -101,10 +59,6 @@ float gVolume = 1.0f;
 float gPitch = 1.0f;
 float gBalance = 0.0f;
 
-glm::mat4 gModifyEntity =
-    glm::translate(glm::mat4(), glm::vec3(0.76f, 0.72f, -3.59f));
-glm::vec3 gVec_Translate = glm::vec3(0.0f);
-glm::vec3 gVec_Rotate = glm::vec3(0.0f);
 std::string gPartOfTitle = "";
 
 GLuint gProgramID = 0;
@@ -144,7 +98,6 @@ GLuint gUniformId_Texture0 = 0;
 GLuint gUniformId_Texture1 = 0;
 GLuint gUniformId_Texture2 = 0;
 GLuint gUniformId_Texture3 = 0;
-// FIBITMAP* gTexture0;
 
 float gDistanceX;
 float gDistanceZ;

@@ -63,7 +63,7 @@ Author(s):
   INFO-6046-01 - Media Fundamentals
   INFO-6025-01 - Configuration & Deployment
 
- Name: L. Gustafson
+ Name: Lucas Gustafson
  E-Mail: L_Gustafson@FanshaweOnline.ca
  Role: Professor
  Course: INFO-6024-01 - Game Component Integration
