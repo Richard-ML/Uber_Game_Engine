@@ -2,6 +2,7 @@
 #define _cCollisionObject_HG_
 #include "stdafx.h"
 #include "cCollisionShape.h"
+#include "cWorld.h"
 #include <string>
 
 #ifdef PhysicsEngine_EXPORTS
@@ -83,8 +84,7 @@ namespace PhysicsEngine {
 			glm::vec3 max;
 		};
 	private:
-		sAABB m_broadPhase; // Pointer to parent AABB.. 
-		glm::mat4 m_transform;
+		sAABB* m_pBroadPhase; // Pointer to parent AABB.. In a tree some nodes collision shape will be null.
 		int m_collisionFlag;
 		bool m_disableGravity;
 		cCollisionShape* m_collisionShape; // Shape used for narrow phase collision detection. Reuse shapes as much as possible!

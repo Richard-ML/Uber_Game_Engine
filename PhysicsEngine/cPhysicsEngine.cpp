@@ -37,6 +37,7 @@ namespace PhysicsEngine {
 	//rapidxml::xml_node<> *cEntityManager_Impl::spiderNode;
 	cPhysicsEngine * cPhysicsEngine::instance() {
 		if (!s_cPhysicsEngine)
+			//TODO: Run initialize() for shapes
 			s_cPhysicsEngine = new cPhysicsEngine();
 		return s_cPhysicsEngine;
 	}

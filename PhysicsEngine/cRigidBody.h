@@ -61,18 +61,25 @@ Status: Version 1.8 Alpha
 //===----------------------------------------------------------------------===//
 */
 namespace PhysicsEngine {
-
 	class cRigidBody : public cCollisionObject {
 	public:
+		cRigidBody(cCollisionObject* object);
+		~cRigidBody();
 		static PhysicsEngine_API glm::quat getOrientation();
+		glm::mat4 getTransform();
 		static PhysicsEngine_API void translate(glm::vec3 translation);
 		static PhysicsEngine_API void applyGravity(); // If gravity is enabled for parent object
 	private:
+		//friend cWorld;
 		int m_motionState;
 		glm::vec3 m_turnVelocity;
 		glm::vec3 m_velocity;
 		float m_mass;
 		float m_gravityAcceleration;
+
+		glm::vec3 m_position;
+		glm::vec3 m_acceleration;
+		glm::vec3 m_angle;
 
 	};
 }

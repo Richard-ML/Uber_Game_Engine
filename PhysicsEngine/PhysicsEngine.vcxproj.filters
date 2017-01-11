@@ -39,6 +39,9 @@
     <ClInclude Include="externals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cWorld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -51,6 +54,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cCollisionShape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cRigidBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cWorld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
