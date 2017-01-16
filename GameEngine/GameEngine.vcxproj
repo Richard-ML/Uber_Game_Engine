@@ -64,7 +64,7 @@
       <SDLCheck>true</SDLCheck>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)PhysicsEngine;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)PhysicsEngine;$(SolutionDir)GraphicsEngine;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -87,6 +87,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)PhysicsEngine;$(SolutionDir)GraphicsEngine;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -94,7 +95,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>glfw3.lib;GLEW_1130.lib;opengl32.lib;Assimp.lib;lua5.3.3-static.lib;FreeImage.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)PhysicsLibrary\$(Configuration);$(SolutionDir)Extern\glfw\lib\$(Configuration);$(SolutionDir)Extern\glew\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Extern\glfw\lib\$(Configuration);$(SolutionDir)Extern\glew\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <StackReserveSize>
       </StackReserveSize>
       <StackCommitSize>
@@ -163,6 +164,9 @@
     <Xml Include="GameAssets.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GraphicsEngine\GraphicsEngine.vcxproj">
+      <Project>{66c89d26-ca20-49cd-b8a9-1aca9a21027e}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\PhysicsEngine\PhysicsEngine.vcxproj">
       <Project>{ee6b6d96-c2ea-46c8-80b9-fe691c37ea16}</Project>
     </ProjectReference>

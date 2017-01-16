@@ -21,6 +21,7 @@
 
 #include <FreeImage.h>
 #include "cPhysicsEngine.h"  
+#include "cGraphicsEngine.h"  
 #define _CRT_SECURE_NO_WARNINGS
 //#define RAPIDXML_NO_EXCEPTIONS
 

@@ -1,7 +1,7 @@
 #include "global.h"
 #include <iostream>
 
-GLFWwindow *gWindow = 0;
+
 GLuint gSkyboxShaderID = 0;
 GLuint gSkyboxVMID = 0;
 cCamera *gCamera = 0;
@@ -134,3 +134,4 @@ cSoundManager *g_pSoundManager = cSoundManager::instance();
 cPathNodeGrid *g_pPathFindingManager = 0;
 
 PhysicsEngine::cPhysicsEngine *g_pPhysicsEngine = PhysicsEngine::cPhysicsEngine::instance();
+GraphicsEngine::cGraphicsEngine *g_pGraphicsEngine = GraphicsEngine::cGraphicsEngine::instance();

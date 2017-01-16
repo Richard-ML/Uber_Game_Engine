@@ -68,45 +68,49 @@ void drawScene();
 
 
 int main() {
-  // Initialize GLFW
-  if (!glfwInit()) {
-    fprintf(stderr, "Failed to initialize GLFW\n");
-    return -1;
-  }
-  gCamera = new cCamera();
 
-  glfwWindowHint(GLFW_SAMPLES, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
-                 GL_TRUE); // To make MacOS happy; should not be needed
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	gCamera = new cCamera();
+	// Initialize GLFW
+	if (!glfwInit()) {
+		fprintf(stderr, "Failed to initialize GLFW\n");
+		system("pause");
+	}
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
+		GL_TRUE); // To make MacOS happy; should not be needed
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  GLFWmonitor *monitor = glfwGetPrimaryMonitor();
-  const GLFWvidmode *mode = glfwGetVideoMode(monitor);
-  glfwWindowHint(GLFW_RED_BITS, mode->redBits);
-  glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
-  glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
-  glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-  // Open a window and create its OpenGL context
-  gWindow =
-      glfwCreateWindow(mode->width, mode->height, "Final Project!", NULL, NULL);
-  if (gWindow == NULL) {
-    fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, "
-                    "they are not 3.3 compatible.\n");
-    glfwTerminate();
-    return -1;
-  }
-  glfwMakeContextCurrent(gWindow);
+	GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+	glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+	glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+	// Open a window and create its OpenGL context
+	gWindow =
+		glfwCreateWindow(mode->width, mode->height, "Final Project!", NULL, NULL);
+	if (gWindow == NULL) {
+		fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, "
+			"they are not 3.3 compatible.\n");
+		glfwTerminate();
+		system("pause");
+	}
+	glfwMakeContextCurrent(gWindow);
 
-  // Initialize GLEW
-  glewExperimental = GL_TRUE;
-  if (glewInit() != GLEW_OK) {
-    fprintf(stderr, "Failed to initialize GLEW\n");
-    glfwTerminate();
-    return -1;
-  }
+	// Initialize GLEW
+	glewExperimental = GL_TRUE;
+	if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Failed to initialize GLEW\n");
+		glfwTerminate();
+		system("pause");
+	}
 
+
+  //Create graphics window
+
+ 
   // Register Callback Functions
   glfwSetWindowSizeCallback(gWindow, callback_windowResize);
   glfwSetWindowCloseCallback(gWindow, callback_WindowClose);
