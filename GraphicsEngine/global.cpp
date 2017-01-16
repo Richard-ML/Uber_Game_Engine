@@ -1,3 +1,3 @@
 #include "global.h"
 #include "stdafx.h"
-GLFWwindow * gWindow = 0;
+//GLFWwindow * gWindow = 0;

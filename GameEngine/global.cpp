@@ -1,7 +1,7 @@
 #include "global.h"
 #include <iostream>
 
-
+GLFWwindow * gWindow = 0;
 GLuint gSkyboxShaderID = 0;
 GLuint gSkyboxVMID = 0;
 cCamera *gCamera = 0;
