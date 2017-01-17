@@ -1,16 +1,13 @@
-#ifndef _cCollisionObject_HG_
-#define _cCollisionObject_HG_
+#ifndef _cMesh_HG_
+#define _cMesh_HG_
+#include "externals.h"
+#include "cMeshManager.h"
 #include "stdafx.h"
-#include "cCollisionShape.h"
-#include "cWorld.h"
-#include <string>
-
-#ifdef PhysicsEngine_EXPORTS
-#define PhysicsEngine_API __declspec(dllexport)
+#ifdef GraphicsEngine_EXPORTS
+#define GraphicsEngine_API __declspec(dllexport)
 #else
-#define PhysicsEngine_API __declspec(dllimport)
-#endif // PhysicsEngine_EXPORTS
-
+#define GraphicsEngine_API __declspec(dllimport)
+#endif // GraphicsEngine_EXPORTS
 /**
 *       __  __ __                   ______                           ______               _
 *      / / / // /_   ___   _____   / ____/____ _ ____ ___   ___     / ____/____   ____ _ (_)____   ___
@@ -18,8 +15,8 @@
 *    / /_/ // /_/ //  __// /     / /_/ // /_/ // / / / / //  __/  / /___ / / / // /_/ // // / / //  __/
 *    \____//_.___/ \___//_/      \____/ \__,_//_/ /_/ /_/ \___/  /_____//_/ /_/ \__, //_//_/ /_/ \___/
 *                                                                              /____/
-//===-- cCollisionObject.h - Collision Object Information ---------*- C++ -*-===//
-Description: Maintains all information that is needed for a collision detection: Object, Transform and AABB proxy. Added to the cCollisionWorld.
+//===-- cMesh.h - Mesh Information ------------------------------*- C++ -*-===//
+Description: Contains mesh description
 //===----------------------------------------------------------------------===//
 Author(s):
 Name: Richard Mills-Laursen
@@ -65,31 +62,24 @@ Status: Version 1.8 Alpha
 (c) Copyright(s): Fanshawe College
 //===----------------------------------------------------------------------===//
 */
-namespace PhysicsEngine {
-	class cCollisionObject {
-	public:
-		struct sAABB {
-		public:
-			sAABB(glm::vec3 min, glm::vec3 max) {
-				this->halfWidths =
-					glm::abs(max - min) * glm::vec3(0.5f); // Extent computation
-				this->center = max - halfWidths; // Center position of AABB
-				this->min = min;
-				this->max = max;
-			};
-			sAABB() {};
-			glm::vec3 center;
-			glm::vec3 halfWidths;
-			glm::vec3 min;
-			glm::vec3 max;
-		};
-		//cCollisionObject(cCollisionObject* object) { this = *object; }
-	private:
-		sAABB* m_pBroadPhase; // Pointer to parent AABB.. In a tree some nodes collision shape will be null.
-		int m_collisionFlag;
-		bool m_disableGravity;
-		cCollisionShape* m_collisionShape; // Shape used for narrow phase collision detection. Reuse shapes as much as possible!
-
-	};
-}
+class GraphicsEngine_API cMesh {
+public:
+	cMeshEntry *m_pMeshEntry = NULL;
+	glm::vec4 *m_pColor = NULL;
+	float alpha;
+	bool isWireframe = false;
+	bool isEnabled = true;
+	glm::mat4 m_pBodyOffset; // Used to enable object to have multiple child
+							 // meshes at different positions.
+	glm::mat4 m_curTransform;
+	glm::mat4 getOrientation() {
+		glm::mat4 tempMatrix = m_pBodyOffset;
+		// Set position of matrix to the origin
+		tempMatrix[3].x = 0.0f;
+		tempMatrix[3].y = 0.0f;
+		tempMatrix[3].z = 0.0f;
+		return glm::mat4_cast(glm::conjugate(glm::quat_cast(tempMatrix)));
+	}
+	glm::vec3 scale = glm::vec3(1.0f);
+};
 #endif

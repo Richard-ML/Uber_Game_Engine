@@ -1,16 +1,12 @@
-#ifndef _cCollisionObject_HG_
-#define _cCollisionObject_HG_
+#ifndef _cShaderManager_HG_
+#define _cShaderManager_HG_
+#include "externals.h"
 #include "stdafx.h"
-#include "cCollisionShape.h"
-#include "cWorld.h"
-#include <string>
-
-#ifdef PhysicsEngine_EXPORTS
-#define PhysicsEngine_API __declspec(dllexport)
+#ifdef GraphicsEngine_EXPORTS
+#define GraphicsEngine_API __declspec(dllexport)
 #else
-#define PhysicsEngine_API __declspec(dllimport)
-#endif // PhysicsEngine_EXPORTS
-
+#define GraphicsEngine_API __declspec(dllimport)
+#endif // GraphicsEngine_EXPORTS
 /**
 *       __  __ __                   ______                           ______               _
 *      / / / // /_   ___   _____   / ____/____ _ ____ ___   ___     / ____/____   ____ _ (_)____   ___
@@ -18,8 +14,8 @@
 *    / /_/ // /_/ //  __// /     / /_/ // /_/ // / / / / //  __/  / /___ / / / // /_/ // // / / //  __/
 *    \____//_.___/ \___//_/      \____/ \__,_//_/ /_/ /_/ \___/  /_____//_/ /_/ \__, //_//_/ /_/ \___/
 *                                                                              /____/
-//===-- cCollisionObject.h - Collision Object Information ---------*- C++ -*-===//
-Description: Maintains all information that is needed for a collision detection: Object, Transform and AABB proxy. Added to the cCollisionWorld.
+//===-- cShaderManager.h - Shader Manager -----------------------*- C++ -*-===//
+Description: Manages shaders.
 //===----------------------------------------------------------------------===//
 Author(s):
 Name: Richard Mills-Laursen
@@ -65,31 +61,30 @@ Status: Version 1.8 Alpha
 (c) Copyright(s): Fanshawe College
 //===----------------------------------------------------------------------===//
 */
-namespace PhysicsEngine {
-	class cCollisionObject {
-	public:
-		struct sAABB {
-		public:
-			sAABB(glm::vec3 min, glm::vec3 max) {
-				this->halfWidths =
-					glm::abs(max - min) * glm::vec3(0.5f); // Extent computation
-				this->center = max - halfWidths; // Center position of AABB
-				this->min = min;
-				this->max = max;
-			};
-			sAABB() {};
-			glm::vec3 center;
-			glm::vec3 halfWidths;
-			glm::vec3 min;
-			glm::vec3 max;
-		};
-		//cCollisionObject(cCollisionObject* object) { this = *object; }
-	private:
-		sAABB* m_pBroadPhase; // Pointer to parent AABB.. In a tree some nodes collision shape will be null.
-		int m_collisionFlag;
-		bool m_disableGravity;
-		cCollisionShape* m_collisionShape; // Shape used for narrow phase collision detection. Reuse shapes as much as possible!
+// Loads textures into OpenGL texture units
+// Maps texture with textureID look up
 
-	};
-}
+class GraphicsEngine_API cShaderManager {
+	static cShaderManager *s_cShaderManager;
+
+public:
+	
+	static cShaderManager *instance();
+	GLuint loadShaders(const char *vertex_file_path,
+		const char *fragment_file_path);
+	GLuint loadShaders(const char *vertex_file_path,
+		const char *fragment_file_path,
+		const char *geometry_file_path);
+
+private:
+	cShaderManager() {
+	} // Constructor is private therefore a new instance can not be made
+	  // externally. Only available to members or friends of this class..
+	~cShaderManager() {}
+	// Not defined to prevent copying of the only instance of the class.
+	cShaderManager(const cShaderManager &); // Disallow copy constructor
+	cShaderManager &operator=(const cShaderManager &shaderManager) {
+	} // Disallow assignment operator
+};
+
 #endif

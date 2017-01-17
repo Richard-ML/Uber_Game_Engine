@@ -1,16 +1,12 @@
-#ifndef _cCollisionObject_HG_
-#define _cCollisionObject_HG_
+#ifndef _cCamera_HG_
+#define _cCamera_HG_
+#include "externals.h"
 #include "stdafx.h"
-#include "cCollisionShape.h"
-#include "cWorld.h"
-#include <string>
-
-#ifdef PhysicsEngine_EXPORTS
-#define PhysicsEngine_API __declspec(dllexport)
+#ifdef GraphicsEngine_EXPORTS
+#define GraphicsEngine_API __declspec(dllexport)
 #else
-#define PhysicsEngine_API __declspec(dllimport)
-#endif // PhysicsEngine_EXPORTS
-
+#define GraphicsEngine_API __declspec(dllimport)
+#endif // GraphicsEngine_EXPORTS
 /**
 *       __  __ __                   ______                           ______               _
 *      / / / // /_   ___   _____   / ____/____ _ ____ ___   ___     / ____/____   ____ _ (_)____   ___
@@ -18,8 +14,8 @@
 *    / /_/ // /_/ //  __// /     / /_/ // /_/ // / / / / //  __/  / /___ / / / // /_/ // // / / //  __/
 *    \____//_.___/ \___//_/      \____/ \__,_//_/ /_/ /_/ \___/  /_____//_/ /_/ \__, //_//_/ /_/ \___/
 *                                                                              /____/
-//===-- cCollisionObject.h - Collision Object Information ---------*- C++ -*-===//
-Description: Maintains all information that is needed for a collision detection: Object, Transform and AABB proxy. Added to the cCollisionWorld.
+//===-- cCamera.h - Camera Information --------------------------*- C++ -*-===//
+Description: Contains viewpoint description
 //===----------------------------------------------------------------------===//
 Author(s):
 Name: Richard Mills-Laursen
@@ -65,31 +61,31 @@ Status: Version 1.8 Alpha
 (c) Copyright(s): Fanshawe College
 //===----------------------------------------------------------------------===//
 */
-namespace PhysicsEngine {
-	class cCollisionObject {
-	public:
-		struct sAABB {
-		public:
-			sAABB(glm::vec3 min, glm::vec3 max) {
-				this->halfWidths =
-					glm::abs(max - min) * glm::vec3(0.5f); // Extent computation
-				this->center = max - halfWidths; // Center position of AABB
-				this->min = min;
-				this->max = max;
-			};
-			sAABB() {};
-			glm::vec3 center;
-			glm::vec3 halfWidths;
-			glm::vec3 min;
-			glm::vec3 max;
-		};
-		//cCollisionObject(cCollisionObject* object) { this = *object; }
-	private:
-		sAABB* m_pBroadPhase; // Pointer to parent AABB.. In a tree some nodes collision shape will be null.
-		int m_collisionFlag;
-		bool m_disableGravity;
-		cCollisionShape* m_collisionShape; // Shape used for narrow phase collision detection. Reuse shapes as much as possible!
+class GraphicsEngine_API cCamera {
+public:
+	cCamera();
+	~cCamera();
 
-	};
-}
+	void getProjectionMatrix(glm::mat4 &projOut);
+	void getViewMatrix(glm::mat4 &viewOut);
+	void getEyePosition(glm::vec4 &eyeOut);
+	glm::vec4 getEyePosition();
+	void windowResize(int width, int height);
+	virtual void loadDataFromXML(rapidxml::xml_node<> *entityNode);
+	void update(float dt);
+	void setTargetTransform(glm::mat4 &targetTransform);
+	void loadFromXML(rapidxml::xml_node<> *cameraNode);
+	void updateView();
+
+	int mWidth;
+	int mHeight;
+	glm::mat4 mTargetTranform;
+
+	glm::vec3 mOffset;
+	float mZoomSpeed;
+	float mDistance;
+	float mMaxDistance;
+	float mMinDistance;
+	glm::mat4 mViewMatrix;
+};
 #endif

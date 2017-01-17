@@ -13,5 +13,9 @@
 #include <GLFW\glfw3.h>
 
 #include <FreeImage.h>
+#include <rapidxml.hpp>
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+#include <assimp/scene.h>
 
 #endif

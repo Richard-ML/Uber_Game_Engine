@@ -80,9 +80,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\FreeImage;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\FreeImage;$(SolutionDir)Extern\rapidxml;$(LibraryPath)</LibraryPath>
     <ExecutablePath>$(VC_ExecutablePath_x86);$(WindowsSDK_ExecutablePath);$(VS_ExecutablePath);$(MSBuild_ExecutablePath);$(SystemRoot)\SysWow64;$(FxCopDir);$(PATH);</ExecutablePath>
-    <IncludePath>$(SolutionDir)Extern\GLM;$(SolutionDir)Extern\glfw\include;$(SolutionDir)Extern\glew\include;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\FreeImage;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Extern\GLM;$(SolutionDir)Extern\glfw\include;$(SolutionDir)Extern\glew\include;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\FreeImage;$(SolutionDir)Extern\rapidxml\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -157,14 +157,29 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cCamera.h" />
     <ClInclude Include="cGraphicsEngine.h" />
+    <ClInclude Include="cLight.h" />
+    <ClInclude Include="cMesh.h" />
+    <ClInclude Include="cMeshManager.h" />
+    <ClInclude Include="cShaderManager.h" />
+    <ClInclude Include="cTexture.h" />
+    <ClInclude Include="cTextureManager.h" />
+    <ClInclude Include="cWorld.h" />
+    <ClInclude Include="cXML_Utils.h" />
     <ClInclude Include="externals.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cGraphicsEngine.cpp" />
+    <ClCompile Include="cMeshManager.cpp" />
+    <ClCompile Include="cShaderManager.cpp" />
+    <ClCompile Include="cTextureManager.cpp" />
+    <ClCompile Include="cWorld.cpp" />
+    <ClCompile Include="cXML_Utils.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

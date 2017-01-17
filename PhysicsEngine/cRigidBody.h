@@ -1,6 +1,8 @@
 #ifndef _cRigidBody_HG_
 #define _cRigidBody_HG_
 #include "cCollisionObject.h"
+#include "iRigidBody.h"
+#include "stdafx.h"
 #ifdef PhysicsEngine_EXPORTS
 #define PhysicsEngine_API __declspec(dllexport)
 #else
@@ -61,25 +63,35 @@ Status: Version 1.8 Alpha
 //===----------------------------------------------------------------------===//
 */
 namespace PhysicsEngine {
-	class cRigidBody : public cCollisionObject {
+	struct sRigidBody {
+		int motionState;
+		glm::vec3 turnVelocity;
+		glm::vec3 velocity;
+		float mass;
+		float gravityAcceleration;
+		glm::vec3 position;
+		glm::vec3 acceleration;
+		glm::vec3 angle;
+	};
+	class cRigidBody : public iRigidBody {//public cCollisionObject {
 	public:
-		cRigidBody(cCollisionObject* object);
+		//cRigidBody(cCollisionObject* object);
+		cRigidBody(const sRigidBody& rigidBody);
+		cRigidBody(){}
 		~cRigidBody();
-		static PhysicsEngine_API glm::quat getOrientation();
-		glm::mat4 getTransform();
-		static PhysicsEngine_API void translate(glm::vec3 translation);
-		static PhysicsEngine_API void applyGravity(); // If gravity is enabled for parent object
+		//virtual void getOrientation(glm::mat3& orientation);
+		//virtual void getTransform(glm::mat4& transform);
+		virtual PhysicsEngine_API void getPosition(glm::vec3& position);
+		virtual PhysicsEngine_API void setPosition(const glm::vec3& position);
+		virtual PhysicsEngine_API void getVelocity(glm::vec3& velocity);
+		virtual PhysicsEngine_API void setVelocity(const glm::vec3& velocity);
+		virtual PhysicsEngine_API void getMass(float& mass);
+		virtual PhysicsEngine_API void setMass(const float& mass);
+		virtual PhysicsEngine_API void getAcceleration(glm::vec3& acceleration);
+		virtual PhysicsEngine_API void setAcceleration(const glm::vec3& acceleration);
+		//virtual void translate(glm::vec3& translation);
 	private:
-		//friend cWorld;
-		int m_motionState;
-		glm::vec3 m_turnVelocity;
-		glm::vec3 m_velocity;
-		float m_mass;
-		float m_gravityAcceleration;
-
-		glm::vec3 m_position;
-		glm::vec3 m_acceleration;
-		glm::vec3 m_angle;
+		sRigidBody m_rigidBody;
 
 	};
 }

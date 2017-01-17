@@ -102,7 +102,6 @@
     <ClInclude Include="externals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cVec.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleShader.vert">

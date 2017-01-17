@@ -129,7 +129,6 @@
     <ClCompile Include="EmitterComponents.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cVec.h" />
     <ClInclude Include="cWorld.h" />
     <ClInclude Include="cCamera.h" />
     <ClInclude Include="cEntityManager.h" />
@@ -164,9 +163,6 @@
     <Xml Include="GameAssets.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GraphicsEngine\GraphicsEngine.vcxproj">
-      <Project>{66c89d26-ca20-49cd-b8a9-1aca9a21027e}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\PhysicsEngine\PhysicsEngine.vcxproj">
       <Project>{ee6b6d96-c2ea-46c8-80b9-fe691c37ea16}</Project>
     </ProjectReference>

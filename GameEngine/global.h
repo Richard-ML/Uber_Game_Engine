@@ -179,7 +179,7 @@ extern cEntityManager *g_pEntityManager;
 extern cSoundManager *g_pSoundManager;
 extern cPathNodeGrid *g_pPathFindingManager;
 extern PhysicsEngine::cPhysicsEngine *g_pPhysicsEngine;
-extern GraphicsEngine::cGraphicsEngine *g_pGraphicsEngine;
+//extern GraphicsEngine::cGraphicsEngine *g_pGraphicsEngine;
 /* Callback Functions */
 void callback_windowResize(GLFWwindow *window, int width, int height);
 void callback_WindowClose(GLFWwindow *window);

@@ -13,9 +13,39 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{30b92f5f-adfe-42bb-89cf-2dd4e6af7e63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model\Header Files">
+      <UniqueIdentifier>{79dbc401-f0ad-4ff2-88a8-bfc58f36ab0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model\Source Files">
+      <UniqueIdentifier>{90e72c5a-2c12-40ba-b395-0669393c4219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View">
+      <UniqueIdentifier>{1efd8bc9-6141-4707-ac35-9637558df729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View\Header Files">
+      <UniqueIdentifier>{61f56d6c-a317-4ffa-abec-ed0e68f6ec59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View\Source Files">
+      <UniqueIdentifier>{cf4b5679-3fb5-4561-8198-e6034f016290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controller">
+      <UniqueIdentifier>{2bd882e6-3d51-42d6-a765-41d5cc29bf5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controller\Header Files">
+      <UniqueIdentifier>{d5ca430a-c6b2-484f-a550-b8ea7f4bd20f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controller\Source Files">
+      <UniqueIdentifier>{61320fc2-a65d-4dc0-9c9b-e73d69c640a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="Readme_Controllers.txt">
+      <Filter>Controller</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -24,23 +54,29 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cCollisionObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cCollisionShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cPhysicsEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cRigidBody.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="externals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cRigidBody.h">
+      <Filter>Model\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cCollisionObject.h">
+      <Filter>Model\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cCollisionShape.h">
+      <Filter>Model\Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="cWorld.h">
-      <Filter>Header Files</Filter>
+      <Filter>Model\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iRigidBody.h">
+      <Filter>View\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iWorld.h">
+      <Filter>View\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -57,10 +93,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cRigidBody.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Model\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cWorld.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Model\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

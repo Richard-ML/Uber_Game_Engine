@@ -2,6 +2,7 @@
 #define _cPhysicsEngine_HG_
 #include "stdafx.h"
 #include "cCollisionShape.h"
+#include "cRigidBody.h"
 #include <string>
 #ifdef PhysicsEngine_EXPORTS
 #define PhysicsEngine_API __declspec(dllexport)
@@ -24,8 +25,9 @@ namespace PhysicsEngine {
 	public:
 		//int loadGameFromXML(std::string filename);
 		static PhysicsEngine_API  cPhysicsEngine *instance();
-
-
+		static PhysicsEngine_API cRigidBody* createRigidBody(const sRigidBody& rigidBody);
+		static PhysicsEngine_API cRigidBody* createRigidBody();
+		cWorld world;
 	private:
 		cPhysicsEngine() {
 		} // Constructor is private therefore a new instance can not be made

@@ -134,4 +134,4 @@ cSoundManager *g_pSoundManager = cSoundManager::instance();
 cPathNodeGrid *g_pPathFindingManager = 0;
 
 PhysicsEngine::cPhysicsEngine *g_pPhysicsEngine = PhysicsEngine::cPhysicsEngine::instance();
-GraphicsEngine::cGraphicsEngine *g_pGraphicsEngine = GraphicsEngine::cGraphicsEngine::instance();
+//GraphicsEngine::cGraphicsEngine *g_pGraphicsEngine = GraphicsEngine::cGraphicsEngine::instance();

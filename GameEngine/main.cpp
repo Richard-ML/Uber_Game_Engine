@@ -68,6 +68,17 @@ void drawScene();
 
 
 int main() {
+	
+	PhysicsEngine::cRigidBody* rb;
+    rb =  g_pPhysicsEngine->createRigidBody();
+	rb->setMass(13.3f);
+	float mass;
+	rb->getMass(mass);
+	g_pPhysicsEngine->world.addRigidBody(rb);
+
+	g_pPhysicsEngine->world.step(0.1f);
+	rb->getMass(mass); // Mass has been changed within the world.step method :)
+
 
 	gCamera = new cCamera();
 	// Initialize GLFW
@@ -106,10 +117,6 @@ int main() {
 		glfwTerminate();
 		system("pause");
 	}
-
-
-  //Create graphics window
-
  
   // Register Callback Functions
   glfwSetWindowSizeCallback(gWindow, callback_windowResize);

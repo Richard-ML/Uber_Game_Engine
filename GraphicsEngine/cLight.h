@@ -1,16 +1,14 @@
-#ifndef _cCollisionObject_HG_
-#define _cCollisionObject_HG_
+#ifndef _cLight_HG_
+#define _cLight_HG_
+#include "externals.h"
+#include "cMesh.h"
+#include <vector>
 #include "stdafx.h"
-#include "cCollisionShape.h"
-#include "cWorld.h"
-#include <string>
-
-#ifdef PhysicsEngine_EXPORTS
-#define PhysicsEngine_API __declspec(dllexport)
+#ifdef GraphicsEngine_EXPORTS
+#define GraphicsEngine_API __declspec(dllexport)
 #else
-#define PhysicsEngine_API __declspec(dllimport)
-#endif // PhysicsEngine_EXPORTS
-
+#define GraphicsEngine_API __declspec(dllimport)
+#endif // GraphicsEngine_EXPORTS
 /**
 *       __  __ __                   ______                           ______               _
 *      / / / // /_   ___   _____   / ____/____ _ ____ ___   ___     / ____/____   ____ _ (_)____   ___
@@ -18,8 +16,8 @@
 *    / /_/ // /_/ //  __// /     / /_/ // /_/ // / / / / //  __/  / /___ / / / // /_/ // // / / //  __/
 *    \____//_.___/ \___//_/      \____/ \__,_//_/ /_/ /_/ \___/  /_____//_/ /_/ \__, //_//_/ /_/ \___/
 *                                                                              /____/
-//===-- cCollisionObject.h - Collision Object Information ---------*- C++ -*-===//
-Description: Maintains all information that is needed for a collision detection: Object, Transform and AABB proxy. Added to the cCollisionWorld.
+//===-- cLight.h - Light Information ----------------------------*- C++ -*-===//
+Description: Contains light description
 //===----------------------------------------------------------------------===//
 Author(s):
 Name: Richard Mills-Laursen
@@ -65,31 +63,38 @@ Status: Version 1.8 Alpha
 (c) Copyright(s): Fanshawe College
 //===----------------------------------------------------------------------===//
 */
-namespace PhysicsEngine {
-	class cCollisionObject {
-	public:
-		struct sAABB {
-		public:
-			sAABB(glm::vec3 min, glm::vec3 max) {
-				this->halfWidths =
-					glm::abs(max - min) * glm::vec3(0.5f); // Extent computation
-				this->center = max - halfWidths; // Center position of AABB
-				this->min = min;
-				this->max = max;
-			};
-			sAABB() {};
-			glm::vec3 center;
-			glm::vec3 halfWidths;
-			glm::vec3 min;
-			glm::vec3 max;
-		};
-		//cCollisionObject(cCollisionObject* object) { this = *object; }
-	private:
-		sAABB* m_pBroadPhase; // Pointer to parent AABB.. In a tree some nodes collision shape will be null.
-		int m_collisionFlag;
-		bool m_disableGravity;
-		cCollisionShape* m_collisionShape; // Shape used for narrow phase collision detection. Reuse shapes as much as possible!
 
-	};
-}
+class GraphicsEngine_API cLight {
+public:
+	glm::mat4 matrix;
+	glm::vec3 offset;
+	glm::vec3 direction;
+	glm::mat4 directionOffset;
+	int typeFlag;
+	bool isEnabled;
+	float coneAngle;
+	glm::vec3 ambient;
+	glm::vec3 diffuse;
+	glm::vec3 specular;
+	GLfloat specularPower;
+	float attenConst;  // = 0.0f;
+	float attenLinear; // = 0.1f;
+	float attenQuad;   // = 0.01f;
+	unsigned int lightID;
+	GLuint gUniformId_TypeFlag;
+	GLuint gUniformId_IsEnabled;
+	GLuint gUniformId_Position;
+	GLuint gUniformId_Direction;
+	GLuint gUniformId_ConeAngle;
+	GLuint gUniformId_Ambient;
+	GLuint gUniformId_Diffuse;
+	GLuint gUniformId_Specular;
+	GLuint gUniformId_SpecularPower;
+	GLuint gUniformId_AttenuationConst;
+	GLuint gUniformId_AttenuationLinear;
+	GLuint gUniformId_AttenuationQuad;
+	GLuint gUniformId_Color;
+	// Debug spheres
+	std::vector<cMesh *> vec_DebugShapes;
+};
 #endif
