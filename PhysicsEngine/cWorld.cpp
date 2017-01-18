@@ -4,7 +4,10 @@
 
 void PhysicsEngine::cWorld::step(float deltaTime)
 {
-	m_rigidBodies.at(0)->setMass(112.2f); // TEST
+	for (std::vector<cRigidBody*>::iterator iter = m_rigidBodies.begin(); iter != m_rigidBodies.end(); iter++)
+	{
+		// TODO: Resolve potential collisions 
+	}
 }
 
 void PhysicsEngine::cWorld::addRigidBody(cRigidBody * rigidBody)

@@ -129,6 +129,7 @@
     <ClCompile Include="EmitterComponents.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cVector.h" />
     <ClInclude Include="cWorld.h" />
     <ClInclude Include="cCamera.h" />
     <ClInclude Include="cEntityManager.h" />

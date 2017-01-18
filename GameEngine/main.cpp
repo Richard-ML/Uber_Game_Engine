@@ -69,6 +69,7 @@ void drawScene();
 
 int main() {
 	
+	// ____PHYSICS ENGINE USEAGE EXAMPLE TEMP_____
 	PhysicsEngine::cRigidBody* rb;
     rb =  g_pPhysicsEngine->createRigidBody();
 	rb->setMass(13.3f);
@@ -78,7 +79,7 @@ int main() {
 
 	g_pPhysicsEngine->world.step(0.1f);
 	rb->getMass(mass); // Mass has been changed within the world.step method :)
-
+	//_____________________________________________
 
 	gCamera = new cCamera();
 	// Initialize GLFW

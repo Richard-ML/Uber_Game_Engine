@@ -102,6 +102,9 @@
     <ClInclude Include="externals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cVector.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleShader.vert">
