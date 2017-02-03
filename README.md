@@ -1,3 +1,27 @@
+
+PHYSICS: 
+WASD to move 
+ARROWS for camera controls
+NUMPAD 1-4 for TOGGLES
+
+Press numpad 4 to render debug shapes
+Press numpad 3 to enable color collision status indicator
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Uber Game Engine
 ###OpenGL 3D Game-Engine
 More information available at the <a href="https://github.com/Richard-ML/Uber_Game_Engine/wiki">Wiki</a>

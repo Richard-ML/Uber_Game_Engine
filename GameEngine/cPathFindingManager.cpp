@@ -1,5 +1,6 @@
 #include "cPathFindingManager.h"
 #include "global.h"
+#include <iostream>
 
 cPathNode::cPathNode() : travelCostFactor(1.f) {}
 

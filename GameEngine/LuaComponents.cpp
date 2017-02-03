@@ -17,6 +17,17 @@ extern "C" {
 #include <lauxlib.h>
 #include <lualib.h>
 
+
+	// TODO: Lua script should only call ONE c/c++ function! UPDATEREQUIRED.. 
+	// BaseController.lua acts as a script interface.. It creates a metatable.. Of routine information.. 
+
+	// Each row is a stage.. each cell is a routine & related parameters. C++ simply interprets said metatable into some type of
+	// list.. Then dispatches corresponding functions with said arguments... WAAAAY FAAAAAAAAASSSSSSTER then letting lua bottle-neck
+	// the shit out of everything with its MANY c++ function calls.. The two languages do not work well together that way when time is
+	// crucial
+
+	// The parameters will a list of function queue elements containing a string which maps to a C++ function and its list of arguments. 
+
 	// http://rubenlaguna.com/wp/2012/12/09/accessing-cpp-objects-from-lua/
 	// Still looking for optimal solution for exchanging lists from LUA to C. 
 	// The parameters will a list of function queue elements containing a string which maps to a C++ function and its list of arguments. 
@@ -35,7 +46,7 @@ struct locationTrigger {
   glm::vec3 position;
   float radius;
   // TODO: Trigger callback -- For now I am just displaying that the trigger was
-  // triggered. :P
+  // triggered. :P These triggers should be ghost objects inside of the physics engine!!
 };
 static std::vector<locationTrigger> locationTriggers;
 
@@ -445,7 +456,7 @@ int LuaComponent::l_Hunt(lua_State *L) {
           ->getTransform();
   int targetComponentID = (int)lua_tonumber(L, 2);
   glm::mat4 targetTransform =
-      playerTrans; // cComponentManager::map_ComponentIDToComponent[targetComponentID];
+      cComponentManager::map_ComponentIDToComponent[targetComponentID]->getTransform();
 
   bool inSight = glm::distance(currentTransform[3], targetTransform[3]) < 600;
 

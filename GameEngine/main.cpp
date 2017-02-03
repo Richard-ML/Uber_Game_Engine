@@ -3,9 +3,9 @@
 #include <iostream>
 #include "externals.h"
 #include "global.h"
-#include <Windows.h>
+#include <stdio.h>
+
 #include <algorithm>
-#include <ctime>
 #include <sstream> // "String Stream", used for setting the windows title
 /**
 *       __  __ __                   ______                           ______               _
@@ -68,20 +68,6 @@ void drawScene();
 
 
 int main() {
-	
-	// ____PHYSICS ENGINE USEAGE EXAMPLE TEMP_____
-	PhysicsEngine::cRigidBody* rb;
-    rb =  g_pPhysicsEngine->createRigidBody();
-	rb->setMass(13.3f);
-	float mass;
-	rb->getMass(mass);
-	g_pPhysicsEngine->world.addRigidBody(rb);
-
-	g_pPhysicsEngine->world.step(0.1f);
-	rb->getMass(mass); // Mass has been changed within the world.step method :)
-	//_____________________________________________
-
-	gCamera = new cCamera();
 	// Initialize GLFW
 	if (!glfwInit()) {
 		fprintf(stderr, "Failed to initialize GLFW\n");
@@ -100,6 +86,9 @@ int main() {
 	glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
 	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
 	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+
+	glEnable(GL_MULTISAMPLE);
 	// Open a window and create its OpenGL context
 	gWindow =
 		glfwCreateWindow(mode->width, mode->height, "Final Project!", NULL, NULL);
@@ -152,24 +141,22 @@ int main() {
   // Load game data from XML
   g_pEntityManager->loadGameFromXML(
       "GameAssets.xml"); // Load the data stored in the XML file
-  srand((unsigned)time(NULL));
+  ::srand(static_cast<unsigned int>(::time(NULL)));
 
   createTheBuffers();
 
   // Initialize AStar Path finding Information
   std::cout << "Processing Path-finding data.." << std::endl;
-  g_pPathFindingManager =
-      new cPathNodeGrid(128.f, 512, 512, glm::vec3(0.0f),
-                        glm::vec3(g_pAreaInfo->maxPos.x, 0.0f, 0.0f),
-                        glm::vec3(0.0f, 0.0f, g_pAreaInfo->maxPos.z));
 
-  g_pPathFindingManager;
+
 
   static float lastTime = (float)glfwGetTime();
   glGenVertexArrays(1, &cubeVAO);
   glBindVertexArray(cubeVAO);
+
+
   do {
-    g_pSoundManager->update();
+	  float currentTime = ((float)glfwGetTime() - lastTime) * 1000;
 
     std::stringstream tempText;
     tempText << "Lights enabled: " << g_bool_ToggleLights
@@ -222,6 +209,7 @@ int main() {
     /////////////////////////////////////////////////////////
     if (g_bool_ToggleSkybox) {
       ///////////////////////
+		// TODO: Day/Night? :P
       static const GLfloat gray[] = {0.2f, 0.2f, 0.2f, 1.0f};
       static const GLfloat ones[] = {1.0f};
       glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
@@ -230,7 +218,7 @@ int main() {
                                        // you can pass here
                     GL_FILL);
       glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
-      float currentTime = (float)glfwGetTime() - lastTime;
+    
       float t = currentTime * 0.1f; // TODO: DeltaTime
       glm::mat4 viewMatrix;
       gCamera->getViewMatrix(viewMatrix);
@@ -243,10 +231,7 @@ int main() {
                                viewMatrix[2][2], 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 
       camViewInverse = glm::inverse(camViewInverse);
-      // gCamera->getViewMatrix(viewMatrix); //glm::lookAt(glm::vec3(15.0f *
-      // sinf(t), 0.0f, 15.0f * cosf(t)),
-      // glm::vec3(0.0f, 0.0f, 0.0f),
-      // glm::vec3(0.0f, 1.0f, 0.0f));
+
       glClearBufferfv(GL_COLOR, 0, gray);
       glClearBufferfv(GL_DEPTH, 0, ones);
       glUseProgram(gSkyboxShaderID);
@@ -261,12 +246,8 @@ int main() {
       glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
       glEnable(GL_DEPTH_TEST);
-      ///////////////////////
     }
 
-    // glUniform1i(glGetUniformLocation(gProgramID, "Texture0"),
-    // gUniformId_Texture0);
-    // glActiveTexture(glGetUniformLocation(gProgramID, "Texture0"));
     /////////////////////////////////////////////////////////
     //                  Render The Scene                  //
     ////////////////////////////////////////////////////////
@@ -274,8 +255,6 @@ int main() {
     glUseProgram(gProgramID);
 
     drawScene();
-    // Important to update system
-    g_pSoundManager->update();
 
     // Swap buffers
     glfwSwapBuffers(gWindow);
@@ -290,11 +269,7 @@ int main() {
   glfwTerminate();
   delete gCamera; // clean and tidy :)
   // Time to take out the trash..
-  for (std::vector<FMOD::Sound *>::iterator curSound = gSounds.begin();
-       curSound < gSounds.end(); curSound++)
-    (*curSound)->release();
-  gSoundSystem->close();
-  gSoundSystem->release();
+ 
   //*************** Delete Managers ***************
   // delete g_pMeshManager;
   // delete g_pShaderManager;

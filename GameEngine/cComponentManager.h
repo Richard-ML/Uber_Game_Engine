@@ -82,6 +82,8 @@ public:
   glm::vec3 acceleration;
   glm::vec3 maxVelocity;
   glm::vec3 minVelocity;
+  float scale;
+  PhysicsEngine::iRigidBody* m_pRigidBody;
   float lastTime; // Used in every update function
   std::vector<std::shared_ptr<cComponent>>
       m_vec_pComponents; // Components that belong to this component..
@@ -91,11 +93,12 @@ public:
   virtual cComponent *getType() = 0;
   virtual void update() = 0;
   virtual bool loadFromXML(rapidxml::xml_node<> *componentNode) = 0;
-  void setTransform(const glm::mat4 transform) {
+  virtual void setTransform(const glm::mat4 transform) {
     this->m_Transform = transform;
   }
 
   glm::mat4 getTransform() { return this->m_Transform; }
+  virtual void getTransform(glm::mat4 &transform) { transform = m_Transform; }
   glm::mat4 getOrientation() {
     glm::mat4 tempMatrix = m_Transform;
     // Set position of matrix to the origin

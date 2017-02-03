@@ -15,7 +15,6 @@
 #include "cMeshManager.h"
 #include "cPathFindingManager.h"
 #include "cShaderManager.h"
-#include "cSoundManager.h"
 #include "cTextureManager.h"
 
 /**
@@ -76,21 +75,9 @@ extern GLFWwindow *gWindow;
 extern cCamera *gCamera;
 extern std::vector<cMesh *> gTransparentMeshes;
 extern std::vector<cLight *> gLights;
-////////////////////////////////////////////////////////////////
-// This will be replaced by the soundEmiterComponent when I get around to it..               
-extern FMOD::System *gSoundSystem;         
-extern FMOD_RESULT gFMODResult;            
-extern float gVolume;                      
-extern std::vector<FMOD::Sound *> gSounds; 
-extern std::vector<FMOD::Channel *>
-    gChannels; // Channels define the position of the sound		
-extern std::map<std::string, FMOD::Sound *>
-    map_gSounds; // This will be inside the sound manager
-////////////////////////////////////////////////////////////////
 
 extern int gEntityNextID;
 extern int gNextMeshID;
-extern int gNextSoundID;
 extern int gNextChannelID;
 extern int gNextComponentID;
 
@@ -100,6 +87,7 @@ struct triFace {
   glm::vec3 v2;
   glm::vec3 v3;
 };
+extern int curSphereIndex;
 extern std::vector<std::vector<triFace *>> gMeshFaces;
 extern std::vector<triFace *> playerMeshFaces;
 extern std::vector<unsigned int> gIndices;
@@ -171,15 +159,16 @@ extern GLuint gUniformId_Physics_EyePosition;
 extern cXML_Utils *g_pXML_Utils;
 
 /* Managers */
-extern cWorld *g_pAreaInfo;
 extern cMeshManager *g_pMeshManager;
 extern cTextureManager *g_pTextureManager;
 extern cShaderManager *g_pShaderManager;
 extern cEntityManager *g_pEntityManager;
-extern cSoundManager *g_pSoundManager;
 extern cPathNodeGrid *g_pPathFindingManager;
 extern PhysicsEngine::cPhysicsEngine *g_pPhysicsEngine;
 //extern GraphicsEngine::cGraphicsEngine *g_pGraphicsEngine;
+//extern SoundEngine::cSoundEngine *g_pSoundEngine;
+//extern AIEngine::cAIEngine *g_pAIEngine;
+
 /* Callback Functions */
 void callback_windowResize(GLFWwindow *window, int width, int height);
 void callback_WindowClose(GLFWwindow *window);
@@ -187,9 +176,6 @@ void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
                        int mods);
 
 /* Misc */
-extern bool cheatsEnabled;
-extern glm::vec3 gravityForce;
-extern glm::mat4 playerTrans;
 extern float gDistanceX;
 extern float gDistanceZ;
 extern int gNumXCells;

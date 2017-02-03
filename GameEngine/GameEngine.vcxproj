@@ -45,12 +45,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Extern\Lua5.3.3;$(SolutionDir)Extern\fmod;$(SolutionDir)Extern\rapidxml;$(SolutionDir)Extern\GLM;$(SolutionDir)Extern\glfw\include;$(SolutionDir)Extern\glew\include;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\FreeImage;$(IncludePath);$(SolutionDir)PhysicsEngine</IncludePath>
+    <IncludePath>$(SolutionDir)Extern\Lua5.3.3;$(SolutionDir)Extern\fmod;$(SolutionDir)Extern\rapidxml;$(SolutionDir)Extern\GLM;$(SolutionDir)Extern\glfw\include;$(SolutionDir)Extern\glew\include;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\FreeImage;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Extern\Lua5.3.3\lib debug;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\rapidxml;$(SolutionDir)Extern\fmod;$(SolutionDir)Extern\FreeImage;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)PhysicsEngine;$(SolutionDir)Extern\Lua5.3.3;$(SolutionDir)Extern\fmod;$(SolutionDir)Extern\rapidxml\;$(SolutionDir)Extern\GLM;$(SolutionDir)Extern\glfw\include;$(SolutionDir)Extern\glew\include;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\FreeImage;$(IncludePath);$(SolutionDir)PhysicsEngine</IncludePath>
+    <IncludePath>$(SolutionDir)Extern\Lua5.3.3;$(SolutionDir)Extern\fmod;$(SolutionDir)Extern\rapidxml\;$(SolutionDir)Extern\GLM;$(SolutionDir)Extern\glfw\include;$(SolutionDir)Extern\glew\include;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\FreeImage;$(IncludePath);$(SolutionDir)PhysicsEngine</IncludePath>
     <LibraryPath>$(SolutionDir)Extern\Lua5.3.3\lib release;$(SolutionDir)Extern\Assimp;$(SolutionDir)Extern\rapidxml;$(SolutionDir)Extern\FreeImage;$(SolutionDir)Extern\fmod;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -115,13 +115,11 @@
     <ClCompile Include="LuaComponents.cpp" />
     <ClCompile Include="ControlComponents.cpp" />
     <ClCompile Include="callbacks.cpp" />
-    <ClCompile Include="cWorld.cpp" />
     <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cComponentManager.cpp" />
     <ClCompile Include="cEntityManager.cpp" />
     <ClCompile Include="cMeshManager.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
-    <ClCompile Include="cSoundManager.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="main.cpp" />
@@ -129,8 +127,6 @@
     <ClCompile Include="EmitterComponents.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cVector.h" />
-    <ClInclude Include="cWorld.h" />
     <ClInclude Include="cCamera.h" />
     <ClInclude Include="cEntityManager.h" />
     <ClInclude Include="cPathFindingManager.h" />
@@ -139,7 +135,6 @@
     <ClInclude Include="cComponentDetails.h" />
     <ClInclude Include="cComponentManager.h" />
     <ClInclude Include="cShaderManager.h" />
-    <ClInclude Include="cSoundManager.h" />
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="externals.h" />
     <ClInclude Include="global.h" />

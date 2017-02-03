@@ -4,10 +4,8 @@
 GLFWwindow * gWindow = 0;
 GLuint gSkyboxShaderID = 0;
 GLuint gSkyboxVMID = 0;
-cCamera *gCamera = 0;
+cCamera *gCamera = new cCamera();
 std::vector<cMesh *> gTransparentMeshes;
-glm::vec3 cWorld::minPos = glm::vec3(-40.0f, 0.0f, -540.0f);
-glm::vec3 cWorld::maxPos = glm::vec3(540.0f, 5.0f, -9.0f);
 int gNextPointLightID = 0;
 int gNextSpotLightID = 0;
 int gNextDirectionalLightID = 0;
@@ -15,32 +13,16 @@ int gNextDirectionalLightID = 0;
 int gVoxelSize = 128;
 std::map<std::string, GLuint> gMap_TextureNameToMipmapLevel;
 std::vector<cLight *> gLights;
-bool g_bool_DebugShapes = false;
+bool g_bool_DebugShapes = true;
 GLuint cubeVAO = 0; 
 GLuint gUniformId_SamplerCube = 0;
 GLuint gUniformId_ToggleTextures = 0;
-FMOD::System *gSoundSystem;
-FMOD_RESULT gFMODResult;
-std::vector<FMOD::Sound *> gSounds; // Single instance of sound
-std::vector<FMOD::Channel *> gChannels;
-std::map<std::string, FMOD::Sound *> map_gSounds;
-FMOD::DSP *gEffect_dsplowpass = 0;
-FMOD::DSP *gEffect_dsphighpass = 0;
-FMOD::DSP *gEffect_dspecho = 0;
-FMOD::DSP *gEffect_dspflange = 0;
-bool gEffect_dsplowpass_Bypass = 1;
-bool gEffect_dsphighpass_Bypass = 1;
-bool gEffect_dspecho_Bypass = 1;
-bool gEffect_dspflange_Bypass = 1;
-int curChannel = 0;
 
 std::multimap<std::pair<int, int>, AABB *> g_multimap_VoxelGrid;
 std::vector<std::vector<std::vector<glm::vec3>>> g_vec_WorldTiles;
 std::map<std::tuple<float, float, float>, cMeshEntry *> g_map_RGBToMesh;
 int gNextComponentID = 0;
-
 int gEntityNextID = 0;
-int gNextSoundID = 0;
 int gNextChannelID = 0;
 GLuint gVertexBufferID = 0;
 GLuint gTexCoordBufferID = 0;
@@ -59,7 +41,9 @@ float gVolume = 1.0f;
 float gPitch = 1.0f;
 float gBalance = 0.0f;
 
+int curSphereIndex = -15;
 std::string gPartOfTitle = "";
+
 
 GLuint gProgramID = 0;
 GLuint gUniformId_ModelMatrix = 0;
@@ -103,12 +87,7 @@ float gDistanceX;
 float gDistanceZ;
 int gNumXCells;
 int gNumZCells;
-bool cheatsEnabled = true;
 
-glm::mat4 playerTrans;
-// Physics stuff
-glm::vec3 gravityForce(0.0f, -9.81f, 0.0f);
-cWorld *g_pAreaInfo = new cWorld();
 float deltaTime = 0.1f;
 //**************** Initialize Utilities ****************
 cXML_Utils *cXML_Utils::s_cXML_Utils =
@@ -128,10 +107,8 @@ cShaderManager *g_pShaderManager = cShaderManager::instance();
 cEntityManager *cEntityManager::s_cEntityManager =
     0; // Allocating pointer to static instance of cEntityManager (singleton)
 cEntityManager *g_pEntityManager = cEntityManager::instance();
-cSoundManager *cSoundManager::s_cSoundManager =
-    0; // Allocating pointer to static instance of cSoundManager (singleton)
-cSoundManager *g_pSoundManager = cSoundManager::instance();
-cPathNodeGrid *g_pPathFindingManager = 0;
 
+cPathNodeGrid *g_pPathFindingManager = 0;
+// TODO: Sound Engine... Same design as PhysicsEngine..
 PhysicsEngine::cPhysicsEngine *g_pPhysicsEngine = PhysicsEngine::cPhysicsEngine::instance();
 //GraphicsEngine::cGraphicsEngine *g_pGraphicsEngine = GraphicsEngine::cGraphicsEngine::instance();

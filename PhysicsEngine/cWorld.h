@@ -3,6 +3,7 @@
 #include "iWorld.h"
 #include <vector>
 #include "stdafx.h"
+#include "cCollisionObject.h"
 
 #ifdef PhysicsEngine_EXPORTS
 #define PhysicsEngine_API __declspec(dllexport)
@@ -10,13 +11,15 @@
 #define PhysicsEngine_API __declspec(dllimport)
 #endif // PhysicsEngine_EXPORTS
 namespace PhysicsEngine {
-	class cRigidBody;
+	class cCollisionObject;
 	class cWorld: public iWorld {
 	public:
-		virtual PhysicsEngine_API void step(float deltaTime);
-		virtual PhysicsEngine_API void addRigidBody(cRigidBody* rigidBody);
+		void step(float deltaTime);
+		//virtual PhysicsEngine_API void addRigidBody(cRigidBody* rigidBody)
+		void addCollisionObject(iRigidBody* object);
 	private:
-		static std::vector<cRigidBody*> m_rigidBodies;
+		//static std::vector<cRigidBody*> m_rigidBodies;
+	 std::vector<iRigidBody *> m_objects;
 	};
 
 

@@ -1,16 +1,12 @@
 #ifndef _cCollisionObject_HG_
 #define _cCollisionObject_HG_
 #include "stdafx.h"
-#include "cCollisionShape.h"
-#include "cWorld.h"
-#include <string>
-
+#include "iCollisionShape.h"
 #ifdef PhysicsEngine_EXPORTS
 #define PhysicsEngine_API __declspec(dllexport)
 #else
 #define PhysicsEngine_API __declspec(dllimport)
 #endif // PhysicsEngine_EXPORTS
-
 /**
 *       __  __ __                   ______                           ______               _
 *      / / / // /_   ___   _____   / ____/____ _ ____ ___   ___     / ____/____   ____ _ (_)____   ___
@@ -18,8 +14,8 @@
 *    / /_/ // /_/ //  __// /     / /_/ // /_/ // / / / / //  __/  / /___ / / / // /_/ // // / / //  __/
 *    \____//_.___/ \___//_/      \____/ \__,_//_/ /_/ /_/ \___/  /_____//_/ /_/ \__, //_//_/ /_/ \___/
 *                                                                              /____/
-//===-- cCollisionObject.h - Collision Object Information ---------*- C++ -*-===//
-Description: Maintains all information that is needed for a collision detection: Object, Transform and AABB proxy. Added to the cCollisionWorld.
+//===-- cRigidBody.h - Rigid Body Information -------------------*- C++ -*-===//
+Description: Primary class for rigid body objects.
 //===----------------------------------------------------------------------===//
 Author(s):
 Name: Richard Mills-Laursen
@@ -66,30 +62,46 @@ Status: Version 1.8 Alpha
 //===----------------------------------------------------------------------===//
 */
 namespace PhysicsEngine {
-	class cCollisionObject {
-	public:
-		struct sAABB {
-		public:
-			sAABB(glm::vec3 min, glm::vec3 max) {
-				this->halfWidths =
-					glm::abs(max - min) * glm::vec3(0.5f); // Extent computation
-				this->center = max - halfWidths; // Center position of AABB
-				this->min = min;
-				this->max = max;
-			};
-			sAABB() {};
-			glm::vec3 center;
-			glm::vec3 halfWidths;
-			glm::vec3 min;
-			glm::vec3 max;
-		};
-		//cCollisionObject(cCollisionObject* object) { this = *object; }
-	private:
-		sAABB* m_pBroadPhase; // Pointer to parent AABB.. In a tree some nodes collision shape will be null.
-		int m_collisionFlag;
-		bool m_disableGravity;
-		cCollisionShape* m_collisionShape; // Shape used for narrow phase collision detection. Reuse shapes as much as possible!
+	enum eCollisionFlags
+	{
+		STATIC_OBJECT = 1,
+		KINEMATIC_OBJECT = 2,
+		NO_CONTACT_RESPONSE = 4,
+		CUSTOM_MATERIAL_CALLBACK = 8,//this allows per-triangle material (friction/restitution)
+		CHARACTER_OBJECT = 16,
+	};
 
+	enum	eCollisionObjectTypes
+	{
+		COLLISION_OBJECT = 1,
+		RIGID_BODY = 2,
+		///GHOST_OBJECT keeps track of all objects overlapping its AABB and that pass its collision filter
+		///It is useful for collision sensors, explosion objects, character controller etc.
+		GHOST_OBJECT = 4,
+		SOFT_BODY = 8,
+	};
+	class cCollisionObject {
+	private:
+		iCollisionShape*		m_collisionShape;
+		eCollisionFlags			m_collisionFlags;
+		eCollisionObjectTypes   m_collisionObjectType;
+		void*					m_userPointer;
+		//iBroadphaseProxy*		m_broadphaseHandle;
+	public:
+		
+		//Getters
+		
+		//Setters
+		virtual void setCollisionShape(iCollisionShape* collisionShape) { m_collisionShape = collisionShape; }
+
+		// Getters
+		inline const iCollisionShape*	getCollisionShape() const { return m_collisionShape; }
+		inline iCollisionShape*	getCollisionShape(){ return m_collisionShape; }
+		inline eCollisionFlags	getCollisionFlag() const { return m_collisionFlags; }
+		inline void* getUserPointer() { return m_userPointer;  }
+		//Setters
+		void setCollisionFlags(eCollisionFlags flags) { m_collisionFlags = flags; }
+		void setUserPointer(void* userPointer) { m_userPointer = userPointer;  }
 	};
 }
 #endif

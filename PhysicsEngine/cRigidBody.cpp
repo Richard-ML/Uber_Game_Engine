@@ -15,6 +15,12 @@ PhysicsEngine::cRigidBody::~cRigidBody()
 {
 }
 
+void PhysicsEngine::cRigidBody::getOrientation(glm::mat4 & orientation)
+{
+	glm::mat3 RotationMatrix = glm::transpose(glm::lookAt(glm::vec3(0.0f), glm::normalize(this->m_rigidBody.velocity), glm::vec3(0.0f, 1.0f, 0.0f)));
+	orientation = RotationMatrix;
+}
+
 //void PhysicsEngine::cRigidBody::getOrientation(glm::mat3 & orientation)
 //{
 	//orientation = m_angle;
@@ -62,6 +68,21 @@ void PhysicsEngine::cRigidBody::getAcceleration(glm::vec3 & acceleration)
 void PhysicsEngine::cRigidBody::setAcceleration(const glm::vec3 & acceleration)
 {
 	m_rigidBody.acceleration = acceleration;
+}
+
+PhysicsEngine_API void PhysicsEngine::cRigidBody::applyForce(const glm::vec3 velocity)
+{
+	this->m_rigidBody.velocity += velocity;
+}
+
+PhysicsEngine_API void PhysicsEngine::cRigidBody::isCollision( bool& collision)
+{
+	collision = this->m_rigidBody.collision;
+}
+
+PhysicsEngine_API void PhysicsEngine::cRigidBody::setCollision(bool & collision)
+{
+	this->m_rigidBody.collision = collision;
 }
 
 //void PhysicsEngine::cRigidBody::translate(glm::vec3 & translation)

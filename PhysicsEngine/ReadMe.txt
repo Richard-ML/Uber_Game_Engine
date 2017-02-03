@@ -2,12 +2,6 @@
     DYNAMIC LINK LIBRARY : PhysicsEngine Project Overview
 ========================================================================
 
-AppWizard has created this PhysicsEngine DLL for you.
-
-This file contains a summary of what you will find in each of the files that
-make up your PhysicsEngine application.
-
-
 PhysicsEngine.vcxproj
     This is the main project file for VC++ projects generated using an Application Wizard.
     It contains information about the version of Visual C++ that generated the file, and
@@ -29,15 +23,9 @@ PhysicsEngine.cpp
 	to be a project dependency of some other project, you will either need to
 	add code to export some symbols from the DLL so that an export library
 	will be produced, or you can set the Ignore Input Library property to Yes
-	on the General propert page of the Linker folder in the project's Property
+	on the General property page of the Linker folder in the project's Property
 	Pages dialog box.
 
-/////////////////////////////////////////////////////////////////////////////
-Other standard files:
-
-StdAfx.h, StdAfx.cpp
-    These files are used to build a precompiled header (PCH) file
-    named PhysicsEngine.pch and a precompiled types file named StdAfx.obj.
 
 /////////////////////////////////////////////////////////////////////////////
 Other notes:
@@ -46,3 +34,11 @@ AppWizard uses "TODO:" comments to indicate parts of the source code you
 should add to or customize.
 
 /////////////////////////////////////////////////////////////////////////////
+
+
+
+http://www2.epcc.ed.ac.uk/downloads/lectures/BenNicholson/BenNicholson.pdf
+https://software.intel.com/en-us/articles/designing-the-framework-of-a-parallel-game-engine#fig3
+https://en.wikipedia.org/wiki/Inversion_of_control
+https://upday.github.io/blog/model-view-viewmodel/
+http://www.gdcvault.com/play/1021926/Destiny-s-Multithreaded-Rendering

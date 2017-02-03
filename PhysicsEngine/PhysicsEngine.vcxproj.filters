@@ -1,27 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Model">
-      <UniqueIdentifier>{30b92f5f-adfe-42bb-89cf-2dd4e6af7e63}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Model\Header Files">
-      <UniqueIdentifier>{79dbc401-f0ad-4ff2-88a8-bfc58f36ab0d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Model\Source Files">
-      <UniqueIdentifier>{90e72c5a-2c12-40ba-b395-0669393c4219}</UniqueIdentifier>
-    </Filter>
     <Filter Include="View">
       <UniqueIdentifier>{1efd8bc9-6141-4707-ac35-9637558df729}</UniqueIdentifier>
     </Filter>
@@ -31,72 +10,111 @@
     <Filter Include="View\Source Files">
       <UniqueIdentifier>{cf4b5679-3fb5-4561-8198-e6034f016290}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controller">
-      <UniqueIdentifier>{2bd882e6-3d51-42d6-a765-41d5cc29bf5f}</UniqueIdentifier>
+    <Filter Include="DataModel">
+      <UniqueIdentifier>{30b92f5f-adfe-42bb-89cf-2dd4e6af7e63}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controller\Header Files">
-      <UniqueIdentifier>{d5ca430a-c6b2-484f-a550-b8ea7f4bd20f}</UniqueIdentifier>
+    <Filter Include="DataModel\Header Files">
+      <UniqueIdentifier>{79dbc401-f0ad-4ff2-88a8-bfc58f36ab0d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Controller\Source Files">
-      <UniqueIdentifier>{61320fc2-a65d-4dc0-9c9b-e73d69c640a3}</UniqueIdentifier>
+    <Filter Include="DataModel\Source Files">
+      <UniqueIdentifier>{90e72c5a-2c12-40ba-b395-0669393c4219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModel">
+      <UniqueIdentifier>{e6f40e87-c993-48b1-9a66-acbdd42c95c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModel\Header Files">
+      <UniqueIdentifier>{f5f62a2c-e33a-4f8b-a153-495204aadd17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModel\Source Files">
+      <UniqueIdentifier>{33a5ab77-344f-45de-9009-0e124394bf82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{a9ce1ac0-6149-4340-9553-ad8dc3d4332c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Config\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Config\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Config\Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
-    <Text Include="Readme_Controllers.txt">
-      <Filter>Controller</Filter>
+    <Text Include="DataModel_README.txt">
+      <Filter>DataModel</Filter>
+    </Text>
+    <Text Include="ViewModel_README.txt">
+      <Filter>ViewModel</Filter>
+    </Text>
+    <Text Include="View_README.txt">
+      <Filter>View</Filter>
+    </Text>
+    <Text Include="Config_README.txt">
+      <Filter>Config</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
+      <Filter>Config\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cPhysicsEngine.h">
-      <Filter>Header Files</Filter>
+      <Filter>Config\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="externals.h">
-      <Filter>Header Files</Filter>
+      <Filter>Config\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cRigidBody.h">
-      <Filter>Model\Header Files</Filter>
+      <Filter>DataModel\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cCollisionObject.h">
-      <Filter>Model\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cCollisionShape.h">
-      <Filter>Model\Header Files</Filter>
+    <ClInclude Include="cPhysicsEngine.h">
+      <Filter>View\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cWorld.h">
-      <Filter>Model\Header Files</Filter>
+      <Filter>DataModel\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iCollisionShape.h">
+      <Filter>ViewModel\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="iRigidBody.h">
-      <Filter>View\Header Files</Filter>
+      <Filter>ViewModel\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="iWorld.h">
-      <Filter>View\Header Files</Filter>
+      <Filter>ViewModel\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>Config\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cCollisionObject.h">
+      <Filter>DataModel\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_btRigidBody.h">
+      <Filter>DataModel\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Config\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cPhysicsEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cCollisionShape.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Config\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cRigidBody.cpp">
-      <Filter>Model\Source Files</Filter>
+      <Filter>DataModel\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cPhysicsEngine.cpp">
+      <Filter>View\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cWorld.cpp">
-      <Filter>Model\Source Files</Filter>
+      <Filter>DataModel\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="_btRigidBody.cpp">
+      <Filter>Config\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

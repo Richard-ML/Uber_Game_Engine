@@ -3,6 +3,8 @@
 
 #include "global.h"
 
+// TODO: Renderable component should be using a GraphicsEngine.. This file is currently terrifying. 
+
 // THE FOLLOWING CODE WAS CREATED BY:
 // Name: Michael Feeney
 // E-mail : MFeeney@FanshaweC.ca
@@ -171,14 +173,24 @@ RenderingComponent::~RenderingComponent() {
 cComponent *RenderingComponent::getType() {
   return this; // return entire object for now..
 }
-
+PhysicsEngine::iRigidBody* rb;
 void RenderingComponent::update() {
+	glm::mat4 trans;
+	for (std::vector<std::shared_ptr<cComponent>>::iterator iter =
+		this->m_vec_pComponents.begin();
+		iter != this->m_vec_pComponents.end(); iter++) {
+
+		(*iter)->getTransform(trans);
+	}
+
   for (std::vector<cMesh *>::iterator iter = this->m_vec_pMeshes.begin();
        iter != this->m_vec_pMeshes.end(); iter++) {
     // Current mesh is being controlled so update it's position to the
     // controller's position..
-    glm::mat4 translationMatrix = this->getTransform();
+    glm::mat4 translationMatrix =trans;
     glm::mat4 rotationMatrix = (*iter)->getOrientation();
+
+
 
     (*iter)->m_curTransform = glm::translate(
         translationMatrix,
@@ -191,6 +203,7 @@ void RenderingComponent::update() {
        iter != this->m_vec_pComponents.end(); iter++) {
     (*iter)->setTransform(this->getTransform());
     (*iter)->update();
+	rb = (*iter)->m_pRigidBody;
   }
   this->draw();
 }
@@ -228,6 +241,7 @@ bool RenderingComponent::loadFromXML(rapidxml::xml_node<> *componentNode) {
       float scale =
           std::stof(cMeshComponent_node->first_attribute("scale")->value());
       tempMesh->scale = glm::vec3(scale);
+	  this->scale = scale;
       tempMesh->m_pBodyOffset = glm::translate(
           tempMesh->m_pBodyOffset,
           glm::vec3(
@@ -244,12 +258,17 @@ bool RenderingComponent::loadFromXML(rapidxml::xml_node<> *componentNode) {
           tempMesh->m_pBodyOffset,
           std::stof(cMeshComponent_node->first_attribute("preRotX")->value()),
           glm::vec3(0.0f, 1.0f, 0.0f));
-      // this->entity()->matrix = glm::rotate(this->entity()->matrix,
-      // std::stof(entityNode->first_attribute("preRotY")->value()),
-      // glm::vec3(1.0f, 0.0f, 0.0f));
-      // this->entity()->matrix = glm::rotate(this->entity()->matrix,
-      // std::stof(entityNode->first_attribute("preRotZ")->value()),
-      // glm::vec3(0.0f, 0.0f, 1.0f));
+
+	  tempMesh->m_pBodyOffset = glm::rotate(
+		  tempMesh->m_pBodyOffset,
+       std::stof(cMeshComponent_node->first_attribute("preRotY")->value()),
+       glm::vec3(1.0f, 0.0f, 0.0f));
+
+	  tempMesh->m_pBodyOffset = glm::rotate(
+		  tempMesh->m_pBodyOffset,
+       std::stof(cMeshComponent_node->first_attribute("preRotZ")->value()),
+       glm::vec3(0.0f, 0.0f, 1.0f));
+
       tempMesh->m_pColor = new glm::vec4();
       *tempMesh->m_pColor = *tempMesh->m_pColor = glm::vec4(
           std::stof(cMeshComponent_node->first_attribute("r")->value()),
@@ -633,20 +652,32 @@ bool RenderingComponent::loadFromXML(rapidxml::xml_node<> *componentNode) {
     }
   }
   for (rapidxml::xml_node<> *cComponent_node = componentNode->first_node();
-       cComponent_node; cComponent_node = cComponent_node->next_sibling()) {
-    std::string name = cComponent_node->name();
-    if (name == "SoundEmitterComponent") {
-      std::shared_ptr<cComponent> tempComponent = std::shared_ptr<cComponent>(
-          cComponentManager::create_Component(name));
-      tempComponent->loadFromXML(cComponent_node);
-      this->m_vec_pComponents.push_back(tempComponent);
+	  cComponent_node; cComponent_node = cComponent_node->next_sibling()) {
+	  std::string name = cComponent_node->name();
+	  if (name == "SoundEmitterComponent") {
+		  std::shared_ptr<cComponent> tempComponent = std::shared_ptr<cComponent>(
+			  cComponentManager::create_Component(name));
+		  tempComponent->loadFromXML(cComponent_node);
+		  this->m_vec_pComponents.push_back(tempComponent);
 
-    } else if (name == "LuaComponent") {
-      std::shared_ptr<cComponent> tempComponent = std::shared_ptr<cComponent>(
-          cComponentManager::create_Component(name));
-      tempComponent->loadFromXML(cComponent_node);
-      this->m_vec_pComponents.push_back(tempComponent);
-    }
+	  }
+	  else if (name == "LuaComponent") {
+		  std::shared_ptr<cComponent> tempComponent = std::shared_ptr<cComponent>(
+			  cComponentManager::create_Component(name));
+		  tempComponent->loadFromXML(cComponent_node);
+		  this->m_vec_pComponents.push_back(tempComponent);
+	  }
+	  else if (name == "CollisionControlComponent")
+	  {
+		  std::shared_ptr<cComponent> tempComponent = std::shared_ptr<cComponent>(
+			  cComponentManager::create_Component(name));
+		  tempComponent->loadFromXML(cComponent_node);
+		  this->m_vec_pComponents.push_back(tempComponent);
+		  glm::mat4 trans;
+		  tempComponent->getTransform(trans);
+		  this->m_Transform = trans;
+		  this->m_pRigidBody = tempComponent->m_pRigidBody;
+	  }
   }
 
   return true;
@@ -667,17 +698,6 @@ void RenderingComponent::draw() {
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       glEnable(GL_DEPTH_TEST);
 
-      // glUniform1i(gUniformId_NumTextures, m_vec_pTextures.size());
-      // int curTexture = 0;
-      // for each(cTexture* texture in this->m_vec_pTextures)
-      //{
-      //	std::string text = "Texture" + std::to_string(curTexture);
-      //	glUniform1i(glGetUniformLocation(gProgramID, text.c_str()),
-      //*texture->textureID);
-      //	curTexture++;
-      //
-      //}
-
       // glEnable(GL_COLOR_MATERIAL);
       if ((*iter)->isWireframe) {        // Turn off backface culling
                                          // Enable "wireframe" polygon mode
@@ -694,6 +714,11 @@ void RenderingComponent::draw() {
                                          // you can pass here
                       GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
       }
+
+	
+
+
+
       glUniformMatrix4fv(
           gUniformId_ModelMatrix, 1, GL_FALSE,
           glm::value_ptr(glm::scale((*iter)->m_curTransform, (*iter)->scale)));
@@ -709,6 +734,63 @@ void RenderingComponent::draw() {
           (*iter)->m_pMeshEntry->BaseVertex);
       //		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
       //}
+
+
+
+
+	  bool isCollision;
+	  glm::vec4 color = glm::vec4(0.0f, 255.0f, 0.0f,0.0f);
+	  if (rb != nullptr)
+	  {
+		  glm::mat4 rotation;
+		  rb->getOrientation(rotation);
+		  rb->isCollision(isCollision);
+		  (*iter)->m_curTransform *= rotation;
+		  if (isCollision)
+			  color = glm::vec4(255.0f, 0.0f, 0.0f, 0.0f);
+
+		  if (g_bool_DebugShapes)
+		  {
+			 // glUseProgram(g_Physics_ProgramID);
+			 
+			  glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only
+											   // thing you can pass here
+				  GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
+			 // glDisable(GL_DEPTH);
+			  glDisable(GL_CULL_FACE);
+			  glUniformMatrix4fv(
+				  gUniformId_ModelMatrix, 1, GL_FALSE,
+				  glm::value_ptr(glm::scale((*iter)->m_curTransform, (*iter)->scale*1.1f)));
+			  glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
+				  glm::value_ptr((*iter)->getOrientation()));
+			  glUniform4fv(gUniformId_ModelColor, 1,
+				  glm::value_ptr(color));
+
+			  glUniform1f(gUniformId_Alpha, (*iter)->alpha);
+			  glDrawElementsBaseVertex(
+				  GL_TRIANGLES, (*iter)->m_pMeshEntry->NumgIndices,
+				  GL_UNSIGNED_INT, (void *)(sizeof(unsigned int) *
+				  (*iter)->m_pMeshEntry->BaseIndex),
+					  (*iter)->m_pMeshEntry->BaseVertex);
+			  glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only
+											   // thing you can pass here
+				  GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
+			  glEnable(GL_DEPTH);
+			  glEnable(GL_CULL_FACE);
+			  //glUseProgram(gProgramID);
+		  }
+	  }
+
+
+
+
+
+
+
+
+
+
+
     }
   }
 
@@ -746,6 +828,11 @@ void RenderingComponent::draw() {
                                              // thing you can pass here
                           GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
           }
+
+
+
+
+
           glUniformMatrix4fv(gUniformId_ModelMatrix, 1, GL_FALSE,
                              glm::value_ptr((*iter2)->m_curTransform));
           glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,

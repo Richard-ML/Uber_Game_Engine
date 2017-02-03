@@ -1,5 +1,5 @@
 #version 410 core
-layout(lines) in;
+layout(triangles) in;
 
 layout(line_strip, max_vertices = 32) out;
 // layout(triangle_strip, max_vertices = 3) out;

@@ -63,23 +63,13 @@ Status: Version 1.8 Alpha
 //===----------------------------------------------------------------------===//
 */
 namespace PhysicsEngine {
-	struct sRigidBody {
-		int motionState;
-		glm::vec3 turnVelocity;
-		glm::vec3 velocity;
-		float mass;
-		float gravityAcceleration;
-		glm::vec3 position;
-		glm::vec3 acceleration;
-		glm::vec3 angle;
-	};
 	class cRigidBody : public iRigidBody {//public cCollisionObject {
 	public:
 		//cRigidBody(cCollisionObject* object);
 		cRigidBody(const sRigidBody& rigidBody);
 		cRigidBody(){}
 		~cRigidBody();
-		//virtual void getOrientation(glm::mat3& orientation);
+		virtual void getOrientation(glm::mat4& orientation);
 		//virtual void getTransform(glm::mat4& transform);
 		virtual PhysicsEngine_API void getPosition(glm::vec3& position);
 		virtual PhysicsEngine_API void setPosition(const glm::vec3& position);
@@ -89,10 +79,12 @@ namespace PhysicsEngine {
 		virtual PhysicsEngine_API void setMass(const float& mass);
 		virtual PhysicsEngine_API void getAcceleration(glm::vec3& acceleration);
 		virtual PhysicsEngine_API void setAcceleration(const glm::vec3& acceleration);
+		virtual PhysicsEngine_API void applyForce(const glm::vec3 velocity);
+		virtual PhysicsEngine_API void isCollision( bool& collision);
+		virtual PhysicsEngine_API void setCollision(bool& collision);
 		//virtual void translate(glm::vec3& translation);
 	private:
 		sRigidBody m_rigidBody;
-
 	};
 }
 #endif

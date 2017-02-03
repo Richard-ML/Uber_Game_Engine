@@ -22,9 +22,6 @@
     <ClCompile Include="cTextureManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="cSoundManager.cpp">
-      <Filter>Source Files\Managers</Filter>
-    </ClCompile>
     <ClCompile Include="cComponentManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
@@ -40,18 +37,13 @@
     <ClCompile Include="LuaComponents.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cPathFindingManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="cXML_Utils.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="cWorld.cpp">
-      <Filter>Source Files\Entites</Filter>
-    </ClCompile>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h">
@@ -72,9 +64,6 @@
     <ClInclude Include="cShaderManager.h">
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="cSoundManager.h">
-      <Filter>Header Files\Managers</Filter>
-    </ClInclude>
     <ClInclude Include="cComponentManager.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -87,9 +76,6 @@
     <ClInclude Include="cXML_Utils.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="cWorld.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="cTexture.h">
       <Filter>Header Files\Entities</Filter>
     </ClInclude>
@@ -101,9 +87,6 @@
     </ClInclude>
     <ClInclude Include="externals.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cVector.h">
-      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

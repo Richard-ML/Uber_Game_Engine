@@ -34,20 +34,6 @@ cMeshManager *cMeshManager::instance() {
     s_cMeshManager = new cMeshManager();
   return s_cMeshManager;
 }
-// bool cMeshManager::loadMeshTileFileIntoTileMap(const char * path, float
-// scale, float r, float g, float b) {
-//	Assimp::Importer importer;
-//	unsigned int flags = 0;
-//	flags |= aiProcess_GenSmoothNormals;
-//	const aiScene* scene = importer.ReadFile(path, flags);
-//	if (!scene) {
-//		fprintf(stderr, importer.GetErrorString());
-//		return false;
-//	}
-//
-//	this->impl()->m_map_RGBToMesh[std::make_tuple(r, g, b)] =
-//*scene->mMeshes[0];
-// }
 
 void cMeshManager::loadWorldTiles(cMeshEntry &entryOut) {
   entryOut.BaseIndex = 0;
@@ -73,8 +59,9 @@ void cMeshManager::loadWorldTiles(cMeshEntry &entryOut) {
   float scale = 1.0f; // TODO: actual scale here
   int numTiles = 0;
   std::cout << "Loading world data..\n";
-  float distanceX = glm::distance(g_pAreaInfo->minPos.x, g_pAreaInfo->maxPos.x);
-  float distanceZ = glm::distance(g_pAreaInfo->minPos.z, g_pAreaInfo->maxPos.z);
+  // TODO: Correct world size.. World tile image is a specific size so we can calculate it using that!!
+  float distanceX = 10000.0f;//glm::distance(g_pAreaInfo->minPos.x, g_pAreaInfo->maxPos.x);
+  float distanceZ = 10000.0f;//glm::distance(g_pAreaInfo->minPos.z, g_pAreaInfo->maxPos.z);
 
   for (int ncW = 0; ncW < 512; ncW++) {
     for (int ncD = 0; ncD < 512; ncD++) {
@@ -174,18 +161,21 @@ void cMeshManager::loadWorldTiles(cMeshEntry &entryOut) {
               (int)glm::round(((distanceZ + gVoxelSize) / gVoxelSize) + 1);
           for (int VOXEL_ROW = 0; VOXEL_ROW < numZCells; VOXEL_ROW++) {
             float depthOfAABB = max.z - min.z;
+
+			// TODO: Min position.. glm::distance(g_pAreaInfo->minPos.z, min.z + depthOfAABB));
             float rowOffset = glm::distance(
                 (float)(gVoxelSize * VOXEL_ROW + (gVoxelSize * 0.75f)),
-                glm::distance(g_pAreaInfo->minPos.z, min.z + depthOfAABB));
+                glm::distance(0.0f, min.z + depthOfAABB));
 
             if (std::abs(rowOffset) < ((gVoxelSize) + depthOfAABB))
               for (int VOXEL_COL = 0; VOXEL_COL < numXCells; VOXEL_COL++) {
                 float widthOfAABB = max.x - min.x;
                 // Each cell has a width and length of 1.25* voxel cell size..
                 // (they overlap) Trifaces can reside in multiple cells weww!
+				// TODO: Min position...glm::distance(g_pAreaInfo->minPos.x, min.x + widthOfAABB));
                 float colOffset = glm::distance(
                     (float)(gVoxelSize * VOXEL_COL + (gVoxelSize * 0.75f)),
-                    glm::distance(g_pAreaInfo->minPos.x, min.x + widthOfAABB));
+                    glm::distance(0.0f, min.x + widthOfAABB));
                 if (std::abs(colOffset) < ((gVoxelSize) + widthOfAABB))
                   g_multimap_VoxelGrid.insert(
                       std::pair<std::pair<int, int>, AABB *>(
@@ -198,12 +188,13 @@ void cMeshManager::loadWorldTiles(cMeshEntry &entryOut) {
   }
   std::cout << "Voxel cell size is " << gVoxelSize << "x" << gVoxelSize
             << " units." << std::endl;
-  std::cout << "Area boundaries are x" << std::to_string(g_pAreaInfo->minPos.x)
-            << " y" << std::to_string(g_pAreaInfo->minPos.y) << " z"
-            << std::to_string(g_pAreaInfo->minPos.z) << " - x"
-            << std::to_string(g_pAreaInfo->maxPos.x) << " y"
-            << std::to_string(g_pAreaInfo->maxPos.y) << " z"
-            << std::to_string(g_pAreaInfo->maxPos.z) << std::endl;
+  // TODO: Boundaries..
+//  std::cout << "Area boundaries are x" << std::to_string(g_pAreaInfo->minPos.x)
+//            << " y" << std::to_string(g_pAreaInfo->minPos.y) << " z"
+//            << std::to_string(g_pAreaInfo->minPos.z) << " - x"
+//            << std::to_string(g_pAreaInfo->maxPos.x) << " y"
+//            << std::to_string(g_pAreaInfo->maxPos.y) << " z"
+//            << std::to_string(g_pAreaInfo->maxPos.z) << std::endl;
   std::cout << "Number of tiles in world: " << numTiles << std::endl;
   gMeshFaces.push_back(tempVecTriFace);
   entryOut.NumgIndices = sumNumIndices;
@@ -329,21 +320,15 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(const char *path,
   ////Generate Voxel Grid Cells Each Cell will be 1000+-(250) x 1000+-(250)
   ///units
   //
-  float distanceX = glm::distance(g_pAreaInfo->minPos.x, g_pAreaInfo->maxPos.x);
-  float distanceZ = glm::distance(g_pAreaInfo->minPos.z, g_pAreaInfo->maxPos.z);
-  // g_pAreaInfo->minPos.z = glm::min(g_pAreaInfo->minPos.z, min.z);
-  // g_pAreaInfo->minPos.x = glm::min(g_pAreaInfo->minPos.x, min.x);
-  // g_pAreaInfo->maxPos.z = glm::max(g_pAreaInfo->maxPos.z, max.z);
-  // g_pAreaInfo->maxPos.x = glm::max(g_pAreaInfo->maxPos.x, max.x);
+//  float distanceX = glm::distance(g_pAreaInfo->minPos.x, g_pAreaInfo->maxPos.x);
+//  float distanceZ = glm::distance(g_pAreaInfo->minPos.z, g_pAreaInfo->maxPos.z);
+  float distanceX = 10000.0f;
+  float distanceZ = 10000.0f;
+
   int numXCells = (int)glm::round(((distanceX + gVoxelSize) / gVoxelSize) + 1);
   int numZCells =
       (int)glm::round(((distanceZ + gVoxelSize) / gVoxelSize) + 1); // TODO: Fix
 
-  // if (isStationary)
-  //{
-  //	std::cout << "Processing " << mesh->mNumFaces << " faces into voxel grid
-  //cells.. This won't take long.." << std::endl;
-  //}
   // Fill face gIndices
   gIndices.resize(indexOffset + numgIndices);
   for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
@@ -371,92 +356,17 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(const char *path,
       playerMeshFaces.push_back(tempTriFace);
     tempVecTriFace.push_back(tempTriFace);
   }
-  // Get the min max of all the vertices in the triface to resolve it's voxel
-  // cell(s)
-  // if (isStationary)
-  //{
-  //
-  //	glm::vec3 mini;
-  //	mini.x = glm::min(tempTriFace->v1.x, tempTriFace->v2.x);
-  //	mini.x = glm::min(mini.x, tempTriFace->v3.x);
-  //
-  //	mini.z = glm::min(tempTriFace->v1.z, tempTriFace->v2.z);
-  //	mini.z = glm::min(mini.z, tempTriFace->v3.z);
-  //
-  //	mini.y = glm::min(tempTriFace->v1.y, tempTriFace->v2.y);
-  //	mini.y = glm::min(mini.y, tempTriFace->v3.y);
-  //
-  //	glm::vec3 maxi;
-  //	maxi.x = glm::max(tempTriFace->v1.x, tempTriFace->v2.x);
-  //	maxi.x = glm::max(maxi.x, tempTriFace->v3.x);
-  //
-  //	maxi.z = glm::max(tempTriFace->v1.z, tempTriFace->v2.z);
-  //	maxi.z = glm::max(maxi.z, tempTriFace->v3.z);
-  //
-  //	maxi.y = glm::max(tempTriFace->v1.y, tempTriFace->v2.y);
-  //	maxi.y = glm::max(maxi.y, tempTriFace->v3.y);
-  //
-  //	=
-  //	float widthOfTri = (maxi.x - mini.x) / 2;
-  //	float depthOfTri = (maxi.z - mini.z) / 2;
-  //	// Sooo the bounds are dist(distance(X/Z), mini [+/-] (width/depth))
-  //
-  //	for (int VOXEL_ROW = 0; VOXEL_ROW < numZCells; VOXEL_ROW++)
-  //	{
-  //		float rowOffset = glm::distance((float)(gVoxelSize * VOXEL_ROW),
-  //glm::distance(g_pAreaInfo->minPos.z, mini.z + depthOfTri));
-  //
-  //		if (std::abs(rowOffset) < ((gVoxelSize * 1.25) + depthOfTri))
-  //			for (int VOXEL_COL = 0; VOXEL_COL < numXCells;
-  //VOXEL_COL++)
-  //			{
-  //				//Each cell offsetX = VOXEL_ROW * 1000   offsetZ = VOXEL_COL
-  //* 1000
-  //				// Each cell has a width and length of 1500.. (they overlap)
-  //Trifaces can reside in multiple cells weww!
-  //				float colOffset = glm::distance((float)(gVoxelSize *
-  //VOXEL_COL), glm::distance(g_pAreaInfo->minPos.x, mini.x + widthOfTri));
-  //				if (std::abs(colOffset) < ((gVoxelSize * 1.25) +
-  //widthOfTri))
-  //				{
-  //					g_multimap_VoxelGrid.insert(std::pair<std::pair<int,
-  //int>, triFace*>(std::make_pair(VOXEL_ROW, VOXEL_COL), tempTriFace));
-  //					//std::cout << "Triface coordinates range x: " << mini.x
-  //<< " to " << maxi.x << " z: " << mini.z << " to " << maxi.z << "\nIs inside
-  //\nvoxelCell[ " << VOXEL_COL << " , " << VOXEL_ROW << " ]'s Range x: " <<
-  //					//	(int)colOffset-750 << " to " << (int)colOffset+750
-  //<< " z: " << (int)rowOffset-750 << " to " << (int)rowOffset + 750 <<
-  //std::endl;
-  //				}
-  //			}
-  //	}
-  //} // END OF if (isStationary) (CHECK XML DOC TO SEE IF A MESH IS STATIONARY)
-
-  //}
-  // if (isStationary)
-  //{
-  //	std::cout << "Voxel grid now contains " << g_multimap_VoxelGrid.size()
-  //<< " pointers to triFaces in " << numXCells << "x" << numZCells << "
-  //cells.." << std::endl;
-  // std::cout << "Voxel cell size is " << gVoxelSize << "x" << gVoxelSize << "
-  // units." << std::endl;
-  // std::cout << "Area boundaries are x" <<
-  // std::to_string(g_pAreaInfo->minPos.x) << " y" <<
-  // std::to_string(g_pAreaInfo->minPos.y) << " z" <<
-  // std::to_string(g_pAreaInfo->minPos.z) << " - x" <<
-  // std::to_string(g_pAreaInfo->maxPos.x) << " y" <<
-  // std::to_string(g_pAreaInfo->maxPos.y) << " z" <<
-  // std::to_string(g_pAreaInfo->maxPos.z) << std::endl;
+  
   gDistanceX = distanceX;
   gDistanceZ = distanceZ;
   gNumXCells = numXCells;
   gNumZCells = numZCells;
   //}
 
-  // Create the meshes AABB based on its MAX and MIN extents
+  // TODO: Create the mesh's AABB based on its MAX and MIN extents
   // AABB* aabb = new AABB(min, max, tempVecTriFace); // Voxel grid cell inside
-  // of the world generation will contain these AABBs instead of just all of the
-  // trifaces MAJOR enhancement
+  // of the world generation will contain these AABBs which point to the corresponding
+  // trifaces MAJOR enhancement..
 
   gMeshFaces.push_back(tempVecTriFace);
   return true;

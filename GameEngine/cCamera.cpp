@@ -37,6 +37,9 @@ Status: Version 1.7 Alpha
 Description:
 
 */
+
+// TODO: The camera is currently one of the most important aspects. We need to have a way of jumping between different cameras
+// Should a camera be its own component? What are your thoughts.. 
 cCamera::cCamera() {
   mWidth = 800;
   mHeight = 600;
