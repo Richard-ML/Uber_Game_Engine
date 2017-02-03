@@ -1,11 +1,6 @@
 #include "stdafx.h"
 #include "cRigidBody.h"
 
-//PhysicsEngine::cRigidBody::cRigidBody(cCollisionObject * object) : iRigidBody(), cCollisionObject()
-//{
-////
-//}
-
 PhysicsEngine::cRigidBody::cRigidBody(const sRigidBody & rigidBody)
 {
 	m_rigidBody = rigidBody;
@@ -20,15 +15,6 @@ void PhysicsEngine::cRigidBody::getOrientation(glm::mat4 & orientation)
 	glm::mat3 RotationMatrix = glm::transpose(glm::lookAt(glm::vec3(0.0f), glm::normalize(this->m_rigidBody.velocity), glm::vec3(0.0f, 1.0f, 0.0f)));
 	orientation = RotationMatrix;
 }
-
-//void PhysicsEngine::cRigidBody::getOrientation(glm::mat3 & orientation)
-//{
-	//orientation = m_angle;
-//}
-
-//void PhysicsEngine::cRigidBody::getTransform(glm::mat4 & transform)
-//{
-//}
 
 void PhysicsEngine::cRigidBody::getPosition(glm::vec3 & position)
 {

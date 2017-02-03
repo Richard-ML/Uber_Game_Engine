@@ -78,10 +78,6 @@ public:
   int componentID;
 
   glm::mat4 m_Transform = glm::mat4(); // Should be private..
-  glm::vec3 velocity;
-  glm::vec3 acceleration;
-  glm::vec3 maxVelocity;
-  glm::vec3 minVelocity;
   float scale;
   PhysicsEngine::iRigidBody* m_pRigidBody;
   float lastTime; // Used in every update function
