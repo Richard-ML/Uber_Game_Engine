@@ -745,6 +745,7 @@ void RenderingComponent::draw() {
 		  glm::mat4 rotation;
 		  rb->getOrientation(rotation);
 		  rb->isCollision(isCollision);
+		  if(rb->getCollisionShape()->getShapeType() == PhysicsEngine::eShapeType::SPHERE)
 		  (*iter)->m_curTransform *= rotation;
 		  if (isCollision)
 			  color = glm::vec4(255.0f, 0.0f, 0.0f, 0.0f);
