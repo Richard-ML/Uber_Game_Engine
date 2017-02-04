@@ -24,7 +24,13 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cTestEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="externals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cBlackBoxTests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -32,10 +38,13 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gTestEngine.cpp">
+    <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dllmain.cpp">
+    <ClCompile Include="cTestEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cBlackBoxTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

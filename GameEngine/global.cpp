@@ -111,4 +111,5 @@ cEntityManager *g_pEntityManager = cEntityManager::instance();
 cPathNodeGrid *g_pPathFindingManager = 0;
 // TODO: Sound Engine... Same design as PhysicsEngine..
 PhysicsEngine::cPhysicsEngine *g_pPhysicsEngine = PhysicsEngine::cPhysicsEngine::instance();
+TestEngine::cTestEngine *g_pTestEngine = TestEngine::cTestEngine::instance();
 //GraphicsEngine::cGraphicsEngine *g_pGraphicsEngine = GraphicsEngine::cGraphicsEngine::instance();

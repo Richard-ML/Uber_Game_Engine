@@ -165,6 +165,7 @@ extern cShaderManager *g_pShaderManager;
 extern cEntityManager *g_pEntityManager;
 extern cPathNodeGrid *g_pPathFindingManager;
 extern PhysicsEngine::cPhysicsEngine *g_pPhysicsEngine;
+//extern TestEngine::cTestEngine *g_pTestEngine;
 //extern GraphicsEngine::cGraphicsEngine *g_pGraphicsEngine;
 //extern SoundEngine::cSoundEngine *g_pSoundEngine;
 //extern AIEngine::cAIEngine *g_pAIEngine;
