@@ -54,15 +54,20 @@ namespace BlackBoxTests {
 		rigidBodyInfo.mass = 2.0f;
 
 		EXPECT_FALSE(rigidBodyInfo.mass == 15.0f);
+		EXPECT_TRUE(rigidBodyInfo.mass == 2.0f);
 
 		sphereShape->setRadius(1.0f);
-		EXPECT_TRUE(rigidBodyInfo.mass == 15.0f);
+		float radius = sphereShape->getRadius();
+		EXPECT_TRUE(radius == 1.0f);
+
+		rigidBodyInfo.motionState = 2;
+		EXPECT_TRUE(rigidBodyInfo.motionState == 2);
 
 
 		PhysicsEngine::iRigidBody* rigidBody = PhysicsEngine::cPhysicsEngine::instance()->createRigidBody(sphereShape, rigidBodyInfo);
 		float mass;
 		rigidBody->getMass(mass);
-		EXPECT_TRUE(mass == 15.0f);
+		EXPECT_TRUE(mass == 2.0f);
 
 	}
 
