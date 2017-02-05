@@ -5,8 +5,8 @@
 // The graphics engine will have to be the entry point of the application! (Non-DLL) 
 
 #include "stdafx.h"
-
-
+#include <iostream>
+#include <string>
 int main()
 {
 
@@ -23,6 +23,8 @@ int main()
 	// 4 : Have an interface to draw said mesh at simple position.. glm::mat4 whatever..
 	// I will integrate the the component engine so that we can load meshes and have their state/location modified externally 
 
+	std::string waitForInput;
+	std::cin >> waitForInput;
 
     return 0;
 }
