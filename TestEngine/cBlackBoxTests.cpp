@@ -43,13 +43,13 @@ namespace BlackBoxTests {
 
 
 		rigidBodyInfo.mass = 15.0f;
-		EXPECT_TRUE(rigidBodyInfo.mass == 15.0f); // Internal use of struct!!! 
+		EXPECT_TRUE(rigidBodyInfo.mass == 15.0f);
 
 		rigidBodyInfo.collision = true;
-		EXPECT_TRUE(rigidBodyInfo.collision == true); // Internal use of struct!!! 
+		EXPECT_TRUE(rigidBodyInfo.collision == true);
 
 		rigidBodyInfo.collisionFlag = PhysicsEngine::eCollisionFlags::STATIC_OBJECT;
-		EXPECT_TRUE(rigidBodyInfo.collisionFlag == PhysicsEngine::eCollisionFlags::STATIC_OBJECT); // Internal use of struct!!! 
+		EXPECT_TRUE(rigidBodyInfo.collisionFlag == PhysicsEngine::eCollisionFlags::STATIC_OBJECT);
 
 		rigidBodyInfo.mass = 2.0f;
 
