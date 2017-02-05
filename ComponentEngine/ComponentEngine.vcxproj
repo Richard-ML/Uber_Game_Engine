@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)PhysicsEngine;$(SolutionDir)Include\rapidxml\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)SoundEngine;$(SolutionDir)AIEngine;$(SolutionDir)GraphicsEngine;$(SolutionDir)PhysicsEngine;$(SolutionDir)Include\rapidxml\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Include\rapidxml\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -79,7 +79,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)PhysicsEngine;$(SolutionDir)Include\rapidxml\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)SoundEngine;$(SolutionDir)AIEngine;$(SolutionDir)GraphicsEngine;$(SolutionDir)PhysicsEngine;$(SolutionDir)Include\rapidxml\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Include\rapidxml\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -92,7 +92,8 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;COMPONENTENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)PhysicsEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GraphicsEngine;$(SolutionDir)PhysicsEngine;$(SolutionDir)Include\GLM;$(SolutionDir)SoundEngine;$(SolutionDir)AIEngine;$(SolutionDir)GraphicsEngine;$(SolutionDir)PhysicsEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,7 +122,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;COMPONENTENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>(SolutionDir)PhysicsEngine;$(SolutionDir)Include\GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Include\rapidxml\;$(SolutionDir)SoundEngine;$(SolutionDir)AIEngine;$(SolutionDir)GraphicsEngine;$(SolutionDir)PhysicsEngine;$(SolutionDir)Include\GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -151,6 +153,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cComponentEngine.h" />
     <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="externals.h" />
     <ClInclude Include="global.h" />
@@ -160,6 +163,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cComponentEngine.cpp" />
     <ClCompile Include="ComponentEngine.cpp" />
     <ClCompile Include="Components.cpp" />
     <ClCompile Include="dllmain.cpp">
@@ -189,7 +193,7 @@
       <Project>{9e6e1c83-8f5f-45ff-beae-a9585b5a3ee5}</Project>
     </ProjectReference>
     <ProjectReference Include="..\GraphicsEngine\GraphicsEngine.vcxproj">
-      <Project>{172fd43a-ea77-4e53-b40b-b9070c01536d}</Project>
+      <Project>{67e12b20-6593-4653-be94-c516b965ead9}</Project>
     </ProjectReference>
     <ProjectReference Include="..\PhysicsEngine\PhysicsEngine.vcxproj">
       <Project>{ee6b6d96-c2ea-46c8-80b9-fe691c37ea16}</Project>
