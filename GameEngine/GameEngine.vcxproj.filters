@@ -47,5 +47,8 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Config\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="global.cpp">
+      <Filter>Config\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

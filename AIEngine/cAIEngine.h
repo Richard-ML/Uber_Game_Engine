@@ -31,7 +31,7 @@ namespace AIEngine {
 
 	public:
 		static AIEngine_API  cAIEngine *instance();
-		//static DWORD __cdecl AIThread(void* lpParam);
+		static DWORD __cdecl aiThread(void* lpParam);
 	};
 
 }

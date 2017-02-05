@@ -15,7 +15,7 @@
 #include "..\Include\glm\glm\gtx\euler_angles.hpp"
 
 
-#include "cAIEngine.h"
-#include "cSoundEngine.h"
-#include "cGraphicsEngine.h"
-#include "cPhysicsEngine.h"
+#include "..\AIEngine\cAIEngine.h"
+#include "..\SoundEngine\cSoundEngine.h"
+#include "..\GraphicsEngine\cGraphicsEngine.h"
+#include "..\PhysicsEngine\cPhysicsEngine.h"

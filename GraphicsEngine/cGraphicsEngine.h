@@ -31,7 +31,7 @@ namespace GraphicsEngine {
 
 	public:
 		static GraphicsEngine_API  cGraphicsEngine *instance();
-		//static DWORD __cdecl GraphicsThread(void* lpParam);
+		static DWORD __cdecl graphicsThread(void* lpParam);
 	};
 
 }

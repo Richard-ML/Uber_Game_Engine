@@ -31,7 +31,7 @@ namespace SoundEngine {
 
 	public:
 		static SoundEngine_API  cSoundEngine *instance();
-		//static DWORD __cdecl SoundThread(void* lpParam);
+		static DWORD __cdecl soundThread(void* lpParam);
 	};
 
 }
