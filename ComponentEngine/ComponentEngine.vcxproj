@@ -185,8 +185,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AIEngine\AIEngine.vcxproj">
+      <Project>{9e6e1c83-8f5f-45ff-beae-a9585b5a3ee5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GraphicsEngine\GraphicsEngine.vcxproj">
+      <Project>{172fd43a-ea77-4e53-b40b-b9070c01536d}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\PhysicsEngine\PhysicsEngine.vcxproj">
       <Project>{ee6b6d96-c2ea-46c8-80b9-fe691c37ea16}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SoundEngine\SoundEngine.vcxproj">
+      <Project>{e8c28d4e-dc89-42ac-846b-5bc16230d531}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -21,7 +21,7 @@ int main()
 	// 2 : Setup shader(s) and draw the Skybox..
 	// 3 : Load Meshes..
 	// 4 : Have an interface to draw said mesh at simple position.. glm::mat4 whatever..
-	// I will integrate the the component engine so that we can load meshes and have their state/location modified externally 
+	// I will integrate the component engine so that we can load meshes and have their state/location modified externally 
 
 	std::string waitForInput;
 	std::cin >> waitForInput;
