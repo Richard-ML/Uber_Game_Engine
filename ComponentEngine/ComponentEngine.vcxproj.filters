@@ -66,20 +66,20 @@
     <ClInclude Include="stdafx.h">
       <Filter>Config\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="externals.h">
-      <Filter>Config\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="iComponent.h">
       <Filter>DataModel\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="global.h">
-      <Filter>Config\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ComponentManager.h">
       <Filter>ViewModel\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cComponentEngine.h">
       <Filter>ViewModel\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="externals.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
