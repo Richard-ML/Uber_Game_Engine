@@ -79,7 +79,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="externals.h">
-      <Filter>Header Files</Filter>
+      <Filter>Config\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

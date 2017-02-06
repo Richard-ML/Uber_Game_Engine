@@ -72,7 +72,6 @@ namespace GraphicsEngine {
 			// Set shader model. Does this really make a difference?
 			glShadeModel(GL_SMOOTH);
 
-			glm::vec3 randomColor = glm::abs(glm::ballRand(255.0f));
 			// Clear the screen..
 			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
