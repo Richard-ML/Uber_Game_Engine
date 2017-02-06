@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -22,30 +14,80 @@
     <Filter Include="Config\Source Files">
       <UniqueIdentifier>{371e8309-05c6-44e8-bfe7-2fb469c415c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{b41c5a14-b593-477c-9f04-0805bcf825a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModel">
+      <UniqueIdentifier>{e4c9cf92-43d1-40b9-a63e-0d95c7f38141}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModel\Header Files">
+      <UniqueIdentifier>{6cf1998b-24ab-439d-8616-76362164e148}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModel\Source Files">
+      <UniqueIdentifier>{9f6ec7fe-0220-49fe-b221-4bc59e449f47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View">
+      <UniqueIdentifier>{eb0c486a-6266-4ee1-a1b5-0d88115c4ea0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View\Header Files">
+      <UniqueIdentifier>{dd40ef37-56c9-4a03-86c5-440bbe9c7ff3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View\Source Files">
+      <UniqueIdentifier>{b8873e61-4799-430e-8276-f81d535354dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataModel">
+      <UniqueIdentifier>{2df9cc5e-2b5b-48e3-b156-b905bc02942e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataModel\Header Files">
+      <UniqueIdentifier>{293b150e-5588-4bb7-bc2b-9358eb9687ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataModel\Source Files">
+      <UniqueIdentifier>{c103ea27-c1b6-45e4-aa7d-568bc553779e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cGraphicsEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Config\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Config\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>ViewModel\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cGraphicsEngine.h">
+      <Filter>View\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="externals.h">
+      <Filter>Config\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cGraphicsEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Config\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <Filter>Config\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="callbacks.cpp">
+      <Filter>ViewModel\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="global.cpp">
+      <Filter>ViewModel\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cGraphicsEngine.cpp">
+      <Filter>View\Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Skybox.FragmentShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Skybox.VertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

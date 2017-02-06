@@ -50,11 +50,14 @@ namespace SoundEngine {
 					std::chrono::high_resolution_clock::now() -
 					lastTime); // Get the time that as passed
 			// DO STUFF!!! 
-
+	
 			//////////////
 			lastTime = std::chrono::high_resolution_clock::now();
 			Sleep(35); // Free the thread
 		} while (true);
+
+		// TODO: Clean up resources..
+
 		return 0;
 	}
 }

@@ -1,10 +1,16 @@
 #include "stdafx.h"
+#include "global.h"
 #include "cGraphicsEngine.h"
-#include <stdio.h>
-//#include <stdlib.h>
-
 #include <ctime>
 #include <chrono>
+// Forward deceleration of local functions
+void initializeGLFW();
+void createTheBuffers();
+void bindTheBuffers();
+bool setupTheShader();
+void renderSkybox();
+void renderScene();
+
 
 // The PIMPL idiom aka Compilation Firewall
 // Purpose: Encapsulate private member variables. Reduces make-time,
@@ -38,6 +44,13 @@ namespace GraphicsEngine {
 	}
 
 	DWORD cGraphicsEngine::graphicsThread(void *lpParam) {
+		// TODO: Set initial window title via external configuration file.. (.xml/.json)
+		gWindowTitle = "Multi-threaded GraphicsEngine Window!";
+
+
+		// Initialize GLFW
+		initializeGLFW();
+
 		std::chrono::high_resolution_clock::time_point lastTime =
 			std::chrono::high_resolution_clock::now();
 		std::chrono::duration<float> deltaTime;
@@ -50,13 +63,111 @@ namespace GraphicsEngine {
 				std::chrono::duration_cast<std::chrono::duration<float>>(
 					std::chrono::high_resolution_clock::now() -
 					lastTime); // Get the time that as passed
-							   // DO STUFF!!! 
 
-							   //////////////
+			// CORE RENDERING ROUTINE --- START
+
+			// Use primary rendering shader
+			//glUseProgram(gProgramID);
+
+			// Set shader model. Does this really make a difference?
+			glShadeModel(GL_SMOOTH);
+
+			glm::vec3 randomColor = glm::abs(glm::ballRand(255.0f));
+			// Clear the screen..
+			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			
+
+			// Render Skybox
+			//renderSkybox();
+
+
+			// Render objects
+			//renderScene();
+
+			// Swap buffers..
+			glfwSwapBuffers(gWindow);
+			glfwPollEvents();
+			
+			// CORE RENDERING ROUTINE --- END
 			lastTime = std::chrono::high_resolution_clock::now();
-			Sleep(35); // Free the thread
-		} while (true);
+
+			// Aim for 60FPS
+			// 1000 / 60 = ~16.6 milliseconds
+			float msTimePassed = deltaTime.count() / 1000.0f;
+			if (msTimePassed >= 16.6f)
+				Sleep(1); // Free the thread
+			else
+				Sleep(16.6f - msTimePassed); // Sleep for 16.6 ms
+		} while (glfwGetKey(gWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
+			!glfwWindowShouldClose(gWindow));
+
+
+		// TODO: Clean up resources..
+		glfwTerminate();
+
+
 		return 0;
 	}
+}
+
+void initializeGLFW() {
+	if (!glfwInit()) {
+		fprintf(stderr, "Failed to initialize GLFW\n");
+		system("pause");
+	}
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
+		GL_TRUE); // To make MacOS happy; should not be needed
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+	GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+	glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+	glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+
+	glEnable(GL_MULTISAMPLE);
+	// Open a window and create its OpenGL context
+	gWindow =
+		glfwCreateWindow(mode->width, mode->height, gWindowTitle.c_str(), NULL, NULL);
+	if (gWindow == NULL) {
+		fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, "
+			"they are not 3.3 compatible.\n");
+		glfwTerminate();
+		system("pause");
+	}
+	glfwMakeContextCurrent(gWindow);
+
+	// Initialize GLEW
+	glewExperimental = GL_TRUE;
+	if (glewInit() != GLEW_OK) {
+		fprintf(stderr, "Failed to initialize GLEW\n");
+		glfwTerminate();
+		system("pause");
+	}
+
+	// Register Callback Functions
+	glfwSetWindowSizeCallback(gWindow, callback_windowResize);
+	glfwSetWindowCloseCallback(gWindow, callback_WindowClose);
+	glfwSetKeyCallback(gWindow, callback_KeyPress);
+
+	// Ensure we can capture the escape key being pressed below
+	glfwSetInputMode(gWindow, GLFW_STICKY_KEYS, GL_TRUE);
+
+	glfwPollEvents();
+
+	// Load the shader
+	//if (!setupTheShader()) {
+	//	std::cout << "Oh no! The shaders didn't load!!" << std::endl;
+	//	system("pause");
+	//	return -1;
+	//}
 
 }
+
+
