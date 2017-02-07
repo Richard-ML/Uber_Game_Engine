@@ -4,7 +4,7 @@
 namespace ComponentManager {
 	class iComponent {
 		//virtual cComponent* getType() = 0;
-		virtual void update() = 0;
+		//virtual void update() = 0;
 		virtual bool loadFromXML(rapidxml::xml_node<> *componentNode) = 0;
 		virtual void command(std::string method,
 			std::string value) = 0; // Command pattern.
