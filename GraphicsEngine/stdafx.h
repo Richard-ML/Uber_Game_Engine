@@ -11,8 +11,11 @@
 // Windows Header Files:
 #include <windows.h>
 #include <string>
-
-
+#include <map>
+#include <vector>
+#include <sstream>
+#include <fstream>
+#include <iostream>
 
 // TODO: reference additional headers your program requires here
 #include "externals.h"

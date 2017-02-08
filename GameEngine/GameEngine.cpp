@@ -3,7 +3,8 @@
 
 #include "stdafx.h"
 #include <iostream>
-
+#include "global.h"
+#include <chrono>
 int main()
 {
 
@@ -12,6 +13,32 @@ int main()
 
 	// TODO: Crate window using g_pGraphicsEngine interface..
 	// .. Load XML data & create entities
+	g_pEntityManager->loadGameFromXML("GameAssets.xml");
+	
+	// START THE ENGINES!
+	
+	std::chrono::high_resolution_clock::time_point lastTime =
+		std::chrono::high_resolution_clock::now();
+	std::chrono::duration<float> deltaTime;
+	do {
+		//Engines are running! CORE ROUTINE --- BEGIN
+		std::chrono::high_resolution_clock::time_point t2 =
+			std::chrono::high_resolution_clock::now();
+		deltaTime =
+			std::chrono::duration_cast<std::chrono::duration<float>>(
+				std::chrono::high_resolution_clock::now() -
+				lastTime); // Get the time that as passed
+		/////////////////////////////////////////////////////////////
+		g_pPhysicsEngine->update(deltaTime.count());
+		g_pAIEngine->update(deltaTime.count()); // In seconds!
+		g_pGraphicsEngine->update(deltaTime.count());
+
+		// CORE ROUTINE --- END
+		lastTime = std::chrono::high_resolution_clock::now();
+
+	} while (true);
+
+
 
 	system("pause");
 

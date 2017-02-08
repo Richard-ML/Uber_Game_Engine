@@ -71,14 +71,17 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Include\GLM;$(SolutionDir)GraphicsEngine;$(SolutionDir)ComponentEngine;$(SolutionDir)ComponentEngine;$(SolutionDir)GraphicsEngine;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\GLM;$(SolutionDir)GraphicsEngine;$(SolutionDir)ComponentEngine;$(SolutionDir)ComponentEngine;$(SolutionDir)GraphicsEngine;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Include\rapidxml;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)GraphicsEngine;$(SolutionDir)ComponentEngine;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Include\rapidxml;$(SolutionDir)GraphicsEngine;$(SolutionDir)ComponentEngine;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Include\rapidxml;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>$(SolutionDir)SoundEngine;$(SolutionDir)AIEngine;$(SolutionDir)GraphicsEngine;$(SolutionDir)PhysicsEngine;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -97,6 +100,15 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy /Y "$(SolutionDir)Include\Assimp\Assimp32.dll" "$(TargetDir)Assimp32.dll"
+copy /Y "$(SolutionDir)Include\fmod\fmod.dll" "$(TargetDir)fmod.dll"
+copy /Y "$(SolutionDir)Include\FreeImage\FreeImage.dll" "$(TargetDir)FreeImage.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -129,6 +141,11 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(SolutionDir)Include\Assimp\Assimp32.dll" "$(TargetDir)Assimp32.dll"
+copy /Y "$(SolutionDir)Include\fmod\fmod.dll" "$(TargetDir)fmod.dll"
+copy /Y "$(SolutionDir)Include\FreeImage\FreeImage.dll" "$(TargetDir)FreeImage.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -151,12 +168,14 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cEntityManager.h" />
     <ClInclude Include="externals.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cEntityManager.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -167,12 +186,24 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AIEngine\AIEngine.vcxproj">
+      <Project>{9e6e1c83-8f5f-45ff-beae-a9585b5a3ee5}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\ComponentEngine\ComponentEngine.vcxproj">
       <Project>{8148e400-ee95-4930-8039-90ccc55da543}</Project>
     </ProjectReference>
     <ProjectReference Include="..\GraphicsEngine\GraphicsEngine.vcxproj">
       <Project>{67e12b20-6593-4653-be94-c516b965ead9}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\PhysicsEngine\PhysicsEngine.vcxproj">
+      <Project>{ee6b6d96-c2ea-46c8-80b9-fe691c37ea16}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SoundEngine\SoundEngine.vcxproj">
+      <Project>{e8c28d4e-dc89-42ac-846b-5bc16230d531}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="GameAssets.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

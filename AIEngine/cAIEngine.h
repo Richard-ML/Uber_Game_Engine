@@ -31,7 +31,7 @@ namespace AIEngine {
 
 	public:
 		static AIEngine_API  cAIEngine *instance();
-		static DWORD __cdecl aiThread(void* lpParam);
+		AIEngine_API void update(float deltaTime);
 	};
 
 }

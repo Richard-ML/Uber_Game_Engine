@@ -20,3 +20,7 @@ void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 		}
 
 }
+void callback_Error(int, const char* error)
+{
+	std::cout << "GLFW Error: " << error << std::endl;
+}

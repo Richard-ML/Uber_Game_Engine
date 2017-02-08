@@ -71,14 +71,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Include\GLM;$(SolutionDir)Include\glfw\include;$(SolutionDir)Include\glew\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(SolutionDir)Include\GLM;$(SolutionDir)Include\glfw\include;$(SolutionDir)Include\glew\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\FreeImage;$(SolutionDir)Include\Assimp</IncludePath>
+    <LibraryPath>$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\FreeImage;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Include\glfw\include;$(SolutionDir)Include\glew\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(SolutionDir)Include\glfw\include;$(SolutionDir)Include\glew\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\FreeImage;$(SolutionDir)Include\Assimp</IncludePath>
+    <LibraryPath>$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\FreeImage;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -96,8 +98,12 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Include\glfw\lib\$(Configuration);$(SolutionDir)Include\glew\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;GLEW_1130.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Assimp.lib;FreeImage.lib;glfw3.lib;GLEW_1130.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -129,7 +135,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Include\glfw\lib\$(Configuration);$(SolutionDir)Include\glew\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;GLEW_1130.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Assimp.lib;FreeImage.lib;glfw3.lib;GLEW_1130.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -153,7 +159,11 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cCamera.h" />
     <ClInclude Include="cGraphicsEngine.h" />
+    <ClInclude Include="cMeshManager.h" />
+    <ClInclude Include="cShaderManager.h" />
+    <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="externals.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="stdafx.h" />
@@ -161,7 +171,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
+    <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cGraphicsEngine.cpp" />
+    <ClCompile Include="cMeshManager.cpp" />
+    <ClCompile Include="cShaderManager.cpp" />
+    <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -185,8 +199,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Skybox.FragmentShader.glsl" />
-    <None Include="Skybox.VertexShader.glsl" />
+    <None Include="Skybox.fs.glsl" />
+    <None Include="Skybox.vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

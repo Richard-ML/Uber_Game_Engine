@@ -1,4 +1,5 @@
 #pragma once
+#include "..\Include\rapidxml\rapidxml.hpp"
 //#define GLM_FORCE_SWIZZLE
 #include "..\Include\glm\glm\glm.hpp"
 

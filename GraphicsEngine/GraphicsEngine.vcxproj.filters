@@ -64,6 +64,18 @@
     <ClInclude Include="externals.h">
       <Filter>Config\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cMeshManager.h">
+      <Filter>DataModel\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cTextureManager.h">
+      <Filter>DataModel\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cShaderManager.h">
+      <Filter>DataModel\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cCamera.h">
+      <Filter>DataModel\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -81,12 +93,24 @@
     <ClCompile Include="cGraphicsEngine.cpp">
       <Filter>View\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cMeshManager.cpp">
+      <Filter>DataModel\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cShaderManager.cpp">
+      <Filter>DataModel\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cTextureManager.cpp">
+      <Filter>DataModel\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cCamera.cpp">
+      <Filter>DataModel\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Skybox.FragmentShader.glsl">
+    <None Include="Skybox.vs.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Skybox.VertexShader.glsl">
+    <None Include="Skybox.fs.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

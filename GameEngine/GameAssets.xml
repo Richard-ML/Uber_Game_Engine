@@ -1,0 +1,15 @@
+<GameAssets>
+  <CubeMaps>
+    <CubeMap>
+      <Face path="assets/CubeMaps/Skybox_right1_posX.png" />
+      <Face path="assets/CubeMaps/Skybox_left2_negX.png" />
+      <Face path="assets/CubeMaps/Skybox_bottom4_negY.png" />
+      <Face path="assets/CubeMaps/Skybox_top3_posY.png" />
+      <Face path="assets/CubeMaps/Skybox_front5_posZ.png" />
+      <Face path="assets/CubeMaps/Skybox_back6_negZ.png" />
+    </CubeMap>
+  </CubeMaps>
+
+  <!--<GameEntities>-->
+</GameAssets>
+

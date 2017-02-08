@@ -111,26 +111,26 @@ return 0;
 	cPhysicsEngine::cPhysicsEngine() {
 		this->impl()->m_cWorld = new cWorld();
 	}
-
-	DWORD cPhysicsEngine::physicsThread(void *lpParam) {
-		std::chrono::high_resolution_clock::time_point lastTime =
-			std::chrono::high_resolution_clock::now();
-		std::chrono::duration<float> deltaTime;
-		cPhysicsEngine *physicsEngine =
-			reinterpret_cast<cPhysicsEngine *>(lpParam);
-		do {
-			std::chrono::high_resolution_clock::time_point t2 =
-				std::chrono::high_resolution_clock::now();
-			deltaTime =
-				std::chrono::duration_cast<std::chrono::duration<float>>(
-					std::chrono::high_resolution_clock::now() -
-					lastTime); // Get the time that as passed
-			physicsEngine->impl()->m_cWorld->step(deltaTime.count());
-			lastTime = std::chrono::high_resolution_clock::now();
-			Sleep(35); // Free the thread
-		} while (true);
-		return 0;
-	}
+	/* Ignore this please going to use it later..
+	//WORD cPhysicsEngine::physicsThread(void *lpParam) {
+	//	std::chrono::high_resolution_clock::time_point lastTime =
+	//		std::chrono::high_resolution_clock::now();
+	//	std::chrono::duration<float> deltaTime;
+	//	cPhysicsEngine *physicsEngine =
+	//		reinterpret_cast<cPhysicsEngine *>(lpParam);
+	//	do {
+	//		std::chrono::high_resolution_clock::time_point t2 =
+	//			std::chrono::high_resolution_clock::now();
+	//		deltaTime =
+	//			std::chrono::duration_cast<std::chrono::duration<float>>(
+	//				std::chrono::high_resolution_clock::now() -
+	//				lastTime); // Get the time that as passed
+	//		physicsEngine->impl()->m_cWorld->step(deltaTime.count());
+	//		lastTime = std::chrono::high_resolution_clock::now();
+	//		Sleep(35); // Free the thread
+	//	} while (true);
+	//	return 0;
+	*/
 	
 	PhysicsEngine_API iCollisionShape * cPhysicsEngine::createCollisionShape(eShapeType shapeType)
 	{
@@ -158,6 +158,13 @@ return 0;
 		rb->setCollisionShape(shape);
 		return rb;
 	}
+	PhysicsEngine_API void cPhysicsEngine::update(float deltaTime)
+	{
+		// Do physics stuff!! 
+		this->impl()->m_cWorld->step(deltaTime);
+		printf("Physics did stuff!\n");
+		return;
+	}
 
 	PhysicsEngine_API void cPhysicsEngine::addRigidBodyToWorld(iRigidBody * rigidBody)
 	{
@@ -174,10 +181,13 @@ return 0;
 			printf("Physics Engine Initialized\n");
 			//TODO: Run initialize() for shapes
 			s_cPhysicsEngine = new cPhysicsEngine();
+			/* Ignore this please! 
+			//DWORD myThreadID;
+			//HANDLE myHandle = CreateThread(NULL, 0, // stack size
+			//(LPTHREAD_START_ROUTINE) &PhysicsEngine::cPhysicsEngine::physicsThread, reinterpret_cast<void*>(s_cPhysicsEngine), 0, &myThreadID);
+			*/
+			// Do one time setup! Anything need to be initialized? 
 
-			DWORD myThreadID;
-			HANDLE myHandle = CreateThread(NULL, 0, // stack size
-				(LPTHREAD_START_ROUTINE) &PhysicsEngine::cPhysicsEngine::physicsThread, reinterpret_cast<void*>(s_cPhysicsEngine), 0, &myThreadID);
 		}
 		return s_cPhysicsEngine;
 	}

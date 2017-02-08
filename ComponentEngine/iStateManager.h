@@ -1,7 +1,6 @@
 #pragma once
 #include "stdafx.h"
 #include <memory>
-#include <thread>
 struct sState {
   bool isMoving;
   glm::vec3 turnVelocity;
@@ -120,13 +119,14 @@ public:
 class cState : public iState, iStateNodeHandle {
 private:
 	////////////////////////////////////////////////////////////////////////////
-	friend class cStateNode; // Set of methods for stateNode to use that will not
-							 // result in an endless circular loop..
-	friend class cStateManager; // Make it easier to set m_parentNode
-								// Inherited via iStateNodeHandle
-	virtual void _setPosition(const glm::vec3 position) {
-		this->m_localStateData.position = position;
-	};
+  friend class cStateNode; // Set of methods for stateNode to use that will not
+                           // result in an endless circular loop..
+  friend class cStateManager; // Make it easier to set m_parentNode Inherited
+                              // via iStateNodeHandle
+
+  virtual void _setPosition(const glm::vec3 position) {
+    this->m_localStateData.position = position;
+        };
 	virtual void _setMass(const float mass) {
 		this->m_localStateData.mass = mass;
 	};
@@ -143,6 +143,19 @@ private:
 		this->m_localStateData.isMoving = isMoving;
 	};
 
+	/////////////////////////////////////////////////////////////////////////////
+	// Ignore this.. (Nothing to see here!)
+	//std::queue<std::packaged_task<void()>> m_task_queue;
+	//
+	//template<class Function, class ...Args>
+	//std::future<typename std::result_of<Function(Args...)>::type>
+	//	dispatch(Function &&f, Args &&...args) {
+	//	std::packaged_task<typename std::result_of<Function(Args...)>::type()> task(
+	//		std::bind(f, args...));
+	//	auto res = task.get_future();
+	//	m_task_queue.push(std::packaged_task<void()>(std::move(task)));
+	//	return res;
+	//}
 	////////////////////////////////////////////////////////////////////////////
 	iStateNode *m_parentNode;
 	sState m_localStateData;
@@ -175,14 +188,41 @@ public:
 		m_parentNode->setIsMoving(isMoving);
 		this->m_localStateData.isMoving = isMoving;
 	}
+	void doTasks() {
+		//http://stackoverflow.com/questions/7548480/how-do-i-create-a-packaged-task-with-parameters
+		//https://github.com/jakaspeh/concurrency/blob/master/packagedTask.cpp
+		//while (!m_task_queue.empty())
+		//{
+		//	 m_task_queue.front().get_future().get();
+		//	 m_task_queue.pop();
+		//}
+	}
+
+
 };
 
-
+// Ignore this.. (Nothing to see here!)
+//template <typename F, typename A>
+//class cTask {
+//	typedef typename std::result_of<F(A)>::type result_type;
+//	std::future<result_type> result;
+//public:
+//	cTask(F &&f, A &&a)
+//	{
+//		std::packaged_task<result_type(A)> task(f);
+//		result = task.get_future();
+//	}
+//	runTask() {
+//		result.get();
+//	}
+//	
+//};
 
 class cStateNode : public iStateNode {
 private:
   friend class cState;
   friend class cStateManager;
+  // https://msdn.microsoft.com/en-us/library/dd492418.aspx  Could be used to send updates in parallel
   std::vector<iState *> m_childStates;
   std::string uniqueID;
   sState _localStateData;
@@ -192,40 +232,67 @@ public:
   // Inherited via iStateNode
   virtual void setPosition(const glm::vec3 position) override {
     this->_localStateData.position = position;
-                for each(iState *
-                       state in m_childStates) dynamic_cast<cState *>(state)
-                      ->_setPosition(position);
+	for each(iState *
+		state in m_childStates)
+	{
+		
+		cState* curState = dynamic_cast<cState *>(state);
+		curState->_setPosition(position);
+	   //g_pGraphicsEngine->dispatch(&curState->_setPosition, position);
+	}
   }
   virtual void setMass(const float mass) override {
     this->_localStateData.mass = mass;
-                for each(iState *
-                       state in m_childStates) dynamic_cast<cState *>(state)
-                      ->_setMass(mass);
+	for each(iState *
+		state in m_childStates)
+	{
+		cState* curState = dynamic_cast<cState *>(state);
+		curState->_setMass(mass);
+		//curState->dispatch(&curState->_setMass, mass);
+	}
   }
   virtual void setScale(const float scale) override {
     this->_localStateData.scale = scale;
-                for each(iState *
-                       state in m_childStates) dynamic_cast<cState *>(state)
-                      ->_setScale(scale);
+	for each(iState *
+		state in m_childStates)
+	{
+		cState* curState = dynamic_cast<cState *>(state);
+		curState->_setScale(scale);
+		//curState->dispatch(*curState->_setScale, scale);
+	}
   }
   virtual void setTransform(const glm::mat4 transform) override {
     this->_localStateData.transform = transform;
-                for each(iState *
-                       state in m_childStates) dynamic_cast<cState *>(state)
-                      ->_setTransform(transform);
+	for each(iState *
+		state in m_childStates)
+	{
+		cState* curState = dynamic_cast<cState *>(state);
+		curState->_setTransform(transform);
+		//curState->dispatch(&curState->_setTransform, transform);
+	}
   }
   virtual void setIsColliding(bool isColliding) override {
     this->_localStateData.isColliding = isColliding;
-                for each(iState *
-                       state in m_childStates) dynamic_cast<cState *>(state)
-                      ->_setIsColliding(isColliding);
+	for each(iState *
+		state in m_childStates)
+	{
+		cState* curState = dynamic_cast<cState *>(state);
+		curState->_setIsColliding(isColliding);
+		//curState->dispatch(&cState::_setIsColliding , isColliding);
+	}
   }
   virtual void setIsMoving(bool isMoving) override {
     this->_localStateData.isMoving = isMoving;
-                for each(iState *
-                       state in m_childStates) dynamic_cast<cState *>(state)
-                      ->_setIsMoving(isMoving);
+	for each(iState *
+		state in m_childStates)
+	{
+		cState* curState = dynamic_cast<cState *>(state);
+		curState->_setIsMoving(isMoving);
+		//curState->dispatch(&curState->_setIsMoving, isMoving);
+	}
   }
+
+
 };
 
 
@@ -237,6 +304,7 @@ private:
 	int m_nextID;
 	std::vector<iStateNode *> m_childStates;
 	std::map<std::string, iStateNode *> m_MapIDTOStateNode;
+	
 	// Inherited via iStateManager
 public:
 	virtual std::string registerState() override {
@@ -260,3 +328,4 @@ public:
 		return state;
 	}
 };
+

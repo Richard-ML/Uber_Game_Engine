@@ -29,33 +29,27 @@ namespace AIEngine {
 		{
 			printf("AI Engine Initialized\n");
 			s_cAIEngine = new cAIEngine();
-			DWORD myThreadID;
-			HANDLE myHandle = CreateThread(NULL, 0, // stack size
-			(LPTHREAD_START_ROUTINE)&AIEngine::cAIEngine::aiThread, reinterpret_cast<void*>(s_cAIEngine), 0, &myThreadID);
-		}
+
+			// One time setup code goes here!! Anything to initialize? 
+
 		return s_cAIEngine;
 	}
 
-   DWORD cAIEngine::aiThread(void *lpParam) {
-	   std::chrono::high_resolution_clock::time_point lastTime =
-		   std::chrono::high_resolution_clock::now();
-	   std::chrono::duration<float> deltaTime;
-	   cAIEngine *physicsEngine =
-		   reinterpret_cast<cAIEngine *>(lpParam);
-	   do {
-		   std::chrono::high_resolution_clock::time_point t2 =
-			   std::chrono::high_resolution_clock::now();
-		   deltaTime =
-			   std::chrono::duration_cast<std::chrono::duration<float>>(
-				   std::chrono::high_resolution_clock::now() -
-				   lastTime); // Get the time that as passed
-							  // DO STUFF!!! 
+}
 
-							  //////////////
-		   lastTime = std::chrono::high_resolution_clock::now();
-		   Sleep(35); // Free the thread
-	   } while (true);
-	   return 0;
+   AIEngine_API void AIEngine::cAIEngine::update(float deltaTime)
+   {
+	   // Do AI stuff!
+	   printf("AI did stuff!\n");
+
+
+
+
+
+
+
+
+	   return;
+
    }
-
 }

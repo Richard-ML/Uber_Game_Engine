@@ -20,10 +20,15 @@ namespace GraphicsEngine {
 		friend class cGraphicsEngine_Impl; // The PIMPL idiom aka Compilation Firewall
 		const cGraphicsEngine_Impl *impl() const;
 		cGraphicsEngine_Impl *impl();
-
 		cGraphicsEngine() {}; // Constructor is private therefore a new instance can not be made
 						// externally. Only available to members or friends of this class..
-		~cGraphicsEngine() {}
+		~cGraphicsEngine() {
+			// TODO: Clean up resources..
+			glfwTerminate();
+		
+		
+		
+		}
 		// Not defined to prevent copying of the only instance of the class.
 		cGraphicsEngine(const cGraphicsEngine &) {}; // Disallow copy constructor
 		cGraphicsEngine &operator=(const cGraphicsEngine &GraphicsManager) {
@@ -31,7 +36,8 @@ namespace GraphicsEngine {
 
 	public:
 		static GraphicsEngine_API  cGraphicsEngine *instance();
-		static DWORD __cdecl graphicsThread(void* lpParam);
+		static GraphicsEngine_API  void loadCubeMap(rapidxml::xml_node<> *cubeNode);
+		GraphicsEngine_API void update(float deltaTime);
 	};
 
 }
