@@ -1,6 +1,8 @@
 #pragma once
 #include "stdafx.h"
 #include <memory>
+// Data that is exchanged between all engines! The iState interface is changed
+// to provide access to this data!
 struct sState {
   bool isMoving;
   glm::vec3 turnVelocity;
@@ -32,64 +34,24 @@ public:
                                            // component must subscribe to said
                                            // state object to access their data
 
-  // Anything can subscribe to a state.. A iStateNode will be created on their
-  // behave.
+  // Anything can subscribe to an iStateNode.. An iState will be created for them
+  // The internally uses the parent iStateNode to exchange state information
+  // with peer components
   // A pointer to its context will be stored in the State Manager.. It will be
-  // used to
-  // When another external user changes the state via core interface all
-  // subscribed iStateNodes will be
-  // Notified via their core interface.. This way their local copy of state will
-  // be updated when their specif thread is
-  // ready..
+
+  // TODO: each iState has its own local copy of the sState 
+  // This will be used when the iState enters/exits thread 
+  // -safe mode. (Multi-Threading not yet implemented) 
   virtual iState *subscribe(std::string stateNodeID) = 0;
-  // NOTE: The stateNodeID is sent to each engine with load data (xml,json) per
-  // (ENTITY) from GameEngine!
-
-  // TODO: Remove states etc..
+  // NOTE: An iState* is sent to each component's corresponding
+  // engine with load data (xmlNode,json)
 };
 
-// CORE INTERFACES EACH ENGINE WILL USE
 
-// Change state data (used by core state manager to dispatch updates to each
-// engine which implements the same interface!
-class iGeomerty {
-public:
-  virtual void setPosition(const glm::vec3 position) = 0;
-  virtual void setMass(const float mass) = 0;
-  virtual void setScale(const float scale) = 0;
-  virtual void setTransform(const glm::mat4 transform) = 0;
-};
-
-// Change of behaviour states etc.. (like angry) (dead) (static non-moving)
-class iBehaviour {
-public:
-  virtual void setIsColliding(bool isColliding) = 0; //
-  virtual void
-  setIsMoving(bool isMoving) = 0; // Would be used by both physics and animation
-};
-
-// Apply velocity increment orientation etc.. Used by control components that
-// use the inputManager for callbacks based on specific input to move around
-// entities.
-// Also used by the AI engine to move around entities using internal logic
-class iControl {
-  // adjust("Turn"/"")Velocity(glm::vec3) etc..
-};
-
-// See cState for implementation!
-class iState : public iGeomerty, iBehaviour, iControl {
-public:
-  // Inherited via iGeomerty
-  virtual void setPosition(const glm::vec3 position) = 0;
-  virtual void setMass(const float mass) = 0;
-  virtual void setScale(const float scale) = 0;
-  virtual void setTransform(const glm::mat4 transform) = 0;
-
-  // Inherited via iBehaviour
-  virtual void setIsColliding(bool isColliding) = 0;
-  virtual void setIsMoving(bool isMoving) = 0;
-};
-
+// A way for the state manager to update the sState of each *iState
+// When any iState changes a value via setter.
+// This handle does not make a call back to the iStateNode
+// Like the regular iState setters. (prevents endless loop)
 class iStateNodeHandle {
 private:
   // Inherited via iState
@@ -100,9 +62,9 @@ private:
   virtual void _setIsColliding(bool isColliding) = 0;
   virtual void _setIsMoving(bool isMoving) = 0;
 };
-
-// Core state interface: Parent to state nodes, stores a proxy of the latest
-// data from all other interfaces! :D
+//
+//// Core state interface: Parent to state nodes, stores a proxy of the latest
+//// data from all other interfaces! :D
 class iStateNode : public iGeomerty, iBehaviour, iControl {
 public:
 	// Inherited via iGeomerty
@@ -111,9 +73,21 @@ public:
 	virtual void setScale(const float scale) = 0;
 	virtual void setTransform(const glm::mat4 transform) = 0;
 
+	virtual void getPosition(glm::vec3 &position) = 0;
+	virtual void getMass(float &mass) = 0;
+	virtual void getScale(float &scale) = 0;
+	virtual void getTransform(glm::mat4 &transform) = 0;
+
+	virtual glm::vec3 getPosition() = 0;
+	virtual float getMass() = 0;
+	virtual float getScale() = 0;
+	virtual glm::mat4 getTransform() = 0;
+
 	// Inherited via iBehaviour
 	virtual void setIsColliding(bool isColliding) = 0;
 	virtual void setIsMoving(bool isMoving) = 0;
+
+	// Inherited via iControl
 };
 
 class cState : public iState, iStateNodeHandle {
@@ -188,17 +162,32 @@ public:
 		m_parentNode->setIsMoving(isMoving);
 		this->m_localStateData.isMoving = isMoving;
 	}
-	void doTasks() {
-		//http://stackoverflow.com/questions/7548480/how-do-i-create-a-packaged-task-with-parameters
-		//https://github.com/jakaspeh/concurrency/blob/master/packagedTask.cpp
-		//while (!m_task_queue.empty())
-		//{
-		//	 m_task_queue.front().get_future().get();
-		//	 m_task_queue.pop();
-		//}
-	}
+	// Someday we will have a job pool for each thread. So that threads can 
+	// Update values when their thread is ready..
+	//void doTasks() {
+	//	//http://stackoverflow.com/questions/7548480/how-do-i-create-a-packaged-task-with-parameters
+	//	//https://github.com/jakaspeh/concurrency/blob/master/packagedTask.cpp
+	//	//while (!m_task_queue.empty())
+	//	//{
+	//	//	 m_task_queue.front().get_future().get();
+	//	//	 m_task_queue.pop();
+	//	//}
+	//}
 
 
+	// Alternative set of iState getters with no arguments / parameters that
+	// simply returns a copy of whatever the local sState value is!Careful
+	// when using these.The value could change externally, and this data
+	// would become stale!Use get() whenever you use state data!(Won't
+	// really matter if data is stale besides in the physics engine)
+	virtual void getPosition( glm::vec3 &position) override { position = m_localStateData.position; }
+	virtual void getMass(float &mass) override {	mass = m_localStateData.mass; }
+	virtual void getScale(float &scale) override { scale = m_localStateData.scale; }
+	virtual void getTransform(glm::mat4 &transform) override { transform = m_localStateData.transform; }
+    virtual glm::vec3 getPosition() { return m_localStateData.position; }
+    virtual float getMass() { return m_localStateData.mass; }
+	virtual float getScale() { return m_localStateData.scale; }
+	virtual glm::mat4 getTransform() { return m_localStateData.transform; }
 };
 
 // Ignore this.. (Nothing to see here!)
@@ -218,6 +207,8 @@ public:
 //	
 //};
 
+// A cStateNode contains a collection of iStates. It is used to keep all of the iStates that
+// are subscribed to said iStateNode synced up
 class cStateNode : public iStateNode {
 private:
   friend class cState;
@@ -228,14 +219,12 @@ private:
   sState _localStateData;
 
 public:
-  // TODO: Could use a function wrapper? Or template?
   // Inherited via iStateNode
   virtual void setPosition(const glm::vec3 position) override {
     this->_localStateData.position = position;
 	for each(iState *
 		state in m_childStates)
 	{
-		
 		cState* curState = dynamic_cast<cState *>(state);
 		curState->_setPosition(position);
 	   //g_pGraphicsEngine->dispatch(&curState->_setPosition, position);
@@ -291,12 +280,25 @@ public:
 		//curState->dispatch(&curState->_setIsMoving, isMoving);
 	}
   }
+  // NOTE: iState* only know about the parent state node internally. These getters are 
+  // not directly accessible from within the other engines (besides GameEngine) but is not
+  // used there anyways..
+  // Used to copy latest data from the state node to new objects that subscribe to a state. 
+  virtual void getPosition(glm::vec3 &position) override { position = _localStateData.position; }
+  virtual void getMass(float &mass) override { mass = _localStateData.mass; }
+  virtual void getScale(float &scale) override { scale = _localStateData.scale; }
+  virtual void getTransform(glm::mat4 &transform) override { transform = _localStateData.transform; }
 
+  virtual glm::vec3 getPosition() { return _localStateData.position; }
+  virtual float getMass() { return _localStateData.mass; }
+  virtual float getScale() { return _localStateData.scale; }
+  virtual glm::mat4 getTransform() { return _localStateData.transform; }
 
 };
 
-
-
+// This class holds a collection of stateNodes which keep a collection of iStates in sync
+// When a change is made in an iState via setter.. The iStateNode is notified and
+// sends the new data to all of the peer iStates of said iStateNode
 class cStateManager : public iStateManager {
 	friend class cStateNode;
 
@@ -308,7 +310,7 @@ private:
 	// Inherited via iStateManager
 public:
 	virtual std::string registerState() override {
-		// TODO: hash id?
+		// TODO: Hash ID
 		std::string uID = std::to_string(m_nextID);
 		iStateNode *stateNode = new cStateNode();
 		dynamic_cast<cStateNode *>(stateNode)->uniqueID = uID;
@@ -327,5 +329,6 @@ public:
 		stateHandle->m_localStateData = stateNodeHandle->_localStateData;
 		return state;
 	}
+	cStateManager() {};
 };
 

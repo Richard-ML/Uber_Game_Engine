@@ -1,33 +1,22 @@
 #include "stdafx.h"
 #include "ComponentManager.h"
+#include "cComponentEngine.h"
 #include "global.h"
-#include <sstream>
 
 
-// TODO: Move AI logic to AIEngine.. :P ....................................................................................
 class AIControlComponent : public cComponent {
 public:
 	virtual ~AIControlComponent();
-	virtual bool loadFromXML(rapidxml::xml_node<> *componentNode);
+	virtual bool loadFromXML(rapidxml::xml_node<> *componentNode, std::string stateNodeID);
 };
 REGISTER_COMPONENT(AIControlComponent, "AIControlComponent")
 
 AIControlComponent::~AIControlComponent() {
-	m_vec_pComponents.clear(); // TODO: An entity should have a vec of shared pointers to components.. Automagic cleanup..
 }
 
-bool AIControlComponent::loadFromXML(rapidxml::xml_node<> *componentNode) {
-	rapidxml::xml_attribute<char> *att =
-		componentNode->first_attribute("componentID");
-	if (att != nullptr)
-		this->componentID =
-		atoi(componentNode->first_attribute("componentID")->value());
-	else {
-		this->componentID = gNextComponentID;
-		gNextComponentID++;
-	}
-
+bool AIControlComponent::loadFromXML(rapidxml::xml_node<> *componentNode, std::string stateNodeID) {
 	// Dispatch to corresponding engine to create.. 
+
 	return true;
 }
 
@@ -36,24 +25,14 @@ bool AIControlComponent::loadFromXML(rapidxml::xml_node<> *componentNode) {
 class InputControlComponent : public cComponent {
 public:
 	virtual ~InputControlComponent();
-	virtual bool loadFromXML(rapidxml::xml_node<> *componentNode);
+	virtual bool loadFromXML(rapidxml::xml_node<> *componentNode, std::string stateNodeID);
 };
 REGISTER_COMPONENT(InputControlComponent, "InputControlComponent")
 
-InputControlComponent::~InputControlComponent() { m_vec_pComponents.clear(); }
+InputControlComponent::~InputControlComponent() {}
 
 
-bool InputControlComponent::loadFromXML(rapidxml::xml_node<> *componentNode) {
-	rapidxml::xml_attribute<char> *att =
-		componentNode->first_attribute("componentID");
-	if (att != nullptr)
-		this->componentID =
-		atoi(componentNode->first_attribute("componentID")->value());
-	else {
-		this->componentID = gNextComponentID;
-		gNextComponentID++;
-	}
-	ComponentManager::map_ComponentIDToComponent[this->componentID] = this;
+bool InputControlComponent::loadFromXML(rapidxml::xml_node<> *componentNode, std::string stateNodeID) {
 
 	// Dispatch to corresponding engine to create.. Register a series of listeners? 
 	return true;
@@ -69,25 +48,15 @@ bool InputControlComponent::loadFromXML(rapidxml::xml_node<> *componentNode) {
 class CollisionComponent : public cComponent {
 public:
 	virtual ~CollisionComponent();
-	virtual bool loadFromXML(rapidxml::xml_node<> *componentNode);
+	virtual bool loadFromXML(rapidxml::xml_node<> *componentNode, std::string stateNodeID);
 };
 REGISTER_COMPONENT(CollisionComponent, "CollisionComponent")
 
-CollisionComponent::~CollisionComponent() { m_vec_pComponents.clear(); }
+CollisionComponent::~CollisionComponent() { }
 
 
 bool CollisionComponent::loadFromXML(
-	rapidxml::xml_node<> *componentNode) {
-	rapidxml::xml_attribute<char> *att =
-		componentNode->first_attribute("componentID");
-	if (att != nullptr)
-		this->componentID =
-		atoi(componentNode->first_attribute("componentID")->value());
-	else {
-		this->componentID = gNextComponentID;
-		gNextComponentID++;
-	}
-	ComponentManager::map_ComponentIDToComponent[this->componentID] = this;
+	rapidxml::xml_node<> *componentNode, std::string stateNodeID) {
 
 	// Dispatch to corresponding engine to create.. 
 	return true;
@@ -130,29 +99,20 @@ bool CollisionComponent::loadFromXML(
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-class RenderingComponent : public cComponent {
+class RenderableComponent : public cComponent {
 public:
-	virtual ~RenderingComponent();
-	virtual bool loadFromXML(rapidxml::xml_node<> *componentNode);
+	virtual ~RenderableComponent();
+	virtual bool loadFromXML(rapidxml::xml_node<> *componentNode, std::string stateNodeID);
 };
-REGISTER_COMPONENT(RenderingComponent, "RenderingComponent")
+REGISTER_COMPONENT(RenderableComponent, "RenderableComponent")
 
-RenderingComponent::~RenderingComponent() { m_vec_pComponents.clear(); }
+RenderableComponent::~RenderableComponent() { }
 
 
-bool RenderingComponent::loadFromXML(
-	rapidxml::xml_node<> *componentNode) {
-	rapidxml::xml_attribute<char> *att =
-		componentNode->first_attribute("componentID");
-	if (att != nullptr)
-		this->componentID =
-		atoi(componentNode->first_attribute("componentID")->value());
-	else {
-		this->componentID = gNextComponentID;
-		gNextComponentID++;
-	}
-	ComponentManager::map_ComponentIDToComponent[this->componentID] = this;
-
+bool RenderableComponent::loadFromXML(
+	rapidxml::xml_node<> *componentNode, std::string stateNodeID) {
+	iState* state = ComponentEngine::cComponentEngine::instance()->subcribeToState(stateNodeID);
+	g_pGraphicsEngine->loadRenderableComponent(componentNode, state);
 	// Dispatch to corresponding engine to create.. 
 	return true;
 }

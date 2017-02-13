@@ -76,6 +76,9 @@
     <ClInclude Include="cCamera.h">
       <Filter>DataModel\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cGraphicsObject.h">
+      <Filter>DataModel\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -111,6 +114,16 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Skybox.fs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="ClassDiagram.cd" />
+    <None Include="Simple.fs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Simple.gs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Simple.vs.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

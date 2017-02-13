@@ -19,3 +19,4 @@
 #include "..\SoundEngine\cSoundEngine.h"
 #include "..\GraphicsEngine\cGraphicsEngine.h"
 #include "..\PhysicsEngine\cPhysicsEngine.h"
+#include "..\StateInfo\State.h"

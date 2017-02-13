@@ -9,3 +9,4 @@
 #include "..\Include\glm\glm\gtx\euler_angles.hpp"
 #include "cGraphicsEngine.h"
 #include "cComponentEngine.h"
+#include "..\StateInfo\State.h"

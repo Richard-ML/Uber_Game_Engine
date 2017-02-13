@@ -11,3 +11,4 @@
 #include "..\Include\Bullet\src\LinearMath\btVector3.h"
 #include "..\Include\Bullet\src\LinearMath\btAlignedObjectArray.h"
 #include "..\Include\Bullet\src\btBulletDynamicsCommon.h"
+#include "..\StateInfo\State.h"

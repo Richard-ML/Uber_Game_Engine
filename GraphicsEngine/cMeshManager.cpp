@@ -20,8 +20,7 @@ inline const cMeshManager_Impl *cMeshManager::impl() const {
 inline cMeshManager_Impl *cMeshManager::impl() {
 	return static_cast<cMeshManager_Impl *>(this);
 }
-// Initialize vectors
-;
+
 
 cMeshManager *cMeshManager::instance() {
 	if (!s_cMeshManager)
@@ -36,9 +35,8 @@ cMeshManager *cMeshManager::instance() {
 - Loads file from disk
 - Copies information into VAO (Vertex Array Object)
 */
-bool cMeshManager::loadMeshFileIntoGLBuffer(const char *path,
-	cMeshEntry &entryOut, float scale,
-	bool isStationary) {
+bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, float scale) {
+	cMeshEntry entryOut; // not actually entry out.. so fix this TODO: 
 	entryOut.BaseIndex = 0;
 	entryOut.BaseVertex = 0;
 	entryOut.NumgIndices = 0;
@@ -177,5 +175,6 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(const char *path,
 	// trifaces MAJOR enhancement..
 
 	meshFaces.push_back(tempVecTriFace);
+	m_MapMeshNameTocMeshEntry[name] = entryOut;
 	return true;
 }

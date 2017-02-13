@@ -1,4 +1,5 @@
 <GameAssets>
+
   <CubeMaps>
     <CubeMap>
       <Face path="assets/CubeMaps/Skybox_right1_posX.png" />
@@ -9,7 +10,22 @@
       <Face path="assets/CubeMaps/Skybox_back6_negZ.png" />
     </CubeMap>
   </CubeMaps>
-
-  <!--<GameEntities>-->
+  
+  <Meshes>
+    <Mesh path="assets/Skeleton/Skeleton.obj" scale="1.0f" name="Skeleton"/>
+  </Meshes>
+  
+  <GameEntities>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton"/>
+			<!--<Light />-->
+		</RenderableComponent>
+		<!--<ControlComponent>-->
+		<!-- do some logicial thing here -->
+		<!--</ControlComponent>-->
+	</GameEntity>
+  </GameEntities>
+  
 </GameAssets>
 

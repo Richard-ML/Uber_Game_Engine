@@ -1,13 +1,21 @@
 #include "stdafx.h"
 #include "cEntityManager.h"
 #include "global.h"
+class cGameEntity {
+public:
+	std::vector<std::shared_ptr<cComponent>>
+		vec_pComponents; // Components that belong to this entity..
 
+};
 // The PIMPL idiom aka Compilation Firewall
 // Purpose: Encapsulate private member variables. Reduces make-time,
 // compile-time, and the Fragile Binary Interface Problem.
 class cEntityManager_Impl : public cEntityManager {
 	// Boilerplate
 	friend class cEntityManager;
+
+public: 
+	//std::vector<cGameEntity*> vec_pEntites;
 };
 inline const cEntityManager_Impl *cEntityManager::impl() const {
 	return static_cast<const cEntityManager_Impl *>(this);
@@ -23,7 +31,7 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 	std::cout << "Loading saved cEntity data..\n";
 	rapidxml::xml_document<> theDoc;
 	rapidxml::xml_node<> *root_node;
-
+	
 	std::ifstream theFile(filename); // load the XML data into the buffer
 	std::vector<char> bufData((std::istreambuf_iterator<char>(theFile)),
 		std::istreambuf_iterator<char>());
@@ -38,6 +46,25 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 		cTexture_node; cTexture_node = cTexture_node->next_sibling()) {
 		GraphicsEngine::cGraphicsEngine::instance()->loadCubeMap(cTexture_node);
 	}
+
+	category_node = root_node->first_node("Meshes");
+		GraphicsEngine::cGraphicsEngine::instance()->loadMeshes(category_node);
+
+
+	category_node = root_node->first_node("GameEntities");
+	for (rapidxml::xml_node<> *cGameEntity_node = category_node->first_node("GameEntity");
+		cGameEntity_node; cGameEntity_node = cGameEntity_node->next_sibling("GameEntity")) {
+		// Register new state node for the component..
+		cGameEntity* gameEntity = new cGameEntity();
+		
+		std::string stateNodeID = g_pComponentEngine->registerNewEntity();
+		// These components are loaded and share a state! ...
+		gameEntity->vec_pComponents = g_pComponentEngine->loadFromXML(cGameEntity_node, stateNodeID);
+		
+		//this->impl()->vec_pEntites.push_back(gameEntity);
+		
+	}
+
 
 	return 1;
 }

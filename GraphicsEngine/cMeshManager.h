@@ -32,9 +32,9 @@ class cMeshManager {
 public:
 	static cMeshManager *instance();
 
-	bool loadMeshFileIntoGLBuffer(const char *path, cMeshEntry &entryOut,
-		float scale, bool isStationary);
-	void loadWorldTiles(cMeshEntry &entryOut);
+	bool loadMeshFileIntoGLBuffer(std::string name, const char *path,
+		float scale);
+	//void loadWorldTiles(cMeshEntry &entryOut);
 
 	// Could be in global.. 
 	std::vector<std::vector<triFace *>> meshFaces;

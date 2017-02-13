@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\GLM;$(SolutionDir)GraphicsEngine;$(SolutionDir)ComponentEngine;$(SolutionDir)ComponentEngine;$(SolutionDir)GraphicsEngine;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)StateInfo;$(SolutionDir)SoundEngine;$(SolutionDir)AIEngine;$(SolutionDir)GraphicsEngine;$(SolutionDir)PhysicsEngine;$(SolutionDir)Include\rapidxml;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Include\rapidxml;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -79,9 +79,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Include\rapidxml;$(SolutionDir)GraphicsEngine;$(SolutionDir)ComponentEngine;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)StateInfo;$(SolutionDir)SoundEngine;$(SolutionDir)AIEngine;$(SolutionDir)GraphicsEngine;$(SolutionDir)PhysicsEngine;$(SolutionDir)Include\rapidxml;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Include\rapidxml;$(LibraryPath)</LibraryPath>
-    <ExecutablePath>$(SolutionDir)SoundEngine;$(SolutionDir)AIEngine;$(SolutionDir)GraphicsEngine;$(SolutionDir)PhysicsEngine;$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -93,7 +93,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)ComponentEngine;$(SolutionDir)GraphicsEngine;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)StateInfo;$(SolutionDir)ComponentEngine;$(SolutionDir)GraphicsEngine;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -132,7 +132,7 @@ copy /Y "$(SolutionDir)Include\FreeImage\FreeImage.dll" "$(TargetDir)FreeImage.d
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)ComponentEngine;$(SolutionDir)GraphicsEngine;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)StateInfo;$(SolutionDir)ComponentEngine;$(SolutionDir)GraphicsEngine;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -204,6 +204,9 @@ copy /Y "$(SolutionDir)Include\FreeImage\FreeImage.dll" "$(TargetDir)FreeImage.d
   </ItemGroup>
   <ItemGroup>
     <Xml Include="GameAssets.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,7 +1,8 @@
 #ifndef _cComponentEngine_HG_
 #define _cComponentEngine_HG_
 #include "stdafx.h"
-
+#include "ComponentManager.h"
+#include "iStateManager.h"
 #ifdef COMPONENTENGINE_EXPORTS
 #define ComponentEngine_API __declspec(dllexport)
 #else
@@ -28,10 +29,14 @@ namespace ComponentEngine {
 		cComponentEngine(const cComponentEngine &) {}; // Disallow copy constructor
 		cComponentEngine &operator=(const cComponentEngine &ComponentManager) {
 		} // Disallow assignment operator
-
+		static cStateManager* m_pStateManager;
 	public:
 		static ComponentEngine_API  cComponentEngine *instance();
 		//static DWORD __cdecl ComponentThread(void* lpParam);
+		static ComponentEngine_API std::vector<std::shared_ptr<cComponent>>
+			loadFromXML(rapidxml::xml_node<> *entityNode, std::string stateNodeID);
+		static ComponentEngine_API std::string registerNewEntity();
+		static ComponentEngine_API iState* subcribeToState(std::string stateID);
 	};
 
 }

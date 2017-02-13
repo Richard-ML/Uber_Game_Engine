@@ -25,28 +25,21 @@ namespace AIEngine {
 
    _declspec(dllexport) cAIEngine * cAIEngine::instance()
 	{
-		if (!s_cAIEngine)
-		{
-			printf("AI Engine Initialized\n");
-			s_cAIEngine = new cAIEngine();
-
+	   if (!s_cAIEngine)
+	   {
+		   printf("AI Engine Initialized\n");
+		   s_cAIEngine = new cAIEngine();
+	   }
 			// One time setup code goes here!! Anything to initialize? 
 
 		return s_cAIEngine;
 	}
 
-}
 
    AIEngine_API void AIEngine::cAIEngine::update(float deltaTime)
    {
 	   // Do AI stuff!
 	   printf("AI did stuff!\n");
-
-
-
-
-
-
 
 
 	   return;

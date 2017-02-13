@@ -60,4 +60,7 @@
   <ItemGroup>
     <Xml Include="GameAssets.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
 </Project>

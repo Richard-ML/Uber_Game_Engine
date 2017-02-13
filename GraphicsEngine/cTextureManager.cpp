@@ -200,19 +200,16 @@ void cTextureManager::loadTexture(rapidxml::xml_node<> *textureNode) {
 //}
 
 GLuint cTextureManager::loadCubeMap(rapidxml::xml_node<> *cubeNode) {
-	//glUseProgram(gSkyboxShaderID);
 	int width, height;
 	uniform_TextureID.push_back(0);
-	//glUseProgram(gSkyboxShaderID);
-	GLenum error = glGetError();
-
-	if (error != GL_NO_ERROR)
-	{
-		std::cout << "OpenGL Error: " << error << std::endl;
-	}
+	//GLenum error = glGetError();
+	//if (error != GL_NO_ERROR)
+	//{
+	//	std::cout << "OpenGL Error: " << error << std::endl;
+	//}
 	glGenTextures(1, &uniform_TextureID.back());
 	mapTextureNameToID["Skybox"] = nextTextureID;
-
+	
 	glActiveTexture(GL_TEXTURE0 + nextTextureID);
 	nextTextureID++;
 	glBindTexture(GL_TEXTURE_CUBE_MAP, uniform_TextureID.back());
