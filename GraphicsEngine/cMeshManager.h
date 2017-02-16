@@ -34,7 +34,7 @@ public:
 
 	bool loadMeshFileIntoGLBuffer(std::string name, const char *path,
 		float scale);
-	//void loadWorldTiles(cMeshEntry &entryOut);
+	void loadWorld();
 
 	// Could be in global.. 
 	std::vector<std::vector<triFace *>> meshFaces;
@@ -45,7 +45,7 @@ public:
 
 	// Map... aka "dictionary" "look up table"
 	std::map<std::string, cMeshEntry> m_MapMeshNameTocMeshEntry;
-
+	std::map<glm::vec3, std::string> m_mapRGBToMeshName;
 private:
 	cMeshManager() {
 	} // Constructor is private therefore a new instance can not be made

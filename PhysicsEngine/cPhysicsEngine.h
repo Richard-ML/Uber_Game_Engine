@@ -38,9 +38,10 @@ namespace PhysicsEngine {
 		static PhysicsEngine_API  cPhysicsEngine *instance();
 		static PhysicsEngine_API iCollisionShape* createCollisionShape(eShapeType shapeType);
 		static PhysicsEngine_API iRigidBody* createRigidBody(iCollisionShape* shape, sRigidBody& rigidBody);
-		//static DWORD __cdecl physicsThread(void* lpParam); // Ignore this please! 
-		static PhysicsEngine_API void addRigidBodyToWorld(iRigidBody* rigidBody);
+		//static DWORD __cdecl physicsThread(void* lpParam);
 		PhysicsEngine_API void update(float deltaTime);
+		static PhysicsEngine_API bool loadPhysicsComponent(rapidxml::xml_node<> *componentNode, iState* state);
+		static PhysicsEngine_API void addRigidBodyToWorld(iRigidBody* rigidBody);
 	};
 
 }

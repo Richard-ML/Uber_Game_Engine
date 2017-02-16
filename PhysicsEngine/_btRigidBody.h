@@ -2,6 +2,8 @@
 #define __btRigidBody_HG_
 #include "cCollisionObject.h"
 #include "iRigidBody.h"
+#include "_btWorld.h"
+#include "_btCollisionShape.h"
 #include "stdafx.h"
 #ifdef PhysicsEngine_EXPORTS
 #define PhysicsEngine_API __declspec(dllexport)
@@ -62,29 +64,31 @@ Status: Version 1.8 Alpha
 (c) Copyright(s): Fanshawe College
 //===----------------------------------------------------------------------===//
 */
-//namespace PhysicsEngine {
-//	class _btRigidBody : public iRigidBody {
-//	public:
-//		//cRigidBody(cCollisionObject* object);
-//		_btRigidBody(const sRigidBody& rigidBody);
-//		~_btRigidBody();
-//		virtual void getOrientation(glm::mat4& orientation);
-//		//virtual void getTransform(glm::mat4& transform);
-//		virtual PhysicsEngine_API void getPosition(glm::vec3& position);
-//		virtual PhysicsEngine_API void setPosition(const glm::vec3& position);
-//		virtual PhysicsEngine_API void getVelocity(glm::vec3& velocity);
-//		virtual PhysicsEngine_API void setVelocity(const glm::vec3& velocity);
-//		virtual PhysicsEngine_API void getMass(float& mass);
-//		virtual PhysicsEngine_API void setMass(const float& mass);
-//		virtual PhysicsEngine_API void getAcceleration(glm::vec3& acceleration);
-//		virtual PhysicsEngine_API void setAcceleration(const glm::vec3& acceleration);
-//		virtual PhysicsEngine_API void applyForce(const glm::vec3 velocity);
-//		virtual PhysicsEngine_API void isCollision(bool& collision);
-//		virtual PhysicsEngine_API void setCollision(bool& collision);
-//		//virtual void translate(glm::vec3& translation);
-//	private:
-//		btRigidBody m_rigidBody;
-//
-//	};
-//}
+namespace PhysicsEngine {
+	class _btRigidBody : public iRigidBody {
+		friend class _btWorld;
+		friend class _btCollisionShape;
+	public:
+		//cRigidBody(cCollisionObject* object);
+		_btRigidBody(const sRigidBody& rigidBody, iCollisionShape* collisionShape);
+		~_btRigidBody();
+		virtual PhysicsEngine_API void getOrientation(glm::mat4& orientation);
+		//virtual void getTransform(glm::mat4& transform);
+		virtual PhysicsEngine_API void getPosition(glm::vec3& position);
+		virtual PhysicsEngine_API void setPosition(const glm::vec3& position);
+		virtual PhysicsEngine_API void getVelocity(glm::vec3& velocity);
+		virtual PhysicsEngine_API void setVelocity(const glm::vec3& velocity);
+		virtual PhysicsEngine_API void getMass(float& mass);
+		virtual PhysicsEngine_API void setMass(const float& mass);
+		virtual PhysicsEngine_API void getAcceleration(glm::vec3& acceleration);
+		virtual PhysicsEngine_API void setAcceleration(const glm::vec3& acceleration);
+		virtual PhysicsEngine_API void applyForce(const glm::vec3 velocity);
+		virtual PhysicsEngine_API void isCollision(bool& collision);
+		virtual PhysicsEngine_API void setCollision(bool& collision);
+		//virtual void translate(glm::vec3& translation);
+	private:
+		btRigidBody* m_rigidBody;
+
+	};
+}
 #endif

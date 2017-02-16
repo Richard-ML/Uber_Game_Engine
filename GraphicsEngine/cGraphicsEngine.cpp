@@ -85,7 +85,7 @@ namespace GraphicsEngine {
 
 
 		// Create base object that contains iState*
-		printf("Graphics object created!");
+		printf("Graphics object created!\n");
 
 
 		return true;
@@ -96,9 +96,12 @@ namespace GraphicsEngine {
 			cMeshEntry_node; cMeshEntry_node = cMeshEntry_node->next_sibling()) {
 			// load the mesh buffers
 			bool success = false;
+			std::string meshName = cMeshEntry_node->first_attribute("name")->value();
 
+			//glm::vec3 rgb = glm::vec3(std::stof(cMeshEntry_node->first_attribute("r")->value()), std::stof(cMeshEntry_node->first_attribute("g")->value()), std::stof(cMeshEntry_node->first_attribute("b")->value()));
+			//g_pMeshManager->m_mapRGBToMeshName[rgb] = meshName;
 			success = g_pMeshManager->loadMeshFileIntoGLBuffer(
-				cMeshEntry_node->first_attribute("name")->value(),
+				meshName,
 				cMeshEntry_node->first_attribute("path")->value(),
 				std::stof(cMeshEntry_node->first_attribute("scale")->value()));
 
@@ -159,7 +162,7 @@ void initializeGLFW() {
 		system("pause");
 	}
 
-	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_SAMPLES, 8);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
@@ -174,7 +177,7 @@ void initializeGLFW() {
 	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
 
-	//glEnable(GL_MULTISAMPLE);
+	glEnable(GL_MULTISAMPLE);
 	// Open a window and create its OpenGL context
 	gWindow =
 		glfwCreateWindow(mode->width, mode->height, gWindowTitle.c_str(), NULL, NULL);
@@ -290,6 +293,7 @@ void bindTheBuffers() {
 	glVertexAttribIPointer(
 		4, 4, GL_UNSIGNED_INT, sizeof(cMeshVertex),
 		(GLvoid *)offsetToTextureInfoInBytes); // Offset in bytes to Texture Info
+
 }
 
 bool setupTheShader() {
@@ -396,6 +400,62 @@ void renderScene() {
 
 	bindTheBuffers();
 	glUseProgram(gProgramID);
+
+
+
+
+	for (int ncW = 0; ncW < 128; ncW++)
+	{
+		for (int ncD = 0; ncD < 128; ncD++)
+		{
+			float offsetX = (-1024.0f + 12.79f * (float)ncW);
+			float offsetZ = (-1024.0f + 12.79f * (float)ncD);
+
+			// per frame uniforms
+			glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
+				glm::value_ptr(projectionMatrix));
+			glUniformMatrix4fv(gUniformId_ViewMatrix, 1, GL_FALSE,
+				glm::value_ptr(viewMatrix));
+			glm::vec4 eye4;
+			gCamera->getEyePosition(eye4);
+			glUniform4fv(gUniformId_EyePosition, 1, glm::value_ptr(eye4));
+
+			glEnable(GL_BLEND);
+			// glBlendEquation(GL_FUNC_ADD);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_DEPTH_TEST);
+
+			glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
+			glEnable(GL_CULL_FACE);
+			glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+											 // you can pass here
+				GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
+								  
+			glm::mat4 transform;
+			transform[3].x = offsetX;
+			transform[3].z = offsetZ;
+
+			// TODO: Scale in object..
+			glUniformMatrix4fv(
+				gUniformId_ModelMatrix, 1, GL_FALSE,
+				glm::value_ptr(glm::scale(transform, glm::vec3(1.0f))));
+			glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
+				glm::value_ptr(glm::mat4()));
+			glUniform4fv(gUniformId_ModelColor, 1,
+				glm::value_ptr(glm::vec4(1.0f)));
+
+			glUniform1f(gUniformId_Alpha, 1.0f);
+			glDrawElementsBaseVertex(
+				GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].NumgIndices, GL_UNSIGNED_INT,
+				(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].BaseIndex),
+				g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].BaseIndex);
+
+
+		}
+	}
+
+
+
 
 	for each(cGraphicsObject* graphicObject in GraphicsEngine::cGraphicsEngine::m_vec_pGraphicObjects)
 	{

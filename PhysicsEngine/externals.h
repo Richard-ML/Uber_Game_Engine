@@ -11,4 +11,7 @@
 #include "..\Include\Bullet\src\LinearMath\btVector3.h"
 #include "..\Include\Bullet\src\LinearMath\btAlignedObjectArray.h"
 #include "..\Include\Bullet\src\btBulletDynamicsCommon.h"
+
+
+#include "..\Include\rapidxml\rapidxml.hpp"
 #include "..\StateInfo\State.h"

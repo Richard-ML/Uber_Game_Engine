@@ -96,6 +96,12 @@
     <ClInclude Include="_btRigidBody.h">
       <Filter>DataModel\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="_btWorld.h">
+      <Filter>DataModel\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_btCollisionShape.h">
+      <Filter>DataModel\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -114,10 +120,13 @@
       <Filter>DataModel\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="_btRigidBody.cpp">
-      <Filter>Config\Source Files</Filter>
+      <Filter>DataModel\Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <ClCompile Include="_btWorld.cpp">
+      <Filter>DataModel\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="_btCollisionShape.cpp">
+      <Filter>DataModel\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

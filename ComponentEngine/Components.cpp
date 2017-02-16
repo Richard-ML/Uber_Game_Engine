@@ -45,19 +45,20 @@ bool InputControlComponent::loadFromXML(rapidxml::xml_node<> *componentNode, std
 
 
 
-class CollisionComponent : public cComponent {
+class PhysicsComponent : public cComponent {
 public:
-	virtual ~CollisionComponent();
+	virtual ~PhysicsComponent();
 	virtual bool loadFromXML(rapidxml::xml_node<> *componentNode, std::string stateNodeID);
 };
-REGISTER_COMPONENT(CollisionComponent, "CollisionComponent")
+REGISTER_COMPONENT(PhysicsComponent, "PhysicsComponent")
 
-CollisionComponent::~CollisionComponent() { }
+PhysicsComponent::~PhysicsComponent() { }
 
 
-bool CollisionComponent::loadFromXML(
+bool PhysicsComponent::loadFromXML(
 	rapidxml::xml_node<> *componentNode, std::string stateNodeID) {
-
+	iState* state = ComponentEngine::cComponentEngine::instance()->subcribeToState(stateNodeID);
+	g_pPhysicsEngine->loadPhysicsComponent(componentNode, state);
 	// Dispatch to corresponding engine to create.. 
 	return true;
 }

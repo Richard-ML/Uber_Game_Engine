@@ -1,8 +1,10 @@
 <GameAssets>
 <MipmapTextures>
-  <MipmapTexture name="Dirt" pathDif="assets/TileMeshes/Textures/dirt_DIF.tga" pathNrm="assets/TileMeshes/Textures/dirt_NRM.tga" pathSpec="assets/TileMeshes/Textures/dirt_SPEC.tga" />
+ <MipmapTexture name="Dirt" pathDif="assets/Textures/sand/Dirt_Sand_003.png" pathNrm="assets/Textures/sand/Dirt_Sand_003_NORM.png" pathSpec="assets/Textures/sand/Dirt_Sand_003_SPEC.png" />
+<!-- <MipmapTexture name="Dirt" pathDif="assets/Textures/sand/sand_05_diffuse.png" pathNrm="assets/Textures/sand/sand_05_normal.png" pathSpec="assets/Textures/sand/sand_05_specular.png" />-->
   <!--<MipmapTexture name="Floor" pathDif="assets/TileMeshes/Textures/floor_DIF.tga" pathNrm="assets/TileMeshes/Textures/floor_NRM.tga" pathSpec="assets/TileMeshes/Textures/floor_SPEC.tga" />-->
   <MipmapTexture name="Skeleton" pathDif="assets/Skeleton/Skeleton_dif.tga" pathNrm="assets/Skeleton/Skeleton_norm.tga" pathSpec="assets/Skeleton/Skeleton_spec.tga" />
+ 
 </MipmapTextures>
 
   <Cubemaps>
@@ -17,8 +19,8 @@
   </Cubemaps>
   
   <Meshes>
-    <Mesh path="Assets/Skeleton/Skeleton.obj" scale="1.0f" name="Skeleton"/>
-	<Mesh path="Assets/TileMeshes/GrassTile.obj" scale="0.5f" name="GrassTile"/>
+    <Mesh path="Assets/Skeleton/Skeleton.obj" scale="1.0f" name="Skeleton" r="0" g="0" b="0"/>
+	<Mesh path="Assets/TileMeshes/GrassTile.obj" scale="0.1f" name="GrassTile" r="0" g="255" b="0"/>
  </Meshes>
   
   <GameEntities>
@@ -31,13 +33,6 @@
 		<!-- do some logicial thing here -->
 		<!--</ControlComponent>-->
 	</GameEntity>
-		<GameEntity>
-		<RenderableComponent>
-			<Mesh name="GrassTile"/>
-			<!--<Light />-->
-		</RenderableComponent>
-	</GameEntity>
-  </GameEntities>
-  
+	</GameEntities>
 </GameAssets>
 

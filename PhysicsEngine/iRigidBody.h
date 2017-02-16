@@ -19,12 +19,14 @@ namespace PhysicsEngine {
 		eCollisionFlags collisionFlag;
 		bool collision;
 		glm::vec3 position;
+		glm::quat orientation; 
+		glm::mat4 rotMatrix;
 	};
 
 	class iRigidBody: public cCollisionObject {
 	public:
 		virtual ~iRigidBody() {}
-		virtual void getOrientation(glm::mat4& orientation) = 0;
+		virtual PhysicsEngine_API void getOrientation(glm::mat4& orientation) = 0;
 		//virtual void getTransform(glm::mat4& transform) = 0;
 		virtual PhysicsEngine_API void getPosition(glm::vec3& position) = 0;
 		virtual PhysicsEngine_API void setPosition(const glm::vec3& position) = 0;

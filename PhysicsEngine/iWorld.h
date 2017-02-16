@@ -9,7 +9,7 @@
 #define PhysicsEngine_API __declspec(dllimport)
 #endif // PhysicsEngine_EXPORTS
 namespace PhysicsEngine {
-	class cCollisionObject;
+	class cCollisionObject; // TODO remove this
 	class iWorld {
 	public:
 		inline virtual void step(float deltaTime) = 0;

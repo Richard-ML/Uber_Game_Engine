@@ -178,7 +178,7 @@ void PhysicsEngine::cWorld::step(float deltaTime)
 							(*iter)->setCollision(collision);
 							//position -= dxdt *  ((deltaTime)-(timeOfCollision) );
 							
-
+							velocity = velocity * glm::vec3(0.9f);
 							float sphere1Mass, sphere2Mass;
 							(*iter)->getMass(sphere1Mass);
 							(*iter2)->getMass(sphere2Mass);
@@ -205,6 +205,8 @@ void PhysicsEngine::cWorld::step(float deltaTime)
 		
 							velocity = glm::clamp(resultVel1, glm::vec3(-30), glm::vec3(30 * mass));
 							(*iter2)->setVelocity(resultVel2);
+							bool collision = true;
+							(*iter2)->setCollision(collision);
 							(*iter)->setVelocity(resultVel1);
 						}
 					}
@@ -218,7 +220,7 @@ void PhysicsEngine::cWorld::step(float deltaTime)
 						{
 							if (timeOfCollision/2 < deltaTime)
 							{
-								//velocity = velocity * glm::vec3(0.98f);
+								velocity = velocity * glm::vec3(0.9f);
 								collision = true;
 								(*iter)->setCollision(collision);
 								//position += dxdt * (-timeOfCollision);
@@ -230,19 +232,19 @@ void PhysicsEngine::cWorld::step(float deltaTime)
 								
 								glm::vec3 reflection = glm::reflect(velocity, planeShape.getNormal());
 								glm::vec3 norm = glm::normalize(collisionPoint- position);
-								reflection += 0.2f * (velocity*(-planeShape.getNormal()));
+								reflection += 0.2f * (velocity*(planeShape.getNormal()));
 
-								while (true)
-								{
+							//	while (true)
+							//	{
 									if (glm::abs(glm::distance(collisionPoint, position)) <= (sphereShape.getRadius() /2) )
 										position += norm;
-									else
-										break;
-								}
+							//		else
+							//			break;
+							//	}
 								velocity = glm::clamp(velocity, glm::vec3(-30 * mass), glm::vec3(30 * mass));
 								position = glm::clamp(position, glm::vec3(-1000.0f, -1.0f, -1000.0f), glm::vec3(1000.0f, 1000.0f, 1000.0f));
 								(*iter)->setVelocity(reflection);
-								(*iter)->setPosition(position);
+								//(*iter)->setPosition(position);
 							}
 						}
 					}

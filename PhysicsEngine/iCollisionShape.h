@@ -61,6 +61,8 @@ Status: Version 1.8 Alpha
 (c) Copyright(s): Fanshawe College
 //===----------------------------------------------------------------------===//
 */
+
+// TODO: CLEAN UP THIS MESS
 namespace PhysicsEngine {
 	enum eShapeType {
 		UNKNOWN = 0,
@@ -84,7 +86,7 @@ namespace PhysicsEngine {
 		// virtual void calculateTemporalAabb(const glm::mat4& transform, const glm::vec3& linvel, const glm::vec3& angvel, float timeStep, glm::vec3& temporalAabbMin, glm::vec3& temporalAabbMax) const = 0;
 
 		virtual void getAabb(const glm::mat4& transform, glm::vec3& aabbMin, glm::vec3& aabbMax) const {};
-		virtual void getBoundingSphere(glm::vec3& radius) const = 0;
+		virtual void getBoundingSphere(glm::vec3 &position, float& radius) const = 0;
 		virtual void setRadius(float radius) = 0;
 		inline virtual float getRadius() = 0;
 		inline  void getBoundingSphere(glm::vec3 min, glm::vec3 max, glm::vec3& center, glm::vec3& radius)
@@ -95,7 +97,7 @@ namespace PhysicsEngine {
 		inline void	setUserPointer(void*  userPtr) { m_usrPointer = userPtr; }
 
 		inline void*	getUserPointer() const { return m_usrPointer; }
-		inline void setNormal(glm::vec3 normal) { m_normal = normal; }
+		inline virtual void setNormal(glm::vec3 normal) { m_normal = normal; }
 		inline eShapeType getShapeType() const { return m_shapeType; }
 		inline virtual glm::vec3 getNormal() { return m_normal; };
 		// DEBUG INFO METHODS
@@ -105,7 +107,7 @@ namespace PhysicsEngine {
 
 	class cPlane : public iCollisionShape {
 	public:
-		virtual void getBoundingSphere( glm::vec3& radius) const {}
+		virtual void getBoundingSphere(glm::vec3 &position, float& radius) const { }
 		virtual inline const char*	getName()const { return "Plane"; }
 		virtual void setRadius(float radius) {}
 		inline virtual float getRadius() { return 0.0f; }
@@ -116,7 +118,7 @@ namespace PhysicsEngine {
 		float m_radius;
 	public:
 		virtual glm::vec3 getNormal() { return glm::vec3(); }
-		virtual void getBoundingSphere(glm::vec3& radius) const { radius = radius; }
+		virtual void getBoundingSphere(glm::vec3 &position, float& radius) const { /* does not make sense currently */ } //TODO: get position from rigid body some how? Fix broken design 
 		virtual inline const char*	getName()const { return "Sphere"; }
 		virtual void setRadius(float radius) { m_radius = radius; }
 		inline virtual float getRadius() { return m_radius; }

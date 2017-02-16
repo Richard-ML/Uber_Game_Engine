@@ -10,10 +10,30 @@ PhysicsEngine::cRigidBody::~cRigidBody()
 {
 }
 
+
 void PhysicsEngine::cRigidBody::getOrientation(glm::mat4 & orientation)
 {
-	glm::mat3 RotationMatrix = glm::transpose(glm::lookAt(glm::vec3(0.0f), glm::normalize(this->m_rigidBody.velocity), glm::vec3(0.0f, 1.0f, 0.0f)));
-	orientation = RotationMatrix;
+
+	// Rotation = (Time * velocity) / radius
+	glm::vec3 fAngle = (this->m_rigidBody.velocity * 0.01f) / (this->m_rigidBody.mass);
+
+
+
+
+	//glm::vec3 after = glm::vec3(this->m_rigidBody.velocity.x, 0.0f, this->m_rigidBody.velocity.z) * 0.01f;
+	//float rotVel = glm::distance(glm::vec3(0.0f), after);
+	glm::quat rotAxis = glm::cross(fAngle,  glm::vec3(0.0f,1.0f,0.0f));
+	rotAxis = glm::normalize(rotAxis);
+	rotAxis = glm::inverse(rotAxis);
+	//this->m_rigidBody.rotMatrix = glm::rotate(this->m_rigidBody.rotMatrix, rotAxis.x * -0.1f, glm::vec3(1.0f,0.0f,0.0f));
+	//this->m_rigidBody.rotMatrix = glm::rotate(this->m_rigidBody.rotMatrix, rotAxis.z * -0.1f, glm::vec3(0.0f, 0.0f, 0.0f));
+	float yaw = glm::yaw(rotAxis);
+	float pitch = glm::pitch(rotAxis);
+	float roll = glm::roll(rotAxis);
+	this->m_rigidBody.rotMatrix *= glm::yawPitchRoll(yaw, 0.0f,roll );
+	//this->m_rigidBody.rotMatrix *= glm::yawPitchRoll(yaw, pitch, 0.0f);
+
+ orientation = this->m_rigidBody.rotMatrix;
 }
 
 void PhysicsEngine::cRigidBody::getPosition(glm::vec3 & position)

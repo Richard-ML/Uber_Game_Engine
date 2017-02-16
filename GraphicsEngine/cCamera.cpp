@@ -80,14 +80,9 @@ void cCamera::updateView() {
 	glm::vec3 up(0.0f, 1.0f, 0.0f);
 	glm::vec3 cameraPosition;
 	glm::vec3 cameraForward;
-
-	float pitch = m_rotation.pitch + m_rotation.pitchOffset;
+	m_rotation.pitchOffset = glm::clamp(m_rotation.pitchOffset, -89.0f + m_rotation.pitch, -5.0f + m_rotation.pitch);
+	float pitch = glm::clamp( m_rotation.pitch + m_rotation.pitchOffset, -89.0f, -5.0f);
 	float yaw = m_rotation.yaw + m_rotation.yawOffset;
-
-	if (pitch > -5.0)
-		pitch = -4.0f;
-	if (pitch < -89.0f)
-		pitch = -90.0f;
 
 	glm::vec3 front;
 	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
@@ -104,7 +99,7 @@ void cCamera::updateView() {
 void cCamera::setTargetTransform(glm::mat4 &targetTransform) {
 	mTargetTranform = targetTransform;
 	
-	double sinePitch, cosinePitch, sineYaw, cosineYaw;
+	float sinePitch, cosinePitch, sineYaw, cosineYaw;
 	sinePitch = -mTargetTranform[2][0];
 	cosinePitch = sqrt(1 - sinePitch * sinePitch);
 	if (abs(cosinePitch) > glm::epsilon<float>())

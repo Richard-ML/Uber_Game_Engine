@@ -69,7 +69,7 @@ namespace PhysicsEngine {
 		cRigidBody(const sRigidBody& rigidBody);
 		cRigidBody(){}
 		~cRigidBody();
-		virtual void getOrientation(glm::mat4& orientation);
+		virtual PhysicsEngine_API void getOrientation(glm::mat4& orientation);
 		//virtual void getTransform(glm::mat4& transform);
 		virtual PhysicsEngine_API void getPosition(glm::vec3& position);
 		virtual PhysicsEngine_API void setPosition(const glm::vec3& position);

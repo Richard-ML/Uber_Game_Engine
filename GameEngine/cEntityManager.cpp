@@ -62,9 +62,10 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 		cGameEntity* gameEntity = new cGameEntity();
 		
 		std::string stateNodeID = g_pComponentEngine->registerNewEntity();
-		// These components are loaded and share a state! ...
-		gameEntity->vec_pComponents = g_pComponentEngine->loadFromXML(cGameEntity_node, stateNodeID);
+
 		
+		// These components are loaded and share a state! ...
+			gameEntity->vec_pComponents = g_pComponentEngine->loadFromXML(cGameEntity_node, stateNodeID);
 		//this->impl()->vec_pEntites.push_back(gameEntity);
 		
 	}

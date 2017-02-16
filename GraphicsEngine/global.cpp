@@ -60,3 +60,6 @@ GLuint gCubeVAO = 0;
 // Global toggles
 bool g_bool_toggleLights = false;
 bool g_bool_toggleTextures = true;
+
+
+// TODO: Move this 

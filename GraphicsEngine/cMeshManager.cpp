@@ -35,6 +35,8 @@ cMeshManager *cMeshManager::instance() {
 - Loads file from disk
 - Copies information into VAO (Vertex Array Object)
 */
+
+// TODO: I know it does not load into gl buffer yet...
 bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, float scale) {
 	cMeshEntry entryOut; // not actually entry out.. so fix this TODO: 
 	entryOut.BaseIndex = 0;
@@ -178,3 +180,29 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 	m_MapMeshNameTocMeshEntry[name] = entryOut;
 	return true;
 }
+
+void cMeshManager::loadWorld()
+{
+//	for (int ncW = 0; ncW < 64; ncW++)
+//	{
+//		for (int ncD = 0; ncD < 64; ncD++)
+//		{
+//			float offsetX = (128 * ncW);
+//			float offsetZ = (128 * ncD);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//		// cMeshEntry meshEntry = 	g_pMeshManager->m_MapMeshNameTocMeshEntry[ g_pMeshManager->m_mapRGBToMeshName[ g_pTextureManager->worldTiles[ncW][ncD] ] ]
+//		//std::make_tuple(g_vec_WorldTiles[ncW][ncD][layer][0], g_vec_WorldTiles[ncW][ncD][layer][1], g_vec_WorldTiles[ncW][ncD][layer][2])
+//		}
+//	}
+}
+
