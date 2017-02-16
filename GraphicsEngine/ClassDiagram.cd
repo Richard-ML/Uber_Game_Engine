@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="GraphicsEngine::cGraphicsEngine_Impl">
+    <Position X="4.75" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>cGraphicsEngine.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GraphicsEngine::cGraphicsEngine">
+    <Position X="4.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAACAAAAAAAAAAAAAAAAAABAAAAEAAIgAAAEAAE=</HashCode>
+      <FileName>cGraphicsEngine.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cCamera">
+    <Position X="12" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>ACAIAgAkAAAABAACABABJQAAAAAAAAAkABIAQAAEACI=</HashCode>
+      <FileName>cCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cMeshManager">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAIEAAAIgIAAAAAAAAAABABQAAAAAAAgCAAAAAE=</HashCode>
+      <FileName>cMeshManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cShaderManager">
+    <Position X="9" Y="5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAQAAAAAAAAABAAAAAAAAgAEAAABA=</HashCode>
+      <FileName>cShaderManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cTextureManager">
+    <Position X="7.75" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIABAAAAAAQAAAEAgAAAABABEAECAAggAAIAAA=</HashCode>
+      <FileName>cTextureManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cMeshManager_Impl">
+    <Position X="0.75" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>cMeshManager.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="cMeshEntry">
+    <Position X="5" Y="5.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAARA=</HashCode>
+      <FileName>cMeshManager.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="triFace">
+    <Position X="3.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>cMeshManager.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="cMeshVertex">
+    <Position X="7" Y="5.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAgAAIAAAAAAAAIAAACAAAAAAAAAAA=</HashCode>
+      <FileName>cMeshManager.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

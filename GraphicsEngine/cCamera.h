@@ -21,12 +21,24 @@ public:
 	int mWidth;
 	int mHeight;
 	glm::mat4 mTargetTranform;
-
-	glm::vec3 mOffset;
-	float mZoomSpeed;
-	float mDistance;
-	float mMaxDistance;
-	float mMinDistance;
 	glm::mat4 mViewMatrix;
+	
+
+
+	struct {
+		float yaw = 0.0f;
+		float pitch = 0.0f;
+		float yawOffset = 0.0f;
+		float pitchOffset = 0.0f;
+		glm::vec2 sensitivity = glm::vec3(1.0f);
+	}m_rotation;
+	struct {
+		float pendingDistanceOffset = 0.0f;
+		float distance = 100.0f;
+		float rate = 1000.0f;
+		float minDistance = 100.0f;
+		float maxDistance = 2000.0f;
+	}m_zoom;
+
 };
 #endif

@@ -162,7 +162,7 @@ return 0;
 	{
 		// Do physics stuff!! 
 		this->impl()->m_cWorld->step(deltaTime);
-		printf("Physics did stuff!\n");
+		//printf("Physics did stuff!\n");
 		return;
 	}
 

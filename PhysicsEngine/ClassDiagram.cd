@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Comment CommentText="The rigid body will use sState! So when an object is moved around other compoents know! ">
+    <Position X="13.517" Y="5.227" Height="0.75" Width="1.7" />
+  </Comment>
+  <Class Name="PhysicsEngine::cPhysicsEngine_Impl">
+    <Position X="3.5" Y="12.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAACAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>cPhysicsEngine.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhysicsEngine::cPhysicsEngine">
+    <Position X="3.5" Y="8.75" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAABAgIABBAAgCAAEAAE=</HashCode>
+      <FileName>cPhysicsEngine.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhysicsEngine::cCollisionObject">
+    <Position X="0.5" Y="0.75" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAACQAQhgAAAAAABQAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>cCollisionObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhysicsEngine::cRigidBody">
+    <Position X="0.5" Y="9.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAAAoAIQCAAABAAAAAAAAQCCACAAAAAAEABAAABAAAE=</HashCode>
+      <FileName>cRigidBody.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhysicsEngine::cWorld">
+    <Position X="8.5" Y="2.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAgAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>cWorld.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhysicsEngine::iCollisionShape">
+    <Position X="4.75" Y="0.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAQAQIAAAApAAAAAAADAECIIEAEAAAAA=</HashCode>
+      <FileName>iCollisionShape.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhysicsEngine::cPlane">
+    <Position X="3.5" Y="5.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAACIAEAABAAAA=</HashCode>
+      <FileName>iCollisionShape.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhysicsEngine::cSphere">
+    <Position X="6" Y="5.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAoAAAAAAAAAACIAEAAAAQAA=</HashCode>
+      <FileName>iCollisionShape.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhysicsEngine::iRigidBody">
+    <Position X="0.5" Y="4.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAAAoAAACAAgBAAAAAAAAQACACAEAAAAEABgAABAAAE=</HashCode>
+      <FileName>iRigidBody.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhysicsEngine::iWorld">
+    <Position X="8.5" Y="0.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>iWorld.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="PhysicsEngine::sRigidBody">
+    <Position X="13.5" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AIAAgAAIAAAAAAAAAAAAIAAAAAAEAAQAAAQAQAAEAAA=</HashCode>
+      <FileName>iRigidBody.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="sDerivative">
+    <Position X="11.25" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAQAAAAAAAA=</HashCode>
+      <FileName>cWorld.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="PhysicsEngine::eCollisionFlags">
+    <Position X="11" Y="0.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAAACAABAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>cCollisionObject.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PhysicsEngine::eCollisionObjectTypes">
+    <Position X="13.5" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAACEEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>cCollisionObject.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PhysicsEngine::eShapeType">
+    <Position X="8.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACABAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>iCollisionShape.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

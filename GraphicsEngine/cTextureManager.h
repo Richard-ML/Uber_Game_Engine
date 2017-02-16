@@ -10,19 +10,14 @@ class cTextureManager {
 public:
 	static cTextureManager *instance();
 	void loadTexture(rapidxml::xml_node<> *textureNode);
-	//void loadTextureMipmap(rapidxml::xml_node<> *textureNode);
+	void loadTextureMipmap(rapidxml::xml_node<> *textureNode);
 	//void loadWorldTilesFromImage(rapidxml::xml_node<> *worldNode);
 	GLuint loadCubeMap(rapidxml::xml_node<> *cubeNode);
 	std::vector<GLuint> uniform_TextureID;
 	std::map<std::string, GLuint> mapTextureNameToID;
+	std::map<std::string, GLuint> mapTextureNameToMipmapLevel;
 	GLuint nextTextureID;
-
-	// Do we need these?
-	int uniformId_NumTextures = 0;
-	GLuint uniformId_Texture0 = 0;
-	GLuint uniformId_Texture1 = 0;
-	GLuint uniformId_Texture2 = 0;
-	GLuint uniformId_Texture3 = 0;
+	int currentMipmapLevel = 0;
 private:
 	cTextureManager() {
 	} // Constructor is private therefore a new instance can not be made

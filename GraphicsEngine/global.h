@@ -21,6 +21,7 @@ void callback_WindowClose(GLFWwindow *window);
 void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 	int mods);
 void callback_Error(int, const char* error);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 
 
@@ -88,3 +89,6 @@ extern cShaderManager *g_pShaderManager;
 
 
 
+// Global toggles
+extern bool g_bool_toggleLights;
+extern bool g_bool_toggleTextures;

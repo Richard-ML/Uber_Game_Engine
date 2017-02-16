@@ -93,7 +93,7 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 			// Normal: texture_normalN
 			aiString textureStr;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureStr);
-			//tempTextureUnit0 = gMap_TextureNameToMipmapLevel[textureStr.C_Str()];
+			tempTextureUnit0 = g_pTextureManager->mapTextureNameToMipmapLevel[textureStr.C_Str()];
 			std::string textureResult = textureStr.C_Str();
 			// 1. Diffuse maps
 			// tempTextureInfo.x = (material->mProperties, aiTextureType_DIFFUSE,

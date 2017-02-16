@@ -39,7 +39,7 @@ namespace AIEngine {
    AIEngine_API void AIEngine::cAIEngine::update(float deltaTime)
    {
 	   // Do AI stuff!
-	   printf("AI did stuff!\n");
+	   //printf("AI did stuff!\n");
 
 
 	   return;

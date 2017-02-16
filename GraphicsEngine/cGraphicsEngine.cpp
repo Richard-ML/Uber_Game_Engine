@@ -40,7 +40,7 @@ namespace GraphicsEngine {
 			//HANDLE myHandle = CreateThread(NULL, 0, // stack size
 			//(LPTHREAD_START_ROUTINE)&GraphicsEngine::cGraphicsEngine::graphicsThread, reinterpret_cast<void*>(s_cGraphicsEngine), 0, &myThreadID);
 			// NOTE: Since the graphics context resides on this thread all gl related processes can not be called directly from outside of this engine
-	
+
 
 			// TODO: Set initial window title via external configuration file.. (.xml/.json)
 			gWindowTitle = "Single-threaded GraphicsEngine Window!";
@@ -51,30 +51,25 @@ namespace GraphicsEngine {
 			///////////////////////////////////////////////////////////////////////
 			// Initialize GLFW
 			initializeGLFW();
-			createTheBuffers();
-			glGenVertexArrays(1, &gCubeVAO);
-			glBindVertexArray(gCubeVAO);
-			/////////////////////////
-			// Generate a name for the texture
-			//glGenTextures(1, &gUniformId_Texture0);
-
-			// Now bind it to the context using the GL_TEXTURE_2D binding point
-			//glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
-
-			// Specify the amount of storage we want to use for the texture
-			//glTexStorage2D(GL_TEXTURE_2D, // 2D texture
-			//	1,             // 8 mipmap levels
-			//	GL_RGBA32F,    // 32-bit floating-point RGBA data
-			//	7680, 7680);   // 512 x 512 texels
-			//				   //////////////////////
 
 		}
 		return s_cGraphicsEngine;
 	}
 
-	GraphicsEngine_API void cGraphicsEngine::loadCubeMap(rapidxml::xml_node<>* cubeNode)
+	GraphicsEngine_API void cGraphicsEngine::loadCubemaps(rapidxml::xml_node<>* cubemapsNode)
 	{
-		g_pTextureManager->loadCubeMap(cubeNode);
+		for (rapidxml::xml_node<> *cubemap_node = cubemapsNode->first_node("Cubemap");
+			cubemap_node; cubemap_node = cubemap_node->next_sibling()) {
+			g_pTextureManager->loadCubeMap(cubemap_node);
+		}
+		return;
+	}
+	GraphicsEngine_API void cGraphicsEngine::loadMipmapTextures(rapidxml::xml_node<>* mipmapTexturesNode)
+	{
+		for (rapidxml::xml_node<> *mipmap_node = mipmapTexturesNode->first_node("MipmapTexture");
+			mipmap_node; mipmap_node = mipmap_node->next_sibling()) {
+			g_pTextureManager->loadTextureMipmap(mipmap_node);
+		}
 		return;
 	}
 	GraphicsEngine_API bool cGraphicsEngine::loadRenderableComponent(rapidxml::xml_node<>* componentNode, iState* state)
@@ -113,34 +108,39 @@ namespace GraphicsEngine {
 				system("pause");
 			}
 		}
-			printf("Loaded meshes!\n");
-		
+		printf("Loaded meshes!\n");
+
 		return true;
 	}
 
-
-
 	GraphicsEngine_API void cGraphicsEngine::update(float deltaTime)
 	{
+		// TODO: Can't initialize buffers until some mesh data exists. Fix this. See TAG: 001
+		if (!buffersInitialized)
+		{
+			createTheBuffers();
+			glGenVertexArrays(1, &gCubeVAO);
+			glBindVertexArray(gCubeVAO);
+			buffersInitialized = true;
+		}
 		// Do graphics stuff!
-		printf("Graphics did stuff!\n");
-
-
+		glfwSetWindowTitle(gWindow, gWindowTitle.c_str());
+		gCamera->update(deltaTime);
 		glEnable(GL_TEXTURE_2D);
 		// Set shader model. Does this really make a difference?
 		glShadeModel(GL_SMOOTH);
 
 		// Clear the screen..
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glUseProgram(gSkyboxShaderID);
 		// Render Skybox
 		renderSkybox();
 
 		// Use primary rendering shader
-		//glUseProgram(gProgramID);
-
+		glUseProgram(gProgramID);
+		glUniform1i(gUniformId_Toggle_Lights, g_bool_toggleLights);
+		glUniform1i(gUniformId_Toggle_Textures, g_bool_toggleTextures);
 		// Render objects
 		renderScene();
 
@@ -151,7 +151,6 @@ namespace GraphicsEngine {
 		return;
 	}
 }
-
 void initializeGLFW() {
 
 	gWindowTitle = "Single-threaded GraphicsEngine Window!";
@@ -199,6 +198,7 @@ void initializeGLFW() {
 	glfwSetWindowSizeCallback(gWindow, callback_windowResize);
 	glfwSetWindowCloseCallback(gWindow, callback_WindowClose);
 	glfwSetKeyCallback(gWindow, callback_KeyPress);
+	glfwSetScrollCallback(gWindow, scroll_callback);
 
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(gWindow, GLFW_STICKY_KEYS, GL_TRUE);
@@ -233,14 +233,14 @@ void createTheBuffers() {
 	glBindBuffer(GL_ARRAY_BUFFER, gTextureInfoBufferID);
 
 	int bytesInVertexArray = g_pMeshManager->vertices.size() * sizeof(cMeshVertex);
-	glBufferData(GL_ARRAY_BUFFER, bytesInVertexArray, &g_pMeshManager->vertices, //  &g_pMeshManager->vertices[0]
+	glBufferData(GL_ARRAY_BUFFER, bytesInVertexArray, &g_pMeshManager->vertices[0], // TAG: 001
 		GL_STATIC_DRAW);
 
 	glGenBuffers(1, &gIndexBufferID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIndexBufferID);
 
 	int bytesInIndexArray = g_pMeshManager->indices.size() * sizeof(GLuint);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, bytesInIndexArray, &g_pMeshManager->indices,//  &g_pMeshManager->indices[0]
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, bytesInIndexArray, &g_pMeshManager->indices[0],//  &g_pMeshManager->indices[0]
 		GL_STATIC_DRAW);
 
 	bindTheBuffers();
@@ -435,7 +435,7 @@ void renderScene() {
 
 			glm::mat4 transform;
 			graphicObject->pState->getTransform(transform);
-			graphicObject->pState->setScale(109.0f);
+			graphicObject->pState->setScale(1.0f);
 			float scale;
 			graphicObject->pState->getScale(scale);
 

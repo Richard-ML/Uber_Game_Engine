@@ -33,13 +33,14 @@ namespace GraphicsEngine {
 		cGraphicsEngine(const cGraphicsEngine &) {}; // Disallow copy constructor
 		cGraphicsEngine &operator=(const cGraphicsEngine &GraphicsManager) {
 		} // Disallow assignment operator
-
+		bool buffersInitialized = false;
 		
 	public:
 		// vv TODO: PUT THIS IN AN OBJECT MANAGER!! :) vv
 		static std::vector<cGraphicsObject*> m_vec_pGraphicObjects;
 		static GraphicsEngine_API  cGraphicsEngine *instance();
-		static GraphicsEngine_API  void loadCubeMap(rapidxml::xml_node<> *cubeNode);
+		static GraphicsEngine_API  void loadCubemaps(rapidxml::xml_node<> *cubemapsNode);
+		static GraphicsEngine_API void loadMipmapTextures(rapidxml::xml_node<>* mipmapTexturesNode);
 		static GraphicsEngine_API bool loadRenderableComponent(rapidxml::xml_node<> *componentNode, iState* state);
 		static GraphicsEngine_API bool loadMeshes(rapidxml::xml_node<> *meshesNode);
 		GraphicsEngine_API void update(float deltaTime);

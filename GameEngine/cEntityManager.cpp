@@ -38,14 +38,18 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 	bufData.push_back('\0');
 	theDoc.parse<0>(&bufData[0]);
 	root_node = theDoc.first_node("GameAssets");
-
 	rapidxml::xml_node<> *category_node;
-	/*Load the CubeMaps*/
-	category_node = root_node->first_node("CubeMaps");
-	for (rapidxml::xml_node<> *cTexture_node = category_node->first_node("CubeMap");
-		cTexture_node; cTexture_node = cTexture_node->next_sibling()) {
-		GraphicsEngine::cGraphicsEngine::instance()->loadCubeMap(cTexture_node);
-	}
+
+	// Load game assets...
+
+	/* Load the Mipmap Textures */
+	category_node = root_node->first_node("MipmapTextures");
+	GraphicsEngine::cGraphicsEngine::instance()->loadMipmapTextures(category_node);
+
+	
+	/* Load the Cubemaps */
+	category_node = root_node->first_node("Cubemaps");
+	GraphicsEngine::cGraphicsEngine::instance()->loadCubemaps(category_node);
 
 	category_node = root_node->first_node("Meshes");
 		GraphicsEngine::cGraphicsEngine::instance()->loadMeshes(category_node);

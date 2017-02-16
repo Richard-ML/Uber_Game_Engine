@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Comment CommentText="Each entity has a state that is shared between components! A list of objects using this state in each engine. (root of each component in each engine!">
+    <Position X="14.949" Y="5.502" Height="0.858" Width="2.531" />
+  </Comment>
+  <Comment CommentText="Each entity xml node has child component nodes.. Component nodes can cantain information used by specific engines! &#xD;&#xA;LoadFromXML sends component nodes to the engines that use them!&#xD;&#xA;">
+    <Position X="16.899" Y="6.696" Height="1.178" Width="2.731" />
+  </Comment>
+  <Class Name="ComponentEngine::cComponentEngine_Impl">
+    <Position X="15.75" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>cComponentEngine.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ComponentEngine::cComponentEngine">
+    <Position X="14.75" Y="0.5" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEABAAAAAABAAAAAABAgAAAAAAE=</HashCode>
+      <FileName>cComponentEngine.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iStateManager">
+    <Position X="11.75" Y="8.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>iStateManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iGeomerty">
+    <Position X="4.75" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAACAAAAAAACBAAAAAAAAAA=</HashCode>
+      <FileName>iStateManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iBehaviour">
+    <Position X="10.25" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>iStateManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iControl">
+    <Position X="8" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>iStateManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iState">
+    <Position X="1.75" Y="8" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAACAAEAAAACBAAAIAAAAAA=</HashCode>
+      <FileName>iStateManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iStateNodeHandle">
+    <Position X="8" Y="8.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EAAACAAAAAABAAAAABAAAAAAAAAAAAAAAAAIAAAAAAg=</HashCode>
+      <FileName>iStateManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="iStateNode">
+    <Position X="4.75" Y="8" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAACAAEAAAACBAAAIAAAAAA=</HashCode>
+      <FileName>iStateManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cState">
+    <Position X="0.5" Y="11.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAAACAEACAABAAAAABAAAAACAAEAAAECBAAIIAAEAAg=</HashCode>
+      <FileName>iStateManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cStateNode">
+    <Position X="4.5" Y="11.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAQABAEACAAAAAAAAAAAAAACAAEAAAACBAAAIAAAAAA=</HashCode>
+      <FileName>iStateManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cStateManager">
+    <Position X="10.75" Y="10.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAQAAAAAAAAAAAABIAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>iStateManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="cComponent">
+    <Position X="6.5" Y="0.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAABAAAAAAAAAEAEAAAAACAAAAA=</HashCode>
+      <FileName>ComponentManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AIControlComponent">
+    <Position X="3.25" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InputControlComponent">
+    <Position X="6" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollisionComponent">
+    <Position X="9" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RenderingComponent">
+    <Position X="11.75" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ComponentManager::iComponent">
+    <Position X="15" Y="6.75" Width="1.75" />
+    <Members>
+      <Method Name="command" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>iComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="sState">
+    <Position X="13" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AoAAAAAIAAAAAAAAAAAAIAACAAAEAAAAAAQBAAAAAAA=</HashCode>
+      <FileName>iStateManager.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ComponentManager::ComponentDetails::ComponentEntry&lt;T&gt;">
+    <Position X="0.5" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAEAAAAgAAAAAAA=</HashCode>
+      <FileName>ComponentManager.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="ComponentManager::ComponentDetails::func_createComponent" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ComponentManager.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="ComponentManager::ComponentDetails::map_ComponentRegistry" Collapsed="true">
+    <Position X="0.5" Y="1.25" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ComponentManager.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

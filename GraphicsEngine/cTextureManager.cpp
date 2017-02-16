@@ -48,94 +48,115 @@ void cTextureManager::loadTexture(rapidxml::xml_node<> *textureNode) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-//void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
-//	std::string pathDif = textureNode->first_attribute("pathDif")->value();
-//	std::string pathNrm = textureNode->first_attribute("pathNrm")->value();
-//	std::string pathSpec = textureNode->first_attribute("pathSpec")->value();
-//	FREE_IMAGE_FORMAT imgFormat = FreeImage_GetFileType(
-//		pathDif.c_str(),
-//		0); // Get current format (assume all textures are the same format)
-//
-//	FIBITMAP *imagenDif = FreeImage_Load(imgFormat, pathDif.c_str());
-//	imagenDif = FreeImage_ConvertTo32Bits(imagenDif);
-//
-//	FIBITMAP *imagenNrm = FreeImage_Load(imgFormat, pathNrm.c_str());
-//	imagenNrm = FreeImage_ConvertTo32Bits(imagenNrm);
-//
-//	FIBITMAP *imagenSpec = FreeImage_Load(imgFormat, pathSpec.c_str());
-//	imagenSpec = FreeImage_ConvertTo32Bits(imagenSpec);
-//
-//	int width =
-//		FreeImage_GetWidth(imagenDif); // Assume images are the same size..
-//	int height = FreeImage_GetHeight(imagenDif);
-//
-//	GLubyte *textureDif = new GLubyte[4 * width * height];
-//	GLubyte *textureNrm = new GLubyte[4 * width * height];
-//	GLubyte *textureSpec = new GLubyte[4 * width * height];
-//
-//	char *pixelsDif = (char *)FreeImage_GetBits(imagenDif);
-//	char *pixelsNrm = (char *)FreeImage_GetBits(imagenNrm);
-//	char *pixelsSpec = (char *)FreeImage_GetBits(imagenSpec);
-//	// FreeImage loads in BGR format, so you need to swap some bytes(Or use
-//	// GL_BGR).
-//
-//	for (int j = 0; j < width * height; j++) {
-//		textureDif[j * 4 + 0] = pixelsDif[j * 4 + 2];
-//		textureDif[j * 4 + 1] = pixelsDif[j * 4 + 1];
-//		textureDif[j * 4 + 2] = pixelsDif[j * 4 + 0];
-//		textureDif[j * 4 + 3] = pixelsDif[j * 4 + 3];
-//
-//		textureNrm[j * 4 + 0] = pixelsNrm[j * 4 + 2];
-//		textureNrm[j * 4 + 1] = pixelsNrm[j * 4 + 1];
-//		textureNrm[j * 4 + 2] = pixelsNrm[j * 4 + 0];
-//		textureNrm[j * 4 + 3] = pixelsNrm[j * 4 + 3];
-//
-//		textureSpec[j * 4 + 0] = pixelsSpec[j * 4 + 2];
-//		textureSpec[j * 4 + 1] = pixelsSpec[j * 4 + 1];
-//		textureSpec[j * 4 + 2] = pixelsSpec[j * 4 + 0];
-//		textureSpec[j * 4 + 3] = pixelsSpec[j * 4 + 3];
-//	}
-//	// int tempMipmapLevel = gCurrentMipmapLevel;
-//	std::string name = textureNode->first_attribute("name")->value();
-//	gMap_TextureNameToMipmapLevel[name] = gCurrentMipmapLevel;
-//
-//	// Assume the texture is already bound to the GL_TEXTURE_2D target
-//	glTexSubImage2D(GL_TEXTURE_2D, // 2D texture
-//		0,             // Level 0
-//		(width * gCurrentMipmapLevel),
-//		(width * gCurrentMipmapLevel), // Offset 0, 0
-//		width, width,     // 1024 x 1024 texels, replace entire image
-//		GL_RGBA,          // Four channel data
-//		GL_UNSIGNED_BYTE, // Floating point data
-//		(GLvoid *)textureDif); // Pointer to data
-//	delete[] textureDif;
-//
-//	// Assume the texture is already bound to the GL_TEXTURE_2D target
-//	glTexSubImage2D(GL_TEXTURE_2D, // 2D texture
-//		0,             // Level 1
-//		width * (gCurrentMipmapLevel + 1),
-//		width * (gCurrentMipmapLevel + 1), // Offset 0, 0
-//		width, width,     // 1024 x 1024 texels, replace entire image
-//		GL_RGBA,          // Four channel data
-//		GL_UNSIGNED_BYTE, // Floating point data
-//		(GLvoid *)textureNrm); // Pointer to data
-//	delete[] textureNrm;
-//
-//	// Assume the texture is already bound to the GL_TEXTURE_2D target
-//	glTexSubImage2D(GL_TEXTURE_2D, // 2D texture
-//		0,             // Level 1
-//		width * (gCurrentMipmapLevel + 2),
-//		width * (gCurrentMipmapLevel + 2), // Offset 0, 0
-//		width, width,     // 1024 x 1024 texels, replace entire image
-//		GL_RGBA,          // Four channel data
-//		GL_UNSIGNED_BYTE, // Floating point data
-//		(GLvoid *)textureSpec); // Pointer to data
-//	delete[] textureSpec;
-//
-//	gCurrentMipmapLevel += 3;
-//	//	int MaxTextureImageUnits;
-//	//  glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &MaxTextureImageUnits);
-//}
+void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
+	// TODO: Fix this so it supports more mipmaps
+	if (g_pTextureManager->currentMipmapLevel == 6 || g_pTextureManager->currentMipmapLevel == 0)
+	{
+		/////////////////////////
+		// Generate a name for the texture
+		glGenTextures(1, &gUniformId_Texture0);
+
+		// Now bind it to the context using the GL_TEXTURE_2D binding point
+		glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
+
+		// Specify the amount of storage we want to use for the texture
+		glTexStorage2D(GL_TEXTURE_2D, // 2D texture
+			1,             // 8 mipmap levels
+			GL_RGBA32F,    // 32-bit floating-point RGBA data
+			7680, 7680);   // 512 x 512 texels
+						   //////////////////////
+
+	}
+
+
+	////////////////////////
+	std::string pathDif = textureNode->first_attribute("pathDif")->value();
+	std::string pathNrm = textureNode->first_attribute("pathNrm")->value();
+	std::string pathSpec = textureNode->first_attribute("pathSpec")->value();
+	FREE_IMAGE_FORMAT imgFormat = FreeImage_GetFileType(
+		pathDif.c_str(),
+		0); // Get current format (assume all textures are the same format)
+
+	FIBITMAP *imagenDif = FreeImage_Load(imgFormat, pathDif.c_str());
+	imagenDif = FreeImage_ConvertTo32Bits(imagenDif);
+
+	FIBITMAP *imagenNrm = FreeImage_Load(imgFormat, pathNrm.c_str());
+	imagenNrm = FreeImage_ConvertTo32Bits(imagenNrm);
+
+	FIBITMAP *imagenSpec = FreeImage_Load(imgFormat, pathSpec.c_str());
+	imagenSpec = FreeImage_ConvertTo32Bits(imagenSpec);
+
+	int width =
+		FreeImage_GetWidth(imagenDif); // Assume images are the same size..
+	int height = FreeImage_GetHeight(imagenDif);
+
+	GLubyte *textureDif = new GLubyte[4 * width * height];
+	GLubyte *textureNrm = new GLubyte[4 * width * height];
+	GLubyte *textureSpec = new GLubyte[4 * width * height];
+
+	char *pixelsDif = (char *)FreeImage_GetBits(imagenDif);
+	char *pixelsNrm = (char *)FreeImage_GetBits(imagenNrm);
+	char *pixelsSpec = (char *)FreeImage_GetBits(imagenSpec);
+	// FreeImage loads in BGR format, so you need to swap some bytes(Or use
+	// GL_BGR).
+
+	for (int j = 0; j < width * height; j++) {
+		textureDif[j * 4 + 0] = pixelsDif[j * 4 + 2];
+		textureDif[j * 4 + 1] = pixelsDif[j * 4 + 1];
+		textureDif[j * 4 + 2] = pixelsDif[j * 4 + 0];
+		textureDif[j * 4 + 3] = pixelsDif[j * 4 + 3];
+
+		textureNrm[j * 4 + 0] = pixelsNrm[j * 4 + 2];
+		textureNrm[j * 4 + 1] = pixelsNrm[j * 4 + 1];
+		textureNrm[j * 4 + 2] = pixelsNrm[j * 4 + 0];
+		textureNrm[j * 4 + 3] = pixelsNrm[j * 4 + 3];
+
+		textureSpec[j * 4 + 0] = pixelsSpec[j * 4 + 2];
+		textureSpec[j * 4 + 1] = pixelsSpec[j * 4 + 1];
+		textureSpec[j * 4 + 2] = pixelsSpec[j * 4 + 0];
+		textureSpec[j * 4 + 3] = pixelsSpec[j * 4 + 3];
+	}
+	// int tempMipmapLevel = gCurrentMipmapLevel;
+	std::string name = textureNode->first_attribute("name")->value();
+	mapTextureNameToMipmapLevel[name] = currentMipmapLevel;
+
+	// Assume the texture is already bound to the GL_TEXTURE_2D target
+	glTexSubImage2D(GL_TEXTURE_2D, // 2D texture
+		0,             // Level 0
+		(width * currentMipmapLevel),
+		(width * currentMipmapLevel), // Offset 0, 0
+		width, width,     // 1024 x 1024 texels, replace entire image
+		GL_RGBA,          // Four channel data
+		GL_UNSIGNED_BYTE, // Floating point data
+		(GLvoid *)textureDif); // Pointer to data
+	delete[] textureDif;
+
+	// Assume the texture is already bound to the GL_TEXTURE_2D target
+	glTexSubImage2D(GL_TEXTURE_2D, // 2D texture
+		0,             // Level 1
+		width * (currentMipmapLevel + 1),
+		width * (currentMipmapLevel + 1), // Offset 0, 0
+		width, width,     // 1024 x 1024 texels, replace entire image
+		GL_RGBA,          // Four channel data
+		GL_UNSIGNED_BYTE, // Floating point data
+		(GLvoid *)textureNrm); // Pointer to data
+	delete[] textureNrm;
+
+	// Assume the texture is already bound to the GL_TEXTURE_2D target
+	glTexSubImage2D(GL_TEXTURE_2D, // 2D texture
+		0,             // Level 1
+		width * (currentMipmapLevel + 2),
+		width * (currentMipmapLevel + 2), // Offset 0, 0
+		width, width,     // 1024 x 1024 texels, replace entire image
+		GL_RGBA,          // Four channel data
+		GL_UNSIGNED_BYTE, // Floating point data
+		(GLvoid *)textureSpec); // Pointer to data
+	delete[] textureSpec;
+
+	currentMipmapLevel += 3;
+	//	int MaxTextureImageUnits;
+	//  glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &MaxTextureImageUnits);
+}
 
 //void cTextureManager::loadWorldTilesFromImage(rapidxml::xml_node<> *worldNode) {
 //	// std::vector<std::vector <std::vector<std::tuple<float, float, float>>>>
@@ -253,5 +274,5 @@ GLuint cTextureManager::loadCubeMap(rapidxml::xml_node<> *cubeNode) {
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	return uniformId_Texture1;
+	return uniform_TextureID.back();
 }
