@@ -28,16 +28,16 @@ public:
 	struct {
 		float yaw = 0.0f;
 		float pitch = 0.0f;
-		float yawOffset = 0.0f;
-		float pitchOffset = 0.0f;
+		float yawOffset = 90.0f;
+		float pitchOffset = -45.0f;
 		glm::vec2 sensitivity = glm::vec3(1.0f);
 	}m_rotation;
 	struct {
 		float pendingDistanceOffset = 0.0f;
 		float distance = 50.0f;
 		float rate = 1000.0f;
-		float minDistance = 100.0f;
-		float maxDistance = 2000.0f;
+		float minDistance = 30.0f;
+		float maxDistance = 90.0f;
 	}m_zoom;
 
 };

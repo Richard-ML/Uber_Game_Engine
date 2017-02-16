@@ -3,7 +3,7 @@
  <MipmapTexture name="Dirt" pathDif="assets/Textures/sand/Dirt_Sand_003.png" pathNrm="assets/Textures/sand/Dirt_Sand_003_NORM.png" pathSpec="assets/Textures/sand/Dirt_Sand_003_SPEC.png" />
 <!-- <MipmapTexture name="Dirt" pathDif="assets/Textures/sand/sand_05_diffuse.png" pathNrm="assets/Textures/sand/sand_05_normal.png" pathSpec="assets/Textures/sand/sand_05_specular.png" />-->
   <!--<MipmapTexture name="Floor" pathDif="assets/TileMeshes/Textures/floor_DIF.tga" pathNrm="assets/TileMeshes/Textures/floor_NRM.tga" pathSpec="assets/TileMeshes/Textures/floor_SPEC.tga" />-->
-  <MipmapTexture name="Skeleton" pathDif="assets/Skeleton/Skeleton_dif.tga" pathNrm="assets/Skeleton/Skeleton_norm.tga" pathSpec="assets/Skeleton/Skeleton_spec.tga" />
+  <MipmapTexture name="Skeleton" pathDif="assets/Skeleton/Skeleton_dif.png" pathNrm="assets/Skeleton/Skeleton_norm.png" pathSpec="assets/Skeleton/Skeleton_spec.png" />
  
 </MipmapTextures>
 
@@ -19,19 +19,30 @@
   </Cubemaps>
   
   <Meshes>
-    <Mesh path="Assets/Skeleton/Skeleton.obj" scale="1.0f" name="Skeleton" r="0" g="0" b="0"/>
-	<Mesh path="Assets/TileMeshes/GrassTile.obj" scale="0.1f" name="GrassTile" r="0" g="255" b="0"/>
+    <Mesh path="Assets/Skeleton/Skeleton.obj" scale="1.0f" name="Skeleton" r="6" g="0" b="0"/>
+	<Mesh path="Assets/TileMeshes/GrassTile.obj" scale="0.1f" name="GrassTile" r="0" g="6" b="0"/>
+	<Mesh path="Assets/Arc/Arc.obj" scale="10.0f" name="Arc" r="0" g="12" b="0"/>
+	<Mesh path="Assets/Arc/Portal.obj" scale="10.0f" name="Portal" r="0" g="32" b="0"/>
  </Meshes>
   
   <GameEntities>
 	<GameEntity>
 		<RenderableComponent>
 			<Mesh name="Skeleton"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="10.0f" offsetY="0.0f" offsetZ="10.0f" />
+		</PhysicsComponent>
+	</GameEntity>
+		<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Arc"/>
+			<Mesh name="Portal"/>
 			<!--<Light />-->
 		</RenderableComponent>
-		<!--<ControlComponent>-->
-		<!-- do some logicial thing here -->
-		<!--</ControlComponent>-->
+		<PhysicsComponent>
+			<RigidBody offsetX="10.0f" offsetY="0.0f" offsetZ="10.0f" />
+		</PhysicsComponent>
 	</GameEntity>
 	</GameEntities>
 </GameAssets>

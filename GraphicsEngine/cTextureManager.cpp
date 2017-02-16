@@ -44,6 +44,8 @@ void cTextureManager::loadTexture(rapidxml::xml_node<> *textureNode) {
 	glBindTexture(GL_TEXTURE_2D, uniform_TextureID.back());
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
 		GL_UNSIGNED_BYTE, (GLvoid *)textura);
+	delete[] textura;
+	delete[] pixeles;
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
@@ -153,6 +155,7 @@ void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
 		(GLvoid *)textureSpec); // Pointer to data
 	delete[] textureSpec;
 
+
 	currentMipmapLevel += 3;
 	//	int MaxTextureImageUnits;
 	//  glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &MaxTextureImageUnits);
@@ -261,7 +264,9 @@ GLuint cTextureManager::loadCubeMap(rapidxml::xml_node<> *cubeNode) {
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + nc, 0, GL_RGBA, width, height,
 			0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)textura);
 		nc++;
+		delete[] textura;
 	}
+
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 	// Set up texture maps
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

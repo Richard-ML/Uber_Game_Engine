@@ -48,6 +48,13 @@ void cCamera::update(float dt) {
 		m_zoom.pendingDistanceOffset = 0.0f;
 	}
 
+	if (m_zoom.distance > m_zoom.maxDistance || m_zoom.distance < m_zoom.minDistance)
+	{
+		m_zoom.distance = glm::clamp(m_zoom.distance, m_zoom.minDistance, m_zoom.maxDistance);
+		m_zoom.pendingDistanceOffset = 0.0f;
+	}
+
+
 	bool pressUp = glfwGetKey(gWindow, GLFW_KEY_UP) == GLFW_PRESS;
 	bool pressDown = glfwGetKey(gWindow, GLFW_KEY_DOWN) == GLFW_PRESS;
 	if (pressDown != pressUp) {

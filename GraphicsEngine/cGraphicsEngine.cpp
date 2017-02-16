@@ -11,7 +11,6 @@ bool setupTheShader();
 void renderSkybox();
 void renderScene();
 
-
 // The PIMPL idiom aka Compilation Firewall
 // Purpose: Encapsulate private member variables. Reduces make-time,
 // compile-time, and the Fragile Binary Interface Problem.
@@ -41,17 +40,13 @@ namespace GraphicsEngine {
 			//(LPTHREAD_START_ROUTINE)&GraphicsEngine::cGraphicsEngine::graphicsThread, reinterpret_cast<void*>(s_cGraphicsEngine), 0, &myThreadID);
 			// NOTE: Since the graphics context resides on this thread all gl related processes can not be called directly from outside of this engine
 
-
 			// TODO: Set initial window title via external configuration file.. (.xml/.json)
 			gWindowTitle = "Single-threaded GraphicsEngine Window!";
 
-
-
-			//One time setup stuff goes here!! 
+			//One time setup stuff goes here!!
 			///////////////////////////////////////////////////////////////////////
 			// Initialize GLFW
 			initializeGLFW();
-
 		}
 		return s_cGraphicsEngine;
 	}
@@ -83,15 +78,12 @@ namespace GraphicsEngine {
 			m_vec_pGraphicObjects.push_back(graphicsObject);
 		}
 
-
 		// Create base object that contains iState*
 		printf("Graphics object created!\n");
-
 
 		return true;
 	}
 	GraphicsEngine_API bool cGraphicsEngine::loadMeshes(rapidxml::xml_node<> *meshesNode) {
-
 		for (rapidxml::xml_node<> *cMeshEntry_node = meshesNode->first_node("Mesh");
 			cMeshEntry_node; cMeshEntry_node = cMeshEntry_node->next_sibling()) {
 			// load the mesh buffers
@@ -155,7 +147,6 @@ namespace GraphicsEngine {
 	}
 }
 void initializeGLFW() {
-
 	gWindowTitle = "Single-threaded GraphicsEngine Window!";
 	if (!glfwInit()) {
 		fprintf(stderr, "Failed to initialize GLFW\n");
@@ -175,7 +166,6 @@ void initializeGLFW() {
 	glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
 	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
 	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-
 
 	glEnable(GL_MULTISAMPLE);
 	// Open a window and create its OpenGL context
@@ -208,16 +198,12 @@ void initializeGLFW() {
 
 	glfwPollEvents();
 
-
-	 //Load the shader
+	//Load the shader
 	if (!setupTheShader()) {
 		std::cout << "Oh no! The shaders didn't load!!" << std::endl;
 		system("pause");
 	}
-	
 }
-
-
 
 void createTheBuffers() {
 	glGenVertexArrays(1, &gVertexBufferID);
@@ -293,11 +279,10 @@ void bindTheBuffers() {
 	glVertexAttribIPointer(
 		4, 4, GL_UNSIGNED_INT, sizeof(cMeshVertex),
 		(GLvoid *)offsetToTextureInfoInBytes); // Offset in bytes to Texture Info
-
 }
 
 bool setupTheShader() {
-	 //Create and compile our GLSL program from the shaders
+	//Create and compile our GLSL program from the shaders
 	gProgramID = ::g_pShaderManager->loadShaders(
 		"../GraphicsEngine/Simple.vs.glsl", "../GraphicsEngine/Simple.fs.glsl", "../GraphicsEngine/Simple.gs.glsl");
 
@@ -314,23 +299,22 @@ bool setupTheShader() {
 	gUniformId_Alpha = glGetUniformLocation(gProgramID, "Alpha");
 	gUniformId_ModelColor = glGetUniformLocation(gProgramID, "ModelColor");
 	gUniformId_NumLights = glGetUniformLocation(gProgramID, "NUM_LIGHTS");
-	
+
 	gUniformId_ViewMatrix = glGetUniformLocation(gProgramID, "ViewMatrix");
 	gUniformId_PojectionMatrix =
 		glGetUniformLocation(gProgramID, "ProjectionMatrix");
 	gUniformId_EyePosition = glGetUniformLocation(gProgramID, "EyePosition");
-	
+
 	gUniformId_Toggle_Lights = glGetUniformLocation(gProgramID, "Toggle_Lights");
 	//gUniformId_Toggle_Skybox = glGetUniformLocation(gProgramID, "Toggle_Skybox");
 	gUniformId_Toggle_Textures =
 		glGetUniformLocation(gProgramID, "Toggle_Textures");
-	
+
 	gUniformId_NumTextures = glGetUniformLocation(gProgramID, "NUM_TEXTURES");
 	gUniformId_Texture0 = glGetUniformLocation(gProgramID, "Texture0");
 	gUniformId_Texture1 = glGetUniformLocation(gProgramID, "Texture1");
 	gUniformId_Texture2 = glGetUniformLocation(gProgramID, "Texture2");
 	gUniformId_Texture3 = glGetUniformLocation(gProgramID, "Texture3");
-	
 
 	// Skybox Shader
 	::gSkyboxShaderID =
@@ -385,12 +369,10 @@ void renderSkybox() {
 
 		glDisable(GL_DEPTH_TEST);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		
+
 		glEnable(GL_DEPTH_TEST);
 	}
 }
-
-
 
 void renderScene() {
 	glm::mat4 projectionMatrix;
@@ -400,9 +382,6 @@ void renderScene() {
 
 	bindTheBuffers();
 	glUseProgram(gProgramID);
-
-
-
 
 	for (int ncW = 0; ncW < 128; ncW++)
 	{
@@ -430,7 +409,7 @@ void renderScene() {
 			glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
 											 // you can pass here
 				GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
-								  
+
 			glm::mat4 transform;
 			transform[3].x = offsetX;
 			transform[3].z = offsetZ;
@@ -449,13 +428,8 @@ void renderScene() {
 				GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].NumgIndices, GL_UNSIGNED_INT,
 				(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].BaseIndex),
 				g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].BaseIndex);
-
-
 		}
 	}
-
-
-
 
 	for each(cGraphicsObject* graphicObject in GraphicsEngine::cGraphicsEngine::m_vec_pGraphicObjects)
 	{
@@ -484,23 +458,20 @@ void renderScene() {
 		//else { // "Regular" rendering:
 			   // Turn on backface culling
 			   // Turn polygon mode to solid (Fill)
-			glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
-			glEnable(GL_CULL_FACE);
-			glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
-											 // you can pass here
-				GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
-		//}
+		glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
+		glEnable(GL_CULL_FACE);
+		glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+										 // you can pass here
+			GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
+	//}
 
+		glm::mat4 transform;
+		graphicObject->pState->getTransform(transform);
+		graphicObject->pState->setScale(1.0f);
+		float scale;
+		graphicObject->pState->getScale(scale);
 
-
-			glm::mat4 transform;
-			graphicObject->pState->getTransform(transform);
-			graphicObject->pState->setScale(1.0f);
-			float scale;
-			graphicObject->pState->getScale(scale);
-
-
-// TODO: Scale in object..
+		// TODO: Scale in object..
 		glUniformMatrix4fv(
 			gUniformId_ModelMatrix, 1, GL_FALSE,
 			glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
@@ -514,6 +485,5 @@ void renderScene() {
 			GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].NumgIndices, GL_UNSIGNED_INT,
 			(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex),
 			g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex);
-
 	}
 }

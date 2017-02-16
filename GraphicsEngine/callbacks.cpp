@@ -30,5 +30,5 @@ void callback_Error(int, const char* error)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	// Scrolling: backwards = 1 || forwards = -1
-	gCamera->m_zoom.pendingDistanceOffset -= yoffset;
+	gCamera->m_zoom.pendingDistanceOffset -= (float) yoffset;
 }
