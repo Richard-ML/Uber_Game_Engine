@@ -11,11 +11,12 @@ public:
 	static cTextureManager *instance();
 	void loadTexture(rapidxml::xml_node<> *textureNode);
 	void loadTextureMipmap(rapidxml::xml_node<> *textureNode);
-	//void loadWorldTilesFromImage(rapidxml::xml_node<> *worldNode);
+	void loadWorldTilesFromImage(rapidxml::xml_node<> *worldNode);
 	GLuint loadCubeMap(rapidxml::xml_node<> *cubeNode);
 	std::vector<GLuint> uniform_TextureID;
 	std::map<std::string, GLuint> mapTextureNameToID;
 	std::map<std::string, GLuint> mapTextureNameToMipmapLevel;
+	std::vector<std::vector <std::vector<glm::vec3>>> worldTiles;
 	GLuint nextTextureID;
 	int currentMipmapLevel = 0;
 private:

@@ -158,67 +158,63 @@ void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
 	//  glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &MaxTextureImageUnits);
 }
 
-//void cTextureManager::loadWorldTilesFromImage(rapidxml::xml_node<> *worldNode) {
-//	// std::vector<std::vector <std::vector<std::tuple<float, float, float>>>>
-//	// vecWorldTiles;
-//	g_vec_WorldTiles.resize(512);
-//	for (int i = 0; i < 512; ++i) {
-//		g_vec_WorldTiles[i].resize(512);
-//
-//		for (int j = 0; j < 512; ++j)
-//			g_vec_WorldTiles[i][j].resize(3);
-//	}
-//	int curLayer = 0;
-//
-//	// Iterate over each world node
-//	for (rapidxml::xml_node<> *cWorldLayer_node =
-//		worldNode->first_node("WorldTileLayer");
-//		cWorldLayer_node; cWorldLayer_node = cWorldLayer_node->next_sibling()) {
-//		int numTilesInLayer = 0;
-//
-//		std::string path = cWorldLayer_node->first_attribute("path")->value();
-//		FREE_IMAGE_FORMAT imgFormat =
-//			FreeImage_GetFileType(path.c_str(), 0); // Get current image format
-//		FIBITMAP *imagen = FreeImage_Load(imgFormat, path.c_str());
-//		imagen = FreeImage_ConvertTo32Bits(imagen);
-//		// imagen = FreeImage_ConvertTo32Bits(imagen);
-//
-//		int width = FreeImage_GetWidth(imagen);
-//		int height = FreeImage_GetHeight(imagen);
-//
-//		for (int ncW = 0; ncW < width; ncW++) {
-//			for (int ncD = 0; ncD < height; ncD++) {
-//
-//				RGBQUAD color;
-//				FreeImage_GetPixelColor(imagen, ncW, ncD, &color);
-//				float r, g, b;
-//				r = (float)color.rgbRed;
-//				g = (float)color.rgbGreen;
-//				b = (float)color.rgbBlue;
-//				bool isWhite = bool(b == 255.0f && g == 255.0f && r == 255.0f);
-//				bool isMagic = bool(b == 245.0f && g == 0.0f && r == 245.0f);
-//				bool isSpider = bool(b == 0.0f && g == 64.0f && r == 128.0f);
-//				if (isSpider)
-//					g_pEntityManager->createSpiderAtPos(128.0f * ncW, 0, 128.0f * ncD);
-//				else if (!isWhite && !isMagic) {
-//					numTilesInLayer++;
-//					g_vec_WorldTiles[ncW][ncD][curLayer] = glm::vec3(r, g, b);
-//					// std::cout << ncW << " " << ncD << " " << r << " " << g << " " << b
-//					// << std::endl;
-//				}
-//				// if (!isWhite)
-//				// g_multimap_WorldTilesRGB.insert(std::pair<std::pair<int, int>,
-//				// std::tuple<float, float, float>>(std::make_pair(std::make_pair(ncW,
-//				// ncD), std::make_tuple(r, g, b))));
-//			}
-//		}
-//		std::cout << numTilesInLayer << std::endl;
-//		curLayer++;
-//	}
-//	g_pMeshManager->loadWorldTiles(
-//		g_pMeshManager->m_MapMeshNameTocMeshEntry
-//		[worldNode->first_attribute("name")->value()]);
-//}
+void cTextureManager::loadWorldTilesFromImage(rapidxml::xml_node<> *worldNode) {
+	// std::vector<std::vector <std::vector<std::tuple<float, float, float>>>>
+	// vecWorldTiles;
+ 	worldTiles.resize(512);
+	for (int i = 0; i < 512; ++i) {
+		worldTiles[i].resize(512);
+
+		for (int j = 0; j < 512; ++j)
+			worldTiles[i][j].resize(3);
+	}
+	int curLayer = 0;
+
+	// Iterate over each world node
+	for (rapidxml::xml_node<> *cWorldLayer_node =
+		worldNode->first_node("WorldTileLayer");
+		cWorldLayer_node; cWorldLayer_node = cWorldLayer_node->next_sibling()) {
+		int numTilesInLayer = 0;
+
+		std::string path = cWorldLayer_node->first_attribute("path")->value();
+		FREE_IMAGE_FORMAT imgFormat =
+			FreeImage_GetFileType(path.c_str(), 0); // Get current image format
+		FIBITMAP *imagen = FreeImage_Load(imgFormat, path.c_str());
+		imagen = FreeImage_ConvertTo32Bits(imagen);
+		// imagen = FreeImage_ConvertTo32Bits(imagen);
+
+		int width = FreeImage_GetWidth(imagen);
+		int height = FreeImage_GetHeight(imagen);
+
+		for (int ncW = 0; ncW < width; ncW++) {
+			for (int ncD = 0; ncD < height; ncD++) {
+
+				RGBQUAD color;
+				FreeImage_GetPixelColor(imagen, ncW, ncD, &color);
+				float r, g, b;
+				r = (float)color.rgbRed;
+				g = (float)color.rgbGreen;
+				b = (float)color.rgbBlue;
+				bool isWhite = bool(b == 255.0f && g == 255.0f && r == 255.0f);
+				bool isMagic = bool(b == 245.0f && g == 0.0f && r == 245.0f);
+				bool isSpider = bool(b == 0.0f && g == 64.0f && r == 128.0f);
+
+				if (!isWhite && !isMagic) {
+					numTilesInLayer++;
+					worldTiles[ncW][ncD][curLayer] = glm::vec3(r, g, b);
+					// std::cout << ncW << " " << ncD << " " << r << " " << g << " " << b
+					// << std::endl;
+				}
+				// if (!isWhite)
+				// g_multimap_WorldTilesRGB.insert(std::pair<std::pair<int, int>,
+				// std::tuple<float, float, float>>(std::make_pair(std::make_pair(ncW,
+				// ncD), std::make_tuple(r, g, b))));
+			}
+		}
+		std::cout << numTilesInLayer << std::endl;
+		curLayer++;
+	}
+}
 
 GLuint cTextureManager::loadCubeMap(rapidxml::xml_node<> *cubeNode) {
 	int width, height;
