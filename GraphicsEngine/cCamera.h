@@ -34,7 +34,7 @@ public:
 	}m_rotation;
 	struct {
 		float pendingDistanceOffset = 0.0f;
-		float distance = 100.0f;
+		float distance = 50.0f;
 		float rate = 1000.0f;
 		float minDistance = 100.0f;
 		float maxDistance = 2000.0f;
