@@ -45,7 +45,7 @@ void cTextureManager::loadTexture(rapidxml::xml_node<> *textureNode) {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
 		GL_UNSIGNED_BYTE, (GLvoid *)textura);
 	delete[] textura;
-	delete[] pixeles;
+	FreeImage_Unload(imagen);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
@@ -154,9 +154,12 @@ void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
 		GL_UNSIGNED_BYTE, // Floating point data
 		(GLvoid *)textureSpec); // Pointer to data
 	delete[] textureSpec;
-
+	FreeImage_Unload(imagenDif);
+	FreeImage_Unload(imagenNrm);
+	FreeImage_Unload(imagenSpec);
 
 	currentMipmapLevel += 3;
+	
 	//	int MaxTextureImageUnits;
 	//  glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &MaxTextureImageUnits);
 }
@@ -216,17 +219,18 @@ void cTextureManager::loadWorldTilesFromImage(rapidxml::xml_node<> *worldNode) {
 		}
 		std::cout << numTilesInLayer << std::endl;
 		curLayer++;
+		//TODO: ;)
+		FreeImage_Unload(imagen);
 	}
 }
 
 GLuint cTextureManager::loadCubeMap(rapidxml::xml_node<> *cubeNode) {
 	int width, height;
 	uniform_TextureID.push_back(0);
-	//GLenum error = glGetError();
-	//if (error != GL_NO_ERROR)
-	//{
-	//	std::cout << "OpenGL Error: " << error << std::endl;
-	//}
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR)
+		std::cout << "OpenGL Error: " << error << std::endl;
+
 	glGenTextures(1, &uniform_TextureID.back());
 	mapTextureNameToID["Skybox"] = nextTextureID;
 	
@@ -265,6 +269,7 @@ GLuint cTextureManager::loadCubeMap(rapidxml::xml_node<> *cubeNode) {
 			0, GL_RGBA, GL_UNSIGNED_BYTE, (GLvoid *)textura);
 		nc++;
 		delete[] textura;
+		FreeImage_Unload(imagen);
 	}
 
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);

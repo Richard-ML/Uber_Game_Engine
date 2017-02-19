@@ -43,6 +43,7 @@ namespace GraphicsEngine {
 		static GraphicsEngine_API void loadMipmapTextures(rapidxml::xml_node<>* mipmapTexturesNode);
 		static GraphicsEngine_API bool loadRenderableComponent(rapidxml::xml_node<> *componentNode, iState* state);
 		static GraphicsEngine_API bool loadMeshes(rapidxml::xml_node<> *meshesNode);
+		static GraphicsEngine_API bool loadFramebufferObjects(rapidxml::xml_node<>* framebuffersNode);
 		GraphicsEngine_API void update(float deltaTime);
 	};
 

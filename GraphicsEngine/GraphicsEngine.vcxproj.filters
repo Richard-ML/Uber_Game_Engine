@@ -79,6 +79,12 @@
     <ClInclude Include="cGraphicsObject.h">
       <Filter>DataModel\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cLightManager.h">
+      <Filter>DataModel\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cRenderManager.h">
+      <Filter>DataModel\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -106,6 +112,12 @@
       <Filter>DataModel\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cCamera.cpp">
+      <Filter>DataModel\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cLightManager.cpp">
+      <Filter>DataModel\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cRenderManager.cpp">
       <Filter>DataModel\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

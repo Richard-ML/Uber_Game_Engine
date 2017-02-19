@@ -4,7 +4,8 @@
 #include "cMeshManager.h"
 #include "cShaderManager.h"
 #include "cCamera.h"
-
+#include "cLightManager.h"
+#include "cRenderManager.h"
 
 // Window information
 extern GLFWwindow *gWindow;
@@ -42,6 +43,8 @@ extern GLuint gUniformId_Texture1;
 extern GLuint gUniformId_Texture2;
 extern GLuint gUniformId_Texture3;
 
+extern GLuint gUniformId_Toggle_NormalAndSpecularMaps;
+
 extern GLuint gUniformId_NumLights;
 
 extern GLuint gUniformId_ModelMatrix;
@@ -65,14 +68,6 @@ extern GLuint gIndexBufferID;
 
 
 
-
-
-
-
-
-
-
-
 // Sky-box Shader:
 extern GLuint gUniformId_ToggleSkyboxTextures;
 extern bool gToggle_Skybox;
@@ -86,6 +81,9 @@ extern GLuint gCubeVAO;
 extern cMeshManager *g_pMeshManager;
 extern cTextureManager *g_pTextureManager;
 extern cShaderManager *g_pShaderManager;
+extern cLightManager *g_pLightManager;
+extern cRenderManager *g_pRenderManager;
+
 
 
 

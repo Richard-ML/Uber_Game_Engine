@@ -22,6 +22,7 @@ uniform sampler2D Texture2;
 uniform sampler2D Texture3;
 uniform float Alpha;
 uniform vec4 ModelColor;
+uniform bool Toggle_NormalAndSpecularMaps;
 
 uniform bool Toggle_Lights;
 uniform bool Toggle_Textures;
@@ -106,6 +107,8 @@ vec3 processPointLight(in vec3 norm, in vec3 pos, in int lightIndex) {
                     (vec2(512) * (fs_in.textureUnits.x + 0)) / vec2(7680)),
                    0)
             .rgb;
+
+if(Toggle_NormalAndSpecularMaps == true){
     textureNrmResult =
         textureLod(Texture0,
                    ((fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
@@ -120,6 +123,7 @@ vec3 processPointLight(in vec3 norm, in vec3 pos, in int lightIndex) {
             .rgb;
     // Transform normal vector to range [-1,1]
     norm = (textureNrmResult * 2.0f - vec3(1.0f));
+	}
   } else {
     textureDifResult = ModelColor.rgb;
     textureSpecResult = ModelColor.rgb;
@@ -158,6 +162,7 @@ vec3 processDirectionalLight(in vec3 norm, in vec3 pos, in int lightIndex) {
                     (vec2(512) * (fs_in.textureUnits.x + 0)) / vec2(7680)),
                    0)
             .rgb;
+			if(Toggle_NormalAndSpecularMaps == true){
     textureNrmResult =
         textureLod(Texture0,
                    ((fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
@@ -172,6 +177,7 @@ vec3 processDirectionalLight(in vec3 norm, in vec3 pos, in int lightIndex) {
             .rgb;
     // Transform normal vector to range [-1,1]
     norm = (textureNrmResult * 2.0f - vec3(1.0f));
+	}
   } else {
     textureDifResult = ModelColor.rgb;
     textureSpecResult = ModelColor.rgb;
@@ -220,6 +226,7 @@ vec3 processSpotLight(in vec3 norm, in vec3 pos, in int lightIndex) {
                     (vec2(512) * (fs_in.textureUnits.x + 0)) / vec2(7680)),
                    0)
             .rgb;
+			if(Toggle_NormalAndSpecularMaps == true){
     textureNrmResult =
         textureLod(Texture0,
                    ((fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
@@ -234,6 +241,7 @@ vec3 processSpotLight(in vec3 norm, in vec3 pos, in int lightIndex) {
             .rgb;
     // Transform normal vector to range [-1,1]
     norm = (textureNrmResult * 2.0f - vec3(1.0f));
+	}
   } else {
     textureDifResult = ModelColor.rgb;
     textureSpecResult = ModelColor.rgb;

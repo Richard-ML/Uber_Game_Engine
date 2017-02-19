@@ -1,11 +1,15 @@
 <GameAssets>
 <MipmapTextures>
- <MipmapTexture name="Dirt" pathDif="assets/Textures/sand/Dirt_Sand_003.png" pathNrm="assets/Textures/sand/Dirt_Sand_003_NORM.png" pathSpec="assets/Textures/sand/Dirt_Sand_003_SPEC.png" />
+ <MipmapTexture name="Dirt" pathDif="assets/Textures/sand/Dirt_Sand_003.jpg" pathNrm="assets/Textures/sand/Dirt_Sand_003_NORM.jpg" pathSpec="assets/Textures/sand/Dirt_Sand_003_SPEC.jpg" />
 <!-- <MipmapTexture name="Dirt" pathDif="assets/Textures/sand/sand_05_diffuse.png" pathNrm="assets/Textures/sand/sand_05_normal.png" pathSpec="assets/Textures/sand/sand_05_specular.png" />-->
   <!--<MipmapTexture name="Floor" pathDif="assets/TileMeshes/Textures/floor_DIF.tga" pathNrm="assets/TileMeshes/Textures/floor_NRM.tga" pathSpec="assets/TileMeshes/Textures/floor_SPEC.tga" />-->
   <MipmapTexture name="Skeleton" pathDif="assets/Skeleton/Skeleton_dif.png" pathNrm="assets/Skeleton/Skeleton_norm.png" pathSpec="assets/Skeleton/Skeleton_spec.png" />
  
 </MipmapTextures>
+
+<FrameBufferObjects>
+	<FrameBufferObject name="Portal" width="512" height="512" />	
+</FrameBufferObjects>
 
   <Cubemaps>
     <Cubemap>
@@ -29,6 +33,8 @@
 	<GameEntity>
 		<RenderableComponent>
 			<Mesh name="Skeleton"/>
+		    <Light type="PointLight" isEnabled="true" coneAngle="0.9f" specularPower="100.0f" directionX="0.0f" directionY="-5.0f" directionZ="0.0f" offsetX="0.0f" offsetY="40.0f" offsetZ="0.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.3f" diffuseG="0.3f" diffuseB="0.3f" specularR="0.3f" specularG="0.3f" specularB="0.3f" attenConst="0.2f" attenLinear="0.00091427f" attenQuad="0.000065429f" />
+			<!--<Light type="DirectionalLight" isEnabled="true" coneAngle="0.9f" specularPower="1.0f" directionX="0.0f" directionY="-5.0f" directionZ="20.0f" offsetX="0.0f" offsetY="20.0f" offsetZ="-200.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.3f" diffuseG="0.3f" diffuseB="0.3f" specularR="0.3f" specularG="0.3f" specularB="0.3f" attenConst="0.3f" attenLinear="0.000091427f" attenQuad="0.0000065429f" />-->
 		</RenderableComponent>
 		<PhysicsComponent>
 			<RigidBody offsetX="10.0f" offsetY="0.0f" offsetZ="10.0f" />

@@ -70,12 +70,18 @@ namespace GraphicsEngine {
 	GraphicsEngine_API bool cGraphicsEngine::loadRenderableComponent(rapidxml::xml_node<>* componentNode, iState* state)
 	{
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("Mesh");
-			cRenderableComponentEntry_node; cRenderableComponentEntry_node = cRenderableComponentEntry_node->next_sibling()) {
+			cRenderableComponentEntry_node; cRenderableComponentEntry_node = cRenderableComponentEntry_node->next_sibling("Mesh")) {
 			// load the mesh buffers
 			cGraphicsObject* graphicsObject = new cGraphicsObject();
 			graphicsObject->meshName = cRenderableComponentEntry_node->first_attribute("name")->value(); // TODO: Offset scale rotation etc..
 			graphicsObject->pState = state;
 			m_vec_pGraphicObjects.push_back(graphicsObject);
+		}
+		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("Light");
+			cRenderableComponentEntry_node; cRenderableComponentEntry_node = cRenderableComponentEntry_node->next_sibling("Light")) {
+			// load the mesh buffers
+			g_pLightManager->loadLightFromXML(cRenderableComponentEntry_node);
+			g_pLightManager->vecLights.back()->state = state;
 		}
 
 		// Create base object that contains iState*
@@ -104,6 +110,19 @@ namespace GraphicsEngine {
 			}
 		}
 		printf("Loaded meshes!\n");
+
+		return true;
+	}
+
+	GraphicsEngine_API bool cGraphicsEngine::loadFramebufferObjects(rapidxml::xml_node<>* framebuffersNode)
+	{
+		for (rapidxml::xml_node<> *cFBO_node = framebuffersNode->first_node("FrameBufferObject");
+			cFBO_node; cFBO_node = cFBO_node->next_sibling()) {
+			g_pRenderManager->createFrameBufferObject(cFBO_node->first_attribute("name")->value(), 
+				std::stoi(cFBO_node->first_attribute("width")->value()), 
+				std::stoi(cFBO_node->first_attribute("height")->value()));
+		}
+
 
 		return true;
 	}
@@ -315,6 +334,8 @@ bool setupTheShader() {
 	gUniformId_Texture1 = glGetUniformLocation(gProgramID, "Texture1");
 	gUniformId_Texture2 = glGetUniformLocation(gProgramID, "Texture2");
 	gUniformId_Texture3 = glGetUniformLocation(gProgramID, "Texture3");
+	
+	gUniformId_Toggle_NormalAndSpecularMaps = glGetUniformLocation(gProgramID, "Toggle_NormalAndSpecularMaps");
 
 	// Skybox Shader
 	::gSkyboxShaderID =
@@ -349,7 +370,8 @@ void renderSkybox() {
 		gCamera->getViewMatrix(viewMatrix);
 		glm::vec3 eyePos = gCamera->getEyePosition();
 		// ;)
-		glm::mat4 camViewInverse(viewMatrix[0][0], viewMatrix[1][0],
+		glm::mat4 camViewInverse(
+			viewMatrix[0][0], viewMatrix[1][0],
 			viewMatrix[2][0], 0.0f, viewMatrix[0][1],
 			viewMatrix[1][1], viewMatrix[2][1], 0.0f,
 			viewMatrix[0][2], viewMatrix[1][2],
@@ -383,13 +405,127 @@ void renderScene() {
 	bindTheBuffers();
 	glUseProgram(gProgramID);
 
-	for (int ncW = 0; ncW < 128; ncW++)
-	{
-		for (int ncD = 0; ncD < 128; ncD++)
-		{
-			float offsetX = (-1024.0f + 12.79f * (float)ncW);
-			float offsetZ = (-1024.0f + 12.79f * (float)ncD);
+	//TODO: Remove this test code TAG: 1003
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g_pRenderManager->map_NameToFBOInfo["Portal"]->frameBufferID);
 
+	glClearColor(0.4f, 0.4f, 0.8f, 1.0f);
+	//glBindFramebuffer(GL_FRAMEBUFFER, g_pRenderManager->map_NameToFBOInfo["Portal"]->frameBufferID);
+	//glClearBufferfv(GL_COLOR, 0, glm::value_ptr(glm::vec3(0.0f, 120.0f, 0.0f)));
+	//glClearBufferfv(GL_DEPTH, 0, glm::value_ptr(glm::vec3(0.0f, 120.0f, 0.0f)));
+	static const  GLenum attachments[] = { GL_COLOR_ATTACHMENT0 };
+	glDrawBuffers(1, attachments);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	GLenum e = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
+	switch (e) {
+
+	case GL_FRAMEBUFFER_UNDEFINED:
+		printf("FBO Undefined\n");
+		break;
+	case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+		printf("FBO Incomplete Attachment\n");
+		break;
+	case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+		printf("FBO Missing Attachment\n");
+		break;
+	case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+		printf("FBO Incomplete Draw Buffer\n");
+		break;
+	case GL_FRAMEBUFFER_UNSUPPORTED:
+		printf("FBO Unsupported\n");
+		break;
+	case GL_FRAMEBUFFER_COMPLETE:
+		printf("FBO OK\n");
+		break;
+	default:
+		printf("FBO Problem?\n");
+	}
+	for (int nc = 0; nc < 2; nc++)
+	{
+
+	//TODO: Remove this test code TAG: 1003
+
+		// TODO: Move this to its own method..//////////////////////////////////////////////////////////////////////////
+		glUniform1i(gUniformId_Toggle_Lights, g_bool_toggleLights);
+		glUniform1i(gUniformId_NumLights, g_pLightManager->vecLights.size());
+		for (auto iter = g_pLightManager->vecLights.begin(); iter != g_pLightManager->vecLights.end(); iter++) {
+			glUniform1i((*iter)->gUniformId_IsEnabled, (*iter)->isEnabled);
+			glUniform1i((*iter)->gUniformId_TypeFlag, (*iter)->typeFlag);
+			glUniform3fv((*iter)->gUniformId_Position, 1,
+				glm::value_ptr(glm::ballRand(5.0f)));//(*iter)->matrix[3]));
+			glUniform3fv((*iter)->gUniformId_Direction, 1,
+				glm::value_ptr(glm::vec3(0.0f, 0.0f, 0.0f))); //(*iter)->direction));
+			glUniform1f((*iter)->gUniformId_ConeAngle, (*iter)->coneAngle);
+			glUniform3fv((*iter)->gUniformId_Ambient, 1,
+				glm::value_ptr((*iter)->ambient));
+			glUniform3fv((*iter)->gUniformId_Diffuse, 1,
+				glm::value_ptr((*iter)->diffuse));
+			glUniform3fv((*iter)->gUniformId_Specular, 1,
+				glm::value_ptr((*iter)->specular));
+			glUniform1f((*iter)->gUniformId_SpecularPower, (*iter)->specularPower);
+			glUniform1f((*iter)->gUniformId_AttenuationConst, (*iter)->attenConst);
+			glUniform1f((*iter)->gUniformId_AttenuationLinear, (*iter)->attenLinear);
+			glUniform1f((*iter)->gUniformId_AttenuationQuad, (*iter)->attenQuad);
+		}
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+		for (int ncW = 0; ncW < 128; ncW++)
+		{
+			for (int ncD = 0; ncD < 128; ncD++)
+			{
+				float offsetX = (-1024.0f + 12.79f * (float)ncW);
+				float offsetZ = (-1024.0f + 12.79f * (float)ncD);
+
+				// per frame uniforms
+				glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
+					glm::value_ptr(projectionMatrix));
+				glUniformMatrix4fv(gUniformId_ViewMatrix, 1, GL_FALSE,
+					glm::value_ptr(viewMatrix));
+
+
+				glm::vec4 eye4;
+				gCamera->getEyePosition(eye4);
+				glUniform4fv(gUniformId_EyePosition, 1, glm::value_ptr(eye4));
+
+				glEnable(GL_BLEND);
+				// glBlendEquation(GL_FUNC_ADD);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glEnable(GL_DEPTH_TEST);
+
+				glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
+				glEnable(GL_CULL_FACE);
+				glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+												 // you can pass here
+					GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
+
+				glm::mat4 transform;
+				transform[3].x = offsetX;
+				transform[3].z = offsetZ;
+
+				// TODO: Scale in object..
+				glUniformMatrix4fv(
+					gUniformId_ModelMatrix, 1, GL_FALSE,
+					glm::value_ptr(glm::scale(transform, glm::vec3(1.0f))));
+				glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
+					glm::value_ptr(glm::mat4()));
+				glUniform4fv(gUniformId_ModelColor, 1,
+					glm::value_ptr(glm::vec4(1.0f)));
+
+				glUniform1f(gUniformId_Alpha, 1.0f);
+				glDrawElementsBaseVertex(
+					GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].NumgIndices, GL_UNSIGNED_INT,
+					(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].BaseIndex),
+					g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].BaseIndex);
+			}
+		}
+
+		for each(cGraphicsObject* graphicObject in GraphicsEngine::cGraphicsEngine::m_vec_pGraphicObjects)
+		{
 			// per frame uniforms
 			glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
 				glm::value_ptr(projectionMatrix));
@@ -398,92 +534,74 @@ void renderScene() {
 			glm::vec4 eye4;
 			gCamera->getEyePosition(eye4);
 			glUniform4fv(gUniformId_EyePosition, 1, glm::value_ptr(eye4));
-
+			glEnable(GL_MULTISAMPLE);
 			glEnable(GL_BLEND);
 			// glBlendEquation(GL_FUNC_ADD);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glEnable(GL_DEPTH_TEST);
 
+			// glEnable(GL_COLOR_MATERIAL);
+			//if ((*iter)->isWireframe) {        // Turn off backface culling
+			//								   // Enable "wireframe" polygon mode
+			//	glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+			//									 // you can pass here
+			//		GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
+			//	glDisable(GL_CULL_FACE);
+			//}
+			//else { // "Regular" rendering:
+				   // Turn on backface culling
+				   // Turn polygon mode to solid (Fill)
 			glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
 			glEnable(GL_CULL_FACE);
 			glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
 											 // you can pass here
 				GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
+		//}
 
 			glm::mat4 transform;
-			transform[3].x = offsetX;
-			transform[3].z = offsetZ;
+			graphicObject->pState->getTransform(transform);
+			graphicObject->pState->setScale(1.0f);
+			float scale;
+			graphicObject->pState->getScale(scale);
 
 			// TODO: Scale in object..
 			glUniformMatrix4fv(
 				gUniformId_ModelMatrix, 1, GL_FALSE,
-				glm::value_ptr(glm::scale(transform, glm::vec3(1.0f))));
+				glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
 			glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
 				glm::value_ptr(glm::mat4()));
 			glUniform4fv(gUniformId_ModelColor, 1,
 				glm::value_ptr(glm::vec4(1.0f)));
 
 			glUniform1f(gUniformId_Alpha, 1.0f);
+			if (graphicObject->meshName == "Portal")
+			{
+				glBindTexture(GL_TEXTURE_2D, g_pRenderManager->map_NameToFBOInfo["Portal"]->colorTextureID);
+				glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, false); // TODO: Add global boolean toggle
+				
+
+				
+			}
+		
+
 			glDrawElementsBaseVertex(
-				GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].NumgIndices, GL_UNSIGNED_INT,
-				(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].BaseIndex),
-				g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].BaseIndex);
+				GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].NumgIndices, GL_UNSIGNED_INT,
+				(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex),
+				g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex);
+
+			//TODO: Remove this test code TAG: 1003
+			glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
+			glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, true);
+			//TODO: Remove this test code TAG: 1003
 		}
-	}
 
-	for each(cGraphicsObject* graphicObject in GraphicsEngine::cGraphicsEngine::m_vec_pGraphicObjects)
-	{
-		// per frame uniforms
-		glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
-			glm::value_ptr(projectionMatrix));
-		glUniformMatrix4fv(gUniformId_ViewMatrix, 1, GL_FALSE,
-			glm::value_ptr(viewMatrix));
-		glm::vec4 eye4;
-		gCamera->getEyePosition(eye4);
-		glUniform4fv(gUniformId_EyePosition, 1, glm::value_ptr(eye4));
 
-		glEnable(GL_BLEND);
-		// glBlendEquation(GL_FUNC_ADD);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_DEPTH_TEST);
 
-		// glEnable(GL_COLOR_MATERIAL);
-		//if ((*iter)->isWireframe) {        // Turn off backface culling
-		//								   // Enable "wireframe" polygon mode
-		//	glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
-		//									 // you can pass here
-		//		GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
-		//	glDisable(GL_CULL_FACE);
-		//}
-		//else { // "Regular" rendering:
-			   // Turn on backface culling
-			   // Turn polygon mode to solid (Fill)
-		glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
-		glEnable(GL_CULL_FACE);
-		glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
-										 // you can pass here
-			GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
-	//}
 
-		glm::mat4 transform;
-		graphicObject->pState->getTransform(transform);
-		graphicObject->pState->setScale(1.0f);
-		float scale;
-		graphicObject->pState->getScale(scale);
+		//TODO: Remove this test code TAG: 1003
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 
-		// TODO: Scale in object..
-		glUniformMatrix4fv(
-			gUniformId_ModelMatrix, 1, GL_FALSE,
-			glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
-		glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
-			glm::value_ptr(glm::mat4()));
-		glUniform4fv(gUniformId_ModelColor, 1,
-			glm::value_ptr(glm::vec4(1.0f)));
+		}
 
-		glUniform1f(gUniformId_Alpha, 1.0f);
-		glDrawElementsBaseVertex(
-			GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].NumgIndices, GL_UNSIGNED_INT,
-			(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex),
-			g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex);
-	}
+		//TODO: Remove this test code TAG: 1003
 }

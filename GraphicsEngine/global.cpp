@@ -13,6 +13,7 @@ GLuint gUniformId_Texture0 = 0;
 GLuint gUniformId_Texture1 = 0;
 GLuint gUniformId_Texture2 = 0;
 GLuint gUniformId_Texture3 = 0;
+GLuint gUniformId_Toggle_NormalAndSpecularMaps = 0;
 
 GLuint gUniformId_NumLights = 0;
 
@@ -39,6 +40,11 @@ cShaderManager *cShaderManager::s_cShaderManager =
 0; // Allocating pointer to static instance of cShaderManager (singleton)
 cShaderManager *g_pShaderManager = cShaderManager::instance();
 
+cLightManager* cLightManager::s_cLightManager = 0;
+cLightManager* g_pLightManager = cLightManager::instance();
+
+cRenderManager* cRenderManager::s_cRenderManager = 0;
+cRenderManager* g_pRenderManager = cRenderManager::instance();
 
 
 // Uniform IDs
@@ -58,7 +64,7 @@ GLuint gCubeVAO = 0;
 
 
 // Global toggles
-bool g_bool_toggleLights = false;
+bool g_bool_toggleLights = true;
 bool g_bool_toggleTextures = true;
 
 
