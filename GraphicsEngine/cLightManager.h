@@ -44,6 +44,7 @@ public:
 	std::vector<cLight*> vecLights;
 	static cLightManager *instance();
 	void loadLightFromXML(rapidxml::xml_node<>* lightNode);
+	void updateLightUniforms();
 private:
 	cLightManager() {
 	} // Constructor is private therefore a new instance can not be made

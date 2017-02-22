@@ -1,4 +1,4 @@
-#version 420 core
+#version 450 core
 #define MAX_LIGHTS 30
 out vec4 out_Color;
 // Input from vertex shader
@@ -101,6 +101,7 @@ vec3 processPointLight(in vec3 norm, in vec3 pos, in int lightIndex) {
   vec3 textureSpecResult;
   if (Toggle_Textures) {
     vec3 textureNrmResult;
+	if(Toggle_NormalAndSpecularMaps == true){
     textureDifResult =
         textureLod(Texture0,
                    ((fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
@@ -108,7 +109,7 @@ vec3 processPointLight(in vec3 norm, in vec3 pos, in int lightIndex) {
                    0)
             .rgb;
 
-if(Toggle_NormalAndSpecularMaps == true){
+
     textureNrmResult =
         textureLod(Texture0,
                    ((fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
@@ -123,6 +124,9 @@ if(Toggle_NormalAndSpecularMaps == true){
             .rgb;
     // Transform normal vector to range [-1,1]
     norm = (textureNrmResult * 2.0f - vec3(1.0f));
+		}else{
+	textureDifResult =  texture(Texture0,
+                   fs_in.textureCoord.xy ).rgb;
 	}
   } else {
     textureDifResult = ModelColor.rgb;
@@ -156,13 +160,14 @@ vec3 processDirectionalLight(in vec3 norm, in vec3 pos, in int lightIndex) {
   vec3 textureSpecResult;
   if (Toggle_Textures) {
     vec3 textureNrmResult;
+				if(Toggle_NormalAndSpecularMaps == true){
     textureDifResult =
         textureLod(Texture0,
                    ((fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
                     (vec2(512) * (fs_in.textureUnits.x + 0)) / vec2(7680)),
                    0)
             .rgb;
-			if(Toggle_NormalAndSpecularMaps == true){
+
     textureNrmResult =
         textureLod(Texture0,
                    ((fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
@@ -177,6 +182,9 @@ vec3 processDirectionalLight(in vec3 norm, in vec3 pos, in int lightIndex) {
             .rgb;
     // Transform normal vector to range [-1,1]
     norm = (textureNrmResult * 2.0f - vec3(1.0f));
+		}else{
+	textureDifResult =  texture(Texture0,
+                   fs_in.textureCoord.xy ).rgb;
 	}
   } else {
     textureDifResult = ModelColor.rgb;
@@ -218,15 +226,17 @@ vec3 processSpotLight(in vec3 norm, in vec3 pos, in int lightIndex) {
 
   vec3 textureDifResult;
   vec3 textureSpecResult;
+
   if (Toggle_Textures) {
     vec3 textureNrmResult;
+				if(Toggle_NormalAndSpecularMaps == true){
     textureDifResult =
         textureLod(Texture0,
                    ((fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
                     (vec2(512) * (fs_in.textureUnits.x + 0)) / vec2(7680)),
                    0)
             .rgb;
-			if(Toggle_NormalAndSpecularMaps == true){
+
     textureNrmResult =
         textureLod(Texture0,
                    ((fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
@@ -241,6 +251,9 @@ vec3 processSpotLight(in vec3 norm, in vec3 pos, in int lightIndex) {
             .rgb;
     // Transform normal vector to range [-1,1]
     norm = (textureNrmResult * 2.0f - vec3(1.0f));
+	}else{
+	textureDifResult =  texture(Texture0,
+                   fs_in.textureCoord.xy ).rgb;
 	}
   } else {
     textureDifResult = ModelColor.rgb;

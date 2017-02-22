@@ -36,8 +36,6 @@ namespace GraphicsEngine {
 		bool buffersInitialized = false;
 		
 	public:
-		// vv TODO: PUT THIS IN AN OBJECT MANAGER!! :) vv
-		static std::vector<cGraphicsObject*> m_vec_pGraphicObjects;
 		static GraphicsEngine_API  cGraphicsEngine *instance();
 		static GraphicsEngine_API  void loadCubemaps(rapidxml::xml_node<> *cubemapsNode);
 		static GraphicsEngine_API void loadMipmapTextures(rapidxml::xml_node<>* mipmapTexturesNode);

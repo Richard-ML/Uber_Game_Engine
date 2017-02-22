@@ -23,7 +23,11 @@ public:
 	std::map<std::string, sFBOInfo*> map_NameToFBOInfo;
 
 	GLuint createFrameBufferObject(std::string name, int width, int height);
-	//bool renderSceneToFBO(std::string name);
+	bool renderSceneToFBO(std::string name);
+
+	void renderTheSkybox();
+	void renderScene();
+	void bindTheBuffers();
 private:
 	cRenderManager() {
 	} // Constructor is private therefore a new instance can not be made

@@ -13,6 +13,8 @@ public:
 		const char *fragment_file_path,
 		const char *geometry_file_path);
 
+	bool setupTheShaders();
+
 private:
 	cShaderManager() {
 	} // Constructor is private therefore a new instance can not be made

@@ -196,3 +196,28 @@ void cLightManager::loadLightFromXML(rapidxml::xml_node<>* lightNode)
 	}
 }
 
+void cLightManager::updateLightUniforms() {
+
+	glUniform1i(gUniformId_Toggle_Lights, g_bool_toggleLights);
+	glUniform1i(gUniformId_NumLights, g_pLightManager->vecLights.size());
+	for (auto iter = g_pLightManager->vecLights.begin(); iter != g_pLightManager->vecLights.end(); iter++) {
+		glUniform1i((*iter)->gUniformId_IsEnabled, (*iter)->isEnabled);
+		glUniform1i((*iter)->gUniformId_TypeFlag, (*iter)->typeFlag);
+		glUniform3fv((*iter)->gUniformId_Position, 1,
+			glm::value_ptr(glm::ballRand(5.0f)));//(*iter)->matrix[3]));
+		glUniform3fv((*iter)->gUniformId_Direction, 1,
+			glm::value_ptr(glm::vec3(0.0f, 0.0f, 0.0f))); //(*iter)->direction));
+		glUniform1f((*iter)->gUniformId_ConeAngle, (*iter)->coneAngle);
+		glUniform3fv((*iter)->gUniformId_Ambient, 1,
+			glm::value_ptr((*iter)->ambient));
+		glUniform3fv((*iter)->gUniformId_Diffuse, 1,
+			glm::value_ptr((*iter)->diffuse));
+		glUniform3fv((*iter)->gUniformId_Specular, 1,
+			glm::value_ptr((*iter)->specular));
+		glUniform1f((*iter)->gUniformId_SpecularPower, (*iter)->specularPower);
+		glUniform1f((*iter)->gUniformId_AttenuationConst, (*iter)->attenConst);
+		glUniform1f((*iter)->gUniformId_AttenuationLinear, (*iter)->attenLinear);
+		glUniform1f((*iter)->gUniformId_AttenuationQuad, (*iter)->attenQuad);
+	}
+
+}

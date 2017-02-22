@@ -14,12 +14,55 @@ void callback_WindowClose(GLFWwindow *window) {
 void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 	int mods) {
 
-	if (action == 1)
-		switch (key) {
-		case GLFW_KEY_X:
-			// g_pEntityManager->dropBomb();
-			break;
-		}
+
+
+	// NOTE: Does not work for buttons being held-down. See TAG: 001X
+	//if (action == 1)
+	//	switch (key) {
+	//	case GLFW_KEY_W:
+	//		for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
+	//		{
+	//			glm::mat4 tempTrans = glm::translate(controlComponent.pState->getTransform(), glm::vec3(0.0f, 0.0f, 1.0f));
+	//			controlComponent.pState->setTransform(tempTrans);
+	//			gCamera->setTargetTransform(tempTrans);
+	//		}
+	//		break;
+	//	case GLFW_KEY_S:
+	//		for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
+	//		{
+	//			glm::mat4 tempTrans = glm::translate(controlComponent.pState->getTransform(), glm::vec3(0.0f,0.0f,-1.0f));
+	//			controlComponent.pState->setTransform(tempTrans);
+	//			gCamera->setTargetTransform(tempTrans);
+	//		}
+	//		break;
+	//	case GLFW_KEY_A:
+	//		for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
+	//		{
+	//			glm::mat4 rotMatrix;
+	//			glm::mat4 tempTrans = controlComponent.pState->getTransform();
+	//			rotMatrix = glm::rotate(glm::mat4(), 0.1f, glm::vec3(0.0f,1.0f,0.0f));
+	//			tempTrans *= rotMatrix;
+	//			controlComponent.pState->setTransform(tempTrans);
+	//			gCamera->setTargetTransform(controlComponent.pState->getTransform());
+	//		}
+	//		break;
+	//	case GLFW_KEY_D:
+	//		for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
+	//		{
+	//			glm::mat4 rotMatrix;
+	//			glm::mat4 tempTrans = controlComponent.pState->getTransform();
+	//			rotMatrix = glm::rotate(glm::mat4(), 0.1f, glm::vec3(0.0f, -1.0f, 0.0f));
+	//			tempTrans *= rotMatrix;
+	//			controlComponent.pState->setTransform(tempTrans);
+	//			gCamera->setTargetTransform(controlComponent.pState->getTransform());
+	//		}
+	//		break;
+	//	}
+
+
+
+
+
 
 }
 void callback_Error(int, const char* error)

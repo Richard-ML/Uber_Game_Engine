@@ -1,6 +1,5 @@
 #pragma once
 #include "stdafx.h"
-#include "global.h"
 #include "iState.h"
 class cGraphicsObject {
 public:

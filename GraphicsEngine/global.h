@@ -6,7 +6,8 @@
 #include "cCamera.h"
 #include "cLightManager.h"
 #include "cRenderManager.h"
-
+#include "cGraphicsObject.h"
+#include "cPlayerControlComponent.h"
 // Window information
 extern GLFWwindow *gWindow;
 extern std::string gWindowTitle;
@@ -23,6 +24,10 @@ void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 	int mods);
 void callback_Error(int, const char* error);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+
+
+
+extern 	std::vector<cGraphicsObject*> g_vec_pGraphicObjects;
 
 
 
@@ -66,6 +71,8 @@ extern GLuint gTextureInfoBufferID;
 extern GLuint gIndexBufferID;
 
 
+extern int gWindowWidth;
+extern int gWindowHeight;
 
 
 // Sky-box Shader:
@@ -90,3 +97,7 @@ extern cRenderManager *g_pRenderManager;
 // Global toggles
 extern bool g_bool_toggleLights;
 extern bool g_bool_toggleTextures;
+
+
+// Global Player control components
+extern std::vector<cPlayerControlComponent> g_vec_playerControlComponents;

@@ -28,6 +28,7 @@ GLuint gUniformId_EyePosition = 0;
 GLuint gUniformId_Toggle_Lights = 0;
 GLuint gUniformId_Toggle_Textures = 0;
 
+std::vector<cGraphicsObject*> g_vec_pGraphicObjects;
 
 //**************** Initialize Managers ****************
 cMeshManager *cMeshManager::s_cMeshManager =
@@ -62,10 +63,14 @@ GLuint gSkyboxVMID = 0;
 GLuint gUniformId_SamplerCube = 0;
 GLuint gCubeVAO = 0;
 
+int gWindowWidth = 0;
+int gWindowHeight = 0;
+
 
 // Global toggles
 bool g_bool_toggleLights = true;
 bool g_bool_toggleTextures = true;
 
 
-// TODO: Move this 
+// Global Player control components
+std::vector<cPlayerControlComponent> g_vec_playerControlComponents;

@@ -222,11 +222,13 @@ public:
   // Inherited via iStateNode
   virtual void setPosition(const glm::vec3 position) override {
     this->_localStateData.position = position;
+	this->_localStateData.transform[3] = glm::vec4(position, this->_localStateData.transform[3].w);
 	for each(iState *
 		state in m_childStates)
 	{
 		cState* curState = dynamic_cast<cState *>(state);
 		curState->_setPosition(position);
+		curState->_setTransform(this->_localStateData.transform);
 	   //g_pGraphicsEngine->dispatch(&curState->_setPosition, position);
 	}
   }
@@ -252,11 +254,13 @@ public:
   }
   virtual void setTransform(const glm::mat4 transform) override {
     this->_localStateData.transform = transform;
+	this->_localStateData.position = glm::vec3(transform[3]);
 	for each(iState *
 		state in m_childStates)
 	{
 		cState* curState = dynamic_cast<cState *>(state);
 		curState->_setTransform(transform);
+		curState->_setPosition(this->_localStateData.position);
 		//curState->dispatch(&curState->_setTransform, transform);
 	}
   }

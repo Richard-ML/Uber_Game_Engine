@@ -60,11 +60,11 @@ void cCamera::update(float dt) {
 	if (pressDown != pressUp) {
 		if (pressDown)
 		{
-			m_rotation.pitchOffset += m_rotation.sensitivity.y;
+			m_rotation.pendingRotation.y -= m_rotation.sensitivity.y;
 		}
 		else
 		{
-			m_rotation.pitchOffset -= m_rotation.sensitivity.y;
+			m_rotation.pendingRotation.y += m_rotation.sensitivity.y;
 		}
 	}
 
@@ -73,55 +73,33 @@ void cCamera::update(float dt) {
 	if (pressLeft != pressRight) {
 		if (pressLeft)
 		{
-			m_rotation.yawOffset += m_rotation.sensitivity.x;
+			m_rotation.pendingRotation.x -= m_rotation.sensitivity.x;
 		}
 		else 
 		{
-			m_rotation.yawOffset -= m_rotation.sensitivity.x;
+			m_rotation.pendingRotation.x += m_rotation.sensitivity.x;
 		}
 	}
 	updateView();
 }
 
 void cCamera::updateView() {
-	glm::vec3 up(0.0f, 1.0f, 0.0f);
-	glm::vec3 cameraPosition;
-	glm::vec3 cameraForward;
-	m_rotation.pitchOffset = glm::clamp(m_rotation.pitchOffset, -89.0f + m_rotation.pitch, -5.0f + m_rotation.pitch);
-	float pitch = glm::clamp( m_rotation.pitch + m_rotation.pitchOffset, -89.0f, -5.0f);
-	float yaw = m_rotation.yaw + m_rotation.yawOffset;
-
-	glm::vec3 front;
-	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	front.y = sin(glm::radians(pitch));
-	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-	cameraForward = glm::normalize(front);
-
-	cameraPosition = glm::vec3(mTargetTranform[3]) - cameraForward * m_zoom.distance;
-
-	mViewMatrix = glm::lookAt(cameraPosition, cameraPosition + cameraForward, up);
-
+	// NOTE: The camera does not inherit the target's orientation as its base orientation. 
+	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 targetPosition = glm::vec3(mTargetTranform[3]);
+	glm::mat4 rotation = glm::yawPitchRoll(m_rotation.pendingRotation.x, m_rotation.pendingRotation.y, 0.0f);
+	glm::vec3 translation = glm::vec3(0.0f, 0.0f, -m_zoom.distance);
+	translation = glm::vec3(rotation * glm::vec4(translation, 0.0f));
+	glm::vec3 position = targetPosition + translation;
+	glm::vec3 forward = glm::normalize(targetPosition - position);
+	up = glm::vec3(rotation * glm::vec4(up, 0.0f));
+	glm::vec3 right = glm::cross(forward, up);
+	mViewMatrix = glm::lookAt(position, targetPosition, up);
 }
 
 void cCamera::setTargetTransform(glm::mat4 &targetTransform) {
 	mTargetTranform = targetTransform;
-	
-	float sinePitch, cosinePitch, sineYaw, cosineYaw;
-	sinePitch = -mTargetTranform[2][0];
-	cosinePitch = sqrt(1 - sinePitch * sinePitch);
-	if (abs(cosinePitch) > glm::epsilon<float>())
-	{
-		sineYaw = mTargetTranform[1][0] / cosinePitch;
-		cosineYaw = mTargetTranform[0][0] / cosinePitch;
-	}
-	else
-	{
-		sineYaw = 0;
-		cosineYaw = 1;
-	}
-	float pi = glm::pi<float>();
-	m_rotation.yaw = atan2(sineYaw, cosineYaw) * 180 / pi;
-	m_rotation.pitch = atan2(sinePitch, cosinePitch) * 180 / pi;
+	mViewMatrix = glm::lookAtRH(glm::vec3( mViewMatrix[3] ), glm::vec3( targetTransform[3] ), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void cCamera::loadFromXML(rapidxml::xml_node<> *cameraNode) {

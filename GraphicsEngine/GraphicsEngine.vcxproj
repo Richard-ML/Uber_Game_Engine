@@ -166,6 +166,7 @@
     <ClInclude Include="cGraphicsObject.h" />
     <ClInclude Include="cLightManager.h" />
     <ClInclude Include="cMeshManager.h" />
+    <ClInclude Include="cPlayerControlComponent.h" />
     <ClInclude Include="cRenderManager.h" />
     <ClInclude Include="cShaderManager.h" />
     <ClInclude Include="cTextureManager.h" />

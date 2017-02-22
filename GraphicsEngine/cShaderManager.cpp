@@ -235,3 +235,53 @@ GLuint cShaderManager::loadShaders(const char *vertex_file_path,
 
 	return ProgramID;
 }
+
+
+bool cShaderManager::setupTheShaders() {
+		//Create and compile our GLSL program from the shaders
+		gProgramID = ::g_pShaderManager->loadShaders(
+			"../GraphicsEngine/Simple.vs.glsl", "../GraphicsEngine/Simple.fs.glsl", "../GraphicsEngine/Simple.gs.glsl");
+
+		if (!gProgramID) {
+			std::cout << "Shaders failed to load!!" << std::endl;
+			return false;
+		}
+
+		// per item
+		// Uber shader
+		gUniformId_ModelMatrix = glGetUniformLocation(gProgramID, "ModelMatrix");
+		gUniformId_ModelMatrixOrientation =
+			glGetUniformLocation(gProgramID, "ModelMatrixOrientation");
+		gUniformId_Alpha = glGetUniformLocation(gProgramID, "Alpha");
+		gUniformId_ModelColor = glGetUniformLocation(gProgramID, "ModelColor");
+		gUniformId_NumLights = glGetUniformLocation(gProgramID, "NUM_LIGHTS");
+
+		gUniformId_ViewMatrix = glGetUniformLocation(gProgramID, "ViewMatrix");
+		gUniformId_PojectionMatrix =
+			glGetUniformLocation(gProgramID, "ProjectionMatrix");
+		gUniformId_EyePosition = glGetUniformLocation(gProgramID, "EyePosition");
+
+		gUniformId_Toggle_Lights = glGetUniformLocation(gProgramID, "Toggle_Lights");
+
+		gUniformId_Toggle_Textures =
+			glGetUniformLocation(gProgramID, "Toggle_Textures");
+
+		gUniformId_NumTextures = glGetUniformLocation(gProgramID, "NUM_TEXTURES");
+		gUniformId_Texture0 = glGetUniformLocation(gProgramID, "Texture0");
+		gUniformId_Texture1 = glGetUniformLocation(gProgramID, "Texture1");
+		gUniformId_Texture2 = glGetUniformLocation(gProgramID, "Texture2");
+		gUniformId_Texture3 = glGetUniformLocation(gProgramID, "Texture3");
+
+		gUniformId_Toggle_NormalAndSpecularMaps = glGetUniformLocation(gProgramID, "Toggle_NormalAndSpecularMaps");
+
+		// Skybox Shader
+		::gSkyboxShaderID =
+			::g_pShaderManager->loadShaders("../GraphicsEngine/Skybox.vs.glsl", "../GraphicsEngine/Skybox.fs.glsl");
+		::gUniformId_ToggleSkyboxTextures =
+			glGetUniformLocation(gSkyboxShaderID, "Toggle_Skybox_Textures");
+		gSkyboxVMID = glGetUniformLocation(gSkyboxShaderID, "view_matrix");
+
+		gUniformId_SamplerCube = glGetUniformLocation(gSkyboxShaderID, "skybox");
+		return true;
+	
+}

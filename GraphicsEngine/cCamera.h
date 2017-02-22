@@ -15,7 +15,7 @@ public:
 	virtual void loadDataFromXML(rapidxml::xml_node<> *entityNode);
 	void update(float dt);
 	void setTargetTransform(glm::mat4 &targetTransform);
-	void loadFromXML(rapidxml::xml_node<> *cameraNode);
+	void loadFromXML(rapidxml::xml_node<> *cameraNode); //TODO: Currently the basic initial camera settings are hard-coded in this header file. Load this information from XML.
 	void updateView();
 
 	int mWidth;
@@ -24,20 +24,24 @@ public:
 	glm::mat4 mViewMatrix;
 	
 
-
-	struct {
-		float yaw = 0.0f;
-		float pitch = 0.0f;
-		float yawOffset = 90.0f;
-		float pitchOffset = -45.0f;
-		glm::vec2 sensitivity = glm::vec3(1.0f);
+	// NOTE: Roll is not being used currently.
+	struct Rotation {
+		/* Rotation applied to the camera. (yaw, pitch, roll) in radians.
+		 *  Optionally this rotation could be applied in addition to the camera-target's orientation.
+		 */
+		glm::vec3 pendingRotation = glm::vec3(0.0f, 0.57f, 0.0f);
+		// The speed at which rotation is incremented/decremented based on delta-time. (yaw, pitch, roll)
+		glm::vec3 sensitivity = glm::vec3(0.01f);
 	}m_rotation;
-	struct {
+	struct Zoom {
+		// Zoom distance that will be applied speeds up to @rate * delta-time
 		float pendingDistanceOffset = 0.0f;
+		// Current zoom distance
 		float distance = 50.0f;
+		// The speed at which zooming distance is incremented/decremented based on delta-time.
 		float rate = 1000.0f;
-		float minDistance = 30.0f;
-		float maxDistance = 90.0f;
+		float minDistance = 30.0f; // How close the camera can be to its target.
+		float maxDistance = 90.0f; // How far away the camera can be from its target.
 	}m_zoom;
 
 };
