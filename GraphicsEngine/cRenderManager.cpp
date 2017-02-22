@@ -311,7 +311,7 @@ bool cRenderManager::renderSceneToFBO(std::string name)
 	glViewport(0, 0, 1024, 1024);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g_pRenderManager->map_NameToFBOInfo["Portal"]->frameBufferID);
 	
-	glm::mat4 view = gCamera->mViewMatrix;
+	glm::mat4 view = gCamera->m_viewMatrix;
 	
 	
 
@@ -323,7 +323,7 @@ bool cRenderManager::renderSceneToFBO(std::string name)
 
 
 	// do this only when portal created?
-	glm::vec3 portal_view_anormal = glm::normalize((glm::vec3(gCamera->mViewMatrix[3]) -glm::vec3(10.0f,0.0f,10.0f)));
+	glm::vec3 portal_view_anormal = glm::normalize((glm::vec3(gCamera->m_viewMatrix[3]) -glm::vec3(10.0f,0.0f,10.0f)));
 	//Vector3DF portal_cam_normal = (portal_cam_to[i] - portal_cam_from[i]).Normalize();
 	
 	glm::vec3 portal_cam_normal = glm::normalize((glm::vec3(10.0f, 0.0f, 15.0f) - glm::vec3(10.0f, 0.0f, 10.0f)));
@@ -334,10 +334,10 @@ bool cRenderManager::renderSceneToFBO(std::string name)
 	glm::vec3 portal_cross = glm::cross(portal_cam_normal, portal_view_anormal);
 
 	//glTranslatef(portal_view_from[i].x, 0, portal_view_from[i].z);
-	gCamera->mViewMatrix[3] = glm::vec4(-glm::vec3(10.0f, 0.0f, 10.0f), 1.0f);
+	gCamera->m_viewMatrix[3] = glm::vec4(-glm::vec3(10.0f, 0.0f, 10.0f), 1.0f);
 
 	//glRotatef(portal_angle, portal_cross.x, portal_cross.y, portal_cross.z);
-	gCamera->mViewMatrix = glm::rotate(gCamera->mViewMatrix, -portal_angle, portal_cross);
+	gCamera->m_viewMatrix = glm::rotate(gCamera->m_viewMatrix, -portal_angle, portal_cross);
 
 	// go to portal cam location
 	//glTranslatef(-portal_cam_from[i].x, 0, -portal_cam_from[i].z);
@@ -425,7 +425,7 @@ bool cRenderManager::renderSceneToFBO(std::string name)
 
 
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-	gCamera->mViewMatrix = view;
+	gCamera->m_viewMatrix = view;
 
 	return true;
 }

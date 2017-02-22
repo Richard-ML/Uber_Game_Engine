@@ -12,16 +12,15 @@ public:
 	void getEyePosition(glm::vec4 &eyeOut);
 	glm::vec4 getEyePosition();
 	void windowResize(int width, int height);
-	virtual void loadDataFromXML(rapidxml::xml_node<> *entityNode);
 	void update(float dt);
 	void setTargetTransform(glm::mat4 &targetTransform);
 	void loadFromXML(rapidxml::xml_node<> *cameraNode); //TODO: Currently the basic initial camera settings are hard-coded in this header file. Load this information from XML.
 	void updateView();
 
-	int mWidth;
-	int mHeight;
-	glm::mat4 mTargetTranform;
-	glm::mat4 mViewMatrix;
+	int m_width;
+	int m_height;
+	glm::mat4 m_targetTranform;
+	glm::mat4 m_viewMatrix;
 	
 
 	// NOTE: Roll is not being used currently.
@@ -30,8 +29,8 @@ public:
 		 *  Optionally this rotation could be applied in addition to the camera-target's orientation.
 		 */
 		glm::vec3 pendingRotation = glm::vec3(0.0f, 0.57f, 0.0f);
-		// The speed at which rotation is incremented/decremented based on delta-time. (yaw, pitch, roll)
-		glm::vec3 sensitivity = glm::vec3(0.01f);
+		// The speed at which rotation is incremented/decremented. (yaw, pitch, roll)
+		glm::vec3 sensitivity = glm::vec3(0.0157f);
 	}m_rotation;
 	struct Zoom {
 		// Zoom distance that will be applied speeds up to @rate * delta-time
