@@ -151,7 +151,8 @@ namespace GraphicsEngine {
 		bool pressD = glfwGetKey(gWindow, GLFW_KEY_D) == GLFW_PRESS;
 		if (pressW != pressS)
 		{
-			glm::vec3 translation = glm::vec3(0.0f, 0.0f, 10000.0f * deltaTime);
+			// TODO: Add velocity based on delta time. 
+			glm::vec3 translation = glm::vec3(0.0f, 0.0f, 1.28f);
 			if (pressS)
 				translation *= -1.0f;
 			for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
@@ -166,7 +167,8 @@ namespace GraphicsEngine {
 			glm::vec3 axis = glm::vec3(0.0f, 1.0f, 0.0f);
 			if (pressD)
 				axis *= -1.0f;
-			glm::mat4 rotMatrix = glm::rotate(glm::mat4(), 1000.0f  * deltaTime, axis);
+			// TODO: Add turn velocity based on delta time. 
+			glm::mat4 rotMatrix = glm::rotate(glm::mat4(), 0.157f, axis);
 
 			for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
 			{
