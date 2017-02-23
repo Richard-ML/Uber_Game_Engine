@@ -121,9 +121,9 @@ namespace GraphicsEngine {
 		for (rapidxml::xml_node<> *cFBO_node = framebuffersNode->first_node("FrameBufferObject");
 			cFBO_node; cFBO_node = cFBO_node->next_sibling()) {
 			g_pRenderManager->createFrameBufferObject(cFBO_node->first_attribute("name")->value(),
-				//gWindowWidth, gWindowHeight);
+				//gWindowWidth/2, gWindowHeight, false);
 				std::stoi(cFBO_node->first_attribute("width")->value()), 
-				std::stoi(cFBO_node->first_attribute("height")->value()));
+				std::stoi(cFBO_node->first_attribute("height")->value()), true);
 		}
 
 
@@ -190,13 +190,12 @@ namespace GraphicsEngine {
 		glEnable(GL_TEXTURE_2D);
 		// Set shader model. Does this really make a difference?
 		glShadeModel(GL_SMOOTH);
-
+		
 		// Clear the screen..
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Render Skybox
-		g_pRenderManager->renderTheSkybox();
+	
 
 		// Use primary rendering shader
 		glUseProgram(gProgramID);
@@ -226,7 +225,7 @@ void initializeGLFW() {
 		system("pause");
 	}
 
-	glfwWindowHint(GLFW_SAMPLES, 8);
+	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
@@ -242,15 +241,14 @@ void initializeGLFW() {
 
 	glEnable(GL_MULTISAMPLE);
 	// Open a window and create its OpenGL context
-
+	
 	gWindowHeight = mode->height;
 	gWindowWidth = mode->width;
 
 	gWindow =
 		glfwCreateWindow(mode->width, mode->height, gWindowTitle.c_str(), NULL, NULL);
 	if (gWindow == NULL) {
-		fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, "
-			"they are not 3.3 compatible.\n");
+		fprintf(stderr, "Failed to open GLFW window. Intel GPUs are not 3.3 compatible.\n");
 		glfwTerminate();
 		system("pause");
 	}

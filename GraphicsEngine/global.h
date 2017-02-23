@@ -98,6 +98,5 @@ extern cRenderManager *g_pRenderManager;
 extern bool g_bool_toggleLights;
 extern bool g_bool_toggleTextures;
 
-
 // Global Player control components
 extern std::vector<cPlayerControlComponent> g_vec_playerControlComponents;

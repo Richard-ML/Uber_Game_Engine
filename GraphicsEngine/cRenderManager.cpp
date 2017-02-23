@@ -8,66 +8,25 @@ cRenderManager * cRenderManager::instance()
 	return s_cRenderManager;
 }
 
-GLuint cRenderManager::createFrameBufferObject(std::string name, int width, int height)
+GLuint cRenderManager::createFrameBufferObject(std::string name, int width, int height, bool multisampled)
 {
-	sFBOInfo* pFBOInfo = new sFBOInfo();
+	cFBOInfo* pFBOInfo;
+	if (!multisampled)
+		pFBOInfo = new cFBOInfo();
+	else
+		pFBOInfo = new cMSFBOInfo();
+
 	pFBOInfo->name = name;
+	pFBOInfo->width = width;
+	pFBOInfo->height = height;
 
-	// Create a FBO then bind it..
-	glCreateFramebuffers(1, &pFBOInfo->frameBufferID);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, pFBOInfo->frameBufferID);
-	
-	// Create a color buffer texture for our new FBO
-	glGenTextures(1, &pFBOInfo->colorTextureID);
-	glBindTexture(GL_TEXTURE_2D, pFBOInfo->colorTextureID);
-	//glTextureStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, width, height);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-		width,
-		height,
-		0, GL_RGBA, GL_UNSIGNED_BYTE,
-		NULL);
-
-	// Create a depth buffer texture for out new FBO
-	glGenTextures(1, &pFBOInfo->depthBufferID);
-	glBindTexture(GL_TEXTURE_2D, pFBOInfo->depthBufferID);
-	//glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT32F, width, height);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-		width,
-		height,
-		0, GL_DEPTH_COMPONENT, GL_FLOAT,
-		NULL);
-
-
-	
-	// Attach color and depth textures to the FBO
-	glFramebufferTexture(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, pFBOInfo->colorTextureID, 0);
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, pFBOInfo->depthBufferID, 0);
-	
-	// Draw to the framebuffers one and only color attachment.
-	static const GLenum draw_buffers[] = { GL_COLOR_ATTACHMENT0 };
-	glDrawBuffers(1, draw_buffers);
+	pFBOInfo->createFrameBuffer();
 	
 	// Add FBO information to the map! 
 	map_NameToFBOInfo[name] = pFBOInfo;
 
-	// TODO: Something better than this... 
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0); // Return to initial frame buffer (default one)
-	///glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0); // Bind the original texture that contains all of the textures in a mipmap
-	return pFBOInfo->frameBufferID;
+	return pFBOInfo->framebufferID;
 }
-
 
 void cRenderManager::renderTheSkybox() {
 	//////////////////////////////////////////////////////////
@@ -118,6 +77,9 @@ void cRenderManager::renderTheSkybox() {
 
 void cRenderManager::renderScene()
 {
+	// Render Skybox
+	renderTheSkybox();
+
 	glm::mat4 projectionMatrix;
 	glm::mat4 viewMatrix;
 	gCamera->getProjectionMatrix(projectionMatrix);
@@ -126,20 +88,18 @@ void cRenderManager::renderScene()
 	bindTheBuffers();
 	glUseProgram(gProgramID);
 
-
 		for (int ncW = 0; ncW < 128; ncW++)
 		{
 			for (int ncD = 0; ncD < 128; ncD++)
 			{
-				float offsetX = (-1024.0f + 12.79f * (float)ncW);
-				float offsetZ = (-1024.0f + 12.79f * (float)ncD);
+				float offsetX = (-1024.0f + 12.7f * (float)ncW);
+				float offsetZ = (-1024.0f + 12.7F * (float)ncD);
 
 				// per frame uniforms
 				glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
 					glm::value_ptr(projectionMatrix));
 				glUniformMatrix4fv(gUniformId_ViewMatrix, 1, GL_FALSE,
 					glm::value_ptr(viewMatrix));
-
 
 				glm::vec4 eye4;
 				gCamera->getEyePosition(eye4);
@@ -246,7 +206,6 @@ void cRenderManager::renderScene()
 					(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex),
 					g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex);
 			}
-
 	}
 
 }
@@ -295,98 +254,31 @@ void cRenderManager::bindTheBuffers()
 	glVertexAttribIPointer(
 		4, 4, GL_UNSIGNED_INT, sizeof(cMeshVertex),
 		(GLvoid *)offsetToTextureInfoInBytes); // Offset in bytes to Texture Info
-
-
 }
 
 
 bool cRenderManager::renderSceneToFBO(std::string name)
 {
-	sFBOInfo * fboInfo = map_NameToFBOInfo[name];
+	cFBOInfo * fboInfo = map_NameToFBOInfo[name];
 	if (fboInfo == nullptr)
 		return false;
 
+	//glm::mat4 view = gCamera->m_viewMatrix;
 
-	//TODO: Remove this test code TAG: 1003
-	glViewport(0, 0, 1024, 1024);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, g_pRenderManager->map_NameToFBOInfo["Portal"]->frameBufferID);
-	
-	glm::mat4 view = gCamera->m_viewMatrix;
-	
-	
+	fboInfo->renderSceneToFBO();
 
+	//gCamera->m_viewMatrix = view;
 
+	return true;
+}
 
-
-
-
-
-
-	// do this only when portal created?
-	glm::vec3 portal_view_anormal = glm::normalize((glm::vec3(gCamera->m_viewMatrix[3]) -glm::vec3(10.0f,0.0f,10.0f)));
-	//Vector3DF portal_cam_normal = (portal_cam_to[i] - portal_cam_from[i]).Normalize();
-	
-	glm::vec3 portal_cam_normal = glm::normalize((glm::vec3(10.0f, 0.0f, 15.0f) - glm::vec3(10.0f, 0.0f, 10.0f)));
-	float portal_angle = glm::degrees( glm::acos(glm::dot(portal_view_anormal, portal_cam_normal)));
-
-	//	printf("angle between view and cam: %f\n", portal_angle);
-
-	glm::vec3 portal_cross = glm::cross(portal_cam_normal, portal_view_anormal);
-
-	//glTranslatef(portal_view_from[i].x, 0, portal_view_from[i].z);
-	gCamera->m_viewMatrix[3] = glm::vec4(-glm::vec3(10.0f, 0.0f, 10.0f), 1.0f);
-
-	//glRotatef(portal_angle, portal_cross.x, portal_cross.y, portal_cross.z);
-	gCamera->m_viewMatrix = glm::rotate(gCamera->m_viewMatrix, -portal_angle, portal_cross);
-
-	// go to portal cam location
-	//glTranslatef(-portal_cam_from[i].x, 0, -portal_cam_from[i].z);
-
-
-	//glTranslatef(-portal_view_from[other(i)].x, 0, -portal_view_from[other(i)].z);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	
+void cFBOInfo::renderSceneToFBO()
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->framebufferID);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	glClearBufferfv(GL_COLOR, 0, glm::value_ptr(glm::vec3(0.0f, 120.0f, 0.0f)));
 	glClearBufferfv(GL_DEPTH, 0, glm::value_ptr(glm::vec3(0.0f, 120.0f, 0.0f)));
-	static const  GLenum attachments[] = { GL_COLOR_ATTACHMENT0 };
+	static const  GLenum attachments[] = { GL_COLOR_ATTACHMENT0, GL_DEPTH_COMPONENT };
 	glDrawBuffers(1, attachments);
 
 	glEnable(GL_DEPTH_TEST);
@@ -396,38 +288,196 @@ bool cRenderManager::renderSceneToFBO(std::string name)
 	switch (e) {
 
 	case GL_FRAMEBUFFER_UNDEFINED:
-		printf("FBO Undefined\n");
+		printf("ERROR: FBO Undefined\n");
 		break;
 	case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-		printf("FBO Incomplete Attachment\n");
+		printf("ERROR: FBO Incomplete Attachment\n");
 		break;
 	case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-		printf("FBO Missing Attachment\n");
+		printf("ERROR: FBO Missing Attachment\n");
 		break;
 	case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-		printf("FBO Incomplete Draw Buffer\n");
+		printf("ERROR: FBO Incomplete Draw Buffer\n");
 		break;
 	case GL_FRAMEBUFFER_UNSUPPORTED:
-		printf("FBO Unsupported\n");
+		printf("ERROR: FBO Unsupported\n");
 		break;
 	case GL_FRAMEBUFFER_COMPLETE:
-		printf("FBO OK\n");
+		printf("FBO VALID\n");
 		break;
 	default:
-		printf("FBO Problem?\n");
+		printf("ERROR: Framebuffer invalid!\n");
 	}
-	
-	renderScene();
 
-	// After
+	g_pRenderManager->renderScene();
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
 
-	glViewport(0, 0, gWindowWidth, gWindowHeight);
+void cFBOInfo::createFrameBuffer()
+{
+	// Create a FBO then bind it..
+	glCreateFramebuffers(1, &this->framebufferID);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->framebufferID);
 
+	// Create a color buffer texture for our new FBO
+	glGenTextures(1, &this->colorTextureID);
+	glBindTexture(GL_TEXTURE_2D, this->colorTextureID);
 
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-	gCamera->m_viewMatrix = view;
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	return true;
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+		width,
+		height,
+		0, GL_RGBA, GL_UNSIGNED_BYTE,
+		NULL);
+
+	// Create a depth buffer texture for out new FBO
+	glGenTextures(1, &this->depthBufferID);
+	glBindTexture(GL_TEXTURE_2D, this->depthBufferID);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+		width,
+		height,
+		0, GL_DEPTH_COMPONENT, GL_FLOAT,
+		NULL);
+
+	// Attach color and depth textures to the FBO
+	glFramebufferTexture(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, this->colorTextureID, 0);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, this->depthBufferID, 0);
+
+	// Draw to the framebuffers one and only color attachment.
+	static const GLenum draw_buffers[] = { GL_COLOR_ATTACHMENT0 };
+	glDrawBuffers(1, draw_buffers);
+}
+
+void cMSFBOInfo::renderSceneToFBO()
+{
+	glViewport(0.0f, 0.0f, this->width, this->height);
+	// Draw scene to multi-sampled buffer
+	glBindFramebuffer(GL_FRAMEBUFFER, this->msFramebufferID);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
+
+	static const  GLenum attachments[] = { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT };
+	glDrawBuffers(1, attachments);
+	g_pRenderManager->renderScene();
+
+	// Blit the multi-sampled buffer
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, this->msFramebufferID);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->framebufferID);
+	glBlitFramebuffer(0, 0, this->width, this->height, 0, 0,
+		this->width, this->height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT); 
+	glDisable(GL_DEPTH_TEST);
+
+	glViewport(0.0f, 0.0f, gWindowWidth, gWindowHeight);
 }
 
 
+void cMSFBOInfo::createFrameBuffer()
+{
+	// Create MS FBO
+	glGenFramebuffers(1, &this->msFramebufferID);
+	glBindFramebuffer(GL_FRAMEBUFFER, this->msFramebufferID);
+	// Generate a multi-sampled texture for the multi-sampled framebuffer
+	glGenTextures(1, &this->msColorTexture);
+	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, this->msColorTexture);
+
+	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, // TODO: Make number of samples non-hardcoded
+		GL_RGBA, this->width, this->height, GL_TRUE);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, this->msColorTexture, 0);
+	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0); // Unbind PROBLEM HERE?
+	// Create a render buffer for stencil and depth attachments
+	GLuint rbo;
+	glGenRenderbuffers(1, &rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, this->width, this->height);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		printf("ERROR: Framebuffer invalid!\n");
+	
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); // Unbind
+
+	// TODO: Create other attachments. Depth/Stencil
+	GLenum bufferAttachment = GL_RGBA;
+	// Create a color buffer texture for the intermediate buffer
+	glGenTextures(1, &this->colorTextureID);
+	glBindTexture(GL_TEXTURE_2D, this->colorTextureID);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, bufferAttachment,
+		width,
+		height,
+		0, bufferAttachment, GL_UNSIGNED_BYTE,
+		NULL);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Could be removed..
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // ^
+
+	// Create a depth buffer texture for out new FBO
+	glGenTextures(1, &this->depthBufferID);
+	glBindTexture(GL_TEXTURE_2D, this->depthBufferID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+		width,
+		height,
+		0, GL_DEPTH_COMPONENT, GL_FLOAT,
+		NULL);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// Create intermediate FBO then bind it..
+	glGenFramebuffers(1, &this->framebufferID);
+	glBindFramebuffer(GL_FRAMEBUFFER, this->framebufferID);
+	// Attach color and depth textures to the FBO
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, this->colorTextureID, 0);
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, this->depthBufferID, 0);
+	// Draw to the framebuffers one and only color attachment.
+	static const GLenum draw_buffers[] = { GL_COLOR_ATTACHMENT0 };// remove this
+	glDrawBuffers(1, draw_buffers);
+
+	GLenum e = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	switch (e) {
+
+	case GL_FRAMEBUFFER_UNDEFINED:
+		printf("ERROR: FBO Undefined\n");
+		break;
+	case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+		printf("ERROR: FBO Incomplete Attachment\n");
+		break;
+	case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+		printf("ERROR: FBO Missing Attachment\n");
+		break;
+	case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+		printf("ERROR: FBO Incomplete Draw Buffer\n");
+		break;
+	case GL_FRAMEBUFFER_UNSUPPORTED:
+		printf("ERROR: FBO Unsupported\n");
+		break;
+	case GL_FRAMEBUFFER_COMPLETE:
+		printf("FBO VALID\n");
+		break;
+	default:
+		printf("ERROR: Framebuffer invalid!\n");
+	}
+		
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); // Unbind
+	glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
+
+}
