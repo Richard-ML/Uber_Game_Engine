@@ -20,6 +20,9 @@ uniform sampler2D Texture0;
 uniform sampler2D Texture1;
 uniform sampler2D Texture2;
 uniform sampler2D Texture3;
+
+uniform sampler2DMS msTexture0;// Multi-sample texture
+
 uniform float Alpha;
 uniform vec4 ModelColor;
 uniform bool Toggle_NormalAndSpecularMaps;
@@ -294,11 +297,4 @@ vec3 processSpotLight(in vec3 norm, in vec3 pos, in int lightIndex) {
   vec3 reflectedLight = lights[lightIndex].Specular * textureSpecResult *
                         specular * lights[lightIndex].SpecularPower;
   return min(attenuation * (scatteredLight + reflectedLight), vec3(1.0));
-}
-
-float mip_map_level(in vec2 texture_coordinate) {
-  vec2 dx_vtc = dFdx(texture_coordinate);
-  vec2 dy_vtc = dFdy(texture_coordinate);
-  float delta_max_sqr = max(dot(dx_vtc, dx_vtc), dot(dy_vtc, dy_vtc));
-  return 0.5 * log2(delta_max_sqr);
 }

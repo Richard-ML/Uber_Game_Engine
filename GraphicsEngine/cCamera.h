@@ -30,16 +30,16 @@ public:
 		 */
 		glm::vec3 pendingRotation = glm::vec3(0.0f, 0.57f, 0.0f);
 		// The speed at which rotation is incremented/decremented. (yaw, pitch, roll)
-		glm::vec3 sensitivity = glm::vec3(0.0157f);
+		glm::vec3 sensitivity = glm::vec3(0.05f);
 	}m_rotation;
 	struct Zoom {
-		// Zoom distance that will be applied speeds up to @rate * delta time
+		// Zoom distance that will be applied speeds up to @rate * delta-time
 		float pendingDistanceOffset = 0.0f;
 		// Current zoom distance
 		float distance = 50.0f;
-		// The speed at which zooming distance is incremented/decremented based on delta time.
+		// The speed at which zooming distance is incremented/decremented based on delta-time.
 		float rate = 1000.0f;
-		float minDistance = 30.0f; // How close the camera can be to its target.
+		float minDistance = 1.0f; // How close the camera can be to its target.
 		float maxDistance = 90.0f; // How far away the camera can be from its target.
 	}m_zoom;
 

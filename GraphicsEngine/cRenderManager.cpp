@@ -10,7 +10,7 @@ cRenderManager * cRenderManager::instance()
 
 GLuint cRenderManager::createFrameBufferObject(std::string name, int width, int height, bool multisampled)
 {
-	cFBOInfo* pFBOInfo;
+	iFBOInfo* pFBOInfo;
 	if (!multisampled)
 		pFBOInfo = new cFBOInfo();
 	else
@@ -87,56 +87,9 @@ void cRenderManager::renderScene()
 
 	bindTheBuffers();
 	glUseProgram(gProgramID);
+	glDisable(GL_DEPTH_TEST);
 
-		for (int ncW = 0; ncW < 128; ncW++)
-		{
-			for (int ncD = 0; ncD < 128; ncD++)
-			{
-				float offsetX = (-1024.0f + 12.7f * (float)ncW);
-				float offsetZ = (-1024.0f + 12.7F * (float)ncD);
-
-				// per frame uniforms
-				glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
-					glm::value_ptr(projectionMatrix));
-				glUniformMatrix4fv(gUniformId_ViewMatrix, 1, GL_FALSE,
-					glm::value_ptr(viewMatrix));
-
-				glm::vec4 eye4;
-				gCamera->getEyePosition(eye4);
-				glUniform4fv(gUniformId_EyePosition, 1, glm::value_ptr(eye4));
-
-				glEnable(GL_BLEND);
-				// glBlendEquation(GL_FUNC_ADD);
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-				glEnable(GL_DEPTH_TEST);
-
-				glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
-				glEnable(GL_CULL_FACE);
-				glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
-												 // you can pass here
-					GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
-
-				glm::mat4 transform;
-				transform[3].x = offsetX;
-				transform[3].z = offsetZ;
-
-				// TODO: Scale in object..
-				glUniformMatrix4fv(
-					gUniformId_ModelMatrix, 1, GL_FALSE,
-					glm::value_ptr(glm::scale(transform, glm::vec3(1.0f))));
-				glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
-					glm::value_ptr(glm::mat4()));
-				glUniform4fv(gUniformId_ModelColor, 1,
-					glm::value_ptr(glm::vec4(1.0f)));
-
-				glUniform1f(gUniformId_Alpha, 1.0f);
-				glDrawElementsBaseVertex(
-					GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].NumgIndices, GL_UNSIGNED_INT,
-					(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].BaseIndex),
-					g_pMeshManager->m_MapMeshNameTocMeshEntry["GrassTile"].BaseIndex);
-			}
-		}
-
+		glEnable(GL_DEPTH_TEST);
 		for each(cGraphicsObject* graphicObject in g_vec_pGraphicObjects)
 		{
 			// per frame uniforms
@@ -259,16 +212,30 @@ void cRenderManager::bindTheBuffers()
 
 bool cRenderManager::renderSceneToFBO(std::string name)
 {
-	cFBOInfo * fboInfo = map_NameToFBOInfo[name];
+	iFBOInfo * fboInfo = map_NameToFBOInfo[name];
 	if (fboInfo == nullptr)
 		return false;
 
-	//glm::mat4 view = gCamera->m_viewMatrix;
+	glm::mat4 view = gCamera->m_viewMatrix;
+
+	// PROJECT CODE: different viewpoint.
+	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 targetPos = g_vec_playerControlComponents.at(0).pState->getPosition();
+	float direction = 1.0f;
+	if (targetPos.z < 0)
+		direction = -1.0f;
+	glm::vec3 camPos = glm::vec3(0.0f, 10.0f, direction*3.0f);
+	
+	targetPos.y += 8.0f;
+	glm::vec3 forward = glm::normalize(targetPos - camPos);
+	up = glm::vec3(glm::vec4(up, 0.0f));
+	glm::vec3 right = glm::cross(forward, up);
+	gCamera->m_viewMatrix = glm::lookAt(camPos, targetPos, up);
+	/////////////////////////////////////////////
 
 	fboInfo->renderSceneToFBO();
-
-	//gCamera->m_viewMatrix = view;
-
+	gCamera->m_viewMatrix = view;
+	
 	return true;
 }
 
@@ -283,31 +250,6 @@ void cFBOInfo::renderSceneToFBO()
 
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	GLenum e = glCheckFramebufferStatus(GL_DRAW_FRAMEBUFFER);
-	switch (e) {
-
-	case GL_FRAMEBUFFER_UNDEFINED:
-		printf("ERROR: FBO Undefined\n");
-		break;
-	case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-		printf("ERROR: FBO Incomplete Attachment\n");
-		break;
-	case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-		printf("ERROR: FBO Missing Attachment\n");
-		break;
-	case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-		printf("ERROR: FBO Incomplete Draw Buffer\n");
-		break;
-	case GL_FRAMEBUFFER_UNSUPPORTED:
-		printf("ERROR: FBO Unsupported\n");
-		break;
-	case GL_FRAMEBUFFER_COMPLETE:
-		printf("FBO VALID\n");
-		break;
-	default:
-		printf("ERROR: Framebuffer invalid!\n");
-	}
 
 	g_pRenderManager->renderScene();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -325,8 +267,7 @@ void cFBOInfo::createFrameBuffer()
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
 		width,
@@ -340,8 +281,7 @@ void cFBOInfo::createFrameBuffer()
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
 		width,
@@ -380,9 +320,12 @@ void cMSFBOInfo::renderSceneToFBO()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT); 
-	glDisable(GL_DEPTH_TEST);
+	//glDisable(GL_DEPTH_TEST);
 
 	glViewport(0.0f, 0.0f, gWindowWidth, gWindowHeight);
+
+
+
 }
 
 
@@ -401,12 +344,12 @@ void cMSFBOInfo::createFrameBuffer()
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, this->msColorTexture, 0);
 	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0); // Unbind PROBLEM HERE?
 	// Create a render buffer for stencil and depth attachments
-	GLuint rbo;
-	glGenRenderbuffers(1, &rbo);
-	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	GLuint renderbuffer;
+	glGenRenderbuffers(1, &renderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
 	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, this->width, this->height);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		printf("ERROR: Framebuffer invalid!\n");

@@ -120,10 +120,11 @@ namespace GraphicsEngine {
 	{
 		for (rapidxml::xml_node<> *cFBO_node = framebuffersNode->first_node("FrameBufferObject");
 			cFBO_node; cFBO_node = cFBO_node->next_sibling()) {
+			bool isMultiSampled = std::string(cFBO_node->first_attribute("isMultiSampled")->value()) == "true";
 			g_pRenderManager->createFrameBufferObject(cFBO_node->first_attribute("name")->value(),
-				//gWindowWidth/2, gWindowHeight, false);
-				std::stoi(cFBO_node->first_attribute("width")->value()), 
-				std::stoi(cFBO_node->first_attribute("height")->value()), true);
+				gWindowWidth, gWindowHeight, isMultiSampled);
+				//std::stoi(cFBO_node->first_attribute("width")->value()), 
+				//std::stoi(cFBO_node->first_attribute("height")->value()), isMultiSampled) ;
 		}
 
 
@@ -158,10 +159,12 @@ namespace GraphicsEngine {
 			for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
 			{
 				glm::mat4 tempTrans = glm::translate(controlComponent.pState->getTransform(), translation);
+				// PROJECT CODE: Position restriction
+				//tempTrans[3] = glm::clamp(tempTrans[3], glm::vec4(-1000.0f, 0.0f, -1000.0f, 0.0f), glm::vec4(1000.0f, 1.0f, -5.0f, 1.0f));
 				controlComponent.pState->setTransform(tempTrans);
 				gCamera->setTargetTransform(tempTrans);
 			}
-		}
+		} 
 
 		if (pressA != pressD) {
 			glm::vec3 axis = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -190,12 +193,11 @@ namespace GraphicsEngine {
 		glEnable(GL_TEXTURE_2D);
 		// Set shader model. Does this really make a difference?
 		glShadeModel(GL_SMOOTH);
+		glEnable(GL_BLEND);
 		
 		// Clear the screen..
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	
 
 		// Use primary rendering shader
 		glUseProgram(gProgramID);
@@ -219,13 +221,13 @@ namespace GraphicsEngine {
 	}
 }
 void initializeGLFW() {
-	gWindowTitle = "Single-threaded GraphicsEngine Window!";
+	gWindowTitle = "Single-threaded GraphicsEngine Window! The invisible eye watches.. WASD to move & Arrows control camera rotation around player";
 	if (!glfwInit()) {
 		fprintf(stderr, "Failed to initialize GLFW\n");
 		system("pause");
 	}
-
-	glfwWindowHint(GLFW_SAMPLES, 4);
+	//glEnable(GL_MULTISAMPLE);
+	glfwWindowHint(GLFW_SAMPLES, 16);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,
@@ -239,7 +241,7 @@ void initializeGLFW() {
 	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
 	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
-	glEnable(GL_MULTISAMPLE);
+	
 	// Open a window and create its OpenGL context
 	
 	gWindowHeight = mode->height;

@@ -204,9 +204,9 @@ void cLightManager::updateLightUniforms() {
 		glUniform1i((*iter)->gUniformId_IsEnabled, (*iter)->isEnabled);
 		glUniform1i((*iter)->gUniformId_TypeFlag, (*iter)->typeFlag);
 		glUniform3fv((*iter)->gUniformId_Position, 1,
-			glm::value_ptr(glm::ballRand(5.0f)));//(*iter)->matrix[3]));
+			glm::value_ptr((*iter)->state->getPosition() + (*iter)->offset));
 		glUniform3fv((*iter)->gUniformId_Direction, 1,
-			glm::value_ptr(glm::vec3(0.0f, 0.0f, 0.0f))); //(*iter)->direction));
+			glm::value_ptr((*iter)->direction));
 		glUniform1f((*iter)->gUniformId_ConeAngle, (*iter)->coneAngle);
 		glUniform3fv((*iter)->gUniformId_Ambient, 1,
 			glm::value_ptr((*iter)->ambient));

@@ -48,6 +48,8 @@ void cTextureManager::loadTexture(rapidxml::xml_node<> *textureNode) {
 	FreeImage_Unload(imagen);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
 void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
@@ -159,7 +161,8 @@ void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
 	FreeImage_Unload(imagenSpec);
 
 	currentMipmapLevel += 3;
-	
+
+
 	//	int MaxTextureImageUnits;
 	//  glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &MaxTextureImageUnits);
 }

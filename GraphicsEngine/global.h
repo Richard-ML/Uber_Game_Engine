@@ -48,6 +48,7 @@ extern GLuint gUniformId_Texture1;
 extern GLuint gUniformId_Texture2;
 extern GLuint gUniformId_Texture3;
 
+extern GLuint gUniformId_MSTexture0;
 extern GLuint gUniformId_Toggle_NormalAndSpecularMaps;
 
 extern GLuint gUniformId_NumLights;

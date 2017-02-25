@@ -271,7 +271,10 @@ bool cShaderManager::setupTheShaders() {
 		gUniformId_Texture1 = glGetUniformLocation(gProgramID, "Texture1");
 		gUniformId_Texture2 = glGetUniformLocation(gProgramID, "Texture2");
 		gUniformId_Texture3 = glGetUniformLocation(gProgramID, "Texture3");
-
+		gUniformId_MSTexture0 = glGetUniformLocation(gProgramID, "msTexture0");
+		
+		
+		//sampler2DMS msTexture0
 		gUniformId_Toggle_NormalAndSpecularMaps = glGetUniformLocation(gProgramID, "Toggle_NormalAndSpecularMaps");
 
 		// Skybox Shader

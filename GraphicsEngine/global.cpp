@@ -13,6 +13,8 @@ GLuint gUniformId_Texture0 = 0;
 GLuint gUniformId_Texture1 = 0;
 GLuint gUniformId_Texture2 = 0;
 GLuint gUniformId_Texture3 = 0;
+GLuint gUniformId_MSTexture0 = 0;
+
 GLuint gUniformId_Toggle_NormalAndSpecularMaps = 0;
 
 GLuint gUniformId_NumLights = 0;

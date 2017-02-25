@@ -69,6 +69,8 @@ void cCamera::updateView() {
 	// NOTE: The camera does not currently inherit the target's orientation as its base orientation. 
 	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 	glm::vec3 targetPosition = glm::vec3(m_targetTranform[3]);
+	targetPosition.y += 7.5f;
+	m_rotation.pendingRotation.y = glm::clamp(m_rotation.pendingRotation.y, 0.0f, 3.14f);
 	glm::mat4 rotation = glm::yawPitchRoll(m_rotation.pendingRotation.x, m_rotation.pendingRotation.y, 0.0f);
 	glm::vec3 translation = glm::vec3(0.0f, 0.0f, -m_zoom.distance);
 	translation = glm::vec3(rotation * glm::vec4(translation, 0.0f));
