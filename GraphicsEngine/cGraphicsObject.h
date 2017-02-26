@@ -6,5 +6,6 @@ public:
 
  	iState* pState;
 	std::string meshName;
+	bool toggleOutline;
 	// Whatever other internal graphics stuff you want!
 };

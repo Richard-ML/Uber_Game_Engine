@@ -18,6 +18,7 @@ public:
 	GLuint framebufferID; // ID of the Framebuffer
 	GLuint colorTextureID; // TODO: There could be more than one of these! 
 	GLuint depthBufferID;
+	GLuint stencilBufferID;
 	int width, height;
 	virtual void renderSceneToFBO() = 0;
 	virtual void createFrameBuffer() = 0;

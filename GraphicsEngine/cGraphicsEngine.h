@@ -39,6 +39,7 @@ namespace GraphicsEngine {
 		static GraphicsEngine_API  cGraphicsEngine *instance();
 		static GraphicsEngine_API  void loadCubemaps(rapidxml::xml_node<> *cubemapsNode);
 		static GraphicsEngine_API void loadMipmapTextures(rapidxml::xml_node<>* mipmapTexturesNode);
+		static GraphicsEngine_API void loadTextures(rapidxml::xml_node<>* texturesNode);
 		static GraphicsEngine_API bool loadRenderableComponent(rapidxml::xml_node<> *componentNode, iState* state);
 		static GraphicsEngine_API bool loadMeshes(rapidxml::xml_node<> *meshesNode);
 		static GraphicsEngine_API bool loadFramebufferObjects(rapidxml::xml_node<>* framebuffersNode);
