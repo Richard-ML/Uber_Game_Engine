@@ -1,18 +1,18 @@
 <GameAssets>
-<Textures>
-	<Texture name="Eye" path="assets/EyeStencil/all_seeing_eye.png"/>
-</Textures>
-<MipmapTextures>
-<!-- <MipmapTexture name="Dirt" pathDif="assets/Textures/sand/Dirt_Sand_003.jpg" pathNrm="assets/Textures/sand/Dirt_Sand_003_NORM.jpg" pathSpec="assets/Textures/sand/Dirt_Sand_003_SPEC.jpg" />-->
-<!-- <MipmapTexture name="Dirt" pathDif="assets/Textures/sand/sand_05_diffuse.png" pathNrm="assets/Textures/sand/sand_05_normal.png" pathSpec="assets/Textures/sand/sand_05_specular.png" />-->
-  <MipmapTexture name="Floor" pathDif="assets/TileMeshes/Textures/floor_DIF.tga" pathNrm="assets/TileMeshes/Textures/floor_NRM.tga" pathSpec="assets/TileMeshes/Textures/floor_SPEC.tga" />
-  <MipmapTexture name="Skeleton" pathDif="assets/Skeleton/Skeleton_dif.png" pathNrm="assets/Skeleton/Skeleton_norm.png" pathSpec="assets/Skeleton/Skeleton_spec.png" />
- 
-</MipmapTextures>
+  <Textures>
+    <Texture name="Eye" path="assets/EyeStencil/all_seeing_eye.png"/>
+  </Textures>
+  <MipmapTextures>
+    <!-- <MipmapTexture name="Dirt" pathDif="assets/Textures/sand/Dirt_Sand_003.jpg" pathNrm="assets/Textures/sand/Dirt_Sand_003_NORM.jpg" pathSpec="assets/Textures/sand/Dirt_Sand_003_SPEC.jpg" />-->
+    <!-- <MipmapTexture name="Dirt" pathDif="assets/Textures/sand/sand_05_diffuse.png" pathNrm="assets/Textures/sand/sand_05_normal.png" pathSpec="assets/Textures/sand/sand_05_specular.png" />-->
+    <MipmapTexture name="Floor" pathDif="assets/TileMeshes/Textures/floor_DIF.tga" pathNrm="assets/TileMeshes/Textures/floor_NRM.tga" pathSpec="assets/TileMeshes/Textures/floor_SPEC.tga" />
+    <MipmapTexture name="Skeleton" pathDif="assets/Skeleton/Skeleton_dif.png" pathNrm="assets/Skeleton/Skeleton_norm.png" pathSpec="assets/Skeleton/Skeleton_spec.png" />
 
-<FrameBufferObjects>
-	<FrameBufferObject name="Portal" width="NOT_USED" height="NOT_USED" isMultiSampled="true" />	
-</FrameBufferObjects>
+  </MipmapTextures>
+
+  <FrameBufferObjects>
+    <FrameBufferObject name="Portal" width="NOT_USED" height="NOT_USED" isMultiSampled="true" />
+  </FrameBufferObjects>
 
   <Cubemaps>
     <Cubemap>
@@ -24,50 +24,50 @@
       <Face path="assets/CubeMaps/Skybox_back6_negZ.png" />
     </Cubemap>
   </Cubemaps>
-  
+
   <Meshes>
     <Mesh path="Assets/Skeleton/Skeleton.obj" scale="1.0f" name="Skeleton" r="6" g="0" b="0"/>
-	<Mesh path="Assets/TileMeshes/GrassTile.obj" scale="10.0f" name="GrassTile" r="0" g="6" b="0"/>
-	<Mesh path="Assets/Arc/Arc.obj" scale="10.0f" name="Arc" r="0" g="12" b="0"/>
-	<Mesh path="Assets/Arc/Portal.obj" scale="10.0f" name="Portal" r="0" g="32" b="0"/>
+    <Mesh path="Assets/TileMeshes/GrassTile.obj" scale="10.0f" name="GrassTile" r="0" g="6" b="0"/>
+    <Mesh path="Assets/Arc/Arc.obj" scale="10.0f" name="Arc" r="0" g="12" b="0"/>
+    <Mesh path="Assets/Arc/Portal.obj" scale="10.0f" name="Portal" r="0" g="32" b="0"/>
     <Mesh path="Assets/Plane/Plane.obj" scale="1.0f" name="Plane" r="0" g="39" b="0"/>
- </Meshes>
-  
-  <PhysicsMeshes>
-	<ClothMesh path="Assets/PhysicsCloth/cloth.obj" />
-  </PhysicsMeshes>
-  
-  <GameEntities>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="Skeleton" outline="true"/>
-		    <Light type="PointLight" isEnabled="true" coneAngle="0.9f" specularPower="1.0f" directionX="0.0f" directionY="-5.0f" directionZ="0.0f" offsetX="0.0f" offsetY="10.0f" offsetZ="0.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.31f" diffuseG="0.3f" diffuseB="0.3f" specularR="0.6f" specularG="0.3f" specularB="0.3f" attenConst="0.2f" attenLinear="0.0091427f" attenQuad="0.00065429f" />
-			<PlayerControlComponent />
-			<!--<Light type="DirectionalLight" isEnabled="true" coneAngle="0.9f" specularPower="1.0f" directionX="0.0f" directionY="-5.0f" directionZ="20.0f" offsetX="0.0f" offsetY="20.0f" offsetZ="-200.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.3f" diffuseG="0.3f" diffuseB="0.3f" specularR="0.3f" specularG="0.3f" specularB="0.3f" attenConst="0.3f" attenLinear="0.000091427f" attenQuad="0.0000065429f" />-->
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="0.0f" offsetY="0.0f" offsetZ="-5.0f" />
-		</PhysicsComponent>
-	</GameEntity>
-		<GameEntity>
-		<RenderableComponent>
-			<Mesh name="Arc" outline="true"/>
-			<Mesh name="Portal" outline="false"/>
-			<Light type="PointLight" isEnabled="true" coneAngle="0.9f" specularPower="10.0f" directionX="0.0f" directionY="-5.0f" directionZ="0.0f" offsetX="0.0f" offsetY="40.0f" offsetZ="0.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.2f" diffuseG="0.2f" diffuseB="0.2f" specularR="0.3f" specularG="0.3f" specularB="0.3f" attenConst="0.2f" attenLinear="0.0091427f" attenQuad="0.00065429f" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="0.0f" offsetY="0.0f" offsetZ="0.0f" />
-		</PhysicsComponent>
-	</GameEntity>
+  </Meshes>
 
-		<GameEntity>
-		<RenderableComponent>
-			<Mesh name="GrassTile" outline="false"/>
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="0.0f" offsetY="0.0f" offsetZ="0.0f" />
-		</PhysicsComponent>
-	</GameEntity>
-	</GameEntities>
+  <PhysicsMeshes>
+    <ClothMesh path="Assets/PhysicsCloth/cloth.obj" />
+  </PhysicsMeshes>
+
+  <GameEntities>
+    <GameEntity>
+      <RenderableComponent>
+        <Mesh name="Skeleton" outline="true"/>
+        <Light type="PointLight" isEnabled="true" coneAngle="0.9f" specularPower="1.0f" directionX="0.0f" directionY="-5.0f" directionZ="0.0f" offsetX="0.0f" offsetY="10.0f" offsetZ="0.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.31f" diffuseG="0.3f" diffuseB="0.3f" specularR="0.6f" specularG="0.3f" specularB="0.3f" attenConst="0.2f" attenLinear="0.0091427f" attenQuad="0.00065429f" />
+        <PlayerControlComponent />
+        <!--<Light type="DirectionalLight" isEnabled="true" coneAngle="0.9f" specularPower="1.0f" directionX="0.0f" directionY="-5.0f" directionZ="20.0f" offsetX="0.0f" offsetY="20.0f" offsetZ="-200.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.3f" diffuseG="0.3f" diffuseB="0.3f" specularR="0.3f" specularG="0.3f" specularB="0.3f" attenConst="0.3f" attenLinear="0.000091427f" attenQuad="0.0000065429f" />-->
+      </RenderableComponent>
+      <PhysicsComponent>
+        <RigidBody offsetX="0.0f" offsetY="0.0f" offsetZ="-5.0f" />
+      </PhysicsComponent>
+    </GameEntity>
+    <GameEntity>
+      <RenderableComponent>
+        <Mesh name="Arc" outline="true"/>
+        <Mesh name="Portal" outline="false"/>
+        <Light type="PointLight" isEnabled="true" coneAngle="0.9f" specularPower="10.0f" directionX="0.0f" directionY="-5.0f" directionZ="0.0f" offsetX="0.0f" offsetY="40.0f" offsetZ="0.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.2f" diffuseG="0.2f" diffuseB="0.2f" specularR="0.3f" specularG="0.3f" specularB="0.3f" attenConst="0.2f" attenLinear="0.0091427f" attenQuad="0.00065429f" />
+      </RenderableComponent>
+      <PhysicsComponent>
+        <RigidBody offsetX="0.0f" offsetY="0.0f" offsetZ="0.0f" />
+      </PhysicsComponent>
+    </GameEntity>
+
+    <GameEntity>
+      <RenderableComponent>
+        <Mesh name="GrassTile" outline="false"/>
+      </RenderableComponent>
+      <PhysicsComponent>
+        <RigidBody offsetX="0.0f" offsetY="0.0f" offsetZ="0.0f" />
+      </PhysicsComponent>
+    </GameEntity>
+  </GameEntities>
 </GameAssets>
 

@@ -47,7 +47,6 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 	GraphicsEngine::cGraphicsEngine::instance()->loadMipmapTextures(category_node);
 	
 
-
 	/* Load the Cubemaps */
 	category_node = root_node->first_node("Cubemaps");
 	GraphicsEngine::cGraphicsEngine::instance()->loadCubemaps(category_node);
@@ -63,7 +62,7 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 	category_node = root_node->first_node("Meshes");
 		GraphicsEngine::cGraphicsEngine::instance()->loadMeshes(category_node);
 
-
+		// TODO: LOAD GAME ( PUT IN NEW FUNCTION )
 	category_node = root_node->first_node("GameEntities");
 	for (rapidxml::xml_node<> *cGameEntity_node = category_node->first_node("GameEntity");
 		cGameEntity_node; cGameEntity_node = cGameEntity_node->next_sibling("GameEntity")) {
@@ -76,7 +75,6 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 		// These components are loaded and share a state! ...
 			gameEntity->vec_pComponents = g_pComponentEngine->loadFromXML(cGameEntity_node, stateNodeID);
 		//this->impl()->vec_pEntites.push_back(gameEntity);
-		
 	}
 
 
