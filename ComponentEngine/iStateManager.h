@@ -117,6 +117,9 @@ private:
 		this->m_localStateData.isMoving = isMoving;
 	};
 
+	virtual void registerComponentXMLDataCallback(rapidxml::xml_node<> getComponentNode(void*)) {
+
+	};
 	/////////////////////////////////////////////////////////////////////////////
 	// Ignore this.. (Nothing to see here!)
 	//std::queue<std::packaged_task<void()>> m_task_queue;

@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "..\Include\rapidxml\rapidxml.hpp"
 //Change state data (used by core state manager to dispatch updates to each
 // engine which implements the same interface!
 class iGeomerty {
@@ -49,14 +50,12 @@ class iData {
 	
 	// All we need to worry about is writing a callback function (method inside of (physics/graphics) object classes which returns its information as an XML NODE..
 	// Once we do this.. I will add a method to the GameEngine (saveGame() which calls rapidxml::xmlnode<>* getGameEntityInfo(id); for each game entity.. SAVE GAME COMPLETE
-	// Then write a function loadGame(int difficulty) that will delete all of the GameEntities then redo the initial loading of the game entities. (the part i told you not to worry about)
-
-	// Maybe you can make the three scenes for different difficulties via xml.. Just put idle skeletons all over the place. More for each difficulty.
+	// Then write a function loadGame(int difficulty) that will delete all of the GameEntities then redo the initial loading of the game entities.
 
 };
 
 // See cState for implementation!
-class iState : public iGeomerty, iBehaviour, iControl {
+class iState : public iGeomerty, iBehaviour, iControl, iData {
 public:
 	// Inherited via iGeomerty
 	virtual void setPosition(const glm::vec3 position) = 0;
@@ -68,5 +67,6 @@ public:
 	virtual void setIsColliding(bool isColliding) = 0;
 	virtual void setIsMoving(bool isMoving) = 0;
 
+	virtual void registerComponentXMLDataCallback(rapidxml::xml_node<> getComponentNode(void*)) = 0;
 	// TODO Getters! Don't forget to update iStateManager!!
 };
