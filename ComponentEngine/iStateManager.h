@@ -62,7 +62,7 @@ private:
   virtual void _setIsColliding(bool isColliding) = 0;
   virtual void _setIsMoving(bool isMoving) = 0;
 };
-//
+
 //// Core state interface: Parent to state nodes, stores a proxy of the latest
 //// data from all other interfaces! :D
 class iStateNode : public iGeomerty, iBehaviour, iControl {
