@@ -17,9 +17,19 @@ void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 
 
 	// NOTE: Does not work for buttons being held-down. See TAG: 001X
-	//if (action == 1)
-	//	switch (key) {
-	//	case GLFW_KEY_W:
+	if (action == 1)
+		switch (key) {
+		case GLFW_KEY_1:
+		{
+			g_bool_toggleScissor = !g_bool_toggleScissor;
+		}
+		break;
+		case GLFW_KEY_2:
+		{
+			g_bool_toggleStencil = !g_bool_toggleStencil;
+		}
+		break;
+		}
 	//		for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
 	//		{
 	//			glm::mat4 tempTrans = glm::translate(controlComponent.pState->getTransform(), glm::vec3(0.0f, 0.0f, 1.0f));

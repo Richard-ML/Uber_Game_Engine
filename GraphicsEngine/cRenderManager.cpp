@@ -7,7 +7,48 @@ cRenderManager * cRenderManager::instance()
 		s_cRenderManager = new cRenderManager();
 	return s_cRenderManager;
 }
+void drawFullScreenPlane()
+{
+	glDisable(GL_DEPTH_TEST);
+	glm::mat4 projectionMatrix;
+	glm::mat4 viewMatrix;
+	static glm::mat4 transform;
+	//transform = glm::rotate(glm::mat4(), 3.14f, glm::vec3(1.0f, 0.0f, 0.0f));
+	g_pRenderManager->bindTheBuffers();
+	gCamera->getProjectionMatrix(projectionMatrix);
+	glUseProgram(gProgramID);
+	viewMatrix = glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	transform[3].z = 1.0f;
+	glCullFace(GL_FRONT); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
+	glEnable(GL_CULL_FACE);
+	glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+									 // you can pass here
+		GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
 
+	glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
+		glm::value_ptr(projectionMatrix));
+	glUniformMatrix4fv(gUniformId_ViewMatrix, 1, GL_FALSE,
+		glm::value_ptr(viewMatrix));
+	glUniform4fv(gUniformId_EyePosition, 1, glm::value_ptr(glm::vec4(0.0f)));
+
+	glUniformMatrix4fv(
+		gUniformId_ModelMatrix, 1, GL_FALSE,
+		glm::value_ptr(glm::scale(transform, glm::vec3(0.55f))));
+	glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
+		glm::value_ptr(glm::mat4()));
+	glUniform4fv(gUniformId_ModelColor, 1,
+		glm::value_ptr(glm::vec4(1.0f)));
+
+	glUniform1f(gUniformId_Alpha, 1.0f);
+
+	glDrawElementsBaseVertex(
+		GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["Plane"].NumgIndices, GL_UNSIGNED_INT,
+		(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["Plane"].BaseIndex),
+		g_pMeshManager->m_MapMeshNameTocMeshEntry["Plane"].BaseIndex);
+
+
+	glEnable(GL_DEPTH_TEST);
+}
 GLuint cRenderManager::createFrameBufferObject(std::string name, int width, int height, bool multisampled)
 {
 	iFBOInfo* pFBOInfo;
@@ -87,7 +128,7 @@ void cRenderManager::renderScene()
 
 	bindTheBuffers();
 	glUseProgram(gProgramID);
-	glDisable(GL_DEPTH_TEST);
+
 
 		glEnable(GL_DEPTH_TEST);
 		for each(cGraphicsObject* graphicObject in g_vec_pGraphicObjects)
@@ -105,6 +146,18 @@ void cRenderManager::renderScene()
 			// glBlendEquation(GL_FUNC_ADD);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glEnable(GL_DEPTH_TEST);
+
+
+
+			if (graphicObject->toggleOutline) {
+				glEnable(GL_DEPTH_TEST);
+				glClearStencil(0);
+				glClear(GL_STENCIL_BUFFER_BIT);
+				// Render the mesh into the stencil buffer.
+				glEnable(GL_STENCIL_TEST);
+				glStencilFunc(GL_ALWAYS, 1, -1);
+				glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+			}
 
 			// glEnable(GL_COLOR_MATERIAL);
 			//if ((*iter)->isWireframe) {        // Turn off backface culling
@@ -126,7 +179,6 @@ void cRenderManager::renderScene()
 
 			glm::mat4 transform;
 			graphicObject->pState->getTransform(transform);
-			graphicObject->pState->setScale(1.0f);
 			float scale;
 			graphicObject->pState->getScale(scale);
 
@@ -158,6 +210,37 @@ void cRenderManager::renderScene()
 					GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].NumgIndices, GL_UNSIGNED_INT,
 					(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex),
 					g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex);
+			}
+
+			if (graphicObject->toggleOutline)
+			{
+				// Render the wireframe to create outline effect.
+				glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
+				glEnable(GL_CULL_FACE);
+				glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+												 // you can pass here
+					GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
+
+				glStencilFunc(GL_NOTEQUAL, 1, -1);
+				glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+				transform[3] -= glm::vec4(glm::vec3(0.001f), 0.0f);
+				glUniform1i(gUniformId_Toggle_Textures, 0);
+				glUniformMatrix4fv(
+					gUniformId_ModelMatrix, 1, GL_FALSE,
+					glm::value_ptr(glm::scale(transform, glm::vec3(scale + 0.001f))));
+				glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
+					glm::value_ptr(glm::mat4()));
+				glUniform4fv(gUniformId_ModelColor, 1,
+					glm::value_ptr(glm::vec4(1.0f, 0.0f, 0.0f, 0.6f)));
+
+				glUniform1f(gUniformId_Alpha, 1.0f);
+
+				glDrawElementsBaseVertex(
+					GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].NumgIndices, GL_UNSIGNED_INT,
+					(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex),
+					g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex);
+
+				glUniform1i(gUniformId_Toggle_Textures, 1);
 			}
 	}
 
@@ -304,18 +387,45 @@ void cMSFBOInfo::renderSceneToFBO()
 	// Draw scene to multi-sampled buffer
 	glBindFramebuffer(GL_FRAMEBUFFER, this->msFramebufferID);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 
+	if (g_bool_toggleScissor) {
+		glEnable(GL_SCISSOR_TEST);
+		glScissor((float)gWindowWidth / 5.5f, (float)gWindowHeight / 8.5f,
+			(float)gWindowWidth / 1.55f, (float)gWindowHeight / 1.2f);
+	}
+	glClearStencil(0);
+	glClear(GL_STENCIL_BUFFER_BIT);
 	static const  GLenum attachments[] = { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT };
 	glDrawBuffers(1, attachments);
+	if (g_bool_toggleStencil) {
+		glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, false);
+		glEnable(GL_DEPTH_TEST);
+
+		// Render the mesh into the stencil buffer.
+		glEnable(GL_STENCIL_TEST);
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		glBindTexture(GL_TEXTURE_2D, g_pTextureManager->mapTextureNameToID["Eye"]);
+		drawFullScreenPlane();
+
+		glStencilFunc(GL_GREATER, 1, 0xFF);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, true);
+	}
+
+	glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
+
+
+
 	g_pRenderManager->renderScene();
 
 	// Blit the multi-sampled buffer
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, this->msFramebufferID);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->framebufferID);
 	glBlitFramebuffer(0, 0, this->width, this->height, 0, 0,
-		this->width, this->height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+		this->width, this->height, GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
@@ -324,8 +434,8 @@ void cMSFBOInfo::renderSceneToFBO()
 
 	glViewport(0.0f, 0.0f, gWindowWidth, gWindowHeight);
 
-
-
+	glDisable(GL_SCISSOR_TEST);
+	glDisable(GL_STENCIL_TEST);
 }
 
 

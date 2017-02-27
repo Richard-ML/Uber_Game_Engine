@@ -9,7 +9,6 @@ cTextureManager *cTextureManager::instance() {
 }
 
 void cTextureManager::loadTexture(rapidxml::xml_node<> *textureNode) {
-
 	std::string path = textureNode->first_attribute("path")->value();
 	FREE_IMAGE_FORMAT imgFormat =
 		FreeImage_GetFileType(path.c_str(), 0); // Get current format
@@ -37,19 +36,21 @@ void cTextureManager::loadTexture(rapidxml::xml_node<> *textureNode) {
 	uniform_TextureID.push_back(0);
 
 	glGenTextures(1, &uniform_TextureID.back());
-	mapTextureNameToID[textureNode->first_attribute("name")->value()] =
-		nextTextureID;
-	glActiveTexture(GL_TEXTURE0 + nextTextureID);
+
+	//glActiveTexture(GL_TEXTURE0 + nextTextureID);
 	nextTextureID++;
 	glBindTexture(GL_TEXTURE_2D, uniform_TextureID.back());
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
 		GL_UNSIGNED_BYTE, (GLvoid *)textura);
+	mapTextureNameToID[textureNode->first_attribute("name")->value()] = uniform_TextureID.back();
 	delete[] textura;
 	FreeImage_Unload(imagen);
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
 }
 
 void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {

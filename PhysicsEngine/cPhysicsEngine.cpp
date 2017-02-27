@@ -32,7 +32,7 @@ namespace PhysicsEngine {
 		return static_cast<cPhysicsEngine_Impl *>(this);
 	}
 
-#define BULLET
+//#define BULLET
 #ifdef BULLET
 
 	cPhysicsEngine::cPhysicsEngine() {
@@ -96,31 +96,51 @@ namespace PhysicsEngine {
 		return;
 	}
 
+	PhysicsEngine_API void cPhysicsEngine::loadClothMesh(rapidxml::xml_node<>* clothMeshNode, iState * state)
+	{
+		
+	}
+
 #else
 	cPhysicsEngine::cPhysicsEngine() {
 		this->impl()->m_cWorld = new cWorld();
 	}
-
-	DWORD cPhysicsEngine::physicsThread(void *lpParam) {
-		std::chrono::high_resolution_clock::time_point lastTime =
-			std::chrono::high_resolution_clock::now();
-		std::chrono::duration<float> deltaTime;
-		cPhysicsEngine *physicsEngine =
-			reinterpret_cast<cPhysicsEngine *>(lpParam);
-		do {
-			std::chrono::high_resolution_clock::time_point t2 =
-				std::chrono::high_resolution_clock::now();
-			deltaTime =
-				std::chrono::duration_cast<std::chrono::duration<float>>(
-					std::chrono::high_resolution_clock::now() -
-					lastTime); // Get the time that as passed
-			physicsEngine->impl()->m_cWorld->step(deltaTime.count());
-			lastTime = std::chrono::high_resolution_clock::now();
-			Sleep(35); // Free the thread
-		} while (true);
-		return 0;
+	PhysicsEngine_API bool cPhysicsEngine::loadPhysicsComponent(rapidxml::xml_node<>* componentNode, iState * state)
+	{
+		for (rapidxml::xml_node<> *cRigidBody_node = componentNode->first_node("RigidBody");
+			cRigidBody_node; cRigidBody_node = cRigidBody_node->next_sibling("RigidBody")) {
+			// TODO: create base physics object that contains state pointer. Load offsets etcetera..
+			glm::mat4 transform;
+			glm::vec3 offset = glm::vec3(std::stof(cRigidBody_node->first_attribute("offsetX")->value()), std::stof(cRigidBody_node->first_attribute("offsetY")->value()), std::stof(cRigidBody_node->first_attribute("offsetZ")->value()));
+			transform[3] = glm::vec4(offset, 1.0f);
+			state->setTransform(transform);
+		}
+		return true;
 	}
-	
+	//DWORD cPhysicsEngine::physicsThread(void *lpParam) {
+	//	std::chrono::high_resolution_clock::time_point lastTime =
+	//		std::chrono::high_resolution_clock::now();
+	//	std::chrono::duration<float> deltaTime;
+	//	cPhysicsEngine *physicsEngine =
+	//		reinterpret_cast<cPhysicsEngine *>(lpParam);
+	//	do {
+	//		std::chrono::high_resolution_clock::time_point t2 =
+	//			std::chrono::high_resolution_clock::now();
+	//		deltaTime =
+	//			std::chrono::duration_cast<std::chrono::duration<float>>(
+	//				std::chrono::high_resolution_clock::now() -
+	//				lastTime); // Get the time that as passed
+	//		physicsEngine->impl()->m_cWorld->step(deltaTime.count());
+	//		lastTime = std::chrono::high_resolution_clock::now();
+	//		Sleep(35); // Free the thread
+	//	} while (true);
+	//	return 0;
+	//}
+	PhysicsEngine_API void cPhysicsEngine::update(float deltaTime)
+	{
+		impl()->m_cWorld->step(deltaTime);
+	}
+
 	PhysicsEngine_API iCollisionShape * cPhysicsEngine::createCollisionShape(eShapeType shapeType)
 	{
 		// TODO: Store a local copy of shapes when they are created so we can reuse them!

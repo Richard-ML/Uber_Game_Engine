@@ -102,6 +102,9 @@
     <ClInclude Include="_btCollisionShape.h">
       <Filter>DataModel\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cSoftBodyManager.h">
+      <Filter>DataModel\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -127,6 +130,12 @@
     </ClCompile>
     <ClCompile Include="_btCollisionShape.cpp">
       <Filter>DataModel\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cSoftBodyManager.cpp">
+      <Filter>DataModel\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="global.cpp">
+      <Filter>Config\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

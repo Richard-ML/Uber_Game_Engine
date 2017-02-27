@@ -10,7 +10,7 @@ cCamera::~cCamera() {}
 void cCamera::getProjectionMatrix(glm::mat4 &projOut) {
 	// set up the projection matrix
 	projOut =
-		glm::perspective(1.0f, (float)m_width / (float)m_height, 0.1f, 100000.f);
+		glm::perspective(1.0f,(float)m_width / (float)m_height, 0.1f, 100000.f);
 }
 
 void cCamera::getViewMatrix(glm::mat4 &viewOut) { viewOut = m_viewMatrix; }

@@ -21,7 +21,7 @@ uniform sampler2D Texture1;
 uniform sampler2D Texture2;
 uniform sampler2D Texture3;
 
-uniform sampler2DMS msTexture0;// Multi-sample texture
+//uniform sampler2DMS msTexture0;// Multi-sample texture
 
 uniform float Alpha;
 uniform vec4 ModelColor;
@@ -130,6 +130,13 @@ vec3 processPointLight(in vec3 norm, in vec3 pos, in int lightIndex) {
 		}else{
 	textureDifResult =  texture(Texture0,
                    fs_in.textureCoord.xy ).rgb;
+
+				     if (texture(Texture0,
+                   fs_in.textureCoord.xy ).a == 0.0) {
+        discard;
+	
+    }
+
 	}
   } else {
     textureDifResult = ModelColor.rgb;

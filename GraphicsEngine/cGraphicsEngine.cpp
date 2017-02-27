@@ -62,6 +62,14 @@ namespace GraphicsEngine {
 		}
 		return;
 	}
+	GraphicsEngine_API void cGraphicsEngine::loadTextures(rapidxml::xml_node<>* texturesNode)
+	{
+		for (rapidxml::xml_node<> *texture_node = texturesNode->first_node("Texture");
+			texture_node; texture_node = texture_node->next_sibling()) {
+			g_pTextureManager->loadTexture(texture_node);
+		}
+		return;
+	}
 	GraphicsEngine_API bool cGraphicsEngine::loadRenderableComponent(rapidxml::xml_node<>* componentNode, iState* state)
 	{
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("Mesh");
@@ -70,7 +78,10 @@ namespace GraphicsEngine {
 			cGraphicsObject* graphicsObject = new cGraphicsObject();
 			graphicsObject->meshName = cRenderableComponentEntry_node->first_attribute("name")->value(); // TODO: Offset scale rotation etc..
 			graphicsObject->pState = state;
+			graphicsObject->pState->setScale(1.0f);
+			graphicsObject->toggleOutline = std::string(cRenderableComponentEntry_node->first_attribute("outline")->value()) == "true";
 			g_vec_pGraphicObjects.push_back(graphicsObject);
+
 		}
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("Light");
 			cRenderableComponentEntry_node; cRenderableComponentEntry_node = cRenderableComponentEntry_node->next_sibling("Light")) {
@@ -164,7 +175,7 @@ namespace GraphicsEngine {
 				controlComponent.pState->setTransform(tempTrans);
 				gCamera->setTargetTransform(tempTrans);
 			}
-		} 
+		}
 
 		if (pressA != pressD) {
 			glm::vec3 axis = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -194,10 +205,10 @@ namespace GraphicsEngine {
 		// Set shader model. Does this really make a difference?
 		glShadeModel(GL_SMOOTH);
 		glEnable(GL_BLEND);
-		
+
 		// Clear the screen..
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 		// Use primary rendering shader
 		glUseProgram(gProgramID);
