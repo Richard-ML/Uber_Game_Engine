@@ -10,19 +10,15 @@ public:
 	// TODO: Offset ect.
 	std::string meshName;
 	bool toggleOutline;
-	void saveToXMLNode(rapidxml::xml_node<>& componentNode) {
+	void saveToXMLNode(std::string& xmlString) {
+
+		std::stringstream ssData;
+		ssData << "<RenderableComponent>" << std::endl;
+		ssData << "<Mesh name=\"" << meshName << "\" outline=\"" << toggleOutline << "\"/>" << std::endl;
+		ssData << "</RenderableComponent>" << std::endl;
+
 		printf("Worked2!");
-		// TODO create xml node append attributes.. then append the new node to the componentNode
-		// ^.^ 
-		//rapidxml::xml_node<>* meshNode = new rapidxml::xml_node();
-		//componentNode.append_node( SOME NODE? )
-		// Append attributes to SOME NODE?
 
-		// OR 
-
-		// Create SOME NODE
-		// Append attributes to SOME NODE
-		// Append SOME NODE TO componentNode
 	}
 };
 class cGraphicsObject {
