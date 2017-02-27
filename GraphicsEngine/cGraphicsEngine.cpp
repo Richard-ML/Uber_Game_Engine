@@ -72,15 +72,19 @@ namespace GraphicsEngine {
 	}
 	GraphicsEngine_API bool cGraphicsEngine::loadRenderableComponent(rapidxml::xml_node<>* componentNode, iState* state)
 	{
+		cGraphicsObject* graphicsObject = new cGraphicsObject();
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("Mesh");
 			cRenderableComponentEntry_node; cRenderableComponentEntry_node = cRenderableComponentEntry_node->next_sibling("Mesh")) {
 			// load the mesh buffers
-			cGraphicsObject* graphicsObject = new cGraphicsObject();
-			graphicsObject->meshName = cRenderableComponentEntry_node->first_attribute("name")->value(); // TODO: Offset scale rotation etc..
+			cMesh* mesh = new cMesh();
+			mesh->meshName = cRenderableComponentEntry_node->first_attribute("name")->value();
+			mesh->toggleOutline = std::string(cRenderableComponentEntry_node->first_attribute("outline")->value()) == "true";
+			graphicsObject->vec_meshes.push_back(mesh); // TODO: Offset scale rotation etc..
 			graphicsObject->pState = state;
 			graphicsObject->pState->setScale(1.0f);
-			graphicsObject->toggleOutline = std::string(cRenderableComponentEntry_node->first_attribute("outline")->value()) == "true";
-			g_vec_pGraphicObjects.push_back(graphicsObject);
+
+		
+			state->registerComponentXMLDataCallback(std::function<void(rapidxml::xml_node<>&) >(std::bind(&cGraphicsObject::saveToXMLNode, graphicsObject, std::placeholders::_1)));
 
 		}
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("Light");
@@ -88,20 +92,24 @@ namespace GraphicsEngine {
 			// load the mesh buffers
 			g_pLightManager->loadLightFromXML(cRenderableComponentEntry_node);
 			g_pLightManager->vecLights.back()->state = state;
+			graphicsObject->vec_lights.push_back(g_pLightManager->vecLights.back());
 		}
 
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("PlayerControlComponent");
 			cRenderableComponentEntry_node; cRenderableComponentEntry_node = cRenderableComponentEntry_node->next_sibling("PlayerControlComponent")) {
-			cPlayerControlComponent controlComponent;
-			controlComponent.pState = state;
+			cPlayerControlComponent* controlComponent = new cPlayerControlComponent();
+			controlComponent->pState = state;
 			g_vec_playerControlComponents.push_back(controlComponent);
+			graphicsObject->vec_playerControllers.push_back(controlComponent);
 		}
-
+		
+		g_vec_pGraphicObjects.push_back(graphicsObject);
 		// Create base object that contains iState*
 		printf("Graphics object created!\n");
 
 		return true;
 	}
+
 	GraphicsEngine_API bool cGraphicsEngine::loadMeshes(rapidxml::xml_node<> *meshesNode) {
 		for (rapidxml::xml_node<> *cMeshEntry_node = meshesNode->first_node("Mesh");
 			cMeshEntry_node; cMeshEntry_node = cMeshEntry_node->next_sibling()) {
@@ -167,12 +175,12 @@ namespace GraphicsEngine {
 			glm::vec3 translation = glm::vec3(0.0f, 0.0f, 1.28f);
 			if (pressS)
 				translation *= -1.0f;
-			for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
+			for each (cPlayerControlComponent* controlComponent in g_vec_playerControlComponents)
 			{
-				glm::mat4 tempTrans = glm::translate(controlComponent.pState->getTransform(), translation);
+				glm::mat4 tempTrans = glm::translate(controlComponent->pState->getTransform(), translation);
 				// PROJECT CODE: Position restriction
 				//tempTrans[3] = glm::clamp(tempTrans[3], glm::vec4(-1000.0f, 0.0f, -1000.0f, 0.0f), glm::vec4(1000.0f, 1.0f, -5.0f, 1.0f));
-				controlComponent.pState->setTransform(tempTrans);
+				controlComponent->pState->setTransform(tempTrans);
 				gCamera->setTargetTransform(tempTrans);
 			}
 		}
@@ -184,18 +192,18 @@ namespace GraphicsEngine {
 			// TODO: Add turn velocity based on delta time. 
 			glm::mat4 rotMatrix = glm::rotate(glm::mat4(), 0.157f, axis);
 
-			for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
+			for each (cPlayerControlComponent* controlComponent in g_vec_playerControlComponents)
 			{
-				glm::mat4 tempTrans = controlComponent.pState->getTransform();
+				glm::mat4 tempTrans = controlComponent->pState->getTransform();
 				tempTrans *= rotMatrix;
-				controlComponent.pState->setTransform(tempTrans);
-				gCamera->setTargetTransform(controlComponent.pState->getTransform());
+				controlComponent->pState->setTransform(tempTrans);
+				gCamera->setTargetTransform(controlComponent->pState->getTransform());
 			}
 
 		}
 
 		// TODO: Fix this so that it does not just set the camera target transform to the last player control component in the vector
-		gCamera->setTargetTransform(g_vec_playerControlComponents.back().pState->getTransform());
+		gCamera->setTargetTransform(g_vec_playerControlComponents.back()->pState->getTransform());
 		/////////////////////////////////////////////////////////////////////////////////////////
 
 		// Do graphics stuff!

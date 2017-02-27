@@ -76,4 +76,4 @@ bool g_bool_toggleStencil = false;
 bool g_bool_toggleScissor = false;
 
 // Global Player control components
-std::vector<cPlayerControlComponent> g_vec_playerControlComponents;
+std::vector<cPlayerControlComponent*> g_vec_playerControlComponents;

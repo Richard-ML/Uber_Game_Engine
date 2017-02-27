@@ -32,6 +32,10 @@ public:
 	GLuint gUniformId_AttenuationQuad;
 	GLuint gUniformId_Color;
 	iState* state; // Base transform information
+
+	void saveToXMLNode(rapidxml::xml_node<>& componentNode) {
+		printf("Worked4!");
+	}
 };
 class cLightManager {
 	static cLightManager *s_cLightManager;

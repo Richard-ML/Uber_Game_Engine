@@ -97,7 +97,8 @@ private:
                            // result in an endless circular loop..
   friend class cStateManager; // Make it easier to set m_parentNode Inherited
                               // via iStateNodeHandle
-
+ // (rapidxml::xml_node<>*) *getComponentNode (void);
+  std::function<void(rapidxml::xml_node<>&)> getComponentNode;
   virtual void _setPosition(const glm::vec3 position) {
     this->m_localStateData.position = position;
         };
@@ -117,9 +118,9 @@ private:
 		this->m_localStateData.isMoving = isMoving;
 	};
 
-	virtual void registerComponentXMLDataCallback(rapidxml::xml_node<> getComponentNode(void*)) {
-
-	};
+	virtual void registerComponentXMLDataCallback(std::function<void(rapidxml::xml_node<>&)> getComponentNode) {
+		this->getComponentNode = getComponentNode;
+	}
 	/////////////////////////////////////////////////////////////////////////////
 	// Ignore this.. (Nothing to see here!)
 	//std::queue<std::packaged_task<void()>> m_task_queue;
@@ -186,7 +187,12 @@ public:
 	virtual void getPosition( glm::vec3 &position) override { position = m_localStateData.position; }
 	virtual void getMass(float &mass) override {	mass = m_localStateData.mass; }
 	virtual void getScale(float &scale) override { scale = m_localStateData.scale; }
-	virtual void getTransform(glm::mat4 &transform) override { transform = m_localStateData.transform; }
+	virtual void getTransform(glm::mat4 &transform) override { transform = m_localStateData.transform;
+	
+	rapidxml::xml_node<>* xmlnode = 0;
+	this->getComponentNode(*xmlnode);
+	
+	}
     virtual glm::vec3 getPosition() { return m_localStateData.position; }
     virtual float getMass() { return m_localStateData.mass; }
 	virtual float getScale() { return m_localStateData.scale; }
