@@ -188,7 +188,7 @@ public:
 	virtual void getMass(float &mass) override {	mass = m_localStateData.mass; }
 	virtual void getScale(float &scale) override { scale = m_localStateData.scale; }
 	virtual void getTransform(glm::mat4 &transform) override { transform = m_localStateData.transform;
-	
+	// NOTE: THIS IS HAARDCODED TO TEST THE REGISTERED CALLBACKS
 	rapidxml::xml_node<>* xmlnode = 0;
 	this->getComponentNode(*xmlnode);
 	

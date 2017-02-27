@@ -72,7 +72,7 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 		cGameEntity* gameEntity = new cGameEntity();
 		
 		std::string stateNodeID = g_pComponentEngine->registerNewEntity();
-
+		// CREATE VECTOR OF GAME ENTITIES
 		
 		// These components are loaded and share a state! ...
 			gameEntity->vec_pComponents = g_pComponentEngine->loadFromXML(cGameEntity_node, stateNodeID);
@@ -117,7 +117,16 @@ void loadGameFromXML(std::string filename) {
 
 // For each entity request entity xml node from state manager.. state manager will get each all of the entities component nodes 
 void saveGameToXML() {
+	// CREATE new XML DOC
+	// Append GameEntites node
 
+
+
+	// Iterate over each game entity in vec entites..
+	// APPEND GameEntity to GameEntities..
+	//Call method in iStateManager to getXMLData by stateNodeID as parameter. append result node to GameEntity
+
+	// Save file == done...
 
 }
 
