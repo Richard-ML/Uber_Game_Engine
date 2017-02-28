@@ -3,8 +3,8 @@
 class cPlayerControlComponent {
 public:
 	iState* pState;
-	void saveToXMLNode(std::string& componentNode) {
-		printf("Worked3!");
+	void saveToXMLNode(std::string& xmlString) {
+		xmlString += "<PlayerControlComponent />";
 	}
 
 };

@@ -15,11 +15,8 @@ public:
 		xmlString += "<Mesh name=\"";
 		xmlString += meshName;
 		xmlString += "\" outline=\"";
-		xmlString += toggleOutline;
-	    xmlString += "\"/>";
-
-		printf("Worked2!");
-
+		xmlString +=  toggleOutline? "true": "false";
+	    xmlString += "\" />";
 	}
 };
 class cGraphicsObject {
