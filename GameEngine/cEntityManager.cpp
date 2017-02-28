@@ -119,6 +119,7 @@ void cEntityManager::saveGameToXML() {
 
 
 	xmlString += "<GameEntities />\0";
+	std::cout << xmlString;
 //	theDoc.parse<0>(&xmlString[0]);
 
 
@@ -127,7 +128,7 @@ void cEntityManager::saveGameToXML() {
 	//Call method in iStateManager to getXMLData by stateNodeID as parameter. append result node to GameEntity
 
 	// Save file == done...
-
+	system("pause");
 }
 
 

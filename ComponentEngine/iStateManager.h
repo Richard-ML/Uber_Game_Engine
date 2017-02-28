@@ -339,19 +339,13 @@ public:
 	}
 	virtual std::string getGameEntityXML(std::string stateNodeID) {
 		cStateNode *stateNode = dynamic_cast<cStateNode *>(m_MapIDTOStateNode[stateNodeID]);
-		int ncTestCounter = 0;
 		// XML Game entity with all of its components. 
 		std::string xmlStringResult = "<GameEntity>";
 		std::string requestedXMLString;
 		for each(iState* state in stateNode->m_childStates)
-		{
-			//xmlStringResult = ncTestCounter; xmlStringResult += "\n";
-			requestedXMLString =dynamic_cast<cState *>(state)->getComponentNode();
-			printf(requestedXMLString.c_str());
-			ncTestCounter++;
-		}
+			requestedXMLString += dynamic_cast<cState *>(state)->getComponentNode();
 		xmlStringResult += requestedXMLString;
-		xmlStringResult += "<GameEntity>";
+		xmlStringResult += "</GameEntity>";
 		return xmlStringResult;
 	};
 	cStateManager() {};
