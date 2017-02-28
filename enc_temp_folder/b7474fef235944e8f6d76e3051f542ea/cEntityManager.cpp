@@ -119,7 +119,7 @@ void cEntityManager::saveGameToXML() {
 
 
 	xmlString += "<GameEntities />\0";
-//	theDoc.parse<0>(&xmlString[0]);
+	theDoc.parse<0>(&xmlString[0]);
 
 
 	// Iterate over each game entity in vec entites..

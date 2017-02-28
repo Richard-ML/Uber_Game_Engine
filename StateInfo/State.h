@@ -45,7 +45,7 @@ class iData {
 	 *		  NOTE: Each componentNode is a child of an GameEntity node. Meaning the component can share basic information with other
 	 *        components.
 	 */
-	virtual void registerComponentXMLDataCallback(std::function<void(std::string&)> getComponentNode) = 0;
+	virtual void registerComponentXMLDataCallback(std::function<std::string()> getComponentNode) = 0;
 	// Callback used to retrieve a component's information in the form of an XML node. More efficient than the initial load at startup process that I am about to show you.. 
 	// WHICH WE DO NOT NEED TO CHANGE!! SO DON'T WORRY ABOUT THIS PART THAT I AM ABOUT TO SHOW YOU. . .
 	
@@ -68,6 +68,6 @@ public:
 	virtual void setIsColliding(bool isColliding) = 0;
 	virtual void setIsMoving(bool isMoving) = 0;
 
-	virtual void registerComponentXMLDataCallback(std::function<void(std::string&)> getComponentNode) = 0;
+	virtual void registerComponentXMLDataCallback(std::function<std::string()> getComponentNode) = 0;
 	// TODO Getters! Don't forget to update iStateManager!!
 };

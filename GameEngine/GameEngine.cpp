@@ -21,6 +21,10 @@ int main()
 	// .. Load XML data & create entities
 	g_pEntityManager->loadGameFromXML("GameAssets.xml");
 	
+	// Test save game..
+	g_pEntityManager->saveGameToXML();
+
+
 	// START THE ENGINES!
 	
 	std::chrono::high_resolution_clock::time_point lastTime =

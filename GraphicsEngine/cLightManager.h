@@ -34,7 +34,7 @@ public:
 	iState* state; // Base transform information
 
 	void saveToXMLNode(std::string& componentNode) {
-		printf("Worked4!");
+		printf("LIGHTS XML STRING ERROR! (Incomplete) \n");
 	}
 };
 class cLightManager {

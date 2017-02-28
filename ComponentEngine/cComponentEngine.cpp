@@ -54,4 +54,10 @@ namespace ComponentEngine {
 		return m_pStateManager->subscribe(stateID);
 	}
 
+	ComponentEngine_API std::string cComponentEngine::getGameEntityXML(std::string stateNodeID)
+	{
+		// Pass through interface.. 
+		return m_pStateManager->getGameEntityXML(stateNodeID);
+	}
+
 }

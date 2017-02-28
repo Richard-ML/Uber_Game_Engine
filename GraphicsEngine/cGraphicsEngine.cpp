@@ -73,6 +73,8 @@ namespace GraphicsEngine {
 	GraphicsEngine_API bool cGraphicsEngine::loadRenderableComponent(rapidxml::xml_node<>* componentNode, iState* state)
 	{
 		cGraphicsObject* graphicsObject = new cGraphicsObject();
+		state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cGraphicsObject::saveToXMLNode, graphicsObject)));
+
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("Mesh");
 			cRenderableComponentEntry_node; cRenderableComponentEntry_node = cRenderableComponentEntry_node->next_sibling("Mesh")) {
 			// load the mesh buffers
@@ -84,8 +86,7 @@ namespace GraphicsEngine {
 			graphicsObject->pState->setScale(1.0f);
 
 		
-			state->registerComponentXMLDataCallback(std::function<void(std::string&) >(std::bind(&cGraphicsObject::saveToXMLNode, graphicsObject, std::placeholders::_1)));
-
+		
 		}
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("Light");
 			cRenderableComponentEntry_node; cRenderableComponentEntry_node = cRenderableComponentEntry_node->next_sibling("Light")) {

@@ -45,6 +45,7 @@ public:
   virtual iState *subscribe(std::string stateNodeID) = 0;
   // NOTE: An iState* is sent to each component's corresponding
   // engine with load data (xmlNode,json)
+  virtual std::string getGameEntityXML(std::string stateNodeID) =0;
 };
 
 
@@ -98,7 +99,7 @@ private:
   friend class cStateManager; // Make it easier to set m_parentNode Inherited
                               // via iStateNodeHandle
  // (rapidxml::xml_node<>*) *getComponentNode (void);
-  std::function<void(std::string&)> getComponentNode;
+  std::function<std::string()> getComponentNode;
   virtual void _setPosition(const glm::vec3 position) {
     this->m_localStateData.position = position;
         };
@@ -117,8 +118,7 @@ private:
 	virtual void _setIsMoving(bool isMoving) {
 		this->m_localStateData.isMoving = isMoving;
 	};
-
-	virtual void registerComponentXMLDataCallback(std::function<void(std::string&)> getComponentNode) {
+	virtual void registerComponentXMLDataCallback(std::function<std::string()> getComponentNode) {
 		this->getComponentNode = getComponentNode;
 	}
 	/////////////////////////////////////////////////////////////////////////////
@@ -187,12 +187,7 @@ public:
 	virtual void getPosition( glm::vec3 &position) override { position = m_localStateData.position; }
 	virtual void getMass(float &mass) override {	mass = m_localStateData.mass; }
 	virtual void getScale(float &scale) override { scale = m_localStateData.scale; }
-	virtual void getTransform(glm::mat4 &transform) override { transform = m_localStateData.transform;
-	// NOTE: THIS IS HAARDCODED TO TEST THE REGISTERED CALLBACKS
-	std::string xmlnode = "";
-	this->getComponentNode(xmlnode);
-	
-	}
+	virtual void getTransform(glm::mat4 &transform) override { transform = m_localStateData.transform; }
     virtual glm::vec3 getPosition() { return m_localStateData.position; }
     virtual float getMass() { return m_localStateData.mass; }
 	virtual float getScale() { return m_localStateData.scale; }
@@ -342,6 +337,23 @@ public:
 		stateHandle->m_localStateData = stateNodeHandle->_localStateData;
 		return state;
 	}
+	virtual std::string getGameEntityXML(std::string stateNodeID) {
+		cStateNode *stateNode = dynamic_cast<cStateNode *>(m_MapIDTOStateNode[stateNodeID]);
+		int ncTestCounter = 0;
+		// XML Game entity with all of its components. 
+		std::string xmlStringResult = "<GameEntity>";
+		std::string requestedXMLString;
+		for each(iState* state in stateNode->m_childStates)
+		{
+			//xmlStringResult = ncTestCounter; xmlStringResult += "\n";
+			requestedXMLString =dynamic_cast<cState *>(state)->getComponentNode();
+			printf(requestedXMLString.c_str());
+			ncTestCounter++;
+		}
+		xmlStringResult += requestedXMLString;
+		xmlStringResult += "<GameEntity>";
+		return xmlStringResult;
+	};
 	cStateManager() {};
 };
 
