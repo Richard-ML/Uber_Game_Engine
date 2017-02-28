@@ -33,7 +33,7 @@ public:
 	GLuint gUniformId_Color;
 	iState* state; // Base transform information
 
-	void saveToXMLNode(rapidxml::xml_node<>& componentNode) {
+	void saveToXMLNode(std::string& componentNode) {
 		printf("Worked4!");
 	}
 };

@@ -12,10 +12,11 @@ public:
 	bool toggleOutline;
 	void saveToXMLNode(std::string& xmlString) {
 
-		std::stringstream ssData;
-		ssData << "<RenderableComponent>" << std::endl;
-		ssData << "<Mesh name=\"" << meshName << "\" outline=\"" << toggleOutline << "\"/>" << std::endl;
-		ssData << "</RenderableComponent>" << std::endl;
+		xmlString += "<Mesh name=\"";
+		xmlString += meshName;
+		xmlString += "\" outline=\"";
+		xmlString += toggleOutline;
+	    xmlString += "\"/>";
 
 		printf("Worked2!");
 
@@ -31,7 +32,8 @@ public:
 	std::vector<cLight*> vec_lights; // Lights that belong to this object..
 
 	// Takes a reference to an existing xml node. (RenderableComponent) Then appends nodes to it containing all of it's information
-	void saveToXMLNode(rapidxml::xml_node<>& componentNode) {
+	void saveToXMLNode(std::string& componentNode) {
+		componentNode += "<RenderableComponent>";
 		for each(cMesh* mesh in vec_meshes)
 		{
 			mesh->saveToXMLNode(componentNode);
@@ -45,5 +47,6 @@ public:
 		{
 			light->saveToXMLNode(componentNode);
 		}
+		componentNode += "</RenderableComponent>";
 	}
 };

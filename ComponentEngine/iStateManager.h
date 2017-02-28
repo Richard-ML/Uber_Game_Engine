@@ -98,7 +98,7 @@ private:
   friend class cStateManager; // Make it easier to set m_parentNode Inherited
                               // via iStateNodeHandle
  // (rapidxml::xml_node<>*) *getComponentNode (void);
-  std::function<void(rapidxml::xml_node<>&)> getComponentNode;
+  std::function<void(std::string&)> getComponentNode;
   virtual void _setPosition(const glm::vec3 position) {
     this->m_localStateData.position = position;
         };
@@ -118,7 +118,7 @@ private:
 		this->m_localStateData.isMoving = isMoving;
 	};
 
-	virtual void registerComponentXMLDataCallback(std::function<void(rapidxml::xml_node<>&)> getComponentNode) {
+	virtual void registerComponentXMLDataCallback(std::function<void(std::string&)> getComponentNode) {
 		this->getComponentNode = getComponentNode;
 	}
 	/////////////////////////////////////////////////////////////////////////////
@@ -189,8 +189,8 @@ public:
 	virtual void getScale(float &scale) override { scale = m_localStateData.scale; }
 	virtual void getTransform(glm::mat4 &transform) override { transform = m_localStateData.transform;
 	// NOTE: THIS IS HAARDCODED TO TEST THE REGISTERED CALLBACKS
-	rapidxml::xml_node<>* xmlnode = 0;
-	this->getComponentNode(*xmlnode);
+	std::string xmlnode = "";
+	this->getComponentNode(xmlnode);
 	
 	}
     virtual glm::vec3 getPosition() { return m_localStateData.position; }

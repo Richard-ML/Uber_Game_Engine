@@ -84,7 +84,7 @@ namespace GraphicsEngine {
 			graphicsObject->pState->setScale(1.0f);
 
 		
-			state->registerComponentXMLDataCallback(std::function<void(rapidxml::xml_node<>&) >(std::bind(&cGraphicsObject::saveToXMLNode, graphicsObject, std::placeholders::_1)));
+			state->registerComponentXMLDataCallback(std::function<void(std::string&) >(std::bind(&cGraphicsObject::saveToXMLNode, graphicsObject, std::placeholders::_1)));
 
 		}
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("Light");
