@@ -1,0 +1,272 @@
+<GameEntities>
+    <GameEntity>
+      <RenderableComponent>
+        <Mesh name="Arc" outline="true"/>
+        <Mesh name="Portal" outline="false"/>
+        <Light type="PointLight" isEnabled="true" coneAngle="0.9f" specularPower="10.0f" directionX="0.0f" directionY="-5.0f" directionZ="0.0f" offsetX="0.0f" offsetY="40.0f" offsetZ="0.0f" ambientR="0.03f" ambientG="0.03f" ambientB="0.03f" diffuseR="0.2f" diffuseG="0.2f" diffuseB="0.2f" specularR="0.3f" specularG="0.3f" specularB="0.3f" attenConst="0.2f" attenLinear="0.091427f" attenQuad="0.0065429f" />
+      </RenderableComponent>
+      <PhysicsComponent>
+        <RigidBody offsetX="0.0f" offsetY="0.0f" offsetZ="0.0f" />
+      </PhysicsComponent>
+    </GameEntity>
+
+    <GameEntity>
+      <RenderableComponent>
+        <Mesh name="GrassTile" outline="false"/>
+      </RenderableComponent>
+      <PhysicsComponent>
+        <RigidBody offsetX="-256.0f" offsetY="0.0f" offsetZ="-256.0f" />
+      </PhysicsComponent>
+    </GameEntity>
+	
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+			<Light type="PointLight" isEnabled="true" coneAngle="0.9f" specularPower="1.0f" directionX="0.0f" directionY="-5.0f" directionZ="0.0f" offsetX="0.0f" offsetY="10.0f" offsetZ="0.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.31f" diffuseG="0.3f" diffuseB="0.3f" specularR="0.6f" specularG="0.3f" specularB="0.3f" attenConst="0.2f" attenLinear="0.00091427f" attenQuad="0.000065429f" />
+			<PlayerControlComponent />
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="0.0f" offsetY="0.0f" offsetZ="0.0f" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="160.06" offsetY="0.0f" offsetZ="255.84" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="254.31" offsetY="0.0f" offsetZ="735.4" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-215.97" offsetY="0.0f" offsetZ="236.122" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-158.03" offsetY="0.0f" offsetZ="-227.516" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-142.39" offsetY="0.0f" offsetZ="-173.44" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="261.92" offsetY="0.0f" offsetZ="177.94" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="98.17" offsetY="0.0f" offsetZ="280.77" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-64.375" offsetY="0.0f" offsetZ="368.996" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-116.32" offsetY="0.0f" offsetZ="-602.72" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-27.54" offsetY="0.0f" offsetZ="240.86" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-44.26" offsetY="0.0f" offsetZ="-74.804" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-22.71" offsetY="0.0f" offsetZ="63.23" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="212.74" offsetY="0.0f" offsetZ="-247.26" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-362.62" offsetY="0.0f" offsetZ="44.68" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="47.1" offsetY="0.0f" offsetZ="527.451" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="158.96" offsetY="0.0f" offsetZ="225.67" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-167.85" offsetY="0.0f" offsetZ="-90.3655" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-189.245" offsetY="0.0f" offsetZ="-162.42" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="2694.94" offsetY="0.0f" offsetZ="-252.236" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-350.32" offsetY="0.0f" offsetZ="466.63" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-68.589" offsetY="0.0f" offsetZ="54.287" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="653.798" offsetY="0.0f" offsetZ="110.05" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-81.965" offsetY="0.0f" offsetZ="43.431" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-149.37" offsetY="0.0f" offsetZ="-200.67" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="117.29" offsetY="0.0f" offsetZ="-49.08" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="939.94" offsetY="0.0f" offsetZ="102.634" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-92.634" offsetY="0.0f" offsetZ="159.29" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="43.846" offsetY="0.0f" offsetZ="-186.11" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="-218.76" offsetY="0.0f" offsetZ="-48.6162" />
+		</PhysicsComponent>
+	</GameEntity>
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Skeleton" outline="true"/>
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="28.8398" offsetY="0.0f" offsetZ="118.55" />
+		</PhysicsComponent>
+	</GameEntity>
+</GameEntities>

@@ -13,13 +13,8 @@ PhysicsEngine::cRigidBody::~cRigidBody()
 
 void PhysicsEngine::cRigidBody::getOrientation(glm::mat4 & orientation)
 {
-
 	// Rotation = (Time * velocity) / radius
 	glm::vec3 fAngle = (this->m_rigidBody.velocity * 0.01f) / (this->m_rigidBody.mass);
-
-
-
-
 	//glm::vec3 after = glm::vec3(this->m_rigidBody.velocity.x, 0.0f, this->m_rigidBody.velocity.z) * 0.01f;
 	//float rotVel = glm::distance(glm::vec3(0.0f), after);
 	glm::quat rotAxis = glm::cross(fAngle,  glm::vec3(0.0f,1.0f,0.0f));

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "global.h"
-
 // Window information
 GLFWwindow * gWindow = 0;
 std::string gWindowTitle = "";
@@ -76,4 +75,4 @@ bool g_bool_toggleStencil = false;
 bool g_bool_toggleScissor = false;
 
 // Global Player control components
-std::vector<cPlayerControlComponent> g_vec_playerControlComponents;
+std::vector<cPlayerControlComponent*> g_vec_playerControlComponents;

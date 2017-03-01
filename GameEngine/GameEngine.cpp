@@ -7,11 +7,15 @@
 #include <chrono>
 int main()
 {
-	ComponentEngine::cComponentEngine * g_pComponentEngine = ComponentEngine::cComponentEngine::instance();
-	PhysicsEngine::cPhysicsEngine *g_pPhysicsEngine = PhysicsEngine::cPhysicsEngine::instance();
-	GraphicsEngine::cGraphicsEngine * g_pGraphicsEngine = GraphicsEngine::cGraphicsEngine::instance();
-	SoundEngine::cSoundEngine * g_pSoundEngine = SoundEngine::cSoundEngine::instance();
-	AIEngine::cAIEngine * g_pAIEngine = AIEngine::cAIEngine::instance();
+	g_pComponentEngine = ComponentEngine::cComponentEngine::instance();
+	g_pPhysicsEngine = PhysicsEngine::cPhysicsEngine::instance();
+	g_pGraphicsEngine = GraphicsEngine::cGraphicsEngine::instance();
+
+	g_pGameState = g_pGraphicsEngine->g_pGameState;
+
+	g_pSoundEngine = SoundEngine::cSoundEngine::instance();
+	g_pAIEngine = AIEngine::cAIEngine::instance();
+
 
 	std::cout << "GameEngine Initialized\n";
 
@@ -20,13 +24,29 @@ int main()
 	// TODO: Crate window using g_pGraphicsEngine interface..
 	// .. Load XML data & create entities
 	g_pEntityManager->loadGameFromXML("GameAssets.xml");
+	g_pEntityManager->loadGameEntitiesFromXML(0); // Load game on lowest difficulty
+	// Test save game..
+	//g_pEntityManager->saveGameToXML(0);
 	
+
 	// START THE ENGINES!
 	
 	std::chrono::high_resolution_clock::time_point lastTime =
 		std::chrono::high_resolution_clock::now();
 	std::chrono::duration<float> deltaTime;
 	do {
+
+		if (g_pGameState->_loadRequested == true)
+		{
+			g_pEntityManager->loadGameEntitiesFromXML(g_pGameState->_difficulty);
+			g_pGameState->_loadRequested = false;
+		}
+		else
+		if(g_pGameState->_saveRequested){
+			g_pEntityManager->saveGameToXML(g_pGameState->_difficulty);
+			g_pGameState->_saveRequested = false;
+		}
+		
 		//Engines are running! CORE ROUTINE --- BEGIN
 		std::chrono::high_resolution_clock::time_point t2 =
 			std::chrono::high_resolution_clock::now();
@@ -50,4 +70,3 @@ int main()
 
     return 0;
 }
-

@@ -45,6 +45,8 @@ public:
   virtual iState *subscribe(std::string stateNodeID) = 0;
   // NOTE: An iState* is sent to each component's corresponding
   // engine with load data (xmlNode,json)
+  virtual std::string getGameEntityXML(std::string stateNodeID) =0;
+  virtual void clearStateInfo() = 0;
 };
 
 
@@ -62,7 +64,7 @@ private:
   virtual void _setIsColliding(bool isColliding) = 0;
   virtual void _setIsMoving(bool isMoving) = 0;
 };
-//
+
 //// Core state interface: Parent to state nodes, stores a proxy of the latest
 //// data from all other interfaces! :D
 class iStateNode : public iGeomerty, iBehaviour, iControl {
@@ -97,7 +99,8 @@ private:
                            // result in an endless circular loop..
   friend class cStateManager; // Make it easier to set m_parentNode Inherited
                               // via iStateNodeHandle
-
+ // (rapidxml::xml_node<>*) *getComponentNode (void);
+  std::function<std::string()> getComponentNode;
   virtual void _setPosition(const glm::vec3 position) {
     this->m_localStateData.position = position;
         };
@@ -116,7 +119,9 @@ private:
 	virtual void _setIsMoving(bool isMoving) {
 		this->m_localStateData.isMoving = isMoving;
 	};
-
+	virtual void registerComponentXMLDataCallback(std::function<std::string()> getComponentNode) {
+		this->getComponentNode = getComponentNode;
+	}
 	/////////////////////////////////////////////////////////////////////////////
 	// Ignore this.. (Nothing to see here!)
 	//std::queue<std::packaged_task<void()>> m_task_queue;
@@ -320,6 +325,7 @@ public:
 		dynamic_cast<cStateNode *>(stateNode)->uniqueID = uID;
 		m_childStates.push_back(stateNode);
 		m_MapIDTOStateNode[uID] = stateNode;
+		m_nextID++;
 		return uID;
 	}
 	virtual iState *subscribe(std::string stateNodeID) override {
@@ -333,6 +339,22 @@ public:
 		stateHandle->m_localStateData = stateNodeHandle->_localStateData;
 		return state;
 	}
+	virtual std::string getGameEntityXML(std::string stateNodeID) {
+		cStateNode *stateNode = dynamic_cast<cStateNode *>(m_MapIDTOStateNode[stateNodeID]);
+		// XML Game entity with all of its components. 
+		std::string xmlStringResult = "<GameEntity>";
+		std::string requestedXMLString;
+		for each(iState* state in stateNode->m_childStates)
+			requestedXMLString += dynamic_cast<cState *>(state)->getComponentNode();
+		xmlStringResult += requestedXMLString;
+		xmlStringResult += "</GameEntity>";
+		return xmlStringResult;
+	};
+	virtual void clearStateInfo() {
+		m_childStates.clear();
+		m_MapIDTOStateNode.clear();
+		//m_nextID = 0;
+	};
 	cStateManager() {};
 };
 

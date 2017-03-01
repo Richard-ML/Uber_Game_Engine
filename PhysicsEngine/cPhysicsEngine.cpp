@@ -105,6 +105,8 @@ namespace PhysicsEngine {
 	cPhysicsEngine::cPhysicsEngine() {
 		this->impl()->m_cWorld = new cWorld();
 	}
+
+	std::vector<iRigidBody*> vec_rigidBodies;
 	PhysicsEngine_API bool cPhysicsEngine::loadPhysicsComponent(rapidxml::xml_node<>* componentNode, iState * state)
 	{
 		for (rapidxml::xml_node<> *cRigidBody_node = componentNode->first_node("RigidBody");
@@ -113,7 +115,15 @@ namespace PhysicsEngine {
 			glm::mat4 transform;
 			glm::vec3 offset = glm::vec3(std::stof(cRigidBody_node->first_attribute("offsetX")->value()), std::stof(cRigidBody_node->first_attribute("offsetY")->value()), std::stof(cRigidBody_node->first_attribute("offsetZ")->value()));
 			transform[3] = glm::vec4(offset, 1.0f);
+
+		    cRigidBody* rb = new cRigidBody();
+			rb->setPosition(offset);
+			//state->registerComponentXMLDataCallback(rb->saveToXMLNode);
+			state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cRigidBody::saveToXMLNode, rb)));
+			
 			state->setTransform(transform);
+			rb->state = state;
+			vec_rigidBodies.push_back(rb);
 		}
 		return true;
 	}

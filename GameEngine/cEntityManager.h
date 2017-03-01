@@ -15,6 +15,8 @@ class cEntityManager {
 
 public:
 	int loadGameFromXML(std::string filename);
+	void saveGameToXML(int difficulty);
+	void loadGameEntitiesFromXML(int difficulty);
 	static cEntityManager *instance();
 
 private:
