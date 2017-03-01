@@ -35,6 +35,43 @@ public:
 
 	void saveToXMLNode(std::string& componentNode) {
 		printf("LIGHTS XML STRING ERROR! (Incomplete) \n");
+		
+		std::stringstream ssXML;
+		ssXML << "<Light ";
+		switch ( this->typeFlag )
+		{
+			case 0:
+				ssXML << "type=\"" << "PointLight" << "\" ";
+				break;
+			case 1:
+				ssXML << "type=\"" << "DirectionalLight" << "\" ";
+				break;
+		}
+
+		ssXML << "isEnabled=\"" << this->isEnabled << "\" ";
+		ssXML << "coneAngle=\"" << this->coneAngle << "\" ";
+		ssXML << "specularPower=\"" << this->specularPower << "\" ";
+		ssXML << "directionX=\"" << this->direction.x << "\" ";
+		ssXML << "directionY=\"" << this->direction.y << "\" ";
+		ssXML << "directionZ=\"" << this->direction.z << "\" ";
+		ssXML << "offsetX=\"" << this->offset.x << "\" ";
+		ssXML << "offsetY=\"" << this->offset.y << "\" ";
+		ssXML << "offsetZ=\"" << this->offset.z << "\" ";
+		ssXML << "ambientR=\"" << this->ambient.r << "\" ";
+		ssXML << "ambientG=\"" << this->ambient.g << "\" ";
+		ssXML << "ambientB=\"" << this->ambient.b << "\" ";
+		ssXML << "diffuseR=\"" << this->diffuse.r << "\" ";
+		ssXML << "diffuseG=\"" << this->diffuse.g << "\" ";
+		ssXML << "diffuseB=\"" << this->diffuse.b << "\" ";
+		ssXML << "specularR=\"" << this->specular.r << "\" ";
+		ssXML << "specularG=\"" << this->specular.g << "\" ";
+		ssXML << "specularB=\"" << this->specular.b << "\" ";
+		ssXML << "attenConst=\"" << this->attenConst << "\" ";
+		ssXML << "attenLinear=\"" << this->attenLinear << "\" ";
+		ssXML << "attenQuad=\"" << this->attenQuad << "\" ";
+		ssXML << "/>" << std::endl;
+
+		componentNode.append( ssXML.str() );
 	}
 };
 class cLightManager {

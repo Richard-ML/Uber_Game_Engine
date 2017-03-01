@@ -128,7 +128,7 @@ void cEntityManager::saveGameToXML() {
 	//Call method in iStateManager to getXMLData by stateNodeID as parameter. append result node to GameEntity
 
 	// Save file == done...
-	system("pause");
+	//system("pause");
 }
 
 
