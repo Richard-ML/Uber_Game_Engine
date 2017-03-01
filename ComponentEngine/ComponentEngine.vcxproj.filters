@@ -30,9 +30,6 @@
     <Filter Include="DataModel">
       <UniqueIdentifier>{7a7177ea-0b0e-4d0b-a857-4db7745d4652}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DataModel\Header Files">
-      <UniqueIdentifier>{8176cbcc-f8fb-482a-8fa9-60599a5425a1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DataModel\Source Files">
       <UniqueIdentifier>{c31adb56-0e80-4c25-9fce-808b6ba6f89d}</UniqueIdentifier>
     </Filter>
@@ -47,6 +44,9 @@
     </Filter>
     <Filter Include="DataModel\Source Files\Components">
       <UniqueIdentifier>{e6e7d001-fd36-4d6a-8e09-dac06f311bb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DataModel\Header Files">
+      <UniqueIdentifier>{8176cbcc-f8fb-482a-8fa9-60599a5425a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

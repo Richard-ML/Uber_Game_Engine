@@ -61,4 +61,9 @@ namespace ComponentEngine {
 		return xmlStringResult;
 	}
 
+	ComponentEngine_API void cComponentEngine::clearStateInfo()
+	{
+		m_pStateManager->clearStateInfo();
+	}
+
 }

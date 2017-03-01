@@ -34,8 +34,6 @@ public:
 	iState* state; // Base transform information
 
 	void saveToXMLNode(std::string& componentNode) {
-		printf("LIGHTS XML STRING ERROR! (Incomplete) \n");
-		
 		std::stringstream ssXML;
 		ssXML << "<Light ";
 		switch ( this->typeFlag )

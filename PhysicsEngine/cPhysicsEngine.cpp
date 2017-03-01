@@ -122,6 +122,7 @@ namespace PhysicsEngine {
 			state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cRigidBody::saveToXMLNode, rb)));
 			
 			state->setTransform(transform);
+			rb->state = state;
 			vec_rigidBodies.push_back(rb);
 		}
 		return true;

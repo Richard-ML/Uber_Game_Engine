@@ -66,6 +66,7 @@ Status: Version 1.8 Alpha
 namespace PhysicsEngine {
 	class cRigidBody : public iRigidBody {//public cCollisionObject {
 	public:
+		iState* state;
 		//cRigidBody(cCollisionObject* object);
 		cRigidBody(const sRigidBody& rigidBody);
 		cRigidBody(){}
@@ -89,7 +90,7 @@ namespace PhysicsEngine {
 		std::string saveToXMLNode() {
 			std::string componentNode;
 			glm::vec3 position;
-			this->getPosition(position);
+			this->state->getPosition(position);
 			componentNode = "<PhysicsComponent>";
 			componentNode += "<RigidBody ";
 			componentNode += "offsetX=\"";

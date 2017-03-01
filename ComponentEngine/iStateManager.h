@@ -46,6 +46,7 @@ public:
   // NOTE: An iState* is sent to each component's corresponding
   // engine with load data (xmlNode,json)
   virtual std::string getGameEntityXML(std::string stateNodeID) =0;
+  virtual void clearStateInfo() = 0;
 };
 
 
@@ -324,6 +325,7 @@ public:
 		dynamic_cast<cStateNode *>(stateNode)->uniqueID = uID;
 		m_childStates.push_back(stateNode);
 		m_MapIDTOStateNode[uID] = stateNode;
+		m_nextID++;
 		return uID;
 	}
 	virtual iState *subscribe(std::string stateNodeID) override {
@@ -347,6 +349,11 @@ public:
 		xmlStringResult += requestedXMLString;
 		xmlStringResult += "</GameEntity>";
 		return xmlStringResult;
+	};
+	virtual void clearStateInfo() {
+		m_childStates.clear();
+		m_MapIDTOStateNode.clear();
+		//m_nextID = 0;
 	};
 	cStateManager() {};
 };

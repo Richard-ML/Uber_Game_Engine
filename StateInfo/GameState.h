@@ -27,12 +27,12 @@ namespace GameState {
 
 		static   cGameState *instance();
 
-		static void loadGame(int difficulty) {
-			s_cGameState->_difficulty = difficulty;
-			s_cGameState->_loadRequested = true;
+	    void loadGame(int difficulty) {
+			_difficulty = difficulty;
+			_loadRequested = true;
 		}
-		static void saveGame() {
-			s_cGameState->_saveRequested = true;
+		 void saveGame() {
+			_saveRequested = true;
 		}
 	};
 

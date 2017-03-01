@@ -107,7 +107,7 @@ namespace GraphicsEngine {
 		
 		g_vec_pGraphicObjects.push_back(graphicsObject);
 		// Create base object that contains iState*
-		printf("Graphics object created!\n");
+		//printf("Graphics object created!\n");
 
 		return true;
 	}
@@ -240,6 +240,13 @@ namespace GraphicsEngine {
 
 		return;
 	}
+	GraphicsEngine_API void cGraphicsEngine::clearGameObjects()
+	{
+		g_vec_pGraphicObjects.clear();
+		g_vec_playerControlComponents.clear();
+		g_pLightManager->vecLights.clear();
+	}
+	
 }
 void initializeGLFW() {
 	gWindowTitle = "Single-threaded GraphicsEngine Window! The invisible eye watches.. WASD to move & Arrows control camera rotation around player";

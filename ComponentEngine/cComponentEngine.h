@@ -38,6 +38,7 @@ namespace ComponentEngine {
 		static ComponentEngine_API std::string registerNewEntity();
 		static ComponentEngine_API iState* subcribeToState(std::string stateID);
 		static ComponentEngine_API std::string getGameEntityXML(std::string stateNodeID);
+		static ComponentEngine_API void clearStateInfo();
 	};
 
 }

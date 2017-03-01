@@ -26,7 +26,7 @@ int main()
 	g_pEntityManager->loadGameFromXML("GameAssets.xml");
 	g_pEntityManager->loadGameEntitiesFromXML(0); // Load game on lowest difficulty
 	// Test save game..
-	g_pEntityManager->saveGameToXML(0);
+	//g_pEntityManager->saveGameToXML(0);
 	
 
 	// START THE ENGINES!

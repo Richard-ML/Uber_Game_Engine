@@ -28,17 +28,17 @@ void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 		break;
 		case GLFW_KEY_2:
 		{
-			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->loadGame(0);
+			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->loadGame(1);
 		}
 		break;
 		case GLFW_KEY_3:
 		{
-			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->loadGame(0);
+			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->loadGame(2);
 		}
 		break;
 		case GLFW_KEY_P:
 		{
-			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->loadGame(0);
+			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->saveGame();
 		}
 		break;
 

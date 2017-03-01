@@ -42,6 +42,7 @@ namespace GraphicsEngine {
 		static GraphicsEngine_API bool loadFramebufferObjects(rapidxml::xml_node<>* framebuffersNode);
 		GraphicsEngine_API void update(float deltaTime);
 		GameState::cGameState* g_pGameState = 0;
+		static GraphicsEngine_API void clearGameObjects();
 
 	};
 
