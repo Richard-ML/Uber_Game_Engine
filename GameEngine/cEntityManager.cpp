@@ -123,7 +123,6 @@ void cEntityManager::saveGameToXML(int difficulty) {
 	std::cout << xmlString;
 //	theDoc.parse<0>(&xmlString[0]);
 	// Save file == done...
-
 }
 
 
