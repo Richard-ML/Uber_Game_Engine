@@ -9,3 +9,7 @@ PhysicsEngine::cPhysicsEngine *g_pPhysicsEngine = 0;
 
 SoundEngine::cSoundEngine * g_pSoundEngine = 0;
 AIEngine::cAIEngine * g_pAIEngine = 0;
+
+//cGameState *cGameState::s_cGameState =
+//0; // Allocating pointer to static instance of cMeshManager (singleton)
+GameState::cGameState* g_pGameState = 0;

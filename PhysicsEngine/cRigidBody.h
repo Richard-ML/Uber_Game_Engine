@@ -95,13 +95,14 @@ namespace PhysicsEngine {
 			componentNode += "offsetX=\"";
 			//glm::to_string()
 			std::stringstream string;
+			string.precision(6);
 			string << position.x << 
 			"\" " << "offsetY=\"" <<
 			position.y << "\" " << "offsetZ=\""
 			<< position.z << "\" />"
 			<< "</PhysicsComponent>";
 
-			componentNode.append(string.str());
+			componentNode += string.str();
 			return componentNode;
 		} 
 	private:

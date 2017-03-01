@@ -201,6 +201,9 @@ copy /Y "$(SolutionDir)Include\FreeImage\FreeImage.dll" "$(TargetDir)FreeImage.d
     <ProjectReference Include="..\SoundEngine\SoundEngine.vcxproj">
       <Project>{e8c28d4e-dc89-42ac-846b-5bc16230d531}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\StateInfo\StateInfo.vcxproj">
+      <Project>{5318a4b7-f827-4517-bb9f-d762664a27de}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="GameAssets.xml" />

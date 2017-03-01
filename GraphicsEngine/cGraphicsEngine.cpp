@@ -30,6 +30,7 @@ namespace GraphicsEngine {
 		{
 			printf("Graphics Engine Initialized\n");
 			s_cGraphicsEngine = new cGraphicsEngine();
+			s_cGraphicsEngine->g_pGameState = GameState::cGameState::instance();
 			//DWORD myThreadID;
 			//HANDLE myHandle = CreateThread(NULL, 0, // stack size
 			//(LPTHREAD_START_ROUTINE)&GraphicsEngine::cGraphicsEngine::graphicsThread, reinterpret_cast<void*>(s_cGraphicsEngine), 0, &myThreadID);

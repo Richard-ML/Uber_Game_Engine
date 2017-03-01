@@ -28,8 +28,10 @@ inline cEntityManager_Impl *cEntityManager::impl() {
 
 std::vector<cGameEntity*> vec_gameEntities;
 // Redo the load game entities process..
-void cEntityManager::loadGameEntitiesFromXML(std::string filename) {
+void cEntityManager::loadGameEntitiesFromXML(int difficulty) {
 	// TODO: Delete all of the components.. 
+	std::string filename;
+	filename = "config20.xml";
 
 	std::cout << "Loading saved game entities data..\n";
 	rapidxml::xml_document<> theDoc;
@@ -94,7 +96,6 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 	category_node = root_node->first_node("Meshes");
 		GraphicsEngine::cGraphicsEngine::instance()->loadMeshes(category_node);
 
-		loadGameEntitiesFromXML("config20.xml");
 
 	return 1;
 }
@@ -102,7 +103,7 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 
 
 // For each entity request entity xml node from state manager.. state manager will get each all of the entities component nodes 
-void cEntityManager::saveGameToXML() {
+void cEntityManager::saveGameToXML(int difficulty) {
 	// CREATE new XML DOC
 	// Append GameEntites node
 	rapidxml::xml_document<> theDoc;
@@ -111,24 +112,18 @@ void cEntityManager::saveGameToXML() {
 	std::string xmlString;
 	xmlString += "<GameEntities>";
 
-	// Iterate over each game entity in vec entites..
+	// Iterate over each game entity in vec entities..
 	for each(cGameEntity* gameEntity in vec_gameEntities)
 	{
-		xmlString += g_pComponentEngine->getGameEntityXML(gameEntity->stateNodeID);
+		xmlString.append( g_pComponentEngine->getGameEntityXML(gameEntity->stateNodeID));
 	}
 
 
 	xmlString += "<GameEntities />\0";
 	std::cout << xmlString;
 //	theDoc.parse<0>(&xmlString[0]);
-
-
-	// Iterate over each game entity in vec entites..
-	// APPEND GameEntity to GameEntities..
-	//Call method in iStateManager to getXMLData by stateNodeID as parameter. append result node to GameEntity
-
 	// Save file == done...
-	system("pause");
+
 }
 
 

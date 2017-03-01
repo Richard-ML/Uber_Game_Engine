@@ -65,9 +65,6 @@
     <ClInclude Include="ComponentManager.h">
       <Filter>ViewModel\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="externals.h">
       <Filter>Config\Header Files</Filter>
     </ClInclude>
@@ -75,6 +72,9 @@
       <Filter>ViewModel\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cComponentEngine.h">
+      <Filter>View\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
       <Filter>View\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

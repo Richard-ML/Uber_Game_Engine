@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "global.h"
+#include "cGraphicsEngine.h"
 void callback_windowResize(GLFWwindow *window, int width, int height) {
 	if (width != 0 && height != 0)
 		gCamera->windowResize(width, height);
@@ -22,13 +23,25 @@ void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 		case GLFW_KEY_1:
 		{
 			g_bool_toggleScissor = !g_bool_toggleScissor;
+			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->loadGame(0);
 		}
 		break;
 		case GLFW_KEY_2:
 		{
-			g_bool_toggleStencil = !g_bool_toggleStencil;
+			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->loadGame(0);
 		}
 		break;
+		case GLFW_KEY_3:
+		{
+			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->loadGame(0);
+		}
+		break;
+		case GLFW_KEY_P:
+		{
+			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->loadGame(0);
+		}
+		break;
+
 		}
 	//		for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
 	//		{

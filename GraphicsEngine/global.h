@@ -25,8 +25,6 @@ void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 void callback_Error(int, const char* error);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
-
-
 extern 	std::vector<cGraphicsObject*> g_vec_pGraphicObjects;
 
 
@@ -91,9 +89,6 @@ extern cTextureManager *g_pTextureManager;
 extern cShaderManager *g_pShaderManager;
 extern cLightManager *g_pLightManager;
 extern cRenderManager *g_pRenderManager;
-
-
-
 
 // Global toggles
 extern bool g_bool_toggleLights;
