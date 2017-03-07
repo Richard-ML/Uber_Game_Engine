@@ -73,6 +73,7 @@ bool g_bool_toggleLights = true;
 bool g_bool_toggleTextures = true;
 bool g_bool_toggleStencil = false;
 bool g_bool_toggleScissor = false;
+bool g_bool_toggleNormalAndSpecularMaps = true;
 
 // Global Player control components
 std::vector<cPlayerControlComponent*> g_vec_playerControlComponents;

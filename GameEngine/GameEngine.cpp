@@ -10,6 +10,12 @@ int main()
 	g_pComponentEngine = ComponentEngine::cComponentEngine::instance();
 	g_pPhysicsEngine = PhysicsEngine::cPhysicsEngine::instance();
 	g_pGraphicsEngine = GraphicsEngine::cGraphicsEngine::instance();
+	// Get the number of CPU on this machine
+	SYSTEM_INFO sysInfo;
+	GetSystemInfo(&sysInfo);
+
+	std::cout << "Number of processors: " << std::to_string(sysInfo.dwNumberOfProcessors) << std::endl;
+
 
 	g_pGameState = g_pGraphicsEngine->g_pGameState;
 
@@ -27,7 +33,6 @@ int main()
 	g_pEntityManager->loadGameEntitiesFromXML(0); // Load game on lowest difficulty
 	// Test save game..
 	//g_pEntityManager->saveGameToXML(0);
-	
 
 	// START THE ENGINES!
 	
@@ -56,9 +61,9 @@ int main()
 				lastTime); // Get the time that as passed
 		/////////////////////////////////////////////////////////////
 		g_pPhysicsEngine->update(deltaTime.count());
-		g_pAIEngine->update(deltaTime.count()); // In seconds!
+		//g_pAIEngine->update(deltaTime.count()); // In seconds! // NOTE: AI Engine now has its own thread! :)
 		g_pGraphicsEngine->update(deltaTime.count());
-
+		Sleep(90);
 		// CORE ROUTINE --- END
 		lastTime = std::chrono::high_resolution_clock::now();
 

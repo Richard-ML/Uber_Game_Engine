@@ -94,6 +94,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)StateInfo;$(SolutionDir)GraphicsEngine;$(SolutionDir)PhysicsEngine;$(SolutionDir)Include\GLM;$(SolutionDir)SoundEngine;$(SolutionDir)AIEngine;$(SolutionDir)GraphicsEngine;$(SolutionDir)PhysicsEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -124,6 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)StateInfo;$(SolutionDir)Include\rapidxml\;$(SolutionDir)SoundEngine;$(SolutionDir)AIEngine;$(SolutionDir)GraphicsEngine;$(SolutionDir)PhysicsEngine;$(SolutionDir)Include\GLM;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

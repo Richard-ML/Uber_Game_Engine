@@ -36,11 +36,11 @@ public:
 		// Zoom distance that will be applied speeds up to @rate * delta-time
 		float pendingDistanceOffset = 0.0f;
 		// Current zoom distance
-		float distance = 50.0f;
+		float distance = 1000.0f;
 		// The speed at which zooming distance is incremented/decremented based on delta-time.
-		float rate = 1000.0f;
-		float minDistance = 1.0f; // How close the camera can be to its target.
-		float maxDistance = 90.0f; // How far away the camera can be from its target.
+		float rate = 100.0f;
+		float minDistance = 50.0f; // How close the camera can be to its target.
+		float maxDistance = 5000.0f; // How far away the camera can be from its target.
 	}m_zoom;
 
 };

@@ -29,10 +29,10 @@ namespace SoundEngine {
 		if (!s_cSoundEngine)
 		{
 			printf("Sound Engine Initialized\n");
-			s_cSoundEngine = new cSoundEngine();
-			DWORD myThreadID;
-			HANDLE myHandle = CreateThread(NULL, 0, // stack size
-			(LPTHREAD_START_ROUTINE)&SoundEngine::cSoundEngine::soundThread, reinterpret_cast<void*>(s_cSoundEngine), 0, &myThreadID);
+			//s_cSoundEngine = new cSoundEngine();
+			//DWORD myThreadID;
+			//HANDLE myHandle = CreateThread(NULL, 0, // stack size
+			//(LPTHREAD_START_ROUTINE)&SoundEngine::cSoundEngine::soundThread, reinterpret_cast<void*>(s_cSoundEngine), 0, &myThreadID);
 		}
 		return s_cSoundEngine;
 	}

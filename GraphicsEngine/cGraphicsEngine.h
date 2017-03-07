@@ -43,7 +43,7 @@ namespace GraphicsEngine {
 		GraphicsEngine_API void update(float deltaTime);
 		GameState::cGameState* g_pGameState = 0;
 		static GraphicsEngine_API void clearGameObjects();
-
+		static GraphicsEngine_API void addObject(iState* state, std::string meshName);
 	};
 
 }

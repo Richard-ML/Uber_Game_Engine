@@ -32,8 +32,8 @@ void cCamera::update(float dt) {
 	if(m_zoom.pendingDistanceOffset != 0.0f)
 		if (glm::abs(m_zoom.pendingDistanceOffset > m_zoom.rate))
 		{
-			float zoomDistance = glm::sign(m_zoom.pendingDistanceOffset) * dt * m_zoom.rate;
-			m_zoom.distance += zoomDistance;
+			//float zoomDistance = glm::sign(m_zoom.pendingDistanceOffset) * m_zoom.rate;
+			//m_zoom.distance += zoomDistance;
 		}
 		else {
 			m_zoom.distance += m_zoom.pendingDistanceOffset;

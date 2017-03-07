@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "..\Include\rapidxml\rapidxml.hpp"
 #include <functional>   // std::function, std::negate
+#include <Windows.h>
 //Change state data (used by core state manager to dispatch updates to each
 // engine which implements the same interface!
 class iGeomerty {
@@ -28,6 +29,14 @@ public:
 	virtual void setIsColliding(bool isColliding) = 0; //
 	virtual void
 		setIsMoving(bool isMoving) = 0; // Would be used by both physics and animation
+
+	// TODO: REMOVE THESE
+	virtual glm::vec3 getTarget() = 0;
+	virtual float getCooldown() = 0;
+	virtual void setTarget(glm::vec3 targetPosition) = 0;
+	virtual void setCooldown(float duration) = 0;
+
+
 	// TODO: Getters
 };
 
@@ -69,5 +78,13 @@ public:
 	virtual void setIsMoving(bool isMoving) = 0;
 
 	virtual void registerComponentXMLDataCallback(std::function<std::string()> getComponentNode) = 0;
+
 	// TODO Getters! Don't forget to update iStateManager!!
+
+
+	// TODO: REMOVE THESE
+	virtual glm::vec3 getTarget() = 0;
+	virtual float getCooldown() = 0;
+	virtual void setTarget(glm::vec3 targetPosition) = 0;
+	virtual void setCooldown(float duration) = 0;
 };

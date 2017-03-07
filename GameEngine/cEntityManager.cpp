@@ -30,18 +30,84 @@ inline cEntityManager_Impl *cEntityManager::impl() {
 }
 
 std::vector<cGameEntity*> vec_gameEntities;
-// Redo the load game entities process..
+
+
+
+
+// Hardcoded method to generate random builds and place 500 Dalek randomly in the scene
+void generateObjects() {
+
+	bool tempBuildingTiles[28][28];
+	for(int nc = 0; nc < 27; nc++)
+		for (int nc2 = 0; nc2 < 27; nc2++)
+			tempBuildingTiles[nc][nc2] = false;
+	
+	// Simple loop used to create 300 buildings
+	for (int nc = 0; nc < 300; nc++)
+	{
+		TRY_AGAIN:
+		int blockOffsetX = rand() % 5; // rand 0 to 4
+		int blockOffsetZ = rand() % 5; // rand 0 to 4
+		int tileX = (rand() % 4) + 1; // rand 1 to 4
+		int tileZ = (rand() % 4) + 1; // rand 1 to 4
+		// Could result in an endless loop though this is so unlikely I am not worried about it. xD
+		// MIGHT come back and create a vector of available locations and pop them randomly. 
+		// 4x4 tiles in city block && 5x5 city blocks
+		if (tempBuildingTiles[tileX + 5 * blockOffsetX][tileZ + 5 * blockOffsetZ] == 1)
+			goto TRY_AGAIN;
+		
+
+		tempBuildingTiles[tileX + 5 * blockOffsetX][tileZ + 5 * blockOffsetZ] = 1;
+
+		//cGameEntity* gameEntity = new cGameEntity();
+
+		iState* tempState = g_pComponentEngine->subcribeToState(g_pComponentEngine->registerNewEntity());
+		tempState->setPosition(glm::vec3((float)((100 * tileX) + (500 * blockOffsetX)),0.0f, (float)((100 * tileZ) + (500 * blockOffsetZ))));
+		tempState->setScale(1.0f); // Forgot to do this. Wasted lots of time! :S
+		std::string meshName = "Building_" + std::to_string((rand() % 3) + 1);
+
+		g_pGraphicsEngine->addObject(tempState, meshName);
+
+
+		//vec_gameEntities.push_back(gameEntity); // This data will not be saved to XML
+	}
+
+
+	std::vector<iState*> vec_states;
+	for (int nc = 0; nc < 1000; nc++)
+	{
+		std::string stateNodeID = g_pComponentEngine->registerNewEntity();
+		iState* tempState = g_pComponentEngine->subcribeToState(stateNodeID);
+		tempState->setScale(1.0f);
+		g_pGraphicsEngine->addObject(tempState, "Dalek_2");
+
+		// Create another state for the AIEngine to use..
+		vec_states.push_back(g_pComponentEngine->subcribeToState(stateNodeID));
+	}
+	g_pAIEngine->generateAI(vec_states);
+}
+
+
+
+
+
+
+
+
+
+
+// Loads game entities..
 void cEntityManager::loadGameEntitiesFromXML(int difficulty) {
 	std::string filename;
 	// TODO: Delete all of the components properly.. 
 	if (difficulty == 0)
 		filename = "config20.xml";
-	else
-		if (difficulty == 1)
-			filename = "config30.xml";
-		else
-			if (difficulty == 2)
-				filename = "config40.xml";
+	//else
+		//if (difficulty == 1)
+			//filename = "config30.xml";
+		//else
+			//if (difficulty == 2)
+				//filename = "config40.xml";
 			else return;
 	g_pGraphicsEngine->clearGameObjects();
 	g_pComponentEngine->clearStateInfo();
@@ -57,6 +123,8 @@ void cEntityManager::loadGameEntitiesFromXML(int difficulty) {
 		std::istreambuf_iterator<char>());
 	bufData.push_back('\0');
 	theDoc.parse<0>(&bufData[0]);
+
+	bool tardis = true;
 	root_node = theDoc.first_node("GameEntities");
 	for (rapidxml::xml_node<> *cGameEntity_node = root_node->first_node("GameEntity");
 		cGameEntity_node; cGameEntity_node = cGameEntity_node->next_sibling("GameEntity")) {
@@ -69,8 +137,18 @@ void cEntityManager::loadGameEntitiesFromXML(int difficulty) {
 		gameEntity->vec_pComponents = g_pComponentEngine->loadFromXML(cGameEntity_node, gameEntity->stateNodeID);
 		vec_gameEntities.push_back(gameEntity);
 		//this->impl()->vec_pEntites.push_back(gameEntity);
+		if (tardis == true) {
+			iState* tempState = g_pComponentEngine->subcribeToState(gameEntity->stateNodeID);
+			//g_pAIEngine->tardis = tempState; // TODO: Pointer to player? Remove this?
+			tardis = false;
+		}
 	}
+
+
+	// TODO: REMOVE THIS
+	generateObjects();
 }
+
 
 
 //////////////////////////////////////////////////////////
@@ -104,12 +182,14 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 	category_node = root_node->first_node("Textures");
 	GraphicsEngine::cGraphicsEngine::instance()->loadTextures(category_node);
 
-	category_node = root_node->first_node("FrameBufferObjects");
-	GraphicsEngine::cGraphicsEngine::instance()->loadFramebufferObjects(category_node);
+	//category_node = root_node->first_node("FrameBufferObjects");
+	//GraphicsEngine::cGraphicsEngine::instance()->loadFramebufferObjects(category_node);
 
 
 	category_node = root_node->first_node("Meshes");
 		GraphicsEngine::cGraphicsEngine::instance()->loadMeshes(category_node);
+
+
 
 
 	return 1;
@@ -125,12 +205,13 @@ void cEntityManager::saveGameToXML(int difficulty) {
 	if (difficulty == 0)
 		filename = "config20.xml";
 	else
-		if (difficulty == 1)
-			filename = "config30.xml";
-		else
-			if (difficulty == 2)
-				filename = "config40.xml";
-			else return;
+		return;
+		//if (difficulty == 1)
+		//	filename = "config30.xml";
+		//else
+		//	if (difficulty == 2)
+		//		filename = "config40.xml";
+		//	else return;
 
 
 	std::string xmlString;

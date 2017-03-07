@@ -36,6 +36,9 @@
     <ClInclude Include="targetver.h">
       <Filter>Config\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cAIObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cAIEngine.cpp">
@@ -46,6 +49,9 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Config\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cAIObject.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

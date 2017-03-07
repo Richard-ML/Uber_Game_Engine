@@ -95,5 +95,7 @@ extern bool g_bool_toggleLights;
 extern bool g_bool_toggleTextures;
 extern bool g_bool_toggleStencil;
 extern bool g_bool_toggleScissor;
+extern bool g_bool_toggleNormalAndSpecularMaps;
+
 // Global Player control components
 extern std::vector<cPlayerControlComponent*> g_vec_playerControlComponents;

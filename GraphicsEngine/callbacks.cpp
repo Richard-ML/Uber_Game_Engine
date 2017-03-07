@@ -14,26 +14,12 @@ void callback_WindowClose(GLFWwindow *window) {
 
 void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 	int mods) {
-
-
-
 	// NOTE: Does not work for buttons being held-down. See TAG: 001X
 	if (action == 1)
 		switch (key) {
 		case GLFW_KEY_1:
 		{
-			g_bool_toggleScissor = !g_bool_toggleScissor;
 			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->loadGame(0);
-		}
-		break;
-		case GLFW_KEY_2:
-		{
-			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->loadGame(1);
-		}
-		break;
-		case GLFW_KEY_3:
-		{
-			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->loadGame(2);
 		}
 		break;
 		case GLFW_KEY_P:
@@ -41,52 +27,7 @@ void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->saveGame();
 		}
 		break;
-
 		}
-	//		for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
-	//		{
-	//			glm::mat4 tempTrans = glm::translate(controlComponent.pState->getTransform(), glm::vec3(0.0f, 0.0f, 1.0f));
-	//			controlComponent.pState->setTransform(tempTrans);
-	//			gCamera->setTargetTransform(tempTrans);
-	//		}
-	//		break;
-	//	case GLFW_KEY_S:
-	//		for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
-	//		{
-	//			glm::mat4 tempTrans = glm::translate(controlComponent.pState->getTransform(), glm::vec3(0.0f,0.0f,-1.0f));
-	//			controlComponent.pState->setTransform(tempTrans);
-	//			gCamera->setTargetTransform(tempTrans);
-	//		}
-	//		break;
-	//	case GLFW_KEY_A:
-	//		for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
-	//		{
-	//			glm::mat4 rotMatrix;
-	//			glm::mat4 tempTrans = controlComponent.pState->getTransform();
-	//			rotMatrix = glm::rotate(glm::mat4(), 0.1f, glm::vec3(0.0f,1.0f,0.0f));
-	//			tempTrans *= rotMatrix;
-	//			controlComponent.pState->setTransform(tempTrans);
-	//			gCamera->setTargetTransform(controlComponent.pState->getTransform());
-	//		}
-	//		break;
-	//	case GLFW_KEY_D:
-	//		for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
-	//		{
-	//			glm::mat4 rotMatrix;
-	//			glm::mat4 tempTrans = controlComponent.pState->getTransform();
-	//			rotMatrix = glm::rotate(glm::mat4(), 0.1f, glm::vec3(0.0f, -1.0f, 0.0f));
-	//			tempTrans *= rotMatrix;
-	//			controlComponent.pState->setTransform(tempTrans);
-	//			gCamera->setTargetTransform(controlComponent.pState->getTransform());
-	//		}
-	//		break;
-	//	}
-
-
-
-
-
-
 }
 void callback_Error(int, const char* error)
 {
@@ -96,5 +37,6 @@ void callback_Error(int, const char* error)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	// Scrolling: backwards = 1 || forwards = -1
-	gCamera->m_zoom.pendingDistanceOffset -= (float) yoffset;
+	//gCamera->m_zoom.pendingDistanceOffset -= (float) yoffset * gCamera->m_zoom.rate; // TODO: Clearly the camera's properties are not private.. Fix this.
+	gCamera->m_zoom.distance -= (float)yoffset * gCamera->m_zoom.rate;
 }

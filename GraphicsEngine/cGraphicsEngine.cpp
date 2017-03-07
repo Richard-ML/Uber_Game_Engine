@@ -174,7 +174,7 @@ namespace GraphicsEngine {
 		if (pressW != pressS)
 		{
 			// TODO: Add velocity based on delta time. 
-			glm::vec3 translation = glm::vec3(0.0f, 0.0f, 1.28f);
+			glm::vec3 translation = glm::vec3(0.0f, 0.0f, 12.8f);
 			if (pressS)
 				translation *= -1.0f;
 			for each (cPlayerControlComponent* controlComponent in g_vec_playerControlComponents)
@@ -229,7 +229,7 @@ namespace GraphicsEngine {
 			g_pLightManager->updateLightUniforms();
 		
 		// Render Scene to FBO
-		g_pRenderManager->renderSceneToFBO("Portal");
+		//g_pRenderManager->renderSceneToFBO("Portal");
 		
 		// Render objects
 		g_pRenderManager->renderScene();
@@ -246,10 +246,21 @@ namespace GraphicsEngine {
 		g_vec_playerControlComponents.clear();
 		g_pLightManager->vecLights.clear();
 	}
+
+	GraphicsEngine_API void cGraphicsEngine::addObject(iState * state, std::string meshName)
+	{
+		cGraphicsObject * graphicsObject = new cGraphicsObject();
+		graphicsObject->pState = state;
+		cMesh* mesh = new cMesh();
+		mesh->meshName = meshName;
+		mesh->toggleOutline = false;
+		graphicsObject->vec_meshes.push_back(mesh);
+		g_vec_pGraphicObjects.push_back(graphicsObject);
+	}
 	
 }
 void initializeGLFW() {
-	gWindowTitle = "Single-threaded GraphicsEngine Window! The invisible eye watches.. WASD to move & Arrows control camera rotation around player";
+	gWindowTitle = "Single-threaded GraphicsEngine Window! Gems Midterm.. WASD to move & Arrows control camera rotation around player Scroll to zoom";
 	if (!glfwInit()) {
 		fprintf(stderr, "Failed to initialize GLFW\n");
 		system("pause");

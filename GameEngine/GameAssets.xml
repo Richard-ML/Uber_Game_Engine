@@ -1,17 +1,16 @@
 <GameAssets>
   <Textures>
-    <Texture name="Eye" path="assets/EyeStencil/all_seeing_eye.png"/>
+    <Texture name="Grass" path="assets/Textures/Grass.jpg"/>
+	<Texture name="Brick" path="assets/Textures/Brick.jpg"/>
   </Textures>
   <MipmapTextures>
-    <!-- <MipmapTexture name="Dirt" pathDif="assets/Textures/sand/Dirt_Sand_003.jpg" pathNrm="assets/Textures/sand/Dirt_Sand_003_NORM.jpg" pathSpec="assets/Textures/sand/Dirt_Sand_003_SPEC.jpg" />-->
-    <!-- <MipmapTexture name="Dirt" pathDif="assets/Textures/sand/sand_05_diffuse.png" pathNrm="assets/Textures/sand/sand_05_normal.png" pathSpec="assets/Textures/sand/sand_05_specular.png" />-->
-    <MipmapTexture name="Floor" pathDif="assets/TileMeshes/Textures/floor_DIF.tga" pathNrm="assets/TileMeshes/Textures/floor_NRM.tga" pathSpec="assets/TileMeshes/Textures/floor_SPEC.tga" />
-    <MipmapTexture name="Skeleton" pathDif="assets/Skeleton/Skeleton_dif.png" pathNrm="assets/Skeleton/Skeleton_norm.png" pathSpec="assets/Skeleton/Skeleton_spec.png" />
-  </MipmapTextures>
+    <MipmapTexture name="Golden" pathDif="assets/GemsMidterm/Golden_DIF.png" pathNrm="assets/GemsMidterm/Golden_NORM.png" pathSpec="assets/GemsMidterm/Golden_SPEC.png" />
+	<MipmapTexture name="Floor" pathDif="assets/TileMeshes/Textures/floor_DIF.tga" pathNrm="assets/TileMeshes/Textures/floor_NRM.tga" pathSpec="assets/TileMeshes/Textures/floor_SPEC.tga" />
+ </MipmapTextures>
 
-  <FrameBufferObjects>
+ <!-- <FrameBufferObjects>
     <FrameBufferObject name="Portal" width="NOT_USED" height="NOT_USED" isMultiSampled="true" />
-  </FrameBufferObjects>
+  </FrameBufferObjects>-->
 
   <Cubemaps>
     <Cubemap>
@@ -26,9 +25,15 @@
 
   <Meshes>
     <Mesh path="Assets/Skeleton/Skeleton.obj" scale="1.0f" name="Skeleton" r="6" g="0" b="0"/>
+    <Mesh path="Assets/GemsMidterm/Dalek_res_2.obj" scale="0.1f" name="Dalek_2" r="6" g="0" b="0"/>
     <Mesh path="Assets/TileMeshes/GrassTile.obj" scale="10.0f" name="GrassTile" r="0" g="6" b="0"/>
-    <Mesh path="Assets/Arc/Arc.obj" scale="10.0f" name="Arc" r="0" g="12" b="0"/>
-    <Mesh path="Assets/Arc/Portal.obj" scale="10.0f" name="Portal" r="0" g="32" b="0"/>
+    <Mesh path="Assets/GemsMidterm/StreetX.obj" scale="1.0f" name="StreetX" r="6" g="0" b="0"/>
+    <Mesh path="Assets/GemsMidterm/Street_FORWARD.obj" scale="1.0f" name="Street_FORWARD" r="6" g="0" b="0"/>
+    <Mesh path="Assets/GemsMidterm/Street_RIGHT.obj" scale="1.0f" name="Street_RIGHT" r="6" g="0" b="0"/>
+    <Mesh path="Assets/GemsMidterm/Street_FLAT.obj" scale="1.0f" name="Street_FLAT" r="6" g="0" b="0"/>
+    <Mesh path="Assets/GemsMidterm/Building_1.obj" scale="1.0f" name="Building_1" r="6" g="0" b="0"/>	 
+    <Mesh path="Assets/GemsMidterm/Building_2.obj" scale="1.0f" name="Building_2" r="6" g="0" b="0"/>	
+    <Mesh path="Assets/GemsMidterm/Building_3.obj" scale="1.0f" name="Building_3" r="6" g="0" b="0"/>	
     <Mesh path="Assets/Plane/Plane.obj" scale="1.0f" name="Plane" r="0" g="39" b="0"/>
   </Meshes>
 
