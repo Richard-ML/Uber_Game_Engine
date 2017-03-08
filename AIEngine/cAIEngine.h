@@ -28,18 +28,15 @@ namespace AIEngine {
 		cAIEngine &operator=(const cAIEngine &AIManager) {
 		} // Disallow assignment operator
 		friend cDalekAI; // TODO: Remove
-
-	public:
-		
-		static AIEngine_API  cAIEngine *instance();
 		static DWORD __cdecl aiThread(void* lpParam);
+	public:
+		static AIEngine_API  cAIEngine *instance();
 		AIEngine_API void update(float deltaTime);
 		AIEngine_API void generateAI(std::vector<iState*> states); // TODO: Remove was for gems mid-term
 		int worldTiles[28][28];
 		std::vector< cDalekAI* > vec_dalekAI;
-		volatile LONG curThread;
 		std::vector<cDalekAI*> vec_worldTiles[28][28];
-
+		AIEngine_API void initializeGameState(iGameState * gameState);
 	};
 
 }

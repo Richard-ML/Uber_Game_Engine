@@ -30,8 +30,6 @@ namespace GraphicsEngine {
 		cGraphicsEngine(const cGraphicsEngine &) {}; // Disallow copy constructor
 		cGraphicsEngine &operator=(const cGraphicsEngine &GraphicsManager) {
 		} // Disallow assignment operator
-		bool buffersInitialized = false;
-		
 	public:
 		static GraphicsEngine_API  cGraphicsEngine *instance();
 		static GraphicsEngine_API  void loadCubemaps(rapidxml::xml_node<> *cubemapsNode);
@@ -41,9 +39,9 @@ namespace GraphicsEngine {
 		static GraphicsEngine_API bool loadMeshes(rapidxml::xml_node<> *meshesNode);
 		static GraphicsEngine_API bool loadFramebufferObjects(rapidxml::xml_node<>* framebuffersNode);
 		GraphicsEngine_API void update(float deltaTime);
-		GameState::cGameState* g_pGameState = 0;
 		static GraphicsEngine_API void clearGameObjects();
 		static GraphicsEngine_API void addObject(iState* state, std::string meshName);
+		GraphicsEngine_API void initializeGameState(iGameState * gameState);
 	};
 
 }

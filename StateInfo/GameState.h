@@ -1,40 +1,13 @@
 #pragma once
-// Hack for now.. TODO: Something better than this
-#include <functional>   // std::function, std::negate
+#include "stdafx.h"
 #include <vector>
-namespace GameState {
-	class cGameState_Impl;
-	class cGameState {
-	private:
-		static cGameState *s_cGameState;
-		// Boilerplate
-		friend class cGameState_Impl; // The PIMPL idiom aka Compilation Firewall
-		const cGameState_Impl *impl() const;
-		cGameState_Impl *impl();
-		cGameState() {}; // Constructor is private therefore a new instance can not be made
-							  // externally. Only available to members or friends of this class..
-		~cGameState() {
-			// TODO: Clean up resources..
-		}
-		// Not defined to prevent copying of the only instance of the class.
-		cGameState(const cGameState &) {}; // Disallow copy constructor
-		cGameState &operator=(const cGameState &GraphicsManager) {
-		} // Disallow assignment operator
-	public:
-		bool _loadRequested;
-		int _difficulty;
-		bool _saveRequested;
-
-		static   cGameState *instance();
-
-	    void loadGame(int difficulty) {
-			_difficulty = difficulty;
-			_loadRequested = true;
-		}
-		 void saveGame() {
-			_saveRequested = true;
-		}
-	};
-
-
-}
+#include "EnumerationConstants.h"
+//Change state data (used by core state manager to dispatch updates to each
+// engine which implements the same interface!
+class iGameState {
+public:
+	virtual void setGameState(eGameState gameState) = 0;
+	virtual eGameState getGameState() = 0;
+	virtual eDifficulty getDifficulty() = 0;
+	virtual void setDifficulty(eDifficulty difficulty) = 0;
+};

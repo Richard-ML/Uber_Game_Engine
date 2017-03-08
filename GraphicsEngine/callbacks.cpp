@@ -19,12 +19,12 @@ void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 		switch (key) {
 		case GLFW_KEY_1:
 		{
-			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->loadGame(0);
+			g_pGameState->setGameState(GAMESTATE_LOADING);
 		}
 		break;
 		case GLFW_KEY_P:
 		{
-			GraphicsEngine::cGraphicsEngine::instance()->g_pGameState->saveGame();
+			g_pGameState->setGameState(GAMESTATE_SAVING);
 		}
 		break;
 		}

@@ -36,11 +36,11 @@
     <ClInclude Include="externals.h">
       <Filter>Config\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cEntityManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>Config\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -54,7 +54,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="global.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Config\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

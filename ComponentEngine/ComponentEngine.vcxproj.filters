@@ -97,6 +97,7 @@
     <ClCompile Include="Components.cpp">
       <Filter>DataModel\Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="iStateManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />

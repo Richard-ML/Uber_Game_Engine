@@ -99,3 +99,5 @@ extern bool g_bool_toggleNormalAndSpecularMaps;
 
 // Global Player control components
 extern std::vector<cPlayerControlComponent*> g_vec_playerControlComponents;
+
+extern iGameState* g_pGameState;

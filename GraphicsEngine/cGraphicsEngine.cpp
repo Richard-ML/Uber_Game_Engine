@@ -12,7 +12,6 @@ void createTheBuffers();
 namespace GraphicsEngine {
 	cGraphicsEngine *cGraphicsEngine::s_cGraphicsEngine =
 		0; // Allocating pointer to static instance of cGraphicsEngine (singleton)
-
 	class cGraphicsEngine_Impl : public cGraphicsEngine {
 		// Boilerplate
 		friend class cGraphicsEngine;
@@ -30,19 +29,17 @@ namespace GraphicsEngine {
 		{
 			printf("Graphics Engine Initialized\n");
 			s_cGraphicsEngine = new cGraphicsEngine();
-			s_cGraphicsEngine->g_pGameState = GameState::cGameState::instance();
-			//DWORD myThreadID;
-			//HANDLE myHandle = CreateThread(NULL, 0, // stack size
-			//(LPTHREAD_START_ROUTINE)&GraphicsEngine::cGraphicsEngine::graphicsThread, reinterpret_cast<void*>(s_cGraphicsEngine), 0, &myThreadID);
-			// NOTE: Since the graphics context resides on this thread all gl related processes can not be called directly from outside of this engine
 
+		
 			// TODO: Set initial window title via external configuration file.. (.xml/.json)
-			gWindowTitle = "Single-threaded GraphicsEngine Window!";
-
+			gWindowTitle = "Multi-threaded engine loading..";
 			//One time setup stuff goes here!!
 			///////////////////////////////////////////////////////////////////////
 			// Initialize GLFW
 			initializeGLFW();
+			// NOTE: Since the graphics context resides on this thread all gl related processes can not be called directly from outside of the thread which
+			//		 Initialized GLFW. (GameEngine core routine calls the GraphicsEngine update method)
+
 		}
 		return s_cGraphicsEngine;
 	}
@@ -154,15 +151,14 @@ namespace GraphicsEngine {
 
 	GraphicsEngine_API void cGraphicsEngine::update(float deltaTime)
 	{
-		// TODO: Can't initialize buffers until some mesh data exists. Fix this. See TAG: 001
-		if (!buffersInitialized)
-		{
-			createTheBuffers();
-			glGenVertexArrays(1, &gCubeVAO);
-			glBindVertexArray(gCubeVAO);
-			buffersInitialized = true;
-		}
+		//while (g_pGameState == nullptr) { Sleep(5); }
+		while (g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(5); /* Spin wait for load game process to complete */ }
 		deltaTime = deltaTime * 1000.0f;
+
+		// TODO: Can't initialize buffers until some mesh data exists.
+		createTheBuffers();
+		glGenVertexArrays(1, &gCubeVAO);
+		glBindVertexArray(gCubeVAO);
 
 		/////////////////////////////////////////////////////////////////////////////////////////
 		// TODO: Create input manager that gets updated each tick //////////////////////////////
@@ -256,6 +252,12 @@ namespace GraphicsEngine {
 		mesh->toggleOutline = false;
 		graphicsObject->vec_meshes.push_back(mesh);
 		g_vec_pGraphicObjects.push_back(graphicsObject);
+	}
+
+	GraphicsEngine_API void cGraphicsEngine::initializeGameState(iGameState * gameState)
+	{
+		// TODO: Spin lock.. 
+		g_pGameState = gameState;
 	}
 	
 }

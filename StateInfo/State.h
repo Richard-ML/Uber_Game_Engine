@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "..\Include\rapidxml\rapidxml.hpp"
 #include <functional>   // std::function, std::negate
-#include <Windows.h>
+#include "GameState.h"
 //Change state data (used by core state manager to dispatch updates to each
 // engine which implements the same interface!
 class iGeomerty {
@@ -87,4 +87,5 @@ public:
 	virtual float getCooldown() = 0;
 	virtual void setTarget(glm::vec3 targetPosition) = 0;
 	virtual void setCooldown(float duration) = 0;
+
 };

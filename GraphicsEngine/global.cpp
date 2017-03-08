@@ -77,3 +77,5 @@ bool g_bool_toggleNormalAndSpecularMaps = true;
 
 // Global Player control components
 std::vector<cPlayerControlComponent*> g_vec_playerControlComponents;
+
+iGameState* g_pGameState = 0;

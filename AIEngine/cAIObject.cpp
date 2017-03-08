@@ -67,7 +67,7 @@ void cDalekAI::update(float deltaTime)
 	else
 	{
 		// Pick new target
-		this->pState->setCooldown((rand() % 6) + 1);
+		this->pState->setCooldown((float)(rand() % 6) + 1);
 
 		this->pState->setTarget(glm::vec3());
 	}

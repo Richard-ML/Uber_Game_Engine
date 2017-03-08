@@ -147,6 +147,8 @@ void cEntityManager::loadGameEntitiesFromXML(int difficulty) {
 
 	// TODO: REMOVE THIS
 	generateObjects();
+
+
 }
 
 

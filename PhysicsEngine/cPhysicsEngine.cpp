@@ -10,6 +10,7 @@
 
 #include "_btRigidBody.h"
 #include "_btCollisionShape.h"
+#include "global.h"
 
 // The PIMPL idiom aka Compilation Firewall
 // Purpose: Encapsulate private member variables. Reduces make-time,
@@ -54,7 +55,7 @@ namespace PhysicsEngine {
 //					lastTime); // Get the time that as passed
 //			physicsEngine->impl()->m_btWorld->step(deltaTime.count());
 //			lastTime = std::chrono::high_resolution_clock::now();
-//			Sleep(35); // Free the thread
+//			Sleep(5); // Free the thread
 //} while (true);
 //return 0;
 //}
@@ -184,6 +185,7 @@ namespace PhysicsEngine {
 		return;
 	}
 
+
 #endif
 
 
@@ -193,12 +195,46 @@ namespace PhysicsEngine {
 			printf("Physics Engine Initialized\n");
 			//TODO: Run initialize() for shapes
 			s_cPhysicsEngine = new cPhysicsEngine();
-
-		//	DWORD myThreadID;
-		//	HANDLE myHandle = CreateThread(NULL, 0, // stack size
-		//		(LPTHREAD_START_ROUTINE) &PhysicsEngine::cPhysicsEngine::physicsThread, reinterpret_cast<void*>(s_cPhysicsEngine), 0, &myThreadID);
+			DWORD myThreadID;
+			HANDLE myHandle = CreateThread(NULL, 0, // stack size
+				(LPTHREAD_START_ROUTINE) &PhysicsEngine::cPhysicsEngine::physicsThread, reinterpret_cast<void*>(s_cPhysicsEngine), 0, &myThreadID);
 		}
 		return s_cPhysicsEngine;
 	}
+	PhysicsEngine_API void cPhysicsEngine::initializeGameState(iGameState * gameState)
+	{
+		// TODO: Spin lock.. 
+		g_pGameState = gameState;
+	}
+	DWORD cPhysicsEngine::physicsThread(void * lpParam)
+	{
+		while (g_pGameState == nullptr) { Sleep(5); }
+		while (g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(5); /* Spin wait for load game process to complete */ }
 
+		std::chrono::high_resolution_clock::time_point lastTime =
+			std::chrono::high_resolution_clock::now();
+		std::chrono::duration<float> deltaTime;
+		cPhysicsEngine *physicsEngine =
+			reinterpret_cast<cPhysicsEngine *>(lpParam);
+		do {
+			std::chrono::high_resolution_clock::time_point t2 =
+				std::chrono::high_resolution_clock::now();
+			deltaTime =
+				std::chrono::duration_cast<std::chrono::duration<float>>(
+					std::chrono::high_resolution_clock::now() -
+					lastTime); // Get the time that as passed
+							   // DO STUFF!!! 
+
+
+
+			physicsEngine->update(deltaTime.count());
+			//////////////
+			lastTime = std::chrono::high_resolution_clock::now();
+			Sleep(5); // Free the thread
+		} while (true);
+
+		// TODO: Clean up resources..
+
+		return 0;
+	}
 }

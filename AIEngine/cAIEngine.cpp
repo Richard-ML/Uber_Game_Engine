@@ -2,7 +2,7 @@
 #include "cAIEngine.h"
 #include <stdio.h>
 //#include <stdlib.h>
-
+#include "global.h"
 #include <ctime>
 #include <chrono>
 #include "cAIObject.h"
@@ -12,7 +12,6 @@
 namespace AIEngine {
 	cAIEngine *cAIEngine::s_cAIEngine =
 		0; // Allocating pointer to static instance of cAIEngine (singleton)
-
 	class cAIEngine_Impl : public cAIEngine {
 		// Boilerplate
 		friend class cAIEngine;
@@ -30,6 +29,7 @@ namespace AIEngine {
 	   {
 		   printf("AI Engine Initialized\n");
 		   s_cAIEngine = new cAIEngine();
+
 		   DWORD myThreadID;
 		   HANDLE myHandle = CreateThread(NULL, 0, // stack size
 			   (LPTHREAD_START_ROUTINE)&AIEngine::cAIEngine::aiThread, reinterpret_cast<void*>(s_cAIEngine), 0, &myThreadID);
@@ -39,6 +39,9 @@ namespace AIEngine {
 		return s_cAIEngine;
 	}
    DWORD cAIEngine::aiThread(void *lpParam) {
+	   while (g_pGameState == nullptr) { Sleep(5); }
+	   while (g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(5); /* Spin wait for load game process to complete */ }
+
 	   std::chrono::high_resolution_clock::time_point lastTime =
 		   std::chrono::high_resolution_clock::now();
 	   std::chrono::duration<float> deltaTime;
@@ -51,14 +54,19 @@ namespace AIEngine {
 			   std::chrono::duration_cast<std::chrono::duration<float>>(
 				   std::chrono::high_resolution_clock::now() -
 				   lastTime); // Get the time that as passed
-							  // DO STUFF!!! 
+							  // DO STUFF!!!
+
+							  // TODO: If this happens delete all current game entity data and set a (ready to load) flag in the game state
+		   //while (aiEngine->g_pGameState->getLoadStatus() == true) { /* Spin wait for load game process to complete */ }
+
+
 		   for each(cDalekAI* ai in aiEngine->vec_dalekAI)
 		   {
 			   ai->update(deltaTime.count());
 		   }
-							  //////////////
+	    	//////////////
 		   lastTime = std::chrono::high_resolution_clock::now();
-		   Sleep(35); // Free the thread
+		   Sleep(5); // Free the thread // TODO: Try messing around with this! 
 	   } while (true);
 
 	   // TODO: Clean up resources..
@@ -70,9 +78,6 @@ namespace AIEngine {
    {
 	   // Do AI stuff!
 	   //printf("AI did stuff!\n");
-	   //this->lock();
-	   ///glm::vec3 tardisPos = AIEngine::cAIEngine::instance()->tardis->getPosition();
-	   //this->unlock();
 	   return;
 
    }
@@ -117,7 +122,7 @@ namespace AIEngine {
 				   worldTiles[tile.first][tile.second]++;
 			   else
 				  printf("Dalek is at an invalid location!\n");
-			   if(worldTiles[tile.first][tile.second] >= 6)
+			   if(worldTiles[tile.first][tile.second] >= 90)
 				   vec_availableTiles.erase(vec_availableTiles.begin() + tileIndex);
 		   }
 
@@ -126,5 +131,10 @@ namespace AIEngine {
 	   //for each(cDalekAI* dalekAI in cAIEngine::s_cAIEngine->vec_dalekAI)
 	   //  dalekAI->startAIRoutine();
 
+   }
+   AIEngine_API void cAIEngine::initializeGameState(iGameState * gameState)
+   {
+	   // TODO: Spin lock.. 
+	   g_pGameState = gameState;
    }
 }
