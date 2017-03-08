@@ -137,4 +137,8 @@ namespace AIEngine {
 	   // TODO: Spin lock.. 
 	   g_pGameState = gameState;
    }
+   AIEngine_API void cAIEngine::setDebugRenderer(iDebugRenderer * debugRenderer)
+   {
+	   g_pDebugRenderer = debugRenderer;
+   }
 }

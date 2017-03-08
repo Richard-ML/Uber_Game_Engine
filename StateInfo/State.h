@@ -40,12 +40,16 @@ public:
 	// TODO: Getters
 };
 
-// Apply velocity increment orientation etc.. Used by control components that
-// use the inputManager for callbacks based on specific input to move around
-// entities.
-// Also used by the AI engine to move around entities using internal logic
+// Used by the AI engine to move entities using internal logic. Used by Graphics Engine to control the player’s character based on user input. 
 class iControl {
-	// adjust("Turn"/"")Velocity(glm::vec3) etc..
+	// adjust turn velocity, move velocity, jump, crouch, attack, etc... 
+};
+
+// Used by all Engines to render debug info
+class iDebugRenderer {
+public:
+	//spawn primitives with specific lifetimes, etc... 
+	virtual void createCube(glm::vec3 position, glm::vec3 scale,  float duration, glm::vec3 color) = 0;
 };
 
 class iData {
@@ -55,13 +59,6 @@ class iData {
 	 *        components.
 	 */
 	virtual void registerComponentXMLDataCallback(std::function<std::string()> getComponentNode) = 0;
-	// Callback used to retrieve a component's information in the form of an XML node. More efficient than the initial load at startup process that I am about to show you.. 
-	// WHICH WE DO NOT NEED TO CHANGE!! SO DON'T WORRY ABOUT THIS PART THAT I AM ABOUT TO SHOW YOU. . .
-	
-	// All we need to worry about is writing a callback function (method inside of (physics/graphics) object classes which returns its information as an XML NODE..
-	// Once we do this.. I will add a method to the GameEngine (saveGame() which calls rapidxml::xmlnode<>* getGameEntityInfo(id); for each game entity.. SAVE GAME COMPLETE
-	// Then write a function loadGame(int difficulty) that will delete all of the GameEntities then redo the initial loading of the game entities.
-
 };
 
 // See cState for implementation!

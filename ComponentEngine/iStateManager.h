@@ -186,17 +186,11 @@ private:
 		//volatile LONG isLocked = 0; // 0 unlocked : 1 locked
 		LOCK lock;
 	}m_lock[10]; // 10 locks. One should be used per variable
-
-public:
 	virtual void lock(int varNum) {
-
 #if !defined(SKIP_LOCKING)  
-		unsigned int curIter = 0;
-
-		while (_InterlockedExchange(&m_lock[varNum].lock, 1) == 0) {
+		while (_InterlockedExchange(&m_lock[varNum].lock, LOCKED) == UNLOCKED) {
 			// spin!  
 		}
-
 		// At this point, the lock is acquired. ;)
 
 #endif  
@@ -204,9 +198,11 @@ public:
 
 	virtual void unlock(int varNum) {
 #if !defined(SKIP_LOCKING)  
-		_InterlockedExchange(&m_lock[varNum].lock, 0);
+		_InterlockedExchange(&m_lock[varNum].lock, UNLOCKED);
 #endif  
 	}
+public:
+
   // Inherited via iStateNode
   virtual void setPosition(const glm::vec3 position) override {
 	lock(0);
@@ -344,15 +340,11 @@ private:
 	eGameState m_gameState;
 	eDifficulty m_difficulty = CASUAL;
 	struct sSpinLock {
-		//volatile LONG isLocked = 0; // 0 unlocked : 1 locked
 		LOCK lock;
 	}m_lock[2]; // 2 locks. One should be used per variable
 	virtual void lock(int varNum) {
-
 #if !defined(SKIP_LOCKING)  
-		unsigned int curIter = 0;
-
-		while (_InterlockedExchange(&m_lock[varNum].lock, 1) == 0) {
+		while (_InterlockedExchange(&m_lock[varNum].lock, LOCKED) == UNLOCKED) {
 			// spin!  
 		}
 		// At this point, the lock is acquired. ;)
@@ -361,7 +353,7 @@ private:
 
 	virtual void unlock(int varNum) {
 #if !defined(SKIP_LOCKING)  
-		_InterlockedExchange(&m_lock[varNum].lock, 0);
+		_InterlockedExchange(&m_lock[varNum].lock, UNLOCKED);
 #endif  
 	}
 public:

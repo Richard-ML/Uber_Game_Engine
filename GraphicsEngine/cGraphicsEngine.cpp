@@ -224,9 +224,6 @@ namespace GraphicsEngine {
 		if (g_bool_toggleLights)
 			g_pLightManager->updateLightUniforms();
 		
-		// Render Scene to FBO
-		//g_pRenderManager->renderSceneToFBO("Portal");
-		
 		// Render objects
 		g_pRenderManager->renderScene();
 
@@ -255,9 +252,14 @@ namespace GraphicsEngine {
 	}
 
 	GraphicsEngine_API void cGraphicsEngine::initializeGameState(iGameState * gameState)
-	{
-		// TODO: Spin lock.. 
+	{ 
 		g_pGameState = gameState;
+	}
+
+	GraphicsEngine_API iDebugRenderer * cGraphicsEngine::initializeDebugRenderer()
+	{
+		g_pDebugRenderer = new cDebugRenderer();
+		return dynamic_cast<iDebugRenderer*>(g_pDebugRenderer);
 	}
 	
 }

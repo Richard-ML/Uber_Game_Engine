@@ -206,6 +206,10 @@ namespace PhysicsEngine {
 		// TODO: Spin lock.. 
 		g_pGameState = gameState;
 	}
+	PhysicsEngine_API void cPhysicsEngine::setDebugRenderer(iDebugRenderer * debugRenderer)
+	{
+		g_pDebugRenderer = debugRenderer;
+	}
 	DWORD cPhysicsEngine::physicsThread(void * lpParam)
 	{
 		while (g_pGameState == nullptr) { Sleep(5); }

@@ -60,7 +60,7 @@ public:
 // Used primary for managing OpenGL FBOs (FrameBuffer Objects)
 class cRenderManager {
 	static cRenderManager *s_cRenderManager;
-
+	friend class cDebugRenderer;
 public:
 	static cRenderManager *instance();
 	std::map<std::string, iFBOInfo*> map_NameToFBOInfo;

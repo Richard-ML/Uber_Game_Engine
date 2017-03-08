@@ -16,6 +16,7 @@ int main()
 
 	g_pGameState = new cGameState();
 	g_pGameState->setGameState(GAMESTATE_LOADING);
+
 	// Get the number of CPU on this machine
 	SYSTEM_INFO sysInfo;
 	GetSystemInfo(&sysInfo);
@@ -34,6 +35,24 @@ int main()
 	g_pPhysicsEngine->initializeGameState(g_pGameState);
 	g_pAIEngine->initializeGameState(g_pGameState);
 	g_pGraphicsEngine->initializeGameState(g_pGameState);
+
+	g_pDebugRenderer = g_pGraphicsEngine->initializeDebugRenderer();
+
+	g_pPhysicsEngine->setDebugRenderer(g_pDebugRenderer);
+	
+	// TEST DEBUG RENDERER!! :D
+
+	for (unsigned int nc = 0; nc < 100; nc++)
+	{
+		for (unsigned int nc2 = 0; nc2 < 100; nc2++)
+		{
+			g_pDebugRenderer->createCube(glm::vec3(-1100.0f + 64.0f * nc, 0.0f, -1100.0f + 64.0f * nc2), glm::vec3(60.0f, 2.0f, 60.0f), 1.0f, glm::vec3(0.4f, 0.5f, 0.25f));
+			g_pDebugRenderer->createCube(glm::vec3(-1100.0f + 64.0f * nc + 32.0f, 14.5f, -1100.0f + 64.0f * nc2), glm::vec3(2.0f, 29.0f, 60.0f), 1.0f, glm::vec3(0.5f, 0.4f, 0.05f));
+			g_pDebugRenderer->createCube(glm::vec3(-1100.0f + 64.0f * nc, 14.5f, -1100.0f + 64.0f * nc2 + 32.0f), glm::vec3(60.0f, 29.0f, 2.0f), 1.0f, glm::vec3(0.5f, 0.45f, 0.0f));
+
+		}
+	}
+
 	std::cout << "GameEngine Initialized\n";
 
 
@@ -41,12 +60,8 @@ int main()
 	// TODO: Crate window using g_pGraphicsEngine interface..
 	// .. Load XML data & create entities
 	g_pEntityManager->loadGameFromXML("GameAssets.xml");
-	//g_pEntityManager->loadGameEntitiesFromXML(0); // Load game on lowest difficulty
-	// Test save game..
-	//g_pEntityManager->saveGameToXML(0);
 
 	// START THE ENGINES!
-	//g_pGameState->setLoadStatus(false);
 	std::chrono::high_resolution_clock::time_point lastTime =
 		std::chrono::high_resolution_clock::now();
 	std::chrono::duration<float> deltaTime;

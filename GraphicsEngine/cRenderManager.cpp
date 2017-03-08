@@ -222,7 +222,59 @@ void cRenderManager::renderScene()
 						g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex);
 			}
 		}
+		glUniform1i(gUniformId_Toggle_Textures, false);
+		glUniform1i(gUniformId_Toggle_Lights, false);
+		g_pDebugRenderer->lock(0);
+		for each(cDebugRenderer::sDebugShape shape in g_pDebugRenderer->m_vec_debugShapes) {
+			glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
+				glm::value_ptr(projectionMatrix));
+			glUniformMatrix4fv(gUniformId_ViewMatrix, 1, GL_FALSE,
+				glm::value_ptr(viewMatrix));
+			glm::vec4 eye4;
+			gCamera->getEyePosition(eye4);
+			glUniform4fv(gUniformId_EyePosition, 1, glm::value_ptr(eye4));
+			glEnable(GL_MULTISAMPLE);
+			glEnable(GL_BLEND);
+			// glBlendEquation(GL_FUNC_ADD);
+			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_DEPTH_TEST);
+			 // Enable "wireframe" polygon mode
+				glPolygonMode(GL_FRONT_AND_BACK, 
+					GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
+				glDisable(GL_CULL_FACE);
 
+				glm::mat4 transform;
+		
+				glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
+				glEnable(GL_CULL_FACE);
+				glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+												 // you can pass here
+					GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
+
+
+				transform[3] = glm::vec4(shape.position, 1.0f);
+				//graphicObject->pState->getTransform(transform);
+				//graphicObject->pState->getScale(1);
+
+				glUniformMatrix4fv(
+					gUniformId_ModelMatrix, 1, GL_FALSE,
+					glm::value_ptr(glm::scale(transform, shape.scale)));
+				glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
+					glm::value_ptr(glm::mat4()));
+				glUniform4fv(gUniformId_ModelColor, 1,
+					glm::value_ptr(shape.color));
+				glUniform1f(gUniformId_Alpha, 0.65f);
+
+
+
+				glDrawElementsBaseVertex(
+					GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].NumgIndices, GL_UNSIGNED_INT,
+					(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].BaseIndex),
+					g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].BaseIndex);
+		}
+		g_pDebugRenderer->unlock(0);
+		glUniform1i(gUniformId_Toggle_Textures, true);
+		glUniform1i(gUniformId_Toggle_Lights, true);
 }
 void cRenderManager::bindTheBuffers()
 {

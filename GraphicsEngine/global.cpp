@@ -79,3 +79,4 @@ bool g_bool_toggleNormalAndSpecularMaps = true;
 std::vector<cPlayerControlComponent*> g_vec_playerControlComponents;
 
 iGameState* g_pGameState = 0;
+cDebugRenderer* g_pDebugRenderer = 0;

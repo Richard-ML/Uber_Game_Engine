@@ -43,6 +43,7 @@ namespace PhysicsEngine {
 		static PhysicsEngine_API void addRigidBodyToWorld(iRigidBody* rigidBody);
 		static PhysicsEngine_API void loadClothMesh(rapidxml::xml_node<> *clothMeshNode, iState* state);
 		PhysicsEngine_API void initializeGameState(iGameState * gameState);
+		PhysicsEngine_API void setDebugRenderer(iDebugRenderer* debugRenderer);
 	};
 
 }

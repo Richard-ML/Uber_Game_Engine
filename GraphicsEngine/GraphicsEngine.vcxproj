@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cCamera.h" />
+    <ClInclude Include="cDebugRenderer.h" />
     <ClInclude Include="cGraphicsEngine.h" />
     <ClInclude Include="cGraphicsObject.h" />
     <ClInclude Include="cLightManager.h" />

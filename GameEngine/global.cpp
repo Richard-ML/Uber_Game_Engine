@@ -13,3 +13,4 @@ AIEngine::cAIEngine * g_pAIEngine = 0;
 //cGameState *cGameState::s_cGameState =
 //0; // Allocating pointer to static instance of cMeshManager (singleton)
 iGameState* g_pGameState = 0;
+iDebugRenderer * g_pDebugRenderer = 0;

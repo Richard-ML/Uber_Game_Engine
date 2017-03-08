@@ -37,42 +37,6 @@ std::vector<cGameEntity*> vec_gameEntities;
 // Hardcoded method to generate random builds and place 500 Dalek randomly in the scene
 void generateObjects() {
 
-	bool tempBuildingTiles[28][28];
-	for(int nc = 0; nc < 27; nc++)
-		for (int nc2 = 0; nc2 < 27; nc2++)
-			tempBuildingTiles[nc][nc2] = false;
-	
-	// Simple loop used to create 300 buildings
-	for (int nc = 0; nc < 300; nc++)
-	{
-		TRY_AGAIN:
-		int blockOffsetX = rand() % 5; // rand 0 to 4
-		int blockOffsetZ = rand() % 5; // rand 0 to 4
-		int tileX = (rand() % 4) + 1; // rand 1 to 4
-		int tileZ = (rand() % 4) + 1; // rand 1 to 4
-		// Could result in an endless loop though this is so unlikely I am not worried about it. xD
-		// MIGHT come back and create a vector of available locations and pop them randomly. 
-		// 4x4 tiles in city block && 5x5 city blocks
-		if (tempBuildingTiles[tileX + 5 * blockOffsetX][tileZ + 5 * blockOffsetZ] == 1)
-			goto TRY_AGAIN;
-		
-
-		tempBuildingTiles[tileX + 5 * blockOffsetX][tileZ + 5 * blockOffsetZ] = 1;
-
-		//cGameEntity* gameEntity = new cGameEntity();
-
-		iState* tempState = g_pComponentEngine->subcribeToState(g_pComponentEngine->registerNewEntity());
-		tempState->setPosition(glm::vec3((float)((100 * tileX) + (500 * blockOffsetX)),0.0f, (float)((100 * tileZ) + (500 * blockOffsetZ))));
-		tempState->setScale(1.0f); // Forgot to do this. Wasted lots of time! :S
-		std::string meshName = "Building_" + std::to_string((rand() % 3) + 1);
-
-		g_pGraphicsEngine->addObject(tempState, meshName);
-
-
-		//vec_gameEntities.push_back(gameEntity); // This data will not be saved to XML
-	}
-
-
 	std::vector<iState*> vec_states;
 	for (int nc = 0; nc < 1000; nc++)
 	{

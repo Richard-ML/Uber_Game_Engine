@@ -42,6 +42,7 @@ namespace GraphicsEngine {
 		static GraphicsEngine_API void clearGameObjects();
 		static GraphicsEngine_API void addObject(iState* state, std::string meshName);
 		GraphicsEngine_API void initializeGameState(iGameState * gameState);
+		GraphicsEngine_API iDebugRenderer * initializeDebugRenderer();
 	};
 
 }

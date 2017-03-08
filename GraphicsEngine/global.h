@@ -7,6 +7,7 @@
 #include "cLightManager.h"
 #include "cRenderManager.h"
 #include "cGraphicsObject.h"
+#include "cDebugRenderer.h"
 #include "cPlayerControlComponent.h"
 // Window information
 extern GLFWwindow *gWindow;
@@ -101,3 +102,4 @@ extern bool g_bool_toggleNormalAndSpecularMaps;
 extern std::vector<cPlayerControlComponent*> g_vec_playerControlComponents;
 
 extern iGameState* g_pGameState;
+extern cDebugRenderer* g_pDebugRenderer;

@@ -27,14 +27,9 @@
     <Mesh path="Assets/Skeleton/Skeleton.obj" scale="1.0f" name="Skeleton" r="6" g="0" b="0"/>
     <Mesh path="Assets/GemsMidterm/Dalek_res_2.obj" scale="0.1f" name="Dalek_2" r="6" g="0" b="0"/>
     <Mesh path="Assets/TileMeshes/GrassTile.obj" scale="10.0f" name="GrassTile" r="0" g="6" b="0"/>
-    <Mesh path="Assets/GemsMidterm/StreetX.obj" scale="1.0f" name="StreetX" r="6" g="0" b="0"/>
-    <Mesh path="Assets/GemsMidterm/Street_FORWARD.obj" scale="1.0f" name="Street_FORWARD" r="6" g="0" b="0"/>
-    <Mesh path="Assets/GemsMidterm/Street_RIGHT.obj" scale="1.0f" name="Street_RIGHT" r="6" g="0" b="0"/>
-    <Mesh path="Assets/GemsMidterm/Street_FLAT.obj" scale="1.0f" name="Street_FLAT" r="6" g="0" b="0"/>
-    <Mesh path="Assets/GemsMidterm/Building_1.obj" scale="1.0f" name="Building_1" r="6" g="0" b="0"/>	 
-    <Mesh path="Assets/GemsMidterm/Building_2.obj" scale="1.0f" name="Building_2" r="6" g="0" b="0"/>	
-    <Mesh path="Assets/GemsMidterm/Building_3.obj" scale="1.0f" name="Building_3" r="6" g="0" b="0"/>	
     <Mesh path="Assets/Plane/Plane.obj" scale="1.0f" name="Plane" r="0" g="39" b="0"/>
+    <Mesh path="Assets/Basic Shapes/Cube.obj" scale="1.0f" name="Cube" r="0" g="39" b="0"/>
+
   </Meshes>
 
   <PhysicsMeshes>
