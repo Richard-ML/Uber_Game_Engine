@@ -25,7 +25,7 @@ void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 	int mods);
 void callback_Error(int, const char* error);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 extern 	std::vector<cGraphicsObject*> g_vec_pGraphicObjects;
 
 

@@ -19,7 +19,7 @@ public:
 
 	int m_width;
 	int m_height;
-	glm::mat4 m_targetTranform;
+	glm::mat4 m_targetTransform;
 	glm::mat4 m_viewMatrix;
 	
 

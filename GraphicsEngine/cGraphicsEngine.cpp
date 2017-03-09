@@ -310,7 +310,7 @@ void initializeGLFW() {
 	glfwSetWindowCloseCallback(gWindow, callback_WindowClose);
 	glfwSetKeyCallback(gWindow, callback_KeyPress);
 	glfwSetScrollCallback(gWindow, scroll_callback);
-
+	glfwSetMouseButtonCallback(gWindow, mouse_button_callback);
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(gWindow, GLFW_STICKY_KEYS, GL_TRUE);
 

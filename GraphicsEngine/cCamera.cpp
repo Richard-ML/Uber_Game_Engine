@@ -68,7 +68,7 @@ void cCamera::update(float dt) {
 void cCamera::updateView() {
 	// NOTE: The camera does not currently inherit the target's orientation as its base orientation. 
 	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-	glm::vec3 targetPosition = glm::vec3(m_targetTranform[3]);
+	glm::vec3 targetPosition = glm::vec3(m_targetTransform[3]);
 	targetPosition.y += 7.5f;
 	m_rotation.pendingRotation.y = glm::clamp(m_rotation.pendingRotation.y, 0.0f, 3.14f);
 	glm::mat4 rotation = glm::yawPitchRoll(m_rotation.pendingRotation.x, m_rotation.pendingRotation.y, 0.0f);
@@ -82,7 +82,7 @@ void cCamera::updateView() {
 }
 
 void cCamera::setTargetTransform(glm::mat4 &targetTransform) {
-	m_targetTranform = targetTransform;
+	m_targetTransform = targetTransform;
 	m_viewMatrix = glm::lookAtRH(glm::vec3( m_viewMatrix[3] ), glm::vec3( targetTransform[3] ), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
