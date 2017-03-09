@@ -38,6 +38,7 @@ namespace AIEngine {
 		std::vector<cDalekAI*> vec_worldTiles[28][28];
 		AIEngine_API void initializeGameState(iGameState * gameState);
 		AIEngine_API void setDebugRenderer(iDebugRenderer* debugRenderer);
+		static AIEngine_API bool loadAIComponent(rapidxml::xml_node<> *componentNode, iState* state);
 	};
 
 }

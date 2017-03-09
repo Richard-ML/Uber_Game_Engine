@@ -82,9 +82,6 @@ namespace GraphicsEngine {
 			graphicsObject->vec_meshes.push_back(mesh); // TODO: Offset scale rotation etc..
 			graphicsObject->pState = state;
 			graphicsObject->pState->setScale(1.0f);
-
-		
-		
 		}
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("Light");
 			cRenderableComponentEntry_node; cRenderableComponentEntry_node = cRenderableComponentEntry_node->next_sibling("Light")) {
@@ -152,7 +149,7 @@ namespace GraphicsEngine {
 	GraphicsEngine_API void cGraphicsEngine::update(float deltaTime)
 	{
 		//while (g_pGameState == nullptr) { Sleep(5); }
-		while (g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(5); /* Spin wait for load game process to complete */ }
+		//while (g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(5); /* Spin wait for load game process to complete */ }
 		deltaTime = deltaTime * 1000.0f;
 
 		// TODO: Can't initialize buffers until some mesh data exists.
@@ -248,6 +245,7 @@ namespace GraphicsEngine {
 		mesh->meshName = meshName;
 		mesh->toggleOutline = false;
 		graphicsObject->vec_meshes.push_back(mesh);
+		state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cGraphicsObject::saveToXMLNode, graphicsObject)));
 		g_vec_pGraphicObjects.push_back(graphicsObject);
 	}
 
@@ -264,7 +262,7 @@ namespace GraphicsEngine {
 	
 }
 void initializeGLFW() {
-	gWindowTitle = "Single-threaded GraphicsEngine Window! Gems Midterm.. WASD to move & Arrows control camera rotation around player Scroll to zoom";
+	gWindowTitle = "WASD to move - Arrows control camera rotation around player - Scroll to zoom";
 	if (!glfwInit()) {
 		fprintf(stderr, "Failed to initialize GLFW\n");
 		system("pause");

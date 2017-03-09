@@ -4,45 +4,24 @@
 #include "global.h"
 
 
-class AIControlComponent : public cComponent {
+class AIComponent : public cComponent {
 public:
-	virtual ~AIControlComponent();
+	virtual ~AIComponent();
 	virtual bool loadFromXML(rapidxml::xml_node<> *componentNode, std::string stateNodeID);
 };
-REGISTER_COMPONENT(AIControlComponent, "AIControlComponent")
+REGISTER_COMPONENT(AIComponent, "AIComponent")
 
-AIControlComponent::~AIControlComponent() {
+AIComponent::~AIComponent() {
 }
 
-bool AIControlComponent::loadFromXML(rapidxml::xml_node<> *componentNode, std::string stateNodeID) {
+bool AIComponent::loadFromXML(rapidxml::xml_node<> *componentNode, std::string stateNodeID) {
 	// Dispatch to corresponding engine to create.. 
-
+	iState* state = ComponentEngine::cComponentEngine::instance()->subcribeToState(stateNodeID);
+	g_pAIEngine->loadAIComponent(componentNode, state);
 	return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-class InputControlComponent : public cComponent {
-public:
-	virtual ~InputControlComponent();
-	virtual bool loadFromXML(rapidxml::xml_node<> *componentNode, std::string stateNodeID);
-};
-REGISTER_COMPONENT(InputControlComponent, "InputControlComponent")
-
-InputControlComponent::~InputControlComponent() {}
-
-
-bool InputControlComponent::loadFromXML(rapidxml::xml_node<> *componentNode, std::string stateNodeID) {
-
-	// Dispatch to corresponding engine to create.. Register a series of listeners? 
-	return true;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
 
 class PhysicsComponent : public cComponent {

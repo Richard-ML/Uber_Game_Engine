@@ -27,7 +27,12 @@
 		//void startAIRoutine();
 		void update(float deltaTime);
 		std::chrono::high_resolution_clock::time_point lastTime;
-
+		// Creates an xml node containing all of it's information
+		virtual  std::string saveToXMLNode() {
+			std::string componentNode = "<AIComponent>";
+			componentNode += "</AIComponent>";
+			return componentNode;
+		}
 		cDalekAI() {
 		};
 	};

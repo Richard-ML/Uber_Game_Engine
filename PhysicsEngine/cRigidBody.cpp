@@ -30,15 +30,17 @@ void PhysicsEngine::cRigidBody::getOrientation(glm::mat4 & orientation)
 
  orientation = this->m_rigidBody.rotMatrix;
 }
-
+// Really these methods can be removed. Since we use iState to set position etc. Up to you!
 void PhysicsEngine::cRigidBody::getPosition(glm::vec3 & position)
 {
-	position = m_rigidBody.position;
+	// position = m_rigidBody.position;
+	position = state->getPosition();
 }
 
 void PhysicsEngine::cRigidBody::setPosition(const glm::vec3 & position)
 {
-	m_rigidBody.position = position;
+	//m_rigidBody.position = position;
+	state->setPosition(position);
 }
 
 void PhysicsEngine::cRigidBody::getVelocity(glm::vec3 & velocity)

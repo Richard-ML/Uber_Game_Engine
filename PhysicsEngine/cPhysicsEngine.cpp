@@ -88,8 +88,14 @@ namespace PhysicsEngine {
 			glm::vec3 offset = glm::vec3(std::stof(cRigidBody_node->first_attribute("offsetX")->value()), std::stof(cRigidBody_node->first_attribute("offsetY")->value()), std::stof(cRigidBody_node->first_attribute("offsetZ")->value()));
 			transform[3] = glm::vec4(offset, 1.0f);
 			state->setTransform(transform);
+		
 		}
 		return true;
+	}
+
+	PhysicsEngine_API bool cPhysicsEngine::addPhysicsObject(glm::vec3 position, iState * state)
+	{
+		return PhysicsEngine_API bool();
 	}
 
 	PhysicsEngine_API void cPhysicsEngine::addRigidBodyToWorld(iRigidBody* rigidBody) {
@@ -118,12 +124,12 @@ namespace PhysicsEngine {
 			transform[3] = glm::vec4(offset, 1.0f);
 
 		    cRigidBody* rb = new cRigidBody();
+			rb->state = state;
 			rb->setPosition(offset);
-			//state->registerComponentXMLDataCallback(rb->saveToXMLNode);
 			state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cRigidBody::saveToXMLNode, rb)));
 			
 			state->setTransform(transform);
-			rb->state = state;
+
 			vec_rigidBodies.push_back(rb);
 		}
 		return true;
@@ -214,6 +220,7 @@ namespace PhysicsEngine {
 	{
 		while (g_pGameState == nullptr) { Sleep(5); }
 		while (g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(5); /* Spin wait for load game process to complete */ }
+		while (g_pGameState->getGameState() == GAMESTATE_SAVING) { Sleep(5); /* Spin wait for save game process to complete */ }
 
 		std::chrono::high_resolution_clock::time_point lastTime =
 			std::chrono::high_resolution_clock::now();
@@ -240,5 +247,16 @@ namespace PhysicsEngine {
 		// TODO: Clean up resources..
 
 		return 0;
+	}
+
+
+	PhysicsEngine_API bool cPhysicsEngine::addPhysicsObject(glm::vec3 position, iState * state)
+	{
+		cRigidBody * rb = new cRigidBody();
+		state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cRigidBody::saveToXMLNode, rb)));
+		rb->state = state;
+		state->setPosition(position);
+		vec_rigidBodies.push_back(rb);
+		return true;
 	}
 }

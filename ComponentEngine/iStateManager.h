@@ -90,7 +90,7 @@ class cState : public iState {
 private:
 	iStateNode *m_parentNode;
 	//sState m_localStateData;
-
+	bool m_bool_HasXMLCallback = false;
 	////////////////////////////////////////////////////////////////////////////
   friend class cStateNode; // Set of methods for stateNode to use that will not
                            // result in an endless circular loop..
@@ -99,6 +99,7 @@ private:
  // (rapidxml::xml_node<>*) *getComponentNode (void);
   std::function<std::string()> getComponentNode;
   virtual void registerComponentXMLDataCallback(std::function<std::string()> getComponentNode) {
+	  m_bool_HasXMLCallback = true;
 	  this->getComponentNode = getComponentNode;
   }
 
@@ -322,8 +323,14 @@ public:
 		// XML Game entity with all of its components. 
 		std::string xmlStringResult = "<GameEntity>";
 		std::string requestedXMLString;
+
 		for each(iState* state in stateNode->m_childStates)
-			requestedXMLString += dynamic_cast<cState *>(state)->getComponentNode();
+		{
+			cState * pState = dynamic_cast<cState *>(state);
+			if(pState->m_bool_HasXMLCallback)
+				requestedXMLString += pState->getComponentNode();
+
+		}
 		xmlStringResult += requestedXMLString;
 		xmlStringResult += "</GameEntity>";
 		return xmlStringResult;

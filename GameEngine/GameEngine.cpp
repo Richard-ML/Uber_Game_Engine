@@ -41,10 +41,10 @@ int main()
 	g_pPhysicsEngine->setDebugRenderer(g_pDebugRenderer);
 	
 	// TEST DEBUG RENDERER!! :D
-
-	for (unsigned int nc = 0; nc < 100; nc++)
+	// These shapes are going to be inside the world editor as placeholders. :)
+	for (unsigned int nc = 0; nc < 50; nc++)
 	{
-		for (unsigned int nc2 = 0; nc2 < 100; nc2++)
+		for (unsigned int nc2 = 0; nc2 < 50; nc2++)
 		{
 			g_pDebugRenderer->createCube(glm::vec3(-1100.0f + 64.0f * nc, 0.0f, -1100.0f + 64.0f * nc2), glm::vec3(60.0f, 2.0f, 60.0f), 1.0f, glm::vec3(0.4f, 0.5f, 0.25f));
 			g_pDebugRenderer->createCube(glm::vec3(-1100.0f + 64.0f * nc + 32.0f, 14.5f, -1100.0f + 64.0f * nc2), glm::vec3(2.0f, 29.0f, 60.0f), 1.0f, glm::vec3(0.5f, 0.4f, 0.05f));
@@ -68,12 +68,14 @@ int main()
 	do {
 		switch (g_pGameState->getGameState()) {
 		case GAMESTATE_LOADING:
+			Sleep(90);
 			g_pEntityManager->loadGameEntitiesFromXML(g_pGameState->getDifficulty());
 			g_pGameState->setGameState(GAMESTATE_RUNNING); // Loading is complete at this point
 			break;
 
 		case GAMESTATE_SAVING:
-			g_pEntityManager->saveGameToXML(g_pGameState->getDifficulty());
+			Sleep(90);
+			g_pEntityManager->saveGameToXML((int)g_pGameState->getDifficulty());
 			g_pGameState->setGameState(GAMESTATE_RUNNING);
 			break;
 		}

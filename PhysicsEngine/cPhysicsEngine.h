@@ -40,6 +40,7 @@ namespace PhysicsEngine {
 		static PhysicsEngine_API iRigidBody* createRigidBody(iCollisionShape* shape, sRigidBody& rigidBody);
 		PhysicsEngine_API void update(float deltaTime);
 		static PhysicsEngine_API bool loadPhysicsComponent(rapidxml::xml_node<> *componentNode, iState* state);
+		static PhysicsEngine_API bool addPhysicsObject(glm::vec3 position, iState* state);
 		static PhysicsEngine_API void addRigidBodyToWorld(iRigidBody* rigidBody);
 		static PhysicsEngine_API void loadClothMesh(rapidxml::xml_node<> *clothMeshNode, iState* state);
 		PhysicsEngine_API void initializeGameState(iGameState * gameState);

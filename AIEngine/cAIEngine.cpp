@@ -55,11 +55,11 @@ namespace AIEngine {
 				   std::chrono::high_resolution_clock::now() -
 				   lastTime); // Get the time that as passed
 							  // DO STUFF!!!
+		   while (g_pGameState == nullptr) { Sleep(5); }
+		   while (g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(5); /* Spin wait for load game process to complete */ }
+		   while (g_pGameState->getGameState() == GAMESTATE_SAVING) { Sleep(5); /* Spin wait for save game process to complete */ }
 
-							  // TODO: If this happens delete all current game entity data and set a (ready to load) flag in the game state
-		   //while (aiEngine->g_pGameState->getLoadStatus() == true) { /* Spin wait for load game process to complete */ }
-
-
+		
 		   for each(cDalekAI* ai in aiEngine->vec_dalekAI)
 		   {
 			   ai->update(deltaTime.count());
@@ -100,30 +100,32 @@ namespace AIEngine {
 	   {
 		   cDalekAI * dalekAI = new cDalekAI();
 		   dalekAI->pState = states.at(nc);
+		   dalekAI->pState->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cDalekAI::saveToXMLNode, dalekAI)));
+
 		   int tileIndex = rand() % vec_availableTiles.size();
 		   std::pair<int, int> tile = vec_availableTiles.at(tileIndex);
 
-			   glm::vec3 position;
-			   for each(cDalekAI* ai in vec_worldTiles[tile.first][tile.second])
-			   {
-				   TRY_AGAIN:
-				   position = glm::vec3(tile.first * 100.0f, 0.0f, tile.second* 100.0f);
-				   position.x += -25 +  (rand() % 50);
-				   position.z += -25 +  (rand() % 50);
-
-				   if (glm::abs(glm::distance(position, ai->pState->getPosition())) < 10.0f)
-					   goto TRY_AGAIN;
-			   }
-			   vec_worldTiles[tile.first][tile.second].push_back(dalekAI);
-			   dalekAI->pState->setPosition(position);
-
-			   cAIEngine::s_cAIEngine->vec_dalekAI.push_back(dalekAI);
-			   if (worldTiles[tile.first][tile.second] != -1)
-				   worldTiles[tile.first][tile.second]++;
-			   else
-				  printf("Dalek is at an invalid location!\n");
-			   if(worldTiles[tile.first][tile.second] >= 90)
-				   vec_availableTiles.erase(vec_availableTiles.begin() + tileIndex);
+			//   glm::vec3 position;
+			//   for each(cDalekAI* ai in vec_worldTiles[tile.first][tile.second])
+			//   {
+			//	   TRY_AGAIN:
+			//	   position = glm::vec3(tile.first * 100.0f, 0.0f, tile.second* 100.0f);
+			//	   position.x += -25 +  (rand() % 50);
+			//	   position.z += -25 +  (rand() % 50);
+			//
+			//	   if (glm::abs(glm::distance(position, ai->pState->getPosition())) < 10.0f)
+			//		   goto TRY_AGAIN;
+			//   }
+			//   vec_worldTiles[tile.first][tile.second].push_back(dalekAI);
+			//   dalekAI->pState->setPosition(position);
+			//
+			  cAIEngine::s_cAIEngine->vec_dalekAI.push_back(dalekAI);
+			//   if (worldTiles[tile.first][tile.second] != -1)
+			//	   worldTiles[tile.first][tile.second]++;
+			//   else
+			//	  printf("Dalek is at an invalid location!\n");
+			//   if(worldTiles[tile.first][tile.second] >= 90)
+			//	   vec_availableTiles.erase(vec_availableTiles.begin() + tileIndex);
 		   }
 
 	   
@@ -140,5 +142,32 @@ namespace AIEngine {
    AIEngine_API void cAIEngine::setDebugRenderer(iDebugRenderer * debugRenderer)
    {
 	   g_pDebugRenderer = debugRenderer;
+   }
+   AIEngine_API bool cAIEngine::loadAIComponent(rapidxml::xml_node<>* componentNode, iState * state)
+   {
+	   		//for (rapidxml::xml_node<> *cRigidBody_node = componentNode->first_node("RigidBody");
+			//cRigidBody_node; cRigidBody_node = cRigidBody_node->next_sibling("RigidBody")) {
+			//// TODO: create base physics object that contains state pointer. Load offsets etcetera..
+			//glm::mat4 transform;
+			//glm::vec3 offset = glm::vec3(std::stof(cRigidBody_node->first_attribute("offsetX")->value()), std::stof(cRigidBody_node->first_attribute("offsetY")->value()), std::stof(cRigidBody_node->first_attribute("offsetZ")->value()));
+			//transform[3] = glm::vec4(offset, 1.0f);
+			//
+		    //cRigidBody* rb = new cRigidBody();
+			//rb->setPosition(offset);
+			////state->registerComponentXMLDataCallback(rb->saveToXMLNode);
+			//state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cRigidBody::saveToXMLNode, rb)));
+			//
+			//state->setTransform(transform);
+			//rb->state = state;
+			//vec_rigidBodies.push_back(rb);
+
+	   cDalekAI* dalekAI = new cDalekAI();
+	   dalekAI->pState = state;
+
+	   state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cDalekAI::saveToXMLNode, dalekAI)));
+
+	   s_cAIEngine->vec_dalekAI.push_back(dalekAI);
+
+	   return true;
    }
 }

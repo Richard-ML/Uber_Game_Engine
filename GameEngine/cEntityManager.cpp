@@ -38,7 +38,7 @@ std::vector<cGameEntity*> vec_gameEntities;
 void generateObjects() {
 
 	std::vector<iState*> vec_states;
-	for (int nc = 0; nc < 1000; nc++)
+	for (int nc = 0; nc < 200; nc++)
 	{
 		std::string stateNodeID = g_pComponentEngine->registerNewEntity();
 		iState* tempState = g_pComponentEngine->subcribeToState(stateNodeID);
@@ -47,16 +47,20 @@ void generateObjects() {
 
 		// Create another state for the AIEngine to use..
 		vec_states.push_back(g_pComponentEngine->subcribeToState(stateNodeID));
+
+		cGameEntity* gameEntity = new cGameEntity();
+		gameEntity->stateNodeID = stateNodeID;
+		vec_gameEntities.push_back(gameEntity);
+
+		g_pPhysicsEngine->addPhysicsObject(glm::vec3(0.0f), g_pComponentEngine->subcribeToState(stateNodeID)); // Rigid body contains the basic information about the object's scale, position, and, velocity, etc.. 
+
 	}
 	g_pAIEngine->generateAI(vec_states);
+
+
+
+
 }
-
-
-
-
-
-
-
 
 
 
@@ -110,7 +114,7 @@ void cEntityManager::loadGameEntitiesFromXML(int difficulty) {
 
 
 	// TODO: REMOVE THIS
-	generateObjects();
+	//generateObjects(); // Use this to spawn entities via c++
 
 
 }
