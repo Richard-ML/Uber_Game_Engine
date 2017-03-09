@@ -79,6 +79,7 @@ void cCamera::updateView() {
 	up = glm::vec3(rotation * glm::vec4(up, 0.0f));
 	glm::vec3 right = glm::cross(forward, up);
 	m_viewMatrix = glm::lookAt(position, targetPosition, up);
+	m_eyePosition = position;
 }
 
 void cCamera::setTargetTransform(glm::mat4 &targetTransform) {

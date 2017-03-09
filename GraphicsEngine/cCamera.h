@@ -21,7 +21,7 @@ public:
 	int m_height;
 	glm::mat4 m_targetTransform;
 	glm::mat4 m_viewMatrix;
-	
+	glm::vec3 m_eyePosition;
 
 	// NOTE: Roll is not being used currently.
 	struct Rotation {

@@ -44,11 +44,12 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
+	// TODO: gizmo tool 
 	// Ben check this out!! TAG : BenIs1337
 	double xpos, ypos;
 	glfwGetCursorPos(window, &xpos, &ypos);
 	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
-		g_pDebugRenderer->createCube(glm::vec3(gCamera->m_viewMatrix[3].x, gCamera->m_viewMatrix[3].y, gCamera->m_viewMatrix[3].z), glm::vec3(20.0f), 10, glm::vec3(0.3f));
+		g_pDebugRenderer->createCube(gCamera->m_eyePosition, glm::vec3(200.0f), 10, glm::vec3(0.3f));
 
 
 
