@@ -5,7 +5,7 @@
 
 #include <ctime>
 #include <chrono>
-
+#include "global.h"
 // The PIMPL idiom aka Compilation Firewall
 // Purpose: Encapsulate private member variables. Reduces make-time,
 // compile-time, and the Fragile Binary Interface Problem.
@@ -59,5 +59,9 @@ namespace SoundEngine {
 		// TODO: Clean up resources..
 
 		return 0;
+	}
+	SoundEngine_API void cSoundEngine::initializeGameStateHandle(iGameState * pGameState)
+	{
+		g_pGameState = pGameState;
 	}
 }

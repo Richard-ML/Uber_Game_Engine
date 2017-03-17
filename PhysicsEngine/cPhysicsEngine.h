@@ -38,11 +38,15 @@ namespace PhysicsEngine {
 		static PhysicsEngine_API  cPhysicsEngine *instance();
 		static PhysicsEngine_API iCollisionShape* createCollisionShape(eShapeType shapeType);
 		static PhysicsEngine_API iRigidBody* createRigidBody(iCollisionShape* shape, sRigidBody& rigidBody);
-		//static DWORD __cdecl physicsThread(void* lpParam);
+		static DWORD __cdecl physicsThread(void* lpParam);
 		PhysicsEngine_API void update(float deltaTime);
 		static PhysicsEngine_API bool loadPhysicsComponent(rapidxml::xml_node<> *componentNode, iState* state);
 		static PhysicsEngine_API void addRigidBodyToWorld(iRigidBody* rigidBody);
 		static PhysicsEngine_API void loadClothMesh(rapidxml::xml_node<> *clothMeshNode, iState* state);
+		PhysicsEngine_API void initializeGameStateHandle(iGameState* pGameState);
+		//PhysicsEngine_API void initializeWorldEditorHandle(iWorldEditor* pWorldEditor);
+		//PhysicsEngine_API void initializeDebugRendererHandle(iDebugRenderer* pDebugRenderer);
+
 	};
 
 }

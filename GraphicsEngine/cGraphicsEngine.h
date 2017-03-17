@@ -44,6 +44,10 @@ namespace GraphicsEngine {
 		static GraphicsEngine_API bool loadMeshes(rapidxml::xml_node<> *meshesNode);
 		static GraphicsEngine_API bool loadFramebufferObjects(rapidxml::xml_node<>* framebuffersNode);
 		GraphicsEngine_API void update(float deltaTime);
+		GraphicsEngine_API void initializeGameStateHandle(iGameState* pGameState);
+		//GraphicsEngine_API void initializeWorldEditorHandle(iWorldEditor* pWorldEditor);
+		//GraphicsEngine_API void initializeDebugRendererHandle(iDebugRenderer* pDebugRenderer);
+
 	};
 
 }

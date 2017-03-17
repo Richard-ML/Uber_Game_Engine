@@ -91,7 +91,8 @@ extern cTextureManager *g_pTextureManager;
 extern cShaderManager *g_pShaderManager;
 extern cLightManager *g_pLightManager;
 extern cRenderManager *g_pRenderManager;
-
+extern iGameState * g_pGameState;
+//extern iDebugRenderer * g_pDebugRenderer;
 
 
 

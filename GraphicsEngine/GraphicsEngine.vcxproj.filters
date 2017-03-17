@@ -55,9 +55,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Config\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="global.h">
-      <Filter>ViewModel\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cGraphicsEngine.h">
       <Filter>View\Header Files</Filter>
     </ClInclude>
@@ -88,6 +85,9 @@
     <ClInclude Include="cPlayerControlComponent.h">
       <Filter>DataModel\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>Config\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -97,9 +97,6 @@
       <Filter>Config\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="callbacks.cpp">
-      <Filter>ViewModel\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="global.cpp">
       <Filter>ViewModel\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cGraphicsEngine.cpp">
@@ -122,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="cRenderManager.cpp">
       <Filter>DataModel\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="global.cpp">
+      <Filter>Config\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

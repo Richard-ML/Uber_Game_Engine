@@ -28,10 +28,14 @@ namespace AIEngine {
 		cAIEngine(const cAIEngine &) {}; // Disallow copy constructor
 		cAIEngine &operator=(const cAIEngine &AIManager) {
 		} // Disallow assignment operator
-
+		static DWORD cAIEngine::aiThread(void *lpParam);
 	public:
 		static AIEngine_API  cAIEngine *instance();
 		AIEngine_API void update(float deltaTime);
+		AIEngine_API void initializeGameStateHandle(iGameState* pGameState);
+		//AIEngine_API void initializeWorldEditorHandle(iWorldEditor* pWorldEditor);
+		//AIEngine_API void initializeDebugRendererHandle(iDebugRenderer* pDebugRenderer);
+
 	};
 
 }

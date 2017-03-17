@@ -30,18 +30,16 @@ namespace GraphicsEngine {
 		{
 			printf("Graphics Engine Initialized\n");
 			s_cGraphicsEngine = new cGraphicsEngine();
-			//DWORD myThreadID;
-			//HANDLE myHandle = CreateThread(NULL, 0, // stack size
-			//(LPTHREAD_START_ROUTINE)&GraphicsEngine::cGraphicsEngine::graphicsThread, reinterpret_cast<void*>(s_cGraphicsEngine), 0, &myThreadID);
-			// NOTE: Since the graphics context resides on this thread all gl related processes can not be called directly from outside of this engine
+			// NOTE: Since the graphics context resides on this thread all gl related processes can not be called directly from another thread
 
 			// TODO: Set initial window title via external configuration file.. (.xml/.json)
-			gWindowTitle = "Single-threaded GraphicsEngine Window!";
+			gWindowTitle = "Uber Game Engine";
 
 			//One time setup stuff goes here!!
 			///////////////////////////////////////////////////////////////////////
 			// Initialize GLFW
 			initializeGLFW();
+
 		}
 		return s_cGraphicsEngine;
 	}
@@ -229,6 +227,10 @@ namespace GraphicsEngine {
 		glfwPollEvents();
 
 		return;
+	}
+	GraphicsEngine_API void cGraphicsEngine::initializeGameStateHandle(iGameState * pGameState)
+	{
+		g_pGameState = pGameState;
 	}
 }
 void initializeGLFW() {

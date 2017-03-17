@@ -23,3 +23,4 @@
 #include "..\Include\glew\include\GL\glew.h"
 #include "..\Include\glfw\include\GLFW\glfw3.h"
 #include "..\StateInfo\State.h"
+#include "..\StateInfo\GameState.h"

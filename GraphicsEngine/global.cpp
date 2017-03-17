@@ -49,6 +49,8 @@ cLightManager* g_pLightManager = cLightManager::instance();
 cRenderManager* cRenderManager::s_cRenderManager = 0;
 cRenderManager* g_pRenderManager = cRenderManager::instance();
 
+iGameState * g_pGameState = 0;
+//iDebugRenderer * g_pDebugRenderer = 0;
 
 // Uniform IDs
 GLuint gVertexBufferID = 0;

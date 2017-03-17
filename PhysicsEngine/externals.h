@@ -15,6 +15,7 @@
 
 #include "..\Include\rapidxml\rapidxml.hpp"
 #include "..\StateInfo\State.h"
+#include "..\StateInfo\GameState.h"
 
 #include "..\Include\Assimp\assimp\Importer.hpp"
 #include "..\Include\Assimp\assimp\postprocess.h"

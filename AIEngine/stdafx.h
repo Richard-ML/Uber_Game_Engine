@@ -21,3 +21,4 @@
 #include "..\Include\glm\glm\gtc\type_ptr.hpp"
 #include "..\Include\glm\glm\gtx\euler_angles.hpp"
 #include "..\StateInfo\State.h"
+#include "..\StateInfo\GameState.h"
