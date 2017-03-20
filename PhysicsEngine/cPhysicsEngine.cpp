@@ -109,6 +109,11 @@ namespace PhysicsEngine {
 		g_pGameState = pGameState;
 	}
 
+	PhysicsEngine_API void cPhysicsEngine::initializeDebugRendererHandle(iDebugRenderer * pDebugRenderer)
+	{
+		g_pDebugRenderer = pDebugRenderer;
+	}
+
 	cPhysicsEngine::cPhysicsEngine() {
 		this->impl()->m_cWorld = new cWorld();
 	}
@@ -131,7 +136,7 @@ namespace PhysicsEngine {
 		cPhysicsEngine *physicsEngine =
 			reinterpret_cast<cPhysicsEngine *>(lpParam);
 
-		while (g_pGameState != 0 && g_pGameState->getGameState() != GAMESTATE_LOADING);
+		while (g_pGameState == 0 || g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(50);  }
 		do {
 			std::chrono::high_resolution_clock::time_point t2 =
 				std::chrono::high_resolution_clock::now();
@@ -146,7 +151,7 @@ namespace PhysicsEngine {
 		} while (true);
 		return 0;
 	}
-	PhysicsEngine_API void cPhysicsEngine::update(float deltaTime)
+	void cPhysicsEngine::update(float deltaTime)
 	{
 		impl()->m_cWorld->step(deltaTime);
 	}

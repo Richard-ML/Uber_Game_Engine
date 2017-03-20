@@ -24,3 +24,5 @@
 #include "..\Include\glfw\include\GLFW\glfw3.h"
 #include "..\StateInfo\State.h"
 #include "..\StateInfo\GameState.h"
+#include "..\StateInfo\DebugRenderer.h"
+#include "..\StateInfo\World.h"

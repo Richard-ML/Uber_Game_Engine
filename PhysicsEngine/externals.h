@@ -20,3 +20,5 @@
 #include "..\Include\Assimp\assimp\Importer.hpp"
 #include "..\Include\Assimp\assimp\postprocess.h"
 #include "..\Include\Assimp\assimp\scene.h"
+#include "..\StateInfo\DebugRenderer.h"
+#include "..\StateInfo\World.h"

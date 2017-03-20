@@ -39,6 +39,9 @@
     <ClInclude Include="global.h">
       <Filter>Config\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="externals.h">
+      <Filter>Config\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cAIEngine.cpp">

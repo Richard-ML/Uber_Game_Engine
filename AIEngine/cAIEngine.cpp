@@ -44,7 +44,7 @@ namespace AIEngine {
 	   cAIEngine *aiEngine =
 		   reinterpret_cast<cAIEngine *>(lpParam);
 
-	   while (g_pGameState != 0 && g_pGameState->getGameState() != GAMESTATE_LOADING);
+	   while (g_pGameState == 0 || g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(50); }
 	   do {
 		   std::chrono::high_resolution_clock::time_point t2 =
 			   std::chrono::high_resolution_clock::now();
@@ -59,17 +59,19 @@ namespace AIEngine {
 	   return 0;
    }
 
-   AIEngine_API void AIEngine::cAIEngine::update(float deltaTime)
+   void AIEngine::cAIEngine::update(float deltaTime)
    {
 	   // Do AI stuff!
 	   //printf("AI did stuff!\n");
-
-
 	   return;
 
    }
    AIEngine_API void cAIEngine::initializeGameStateHandle(iGameState * pGameState)
    {
 	   g_pGameState = pGameState;
+   }
+   AIEngine_API void cAIEngine::initializeDebugRendererHandle(iDebugRenderer * pDebugRenderer)
+   {
+	   g_pDebugRenderer = pDebugRenderer;
    }
 }

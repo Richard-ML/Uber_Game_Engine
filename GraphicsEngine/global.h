@@ -8,6 +8,7 @@
 #include "cRenderManager.h"
 #include "cGraphicsObject.h"
 #include "cPlayerControlComponent.h"
+#include "cDebugRenderer.h"
 // Window information
 extern GLFWwindow *gWindow;
 extern std::string gWindowTitle;
@@ -92,7 +93,7 @@ extern cShaderManager *g_pShaderManager;
 extern cLightManager *g_pLightManager;
 extern cRenderManager *g_pRenderManager;
 extern iGameState * g_pGameState;
-//extern iDebugRenderer * g_pDebugRenderer;
+extern cDebugRenderer * g_pDebugRenderer;
 
 
 
@@ -101,5 +102,6 @@ extern bool g_bool_toggleLights;
 extern bool g_bool_toggleTextures;
 extern bool g_bool_toggleStencil;
 extern bool g_bool_toggleScissor;
+extern bool g_bool_toggleDebugShapes;
 // Global Player control components
 extern std::vector<cPlayerControlComponent> g_vec_playerControlComponents;

@@ -46,7 +46,7 @@ namespace GraphicsEngine {
 		GraphicsEngine_API void update(float deltaTime);
 		GraphicsEngine_API void initializeGameStateHandle(iGameState* pGameState);
 		//GraphicsEngine_API void initializeWorldEditorHandle(iWorldEditor* pWorldEditor);
-		//GraphicsEngine_API void initializeDebugRendererHandle(iDebugRenderer* pDebugRenderer);
+		GraphicsEngine_API iDebugRenderer* getDebugRendererHandle();
 
 	};
 

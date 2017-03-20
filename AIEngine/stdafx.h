@@ -22,3 +22,5 @@
 #include "..\Include\glm\glm\gtx\euler_angles.hpp"
 #include "..\StateInfo\State.h"
 #include "..\StateInfo\GameState.h"
+#include "..\StateInfo\DebugRenderer.h"
+#include "..\StateInfo\World.h"

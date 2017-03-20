@@ -49,13 +49,6 @@ public:
 
 };
 
-// Used by all Engines to render debug info
-class iDebugRenderer {
-public:
-	//spawn primitives with specific lifetimes, etc... 
-	virtual void createCube(glm::vec3 position, glm::vec3 scale, float duration, glm::vec3 color) = 0;
-};
-
 class iData {
 	/* Each engine can provide a function pointer for saving to xml for each of its internal objects.
 	* @param getComponentNode is a pointer to a function which returns an xml node containing an objects current information.

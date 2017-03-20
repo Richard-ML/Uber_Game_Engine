@@ -34,7 +34,7 @@ namespace GraphicsEngine {
 
 			// TODO: Set initial window title via external configuration file.. (.xml/.json)
 			gWindowTitle = "Uber Game Engine";
-
+			g_pDebugRenderer = new cDebugRenderer();
 			//One time setup stuff goes here!!
 			///////////////////////////////////////////////////////////////////////
 			// Initialize GLFW
@@ -231,6 +231,10 @@ namespace GraphicsEngine {
 	GraphicsEngine_API void cGraphicsEngine::initializeGameStateHandle(iGameState * pGameState)
 	{
 		g_pGameState = pGameState;
+	}
+	GraphicsEngine_API iDebugRenderer* cGraphicsEngine::getDebugRendererHandle()
+	{
+		return dynamic_cast<iDebugRenderer*>(g_pDebugRenderer);
 	}
 }
 void initializeGLFW() {

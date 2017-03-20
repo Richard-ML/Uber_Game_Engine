@@ -115,7 +115,6 @@ void cRenderManager::renderTheSkybox() {
 	}
 }
 
-
 void cRenderManager::renderScene()
 {
 	// Render Skybox
@@ -128,6 +127,8 @@ void cRenderManager::renderScene()
 
 	bindTheBuffers();
 	glUseProgram(gProgramID);
+
+
 
 
 		glEnable(GL_DEPTH_TEST);
@@ -214,26 +215,29 @@ void cRenderManager::renderScene()
 
 			if (graphicObject->toggleOutline)
 			{
+				glUniform1i(gUniformId_Toggle_Lights, false);
 				// Render the wireframe to create outline effect.
-				glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
+				glCullFace(GL_FRONT); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
 				glEnable(GL_CULL_FACE);
 				glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
 												 // you can pass here
-					GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
+					GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
 
 				glStencilFunc(GL_NOTEQUAL, 1, -1);
 				glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-				transform[3] -= glm::vec4(glm::vec3(0.001f), 0.0f);
+
+
+				transform[3] *= 0.995f;
 				glUniform1i(gUniformId_Toggle_Textures, 0);
 				glUniformMatrix4fv(
 					gUniformId_ModelMatrix, 1, GL_FALSE,
-					glm::value_ptr(glm::scale(transform, glm::vec3(scale + 0.001f))));
+					glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
 				glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
 					glm::value_ptr(glm::mat4()));
 				glUniform4fv(gUniformId_ModelColor, 1,
-					glm::value_ptr(glm::vec4(1.0f, 0.0f, 0.0f, 0.6f)));
+					glm::value_ptr(glm::vec4(0.75f, 0.0f, 0.0f, 0.6f)));
 
-				glUniform1f(gUniformId_Alpha, 1.0f);
+				glUniform1f(gUniformId_Alpha, 0.75f);
 
 				glDrawElementsBaseVertex(
 					GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].NumgIndices, GL_UNSIGNED_INT,
@@ -241,7 +245,64 @@ void cRenderManager::renderScene()
 					g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex);
 
 				glUniform1i(gUniformId_Toggle_Textures, 1);
+				glUniform1i(gUniformId_Toggle_Lights, true);
 			}
+
+	}
+
+	if (g_bool_toggleDebugShapes) {
+		glUniform1i(gUniformId_Toggle_Textures, false);
+		glUniform1i(gUniformId_Toggle_Lights, false);
+
+		glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
+			glm::value_ptr(projectionMatrix));
+		glUniformMatrix4fv(gUniformId_ViewMatrix, 1, GL_FALSE,
+			glm::value_ptr(viewMatrix));
+		glm::vec4 eye4;
+		gCamera->getEyePosition(eye4);
+		glUniform4fv(gUniformId_EyePosition, 1, glm::value_ptr(eye4));
+		glEnable(GL_MULTISAMPLE);
+		glEnable(GL_BLEND);
+		// glBlendEquation(GL_FUNC_ADD);
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_DEPTH_TEST);
+		// Enable "wireframe" polygon mode
+		glPolygonMode(GL_FRONT_AND_BACK,
+			GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
+		glDisable(GL_CULL_FACE);
+
+		glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
+		glEnable(GL_CULL_FACE);
+		glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+										 // you can pass here
+			GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
+
+		g_pDebugRenderer->lock(0);
+		for each(cDebugRenderer::sDebugShape shape in g_pDebugRenderer->m_vec_debugShapes) {
+
+			glm::mat4 transform;
+
+			transform[3] = glm::vec4(shape.position, 1.0f);
+
+			glUniformMatrix4fv(
+				gUniformId_ModelMatrix, 1, GL_FALSE,
+				glm::value_ptr(glm::scale(transform, shape.scale)));
+			glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
+				glm::value_ptr(glm::mat4()));
+			glUniform4fv(gUniformId_ModelColor, 1,
+				glm::value_ptr(shape.color));
+			glUniform1f(gUniformId_Alpha, 0.65f);
+
+
+			glDrawElementsBaseVertex(
+				GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].NumgIndices, GL_UNSIGNED_INT,
+				(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].BaseIndex),
+				g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].BaseIndex);
+		}
+
+		glUniform1i(gUniformId_Toggle_Textures, 1);
+		glUniform1i(gUniformId_Toggle_Lights, true);
+		g_pDebugRenderer->unlock(0);
 	}
 
 }

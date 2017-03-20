@@ -17,6 +17,26 @@ int main()
 
 	std::cout << "GameEngine Initialized\n";
 
+	iGameState* gameState = dynamic_cast<iGameState*>(g_pGameState);
+
+	g_pPhysicsEngine->initializeGameStateHandle(gameState);
+	g_pGraphicsEngine->initializeGameStateHandle(gameState);
+	g_pAIEngine->initializeGameStateHandle(gameState);
+	g_pSoundEngine->initializeGameStateHandle(gameState);
+
+
+	g_pDebugRenderer = g_pGraphicsEngine->getDebugRendererHandle();
+	g_pPhysicsEngine->initializeDebugRendererHandle(g_pDebugRenderer);
+	g_pSoundEngine->initializeDebugRendererHandle(g_pDebugRenderer);
+	g_pAIEngine->initializeDebugRendererHandle(g_pDebugRenderer);
+
+	// TEST DEBUG RENDERER
+	g_pDebugRenderer->createCube(glm::vec3(0.0f, 6.0f, 0.0f),glm::vec3(6.0f, 5.0f, 6.0f), 1.0f, glm::vec3(0.4f, 0.5f, 0.25f));
+
+
+
+
+
 	// TODO: Crate window using g_pGraphicsEngine interface..
 	// .. Load XML data & create entities
 	g_pEntityManager->loadGameFromXML("GameAssets.xml");
@@ -36,6 +56,7 @@ int main()
 				std::chrono::high_resolution_clock::now() -
 				lastTime); // Get the time that as passed
 		/////////////////////////////////////////////////////////////
+		// The GraphicsEngine is updated here on the main thread. The other engines have their own threads.
 		g_pGraphicsEngine->update(deltaTime.count());
 		// CORE ROUTINE --- END
 		lastTime = std::chrono::high_resolution_clock::now();

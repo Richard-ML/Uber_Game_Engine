@@ -21,6 +21,7 @@ public:
 	int m_height;
 	glm::mat4 m_targetTranform;
 	glm::mat4 m_viewMatrix;
+	glm::vec3 m_cameraForward;
 	
 
 	// NOTE: Roll is not being used currently.
@@ -42,6 +43,7 @@ public:
 		float minDistance = 1.0f; // How close the camera can be to its target.
 		float maxDistance = 90.0f; // How far away the camera can be from its target.
 	}m_zoom;
+
 
 };
 #endif

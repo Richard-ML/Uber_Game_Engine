@@ -42,6 +42,7 @@ namespace SoundEngine {
 		std::chrono::duration<float> deltaTime;
 		cSoundEngine *physicsEngine =
 			reinterpret_cast<cSoundEngine *>(lpParam);
+		while (g_pGameState == 0 || g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(50); }
 		do {
 			std::chrono::high_resolution_clock::time_point t2 =
 				std::chrono::high_resolution_clock::now();
@@ -63,5 +64,9 @@ namespace SoundEngine {
 	SoundEngine_API void cSoundEngine::initializeGameStateHandle(iGameState * pGameState)
 	{
 		g_pGameState = pGameState;
+	}
+	SoundEngine_API void cSoundEngine::initializeDebugRendererHandle(iDebugRenderer * pDebugRenderer)
+	{
+		g_pDebugRenderer = pDebugRenderer;
 	}
 }

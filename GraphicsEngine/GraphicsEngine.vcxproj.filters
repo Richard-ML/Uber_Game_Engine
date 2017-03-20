@@ -88,6 +88,9 @@
     <ClInclude Include="global.h">
       <Filter>Config\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cDebugRenderer.h">
+      <Filter>DataModel\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

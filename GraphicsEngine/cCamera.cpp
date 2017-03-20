@@ -75,9 +75,10 @@ void cCamera::updateView() {
 	glm::vec3 translation = glm::vec3(0.0f, 0.0f, -m_zoom.distance);
 	translation = glm::vec3(rotation * glm::vec4(translation, 0.0f));
 	glm::vec3 position = targetPosition + translation;
-	glm::vec3 forward = glm::normalize(targetPosition - position);
+	m_cameraForward = glm::normalize(targetPosition - position);
 	up = glm::vec3(rotation * glm::vec4(up, 0.0f));
-	glm::vec3 right = glm::cross(forward, up);
+	glm::vec3 right = glm::cross(m_cameraForward, up);
+
 	m_viewMatrix = glm::lookAt(position, targetPosition, up);
 }
 

@@ -16,3 +16,5 @@
 // TODO: reference additional headers your program requires here
 #include "..\StateInfo\State.h"
 #include "..\StateInfo\GameState.h"
+#include "..\StateInfo\DebugRenderer.h"
+#include "..\StateInfo\World.h"

@@ -9,5 +9,5 @@ extern GraphicsEngine::cGraphicsEngine * g_pGraphicsEngine;
 extern SoundEngine::cSoundEngine * g_pSoundEngine;
 extern AIEngine::cAIEngine * g_pAIEngine;
 extern cGameState* g_pGameState;
-//extern iDebugRenderer * g_pDebugRenderer;
+extern iDebugRenderer* g_pDebugRenderer;
 //extern cWorld* g_pWorld;
