@@ -2,6 +2,7 @@
   <Textures>
     <Texture name="Grass" path="assets/Textures/Grass.jpg"/>
 	<Texture name="Brick" path="assets/Textures/Brick.jpg"/>
+	<Texture name="Eye" path="assets/EyeStencil/all_seeing_eye.png"/>
   </Textures>
   <MipmapTextures>
 	<MipmapTexture name="Wall" pathDif="assets/TileMeshes/WallTiles/textures/wall_DIF.tga" pathNrm="assets/TileMeshes/WallTiles/textures/wall_NRM.tga" pathSpec="assets/TileMeshes/WallTiles/textures/wall_SPEC.tga" />
@@ -44,7 +45,7 @@
     <GameEntity>
       <RenderableComponent>
         <Mesh name="Skeleton" outline="false"/>
-        <Light type="PointLight" isEnabled="true" coneAngle="0.9f" specularPower="1.0f" directionX="0.0f" directionY="-5.0f" directionZ="0.0f" offsetX="0.0f" offsetY="10.0f" offsetZ="0.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.31f" diffuseG="0.3f" diffuseB="0.3f" specularR="0.6f" specularG="0.3f" specularB="0.3f" attenConst="0.2f" attenLinear="0.0091427f" attenQuad="0.00065429f" />
+        <Light type="PointLight" isEnabled="true" coneAngle="0.9f" specularPower="1.0f" directionX="0.0f" directionY="-5.0f" directionZ="0.0f" offsetX="0.0f" offsetY="10.0f" offsetZ="0.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.31f" diffuseG="0.3f" diffuseB="0.3f" specularR="0.6f" specularG="0.3f" specularB="0.3f" attenConst="0.2f" attenLinear="0.00091427f" attenQuad="0.000065429f" />
         <PlayerControlComponent />
         <!--<Light type="DirectionalLight" isEnabled="true" coneAngle="0.9f" specularPower="1.0f" directionX="0.0f" directionY="-5.0f" directionZ="20.0f" offsetX="0.0f" offsetY="20.0f" offsetZ="-200.0f" ambientR="0.0f" ambientG="0.0f" ambientB="0.0f" diffuseR="0.3f" diffuseG="0.3f" diffuseB="0.3f" specularR="0.3f" specularG="0.3f" specularB="0.3f" attenConst="0.3f" attenLinear="0.000091427f" attenQuad="0.0000065429f" />-->
       </RenderableComponent>

@@ -55,7 +55,7 @@ void cTextureManager::loadTexture(rapidxml::xml_node<> *textureNode) {
 
 void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
 	// TODO: Fix this so it supports more mipmaps
-	if (g_pTextureManager->currentMipmapLevel == 6 || g_pTextureManager->currentMipmapLevel == 0)
+	if (g_pTextureManager->currentMipmapRow == 0 && g_pTextureManager->currentMipmapCol == 0)
 	{
 		/////////////////////////
 		// Generate a name for the texture
@@ -123,13 +123,13 @@ void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
 	}
 	// int tempMipmapLevel = gCurrentMipmapLevel;
 	std::string name = textureNode->first_attribute("name")->value();
-	mapTextureNameToMipmapLevel[name] = currentMipmapLevel;
+	mapTextureNameToMipmapLevel[name] = glm::ivec4(currentMipmapCol, currentMipmapRow, 0, 0);
 
 	// Assume the texture is already bound to the GL_TEXTURE_2D target
 	glTexSubImage2D(GL_TEXTURE_2D, // 2D texture
 		0,             // Level 0
-		(width * currentMipmapLevel),
-		(width * currentMipmapLevel), // Offset 0, 0
+		(width * currentMipmapCol),
+		(width * currentMipmapRow), // Offset 0, 0
 		width, width,     // 1024 x 1024 texels, replace entire image
 		GL_RGBA,          // Four channel data
 		GL_UNSIGNED_BYTE, // Floating point data
@@ -139,8 +139,8 @@ void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
 	// Assume the texture is already bound to the GL_TEXTURE_2D target
 	glTexSubImage2D(GL_TEXTURE_2D, // 2D texture
 		0,             // Level 1
-		width * (currentMipmapLevel + 1),
-		width * (currentMipmapLevel + 1), // Offset 0, 0
+		width * (currentMipmapCol + 1),
+		width * (currentMipmapRow), // Offset 0, 0
 		width, width,     // 1024 x 1024 texels, replace entire image
 		GL_RGBA,          // Four channel data
 		GL_UNSIGNED_BYTE, // Floating point data
@@ -150,8 +150,8 @@ void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
 	// Assume the texture is already bound to the GL_TEXTURE_2D target
 	glTexSubImage2D(GL_TEXTURE_2D, // 2D texture
 		0,             // Level 1
-		width * (currentMipmapLevel + 2),
-		width * (currentMipmapLevel + 2), // Offset 0, 0
+		width * (currentMipmapCol + 2),
+		width * (currentMipmapRow), // Offset 0, 0
 		width, width,     // 1024 x 1024 texels, replace entire image
 		GL_RGBA,          // Four channel data
 		GL_UNSIGNED_BYTE, // Floating point data
@@ -161,9 +161,13 @@ void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
 	FreeImage_Unload(imagenNrm);
 	FreeImage_Unload(imagenSpec);
 
-	currentMipmapLevel += 3;
+	currentMipmapCol += 3;
 
-
+	if (currentMipmapCol >= 15)
+	{
+		currentMipmapRow += 1;
+		currentMipmapCol = 0;
+	}
 	//	int MaxTextureImageUnits;
 	//  glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &MaxTextureImageUnits);
 }

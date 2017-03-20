@@ -82,7 +82,7 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 		aiVector3D n1 = mesh->mNormals[i];
 		aiVector3D t1 = mesh->mTangents[i];
 		cMeshVertex &vert1 = vertices[vertexOffset + i];
-		GLuint tempTextureUnit0 = 0;
+		glm::ivec4 tempTextureUnit0 = glm::ivec4(0);
 		if (mesh->mMaterialIndex >= 0) {
 			aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 			// We assume a convention for sampler names in the shader. Each diffuse
@@ -136,7 +136,7 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 
 		// vert1.TextureUnits = tempTextureInfo;
 		vert1.textureUnits = glm::uvec4(0);
-		vert1.textureUnits.x = tempTextureUnit0;
+		vert1.textureUnits = tempTextureUnit0;
 		// vert1.textureUnits.x = tempTextureUnit0;
 		vert1.TexCoord = glm::vec4(UVW.x, UVW.y, UVW.x, UVW.y);
 		vert1.Normal = glm::vec4(n1.x, n1.y, n1.z, 1.f);

@@ -550,6 +550,7 @@ void cMSFBOInfo::renderSceneToFBO()
 	glDrawBuffers(1, attachments);
 	if (g_bool_toggleStencil) {
 		glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, false);
+		glUniform1i(gUniformId_Toggle_Lights, false);
 		glEnable(GL_DEPTH_TEST);
 
 		// Render the mesh into the stencil buffer.
@@ -561,6 +562,7 @@ void cMSFBOInfo::renderSceneToFBO()
 
 		glStencilFunc(GL_GREATER, 1, 0xFF);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		glUniform1i(gUniformId_Toggle_Lights, true);
 		glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, true);
 	}
 

@@ -15,10 +15,11 @@ public:
 	GLuint loadCubeMap(rapidxml::xml_node<> *cubeNode);
 	std::vector<GLuint> uniform_TextureID;
 	std::map<std::string, GLuint> mapTextureNameToID;
-	std::map<std::string, GLuint> mapTextureNameToMipmapLevel;
-	std::vector<std::vector <std::vector<glm::vec3>>> worldTiles;
+	std::map<std::string, glm::vec4> mapTextureNameToMipmapLevel;
+	std::vector<std::vector <std::vector<glm::ivec3>>> worldTiles;
 	GLuint nextTextureID;
-	int currentMipmapLevel = 0;
+	int currentMipmapRow = 0;
+	int currentMipmapCol = 0;
 private:
 	cTextureManager() {
 	} // Constructor is private therefore a new instance can not be made
