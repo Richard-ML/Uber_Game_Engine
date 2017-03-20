@@ -16,7 +16,7 @@ class cEntityManager {
 public:
 	int loadGameFromXML(std::string filename);
 	static cEntityManager *instance();
-
+	void spawnObjectsAtSelectedTile();
 private:
 	cEntityManager() {
 	} // Constructor is private therefore a new instance can not be made

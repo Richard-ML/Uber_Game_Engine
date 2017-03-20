@@ -33,7 +33,7 @@ namespace GraphicsEngine {
 			// NOTE: Since the graphics context resides on this thread all gl related processes can not be called directly from another thread
 
 			// TODO: Set initial window title via external configuration file.. (.xml/.json)
-			gWindowTitle = "Uber Game Engine";
+			gWindowTitle = "Uber Game Engine is loading...";
 			g_pDebugRenderer = new cDebugRenderer();
 			//One time setup stuff goes here!!
 			///////////////////////////////////////////////////////////////////////
@@ -70,22 +70,26 @@ namespace GraphicsEngine {
 	}
 	GraphicsEngine_API bool cGraphicsEngine::loadRenderableComponent(rapidxml::xml_node<>* componentNode, iState* state)
 	{
+		cGraphicsObject* graphicsObject = new cGraphicsObject();
+		state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cGraphicsObject::saveToXMLNode, graphicsObject)));
+
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("Mesh");
 			cRenderableComponentEntry_node; cRenderableComponentEntry_node = cRenderableComponentEntry_node->next_sibling("Mesh")) {
 			// load the mesh buffers
-			cGraphicsObject* graphicsObject = new cGraphicsObject();
-			graphicsObject->meshName = cRenderableComponentEntry_node->first_attribute("name")->value(); // TODO: Offset scale rotation etc..
+			cMesh* mesh = new cMesh();
+			mesh->meshName = cRenderableComponentEntry_node->first_attribute("name")->value();
+			mesh->toggleOutline = std::string(cRenderableComponentEntry_node->first_attribute("outline")->value()) == "true";
+			graphicsObject->vec_meshes.push_back(mesh); // TODO: Offset scale rotation etc..
 			graphicsObject->pState = state;
 			graphicsObject->pState->setScale(1.0f);
-			graphicsObject->toggleOutline = std::string(cRenderableComponentEntry_node->first_attribute("outline")->value()) == "true";
-			g_vec_pGraphicObjects.push_back(graphicsObject);
-
+			graphicsObject->pState->setAABB(g_pMeshManager->m_MapMeshNameToAABB[mesh->meshName]);
 		}
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("Light");
 			cRenderableComponentEntry_node; cRenderableComponentEntry_node = cRenderableComponentEntry_node->next_sibling("Light")) {
 			// load the mesh buffers
 			g_pLightManager->loadLightFromXML(cRenderableComponentEntry_node);
 			g_pLightManager->vecLights.back()->state = state;
+			graphicsObject->vec_lights.push_back(g_pLightManager->vecLights.back());
 		}
 
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("PlayerControlComponent");
@@ -93,13 +97,35 @@ namespace GraphicsEngine {
 			cPlayerControlComponent controlComponent;
 			controlComponent.pState = state;
 			g_vec_playerControlComponents.push_back(controlComponent);
+			graphicsObject->vec_playerControllers.push_back(&controlComponent);
 		}
 
+		g_vec_pGraphicObjects.push_back(graphicsObject);
 		// Create base object that contains iState*
-		printf("Graphics object created!\n");
+		//printf("Graphics object created!\n");
 
 		return true;
 	}
+	GraphicsEngine_API void cGraphicsEngine::clearGameObjects()
+	{
+		g_vec_pGraphicObjects.clear();
+		g_vec_playerControlComponents.clear();
+		g_pLightManager->vecLights.clear();
+	}
+
+	GraphicsEngine_API void cGraphicsEngine::addObject(iState * state, std::string meshName)
+	{
+		cGraphicsObject * graphicsObject = new cGraphicsObject();
+		graphicsObject->pState = state;
+		cMesh* mesh = new cMesh();
+		mesh->meshName = meshName;
+		mesh->toggleOutline = false;
+		graphicsObject->vec_meshes.push_back(mesh);
+		state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cGraphicsObject::saveToXMLNode, graphicsObject)));
+		g_vec_pGraphicObjects.push_back(graphicsObject);
+	}
+
+
 	GraphicsEngine_API bool cGraphicsEngine::loadMeshes(rapidxml::xml_node<> *meshesNode) {
 		for (rapidxml::xml_node<> *cMeshEntry_node = meshesNode->first_node("Mesh");
 			cMeshEntry_node; cMeshEntry_node = cMeshEntry_node->next_sibling()) {
@@ -232,13 +258,17 @@ namespace GraphicsEngine {
 	{
 		g_pGameState = pGameState;
 	}
+	GraphicsEngine_API void cGraphicsEngine::initializeWorldHandle(iWorld * pWorld)
+	{
+		g_pWorld = pWorld;
+	}
 	GraphicsEngine_API iDebugRenderer* cGraphicsEngine::getDebugRendererHandle()
 	{
 		return dynamic_cast<iDebugRenderer*>(g_pDebugRenderer);
 	}
 }
 void initializeGLFW() {
-	gWindowTitle = "Single-threaded GraphicsEngine Window! The invisible eye watches.. WASD to move & Arrows control camera rotation around player";
+	gWindowTitle = "UBER GAME ENGINE - WASD to move & Arrows control camera rotation around player";
 	if (!glfwInit()) {
 		fprintf(stderr, "Failed to initialize GLFW\n");
 		system("pause");
@@ -285,7 +315,8 @@ void initializeGLFW() {
 	glfwSetWindowSizeCallback(gWindow, callback_windowResize);
 	glfwSetWindowCloseCallback(gWindow, callback_WindowClose);
 	glfwSetKeyCallback(gWindow, callback_KeyPress);
-	glfwSetScrollCallback(gWindow, scroll_callback);
+	glfwSetScrollCallback(gWindow, callback_scroll);
+	glfwSetMouseButtonCallback(gWindow, callback_mouse_button);
 
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(gWindow, GLFW_STICKY_KEYS, GL_TRUE);
@@ -304,6 +335,8 @@ void initializeGLFW() {
 	printf("Version: %s\n", glGetString(GL_VERSION));
 	printf("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	printf("\n");
+
+	gCamera->windowResize(gWindowWidth, gWindowHeight);
 }
 
 void createTheBuffers() {

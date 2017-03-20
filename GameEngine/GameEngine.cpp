@@ -9,6 +9,9 @@ int main()
 	g_pGameState = new cGameState();
 	g_pGameState->setGameState(GAMESTATE_LOADING);
 
+	g_pWorld = new cWorld();
+	g_pWorld->generateObjectsAtSelectedTiles = std::bind(&cEntityManager::spawnObjectsAtSelectedTile, g_pEntityManager);
+
 	ComponentEngine::cComponentEngine * g_pComponentEngine = ComponentEngine::cComponentEngine::instance();
 	PhysicsEngine::cPhysicsEngine *g_pPhysicsEngine = PhysicsEngine::cPhysicsEngine::instance();
 	GraphicsEngine::cGraphicsEngine * g_pGraphicsEngine = GraphicsEngine::cGraphicsEngine::instance();
@@ -30,6 +33,11 @@ int main()
 	g_pSoundEngine->initializeDebugRendererHandle(g_pDebugRenderer);
 	g_pAIEngine->initializeDebugRendererHandle(g_pDebugRenderer);
 
+	iWorld* world = dynamic_cast<iWorld*>(g_pWorld);
+	g_pPhysicsEngine->initializeWorldHandle(world);
+	g_pGraphicsEngine->initializeWorldHandle(world);
+	g_pSoundEngine->initializeWorldHandle(world);
+	g_pAIEngine->initializeWorldHandle(world);
 	// TEST DEBUG RENDERER
 	g_pDebugRenderer->createCube(glm::vec3(0.0f, 6.0f, 0.0f),glm::vec3(6.0f, 5.0f, 6.0f), 1.0f, glm::vec3(0.4f, 0.5f, 0.25f));
 

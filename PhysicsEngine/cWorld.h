@@ -1,6 +1,6 @@
 #ifndef _cWorld_HG_
 #define _cWorld_HG_
-#include "iWorld.h"
+#include "iPhysicsWorld.h"
 #include <vector>
 #include "stdafx.h"
 #include "cCollisionObject.h"
@@ -12,7 +12,7 @@
 #endif // PhysicsEngine_EXPORTS
 namespace PhysicsEngine {
 	class cCollisionObject;
-	class cWorld: public iWorld {
+	class cWorld: public iPhysicsWorld {
 	public:
 		void step(float deltaTime);
 		//virtual PhysicsEngine_API void addRigidBody(cRigidBody* rigidBody)

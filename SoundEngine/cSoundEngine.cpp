@@ -65,6 +65,10 @@ namespace SoundEngine {
 	{
 		g_pGameState = pGameState;
 	}
+	SoundEngine_API void cSoundEngine::initializeWorldHandle(iWorld * pWorld)
+	{
+		g_pWorld = pWorld;
+	}
 	SoundEngine_API void cSoundEngine::initializeDebugRendererHandle(iDebugRenderer * pDebugRenderer)
 	{
 		g_pDebugRenderer = pDebugRenderer;

@@ -43,8 +43,9 @@ namespace PhysicsEngine {
 		static PhysicsEngine_API void addRigidBodyToWorld(iRigidBody* rigidBody);
 		static PhysicsEngine_API void loadClothMesh(rapidxml::xml_node<> *clothMeshNode, iState* state);
 		PhysicsEngine_API void initializeGameStateHandle(iGameState* pGameState);
-		//PhysicsEngine_API void initializeWorldEditorHandle(iWorldEditor* pWorldEditor);
+	    PhysicsEngine_API void initializeWorldHandle(iWorld* pWorld);
 		PhysicsEngine_API void initializeDebugRendererHandle(iDebugRenderer* pDebugRenderer);
+		static PhysicsEngine_API bool addPhysicsObject(glm::vec3 position, iState* state);
 
 	};
 

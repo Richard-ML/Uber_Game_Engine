@@ -19,10 +19,11 @@ public:
 
 	int m_width;
 	int m_height;
-	glm::mat4 m_targetTranform;
+	glm::mat4 m_targetTransform;
 	glm::mat4 m_viewMatrix;
 	glm::vec3 m_cameraForward;
-	
+	glm::mat3 m_viewIdentityMatrix;
+	glm::vec3 m_eyePosition;
 
 	// NOTE: Roll is not being used currently.
 	struct Rotation {
@@ -39,9 +40,9 @@ public:
 		// Current zoom distance
 		float distance = 50.0f;
 		// The speed at which zooming distance is incremented/decremented based on delta-time.
-		float rate = 1000.0f;
+		float rate = 100.0f;
 		float minDistance = 1.0f; // How close the camera can be to its target.
-		float maxDistance = 90.0f; // How far away the camera can be from its target.
+		float maxDistance = 400.0f; // How far away the camera can be from its target.
 	}m_zoom;
 
 

@@ -33,7 +33,7 @@ namespace AIEngine {
 	public:
 		static AIEngine_API  cAIEngine *instance();
 		AIEngine_API void initializeGameStateHandle(iGameState* pGameState);
-		//AIEngine_API void initializeWorldEditorHandle(iWorldEditor* pWorldEditor);
+		AIEngine_API void initializeWorldHandle(iWorld* pWorld);
 		AIEngine_API void initializeDebugRendererHandle(iDebugRenderer* pDebugRenderer);
 
 	};

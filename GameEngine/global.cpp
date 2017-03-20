@@ -11,4 +11,4 @@ SoundEngine::cSoundEngine * g_pSoundEngine = 0;
 AIEngine::cAIEngine * g_pAIEngine = 0;
 cGameState* g_pGameState = 0;
 iDebugRenderer * g_pDebugRenderer = 0;
-//cWorld* g_pWorld = 0;
+cWorld* g_pWorld = 0;

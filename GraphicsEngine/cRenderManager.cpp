@@ -120,6 +120,7 @@ void cRenderManager::renderScene()
 	// Render Skybox
 	renderTheSkybox();
 
+
 	glm::mat4 projectionMatrix;
 	glm::mat4 viewMatrix;
 	gCamera->getProjectionMatrix(projectionMatrix);
@@ -128,12 +129,12 @@ void cRenderManager::renderScene()
 	bindTheBuffers();
 	glUseProgram(gProgramID);
 
+	glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, g_bool_toggleNormalAndSpecularMaps);
 
-
-
-		glEnable(GL_DEPTH_TEST);
-		for each(cGraphicsObject* graphicObject in g_vec_pGraphicObjects)
-		{
+	glEnable(GL_DEPTH_TEST);
+	for each(cGraphicsObject* graphicObject in g_vec_pGraphicObjects)
+	{
+		for each(cMesh* mesh in graphicObject->vec_meshes) {
 			// per frame uniforms
 			glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
 				glm::value_ptr(projectionMatrix));
@@ -147,18 +148,6 @@ void cRenderManager::renderScene()
 			// glBlendEquation(GL_FUNC_ADD);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glEnable(GL_DEPTH_TEST);
-
-
-
-			if (graphicObject->toggleOutline) {
-				glEnable(GL_DEPTH_TEST);
-				glClearStencil(0);
-				glClear(GL_STENCIL_BUFFER_BIT);
-				// Render the mesh into the stencil buffer.
-				glEnable(GL_STENCIL_TEST);
-				glStencilFunc(GL_ALWAYS, 1, -1);
-				glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-			}
 
 			// glEnable(GL_COLOR_MATERIAL);
 			//if ((*iter)->isWireframe) {        // Turn off backface culling
@@ -183,7 +172,6 @@ void cRenderManager::renderScene()
 			float scale;
 			graphicObject->pState->getScale(scale);
 
-			// TODO: Scale in object..
 			glUniformMatrix4fv(
 				gUniformId_ModelMatrix, 1, GL_FALSE,
 				glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
@@ -191,62 +179,106 @@ void cRenderManager::renderScene()
 				glm::value_ptr(glm::mat4()));
 			glUniform4fv(gUniformId_ModelColor, 1,
 				glm::value_ptr(glm::vec4(1.0f)));
-
 			glUniform1f(gUniformId_Alpha, 1.0f);
-			if (graphicObject->meshName == "Portal")
-			{
-				glBindTexture(GL_TEXTURE_2D, g_pRenderManager->map_NameToFBOInfo["Portal"]->colorTextureID);
-				glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, false); // TODO: Add global boolean toggle
 
+			if (mesh->meshName == "Street_FLAT" || mesh->meshName == "Building_1" || mesh->meshName == "Building_2" || mesh->meshName == "Building_3")
+			{
+				glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, false);
+				if (mesh->meshName == "Street_FLAT")
+					glBindTexture(GL_TEXTURE_2D, g_pTextureManager->mapTextureNameToID["Grass"]);
+				else
+					glBindTexture(GL_TEXTURE_2D, g_pTextureManager->mapTextureNameToID["Brick"]);
 				glDrawElementsBaseVertex(
-					GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].NumgIndices, GL_UNSIGNED_INT,
-					(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex),
-					g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex);
-				
-				glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
+					GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].NumgIndices, GL_UNSIGNED_INT,
+					(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex),
+					g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex);
 				glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, true);
+				glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
+			}
+			else
+				//if(mesh->meshName == "Dalek")
+				//{
+				//	std::string meshNameResultLOD = "Dalek_";
+				//	float distanceFromCamera = glm::abs( glm::distance(glm::vec3(transform[3]), glm::vec3(gCamera->m_viewMatrix[3])));
+				//
+				//	if (distanceFromCamera < 100.0f)
+				//		meshNameResultLOD += "1";
+				//	else
+				//		if (distanceFromCamera < 500.0f)
+				//			meshNameResultLOD += "2";
+				//		else
+				//			meshNameResultLOD += "3";
+				//	glDrawElementsBaseVertex(
+				//		GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[meshNameResultLOD].NumgIndices, GL_UNSIGNED_INT,
+				//		(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[meshNameResultLOD].BaseIndex),
+				//		g_pMeshManager->m_MapMeshNameTocMeshEntry[meshNameResultLOD].BaseIndex);
+				//
+				//}
+				//else
+				glDrawElementsBaseVertex(
+					GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].NumgIndices, GL_UNSIGNED_INT,
+					(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex),
+					g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex);
+		}
+
+
+		if (g_bool_toggleDrawAABBs)
+		{
+			glUniform1i(gUniformId_Toggle_Textures, false);
+			glUniform1i(gUniformId_Toggle_Lights, false);
+			sAABB aabb = graphicObject->pState->getAABB();
+			glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
+				glm::value_ptr(projectionMatrix));
+			glUniformMatrix4fv(gUniformId_ViewMatrix, 1, GL_FALSE,
+				glm::value_ptr(viewMatrix));
+			glm::vec4 eye4;
+			gCamera->getEyePosition(eye4);
+			glUniform4fv(gUniformId_EyePosition, 1, glm::value_ptr(eye4));
+			glEnable(GL_MULTISAMPLE);
+			glEnable(GL_BLEND);
+			// glBlendEquation(GL_FUNC_ADD);
+			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_DEPTH_TEST);
+			// Enable "wireframe" polygon mode
+			glPolygonMode(GL_FRONT_AND_BACK,
+				GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
+			glDisable(GL_CULL_FACE);
+
+			glm::mat4 transform;
+
+			//glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
+			//glEnable(GL_CULL_FACE);
+			//glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+			//								 // you can pass here
+			//	GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
+
+
+			transform[3] = glm::vec4(graphicObject->pState->getPosition() + aabb.position, 1.0f);
+
+			glUniformMatrix4fv(
+				gUniformId_ModelMatrix, 1, GL_FALSE,
+				glm::value_ptr(glm::scale(transform, aabb.scale)));
+			glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
+				glm::value_ptr(glm::mat4()));
+			if (graphicObject->pState->getIsColliding())
+			{
+				glUniform4fv(gUniformId_ModelColor, 1,
+					glm::value_ptr(glm::vec3(0.5f, 0.0f, 0.0f)));
 			}
 			else {
-				glDrawElementsBaseVertex(
-					GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].NumgIndices, GL_UNSIGNED_INT,
-					(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex),
-					g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex);
-			}
-
-			if (graphicObject->toggleOutline)
-			{
-				glUniform1i(gUniformId_Toggle_Lights, false);
-				// Render the wireframe to create outline effect.
-				glCullFace(GL_FRONT); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
-				glEnable(GL_CULL_FACE);
-				glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
-												 // you can pass here
-					GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
-
-				glStencilFunc(GL_NOTEQUAL, 1, -1);
-				glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-
-
-				transform[3] *= 0.995f;
-				glUniform1i(gUniformId_Toggle_Textures, 0);
-				glUniformMatrix4fv(
-					gUniformId_ModelMatrix, 1, GL_FALSE,
-					glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
-				glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
-					glm::value_ptr(glm::mat4()));
 				glUniform4fv(gUniformId_ModelColor, 1,
-					glm::value_ptr(glm::vec4(0.75f, 0.0f, 0.0f, 0.6f)));
-
-				glUniform1f(gUniformId_Alpha, 0.75f);
-
-				glDrawElementsBaseVertex(
-					GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].NumgIndices, GL_UNSIGNED_INT,
-					(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex),
-					g_pMeshManager->m_MapMeshNameTocMeshEntry[graphicObject->meshName].BaseIndex);
-
-				glUniform1i(gUniformId_Toggle_Textures, 1);
-				glUniform1i(gUniformId_Toggle_Lights, true);
+					glm::value_ptr(glm::vec3(0.5f)));
 			}
+			glUniform1f(gUniformId_Alpha, 0.65f);
+
+
+			glDrawElementsBaseVertex(
+				GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].NumgIndices, GL_UNSIGNED_INT,
+				(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].BaseIndex),
+				g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].BaseIndex);
+			glUniform1i(gUniformId_Toggle_Textures, true);
+			glUniform1i(gUniformId_Toggle_Lights, true);
+		}
 
 	}
 
@@ -303,6 +335,62 @@ void cRenderManager::renderScene()
 		glUniform1i(gUniformId_Toggle_Textures, 1);
 		glUniform1i(gUniformId_Toggle_Lights, true);
 		g_pDebugRenderer->unlock(0);
+	}
+
+	if (g_bool_toggleWorldEditMode)
+	{
+		glUniform1i(gUniformId_Toggle_Textures, false);
+		glUniform1i(gUniformId_Toggle_Lights, false);
+		std::vector<sAABB> aabbs = g_pWorld->getSelectionAABBs();
+		for each(sAABB aabb in aabbs)
+		{
+			glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
+				glm::value_ptr(projectionMatrix));
+			glUniformMatrix4fv(gUniformId_ViewMatrix, 1, GL_FALSE,
+				glm::value_ptr(viewMatrix));
+			glm::vec4 eye4;
+			gCamera->getEyePosition(eye4);
+			glUniform4fv(gUniformId_EyePosition, 1, glm::value_ptr(eye4));
+			glEnable(GL_MULTISAMPLE);
+			glEnable(GL_BLEND);
+			// glBlendEquation(GL_FUNC_ADD);
+			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glEnable(GL_DEPTH_TEST);
+			// Enable "wireframe" polygon mode
+			glPolygonMode(GL_FRONT_AND_BACK,
+				GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
+			glDisable(GL_CULL_FACE);
+
+			glm::mat4 transform;
+
+			glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
+			glEnable(GL_CULL_FACE);
+			glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+											 // you can pass here
+				GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
+
+
+			transform[3] = glm::vec4(aabb.position, 1.0f);
+			//graphicObject->pState->getTransform(transform);
+			//graphicObject->pState->getScale(1);
+
+			glUniformMatrix4fv(
+				gUniformId_ModelMatrix, 1, GL_FALSE,
+				glm::value_ptr(glm::scale(transform, aabb.scale)));
+			glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
+				glm::value_ptr(glm::mat4()));
+			glUniform4fv(gUniformId_ModelColor, 1,
+				glm::value_ptr(glm::vec3(0.5f)));
+			glUniform1f(gUniformId_Alpha, 0.65f);
+
+
+			glDrawElementsBaseVertex(
+				GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].NumgIndices, GL_UNSIGNED_INT,
+				(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].BaseIndex),
+				g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].BaseIndex);
+		}
+		glUniform1i(gUniformId_Toggle_Textures, true);
+		glUniform1i(gUniformId_Toggle_Lights, true);
 	}
 
 }

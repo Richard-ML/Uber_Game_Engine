@@ -51,6 +51,7 @@ cRenderManager* g_pRenderManager = cRenderManager::instance();
 
 iGameState * g_pGameState = 0;
 cDebugRenderer * g_pDebugRenderer = 0;
+iWorld * g_pWorld = 0;
 
 // Uniform IDs
 GLuint gVertexBufferID = 0;
@@ -77,6 +78,8 @@ bool g_bool_toggleTextures = true;
 bool g_bool_toggleStencil = false;
 bool g_bool_toggleScissor = false;
 bool g_bool_toggleDebugShapes = true;
-
+bool g_bool_toggleWorldEditMode = true;
+bool g_bool_toggleNormalAndSpecularMaps = true;
+bool g_bool_toggleDrawAABBs = true;
 // Global Player control components
 std::vector<cPlayerControlComponent> g_vec_playerControlComponents;

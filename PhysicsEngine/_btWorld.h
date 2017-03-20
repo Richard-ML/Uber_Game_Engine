@@ -1,9 +1,9 @@
 #pragma once
 #include "stdafx.h"
-#include "iWorld.h"
+#include "iPhysicsWorld.h"
 #include "_btRigidBody.h"
 namespace PhysicsEngine {
-	class _btWorld : public iWorld {
+	class _btWorld : public iPhysicsWorld {
 		friend class _btRigidBody;
 	private:
 		btDiscreteDynamicsWorld* m_btWorld = 0;

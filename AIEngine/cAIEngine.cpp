@@ -70,6 +70,10 @@ namespace AIEngine {
    {
 	   g_pGameState = pGameState;
    }
+   AIEngine_API void cAIEngine::initializeWorldHandle(iWorld * pWorld)
+   {
+	   g_pWorld = pWorld;
+   }
    AIEngine_API void cAIEngine::initializeDebugRendererHandle(iDebugRenderer * pDebugRenderer)
    {
 	   g_pDebugRenderer = pDebugRenderer;

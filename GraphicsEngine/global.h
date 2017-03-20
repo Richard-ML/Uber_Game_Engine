@@ -24,7 +24,8 @@ void callback_WindowClose(GLFWwindow *window);
 void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 	int mods);
 void callback_Error(int, const char* error);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+void callback_scroll(GLFWwindow* window, double xoffset, double yoffset);
+void callback_mouse_button(GLFWwindow* window, int button, int action, int mods);
 
 
 
@@ -94,6 +95,7 @@ extern cLightManager *g_pLightManager;
 extern cRenderManager *g_pRenderManager;
 extern iGameState * g_pGameState;
 extern cDebugRenderer * g_pDebugRenderer;
+extern iWorld * g_pWorld;
 
 
 
@@ -103,5 +105,8 @@ extern bool g_bool_toggleTextures;
 extern bool g_bool_toggleStencil;
 extern bool g_bool_toggleScissor;
 extern bool g_bool_toggleDebugShapes;
+extern bool g_bool_toggleWorldEditMode;
+extern bool g_bool_toggleNormalAndSpecularMaps;
+extern bool g_bool_toggleDrawAABBs;
 // Global Player control components
 extern std::vector<cPlayerControlComponent> g_vec_playerControlComponents;

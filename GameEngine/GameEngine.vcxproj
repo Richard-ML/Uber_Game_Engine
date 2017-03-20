@@ -170,6 +170,7 @@ copy /Y "$(SolutionDir)Include\FreeImage\FreeImage.dll" "$(TargetDir)FreeImage.d
   <ItemGroup>
     <ClInclude Include="cEntityManager.h" />
     <ClInclude Include="cGameState.h" />
+    <ClInclude Include="cWorld.h" />
     <ClInclude Include="externals.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="stdafx.h" />

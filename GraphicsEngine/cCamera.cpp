@@ -68,22 +68,32 @@ void cCamera::update(float dt) {
 void cCamera::updateView() {
 	// NOTE: The camera does not currently inherit the target's orientation as its base orientation. 
 	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-	glm::vec3 targetPosition = glm::vec3(m_targetTranform[3]);
+	glm::vec3 targetPosition = glm::vec3(m_targetTransform[3]);
 	targetPosition.y += 7.5f;
 	m_rotation.pendingRotation.y = glm::clamp(m_rotation.pendingRotation.y, 0.0f, 3.14f);
 	glm::mat4 rotation = glm::yawPitchRoll(m_rotation.pendingRotation.x, m_rotation.pendingRotation.y, 0.0f);
 	glm::vec3 translation = glm::vec3(0.0f, 0.0f, -m_zoom.distance);
 	translation = glm::vec3(rotation * glm::vec4(translation, 0.0f));
 	glm::vec3 position = targetPosition + translation;
-	m_cameraForward = glm::normalize(targetPosition - position);
+	glm::vec3 forward = glm::normalize(targetPosition - position);
 	up = glm::vec3(rotation * glm::vec4(up, 0.0f));
-	glm::vec3 right = glm::cross(m_cameraForward, up);
-
+	glm::vec3 right = glm::cross(forward, up);
 	m_viewMatrix = glm::lookAt(position, targetPosition, up);
+
+	////glm::mat4 idenView = m_viewMatrix;
+	//glm::vec3 forward2 = 
+	glm::mat4 temp;
+	getProjectionMatrix(temp);
+	m_viewIdentityMatrix *= glm::mat3(temp);
+	m_eyePosition = position;
+	m_viewIdentityMatrix[0] = forward;
+	m_viewIdentityMatrix[2] = glm::normalize(glm::cross(forward, up));
+	m_viewIdentityMatrix[1] = glm::normalize(glm::cross(m_viewIdentityMatrix[2], forward));
+
 }
 
 void cCamera::setTargetTransform(glm::mat4 &targetTransform) {
-	m_targetTranform = targetTransform;
+	m_targetTransform = targetTransform;
 	m_viewMatrix = glm::lookAtRH(glm::vec3( m_viewMatrix[3] ), glm::vec3( targetTransform[3] ), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 

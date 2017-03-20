@@ -114,7 +114,7 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 											  // AssImp supports 8 UV sets.
 		else
 			UVW = aiVector3D(0.0f, 0.0f, 0.0f);
-		vert1.Position = glm::vec4( pos1.x, pos1.y, pos1.z, 1.f);
+		vert1.Position = glm::vec4(pos1.x, pos1.y, pos1.z, 1.f);
 
 		if (pos1.x < min.x)
 			min.x = pos1.x;
@@ -178,31 +178,52 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 
 	meshFaces.push_back(tempVecTriFace);
 	m_MapMeshNameTocMeshEntry[name] = entryOut;
+
+	if (name == "Skeleton")
+	{
+		sAABB aabb;
+		aabb.scale = glm::vec3(max.x - min.x, max.y - min.y, max.x - min.x); // Skeleton moves around and rotates. So we need to use it's largest extents on each axis
+		aabb.position.y += 5.0f;
+		// TODO: add a flag for this..
+		m_MapMeshNameToAABB[name] = aabb;
+	}
+	else {
+		sAABB aabb;
+		aabb.scale = glm::vec3(max.x - min.x, (max.y - min.y) + 1.0f, max.z - min.z);
+		m_MapMeshNameToAABB[name] = aabb;
+	}
+	return true;
+}
+
+bool cMeshManager::loadFBXMeshFileIntoGLBuffer(std::string name, const char * path, float scale)
+{
+
+
 	return true;
 }
 
 void cMeshManager::loadWorld()
 {
-//	for (int ncW = 0; ncW < 64; ncW++)
-//	{
-//		for (int ncD = 0; ncD < 64; ncD++)
-//		{
-//			float offsetX = (128 * ncW);
-//			float offsetZ = (128 * ncD);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//		// cMeshEntry meshEntry = 	g_pMeshManager->m_MapMeshNameTocMeshEntry[ g_pMeshManager->m_mapRGBToMeshName[ g_pTextureManager->worldTiles[ncW][ncD] ] ]
-//		//std::make_tuple(g_vec_WorldTiles[ncW][ncD][layer][0], g_vec_WorldTiles[ncW][ncD][layer][1], g_vec_WorldTiles[ncW][ncD][layer][2])
-//		}
-//	}
+	//	for (int ncW = 0; ncW < 64; ncW++)
+	//	{
+	//		for (int ncD = 0; ncD < 64; ncD++)
+	//		{
+	//			float offsetX = (128 * ncW);
+	//			float offsetZ = (128 * ncD);
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//		// cMeshEntry meshEntry = 	g_pMeshManager->m_MapMeshNameTocMeshEntry[ g_pMeshManager->m_mapRGBToMeshName[ g_pTextureManager->worldTiles[ncW][ncD] ] ]
+	//		//std::make_tuple(g_vec_WorldTiles[ncW][ncD][layer][0], g_vec_WorldTiles[ncW][ncD][layer][1], g_vec_WorldTiles[ncW][ncD][layer][2])
+	//		}
+	//	}
 }
 

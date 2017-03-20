@@ -3,6 +3,7 @@
 #include "cCollisionObject.h"
 #include "iRigidBody.h"
 #include "stdafx.h"
+#include <sstream>
 #ifdef PhysicsEngine_EXPORTS
 #define PhysicsEngine_API __declspec(dllexport)
 #else
@@ -65,6 +66,7 @@ Status: Version 1.8 Alpha
 namespace PhysicsEngine {
 	class cRigidBody : public iRigidBody {//public cCollisionObject {
 	public:
+		iState* state;
 		//cRigidBody(cCollisionObject* object);
 		cRigidBody(const sRigidBody& rigidBody);
 		cRigidBody(){}
@@ -83,6 +85,26 @@ namespace PhysicsEngine {
 		virtual PhysicsEngine_API void isCollision( bool& collision);
 		virtual PhysicsEngine_API void setCollision(bool& collision);
 		//virtual void translate(glm::vec3& translation);
+		// Takes a reference to an existing xml node. (RenderableComponent) Then appends nodes to it containing all of it's information
+		std::string saveToXMLNode() {
+			std::string componentNode;
+			glm::vec3 position;
+			this->state->getPosition(position);
+			componentNode = "<PhysicsComponent>";
+			componentNode += "<RigidBody ";
+			componentNode += "offsetX=\"";
+			//glm::to_string()
+			std::stringstream string;
+			string.precision(6);
+			string << position.x <<
+				"\" " << "offsetY=\"" <<
+				position.y << "\" " << "offsetZ=\""
+				<< position.z << "\" />"
+				<< "</PhysicsComponent>";
+
+			componentNode += string.str();
+			return componentNode;
+		}
 	private:
 		sRigidBody m_rigidBody;
 	};

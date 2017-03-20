@@ -23,7 +23,7 @@ namespace PhysicsEngine {
 		friend class cPhysicsEngine;
 	public:
 		 _btWorld* m_btWorld;
-		iWorld* m_cWorld;
+		 iPhysicsWorld* m_cWorld;
 	};
 	inline const cPhysicsEngine_Impl *cPhysicsEngine::impl() const {
 		return static_cast<const cPhysicsEngine_Impl *>(this);
@@ -31,7 +31,7 @@ namespace PhysicsEngine {
 	inline cPhysicsEngine_Impl *cPhysicsEngine::impl() {
 		return static_cast<cPhysicsEngine_Impl *>(this);
 	}
-
+	std::vector<iRigidBody*> vec_rigidBodies;
 //#define BULLET
 #ifdef BULLET
 
@@ -107,6 +107,11 @@ namespace PhysicsEngine {
 	PhysicsEngine_API void cPhysicsEngine::initializeGameStateHandle(iGameState * pGameState)
 	{
 		g_pGameState = pGameState;
+	}
+
+	PhysicsEngine_API void cPhysicsEngine::initializeWorldHandle(iWorld * pWorld)
+	{
+		g_pWorld = pWorld;
 	}
 
 	PhysicsEngine_API void cPhysicsEngine::initializeDebugRendererHandle(iDebugRenderer * pDebugRenderer)
@@ -205,5 +210,13 @@ namespace PhysicsEngine {
 		}
 		return s_cPhysicsEngine;
 	}
-
+	PhysicsEngine_API bool cPhysicsEngine::addPhysicsObject(glm::vec3 position, iState * state)
+	{
+		cRigidBody * rb = new cRigidBody();
+		state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cRigidBody::saveToXMLNode, rb)));
+		rb->state = state;
+		state->setPosition(position);
+		vec_rigidBodies.push_back(rb);
+		return true;
+	}
 }

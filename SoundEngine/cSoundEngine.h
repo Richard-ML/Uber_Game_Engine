@@ -33,7 +33,7 @@ namespace SoundEngine {
 		static SoundEngine_API  cSoundEngine *instance();
 		static DWORD __cdecl soundThread(void* lpParam);
 		SoundEngine_API void initializeGameStateHandle(iGameState* pGameState);
-		//static SoundEngine_API void initializeWorldEditorHandle(iWorldEditor* pWorldEditor);
+		static SoundEngine_API void initializeWorldHandle(iWorld* pWorld);
 		static SoundEngine_API void initializeDebugRendererHandle(iDebugRenderer* pDebugRenderer);
 	
 	};

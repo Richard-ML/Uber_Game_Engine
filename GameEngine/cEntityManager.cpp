@@ -83,6 +83,51 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 	return 1;
 }
 
+void cEntityManager::spawnObjectsAtSelectedTile()
+{
+	std::vector<sAABB> aabbs = g_pWorld->getSelectionAABBs();
+
+	std::string meshName;
+	switch (g_pWorld->getActiveSelectionMode())
+	{
+	case FLOOR:
+		meshName = "FloorTile";
+		break;
+	case WALL_LEFT:
+		meshName = "WallZ";
+		break;
+	case WALL_RIGHT:
+		meshName = "WallZ";
+		break;
+	case WALL_FORWARD:
+		meshName = "WallX";
+		break;
+	case WALL_BACKWARD:
+		meshName = "WallX";
+		break;
+	default:
+		break;
+	}
+
+	for each(sAABB aabb in aabbs)
+	{
+
+		cGameEntity* gameEntity = new cGameEntity();
+		gameEntity->stateNodeID = g_pComponentEngine->registerNewEntity(); // Create new entity
+		iState* tempStateGraphics = g_pComponentEngine->subcribeToState(gameEntity->stateNodeID); // Get a state for graphics component
+		tempStateGraphics->setScale(1.0f);
+		g_pGraphicsEngine->addObject(tempStateGraphics, meshName);
+
+		iState* tempStatePhysics = g_pComponentEngine->subcribeToState(gameEntity->stateNodeID);
+
+		g_pPhysicsEngine->addPhysicsObject(aabb.position, tempStatePhysics); // Rigid body contains the basic information about the object's scale, position, and, velocity, etc.. 
+		iState* tempStateAI = g_pComponentEngine->subcribeToState(gameEntity->stateNodeID);
+		//g_pAIEngine->addAIObject(aabb.position, tempStateAI);
+		//vec_gameEntities.push_back(gameEntity); // Needs to be pushed to this vector if you want the objects to be included in the XML file at SaveGame()
+												// TODO: Create another state for the AIEngine to use if object is monster etc..
+	}
+}
+
 // Redo the load game entities process..
 void loadGameFromXML(std::string filename) {
 	// TODO: Delete all of the components.. 
