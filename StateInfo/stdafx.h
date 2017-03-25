@@ -19,3 +19,4 @@
 #include "..\Include\glm\glm\gtc\random.hpp"
 #include "..\Include\glm\glm\gtc\type_ptr.hpp"
 #include "..\Include\glm\glm\gtx\euler_angles.hpp"
+#include "..\Include\glm\glm\gtx\matrix_decompose.hpp"

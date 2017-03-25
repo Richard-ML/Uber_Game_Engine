@@ -17,6 +17,7 @@ struct sState {
 	float cooldownDuration;
 	glm::vec3 target;
 
+	glm::vec3 impluse;
 	sAABB aabb;
 };
 // Forward declarations
@@ -171,6 +172,15 @@ public:
 	virtual bool getIsMoving() {
 		return m_parentNode->getIsMoving();
 	}
+
+	virtual void setImpluse(glm::vec3 impluse) {
+		m_parentNode->setImpluse(impluse);
+
+	}
+	virtual glm::vec3 getImpluse() {
+		return m_parentNode->getImpluse();
+	}
+
 	cState() {
 
 	}
@@ -194,7 +204,7 @@ private:
 	struct sSpinLock {
 		//volatile LONG isLocked = 0; // 0 unlocked : 1 locked
 		LOCK lock;
-	}m_lock[13]; // 10 locks. One should be used per variable
+	}m_lock[14]; // 10 locks. One should be used per variable
 	virtual void lock(int varNum) {
 #if !defined(SKIP_LOCKING)  
 		while (_InterlockedExchange(&m_lock[varNum].lock, LOCKED) == UNLOCKED) {
@@ -310,6 +320,19 @@ public:
 		isMoving = this->_localStateData.isMoving;
 		unlock(4);
 		return isMoving;
+	}
+
+	virtual void setImpluse(glm::vec3 impluse) {
+	
+		lock(13);
+		this->_localStateData.impluse = impluse;
+		unlock(13);
+	}
+	virtual glm::vec3 getImpluse() {
+		lock(13);
+		glm::vec3 impluseResult = this->_localStateData.impluse;
+		unlock(13);
+		return impluseResult;
 	}
 	cStateNode() {
 

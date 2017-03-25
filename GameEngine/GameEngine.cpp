@@ -39,7 +39,7 @@ int main()
 	g_pSoundEngine->initializeWorldHandle(world);
 	g_pAIEngine->initializeWorldHandle(world);
 	// TEST DEBUG RENDERER
-	g_pDebugRenderer->createCube(glm::vec3(0.0f, 6.0f, 0.0f),glm::vec3(6.0f, 5.0f, 6.0f), 1.0f, glm::vec3(0.4f, 0.5f, 0.25f));
+	g_pDebugRenderer->createCube(glm::vec3(0.0f, 6.0f, -12.0f),glm::vec3(6.0f, 5.0f, 6.0f), 1.0f, glm::vec3(0.4f, 0.5f, 0.25f));
 
 
 
@@ -48,7 +48,7 @@ int main()
 	// TODO: Crate window using g_pGraphicsEngine interface..
 	// .. Load XML data & create entities
 	g_pEntityManager->loadGameFromXML("GameAssets.xml");
-	
+
 	// START THE ENGINES!
 	g_pGameState->setGameState(GAMESTATE_RUNNING);
 	std::chrono::high_resolution_clock::time_point lastTime =
@@ -56,6 +56,19 @@ int main()
 	std::chrono::duration<float> deltaTime;
 
 	do {
+		switch (g_pGameState->getGameState()) {
+		case GAMESTATE_LOADING:
+			Sleep(90);
+			g_pEntityManager->loadGameEntitiesFromXML(g_pGameState->getDifficulty());
+			g_pGameState->setGameState(GAMESTATE_RUNNING); // Loading is complete at this point
+			break;
+
+		case GAMESTATE_SAVING:
+			Sleep(90);
+			g_pEntityManager->saveGameToXML((int)g_pGameState->getDifficulty());
+			g_pGameState->setGameState(GAMESTATE_RUNNING);
+			break;
+		}
 		//Engines are running! CORE ROUTINE --- BEGIN
 		std::chrono::high_resolution_clock::time_point t2 =
 			std::chrono::high_resolution_clock::now();
@@ -67,7 +80,9 @@ int main()
 		// The GraphicsEngine is updated here on the main thread. The other engines have their own threads.
 		g_pGraphicsEngine->update(deltaTime.count());
 		// CORE ROUTINE --- END
+		Sleep(10);
 		lastTime = std::chrono::high_resolution_clock::now();
+	
 
 	} while (true);
 

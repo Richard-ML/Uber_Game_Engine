@@ -5,7 +5,8 @@
 namespace PhysicsEngine {
 	class _btWorld : public iPhysicsWorld {
 		friend class _btRigidBody;
-	private:
+	private:// Todo: create getters and setters
+	public:
 		btDiscreteDynamicsWorld* m_btWorld = 0;
 		btDefaultCollisionConfiguration* m_collisionConfiguration = 0;
 		btCollisionDispatcher* m_dispatcher = 0;

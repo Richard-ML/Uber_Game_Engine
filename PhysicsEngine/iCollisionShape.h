@@ -67,7 +67,8 @@ namespace PhysicsEngine {
 	enum eShapeType {
 		UNKNOWN = 0,
 		SPHERE,
-		PLANE
+		PLANE,
+		CUBE
 	};
 
 	class iCollisionShape {

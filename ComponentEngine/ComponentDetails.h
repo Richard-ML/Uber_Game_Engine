@@ -87,7 +87,7 @@ namespace ComponentManager {
 					reg.insert(map_ComponentRegistry::value_type(name, func));
 				if (ret.second == false) {
 					// Component already exists with this name..
-					std::cout << "COMPONENT ALREADY EXISTS WOOT! \n";
+					std::cout << "COMPONENT ALREADY EXISTS! \n";
 				}
 			}
 			ComponentEntry(const ComponentEntry<T> &) =

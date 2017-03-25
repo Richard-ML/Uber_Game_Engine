@@ -82,7 +82,11 @@ namespace GraphicsEngine {
 			graphicsObject->vec_meshes.push_back(mesh); // TODO: Offset scale rotation etc..
 			graphicsObject->pState = state;
 			graphicsObject->pState->setScale(1.0f);
-			graphicsObject->pState->setAABB(g_pMeshManager->m_MapMeshNameToAABB[mesh->meshName]);
+			sAABB aabb = graphicsObject->pState->getAABB();
+			aabb.scale = glm::vec3(glm::max(g_pMeshManager->m_MapMeshNameToAABB[mesh->meshName].scale.x , aabb.scale.x), glm::max(g_pMeshManager->m_MapMeshNameToAABB[mesh->meshName].scale.y, aabb.scale.y), glm::max(g_pMeshManager->m_MapMeshNameToAABB[mesh->meshName].scale.z, aabb.scale.z));
+			aabb.position.y = (aabb.scale.y) / 2;
+			
+			graphicsObject->pState->setAABB(aabb);
 		}
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("Light");
 			cRenderableComponentEntry_node; cRenderableComponentEntry_node = cRenderableComponentEntry_node->next_sibling("Light")) {
@@ -121,6 +125,10 @@ namespace GraphicsEngine {
 		mesh->meshName = meshName;
 		mesh->toggleOutline = false;
 		graphicsObject->vec_meshes.push_back(mesh);
+		sAABB aabb = g_pMeshManager->m_MapMeshNameToAABB[meshName];
+		aabb.position.y -= aabb.scale.y / 2.0f;
+		state->setAABB(aabb);
+		
 		state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cGraphicsObject::saveToXMLNode, graphicsObject)));
 		g_vec_pGraphicObjects.push_back(graphicsObject);
 	}
@@ -185,19 +193,25 @@ namespace GraphicsEngine {
 		bool pressS = glfwGetKey(gWindow, GLFW_KEY_S) == GLFW_PRESS;
 		bool pressA = glfwGetKey(gWindow, GLFW_KEY_A) == GLFW_PRESS;
 		bool pressD = glfwGetKey(gWindow, GLFW_KEY_D) == GLFW_PRESS;
+		bool pressShift = glfwGetKey(gWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS || glfwGetKey(gWindow, GLFW_KEY_LEFT_SHIFT);
 		if (pressW != pressS)
 		{
 			// TODO: Add velocity based on delta time. 
 			glm::vec3 translation = glm::vec3(0.0f, 0.0f, 1.28f);
 			if (pressS)
 				translation *= -1.0f;
+			if (pressShift)
+				translation *= 3.0f;
 			for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
 			{
-				glm::mat4 tempTrans = glm::translate(controlComponent.pState->getTransform(), translation);
+				glm::mat4 newTrans = glm::translate(controlComponent.pState->getTransform(), translation);
 				// PROJECT CODE: Position restriction
 				//tempTrans[3] = glm::clamp(tempTrans[3], glm::vec4(-1000.0f, 0.0f, -1000.0f, 0.0f), glm::vec4(1000.0f, 1.0f, -5.0f, 1.0f));
-				controlComponent.pState->setTransform(tempTrans);
-				gCamera->setTargetTransform(tempTrans);
+				//controlComponent.pState->setTransform(tempTrans);
+				glm::mat4 tempTrans = controlComponent.pState->getTransform();
+				tempTrans[3] = glm::vec4(0.0f);
+				controlComponent.pState->setImpluse(glm::vec3(glm::translate(tempTrans, translation)[3])- glm::vec3(glm::vec3(0.0f)));
+				gCamera->setTargetTransform(newTrans);
 			}
 		}
 

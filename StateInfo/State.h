@@ -44,6 +44,9 @@ public:
 	virtual void setAcceleration(glm::vec3 acceleration) = 0;
 	virtual void setVelocity(glm::vec3 velocity) = 0;
 
+	virtual void setImpluse(glm::vec3 impluse) = 0;
+	virtual glm::vec3 getImpluse() = 0;
+
 	virtual glm::vec3 getAcceleration() = 0;
 	virtual glm::vec3 getVelocity() = 0;
 
@@ -74,7 +77,8 @@ public:
 	virtual void registerComponentXMLDataCallback(std::function<std::string()> getComponentNode) = 0;
 
 	// TODO Getters! Don't forget to update iStateManager!!
-
+	virtual void setImpluse(glm::vec3 impluse) = 0;
+	virtual glm::vec3 getImpluse() = 0;
 
 	virtual void setAcceleration(glm::vec3 acceleration) = 0;
 	virtual void setVelocity(glm::vec3 velocity) = 0;

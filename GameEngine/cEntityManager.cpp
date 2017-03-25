@@ -26,6 +26,8 @@ inline cEntityManager_Impl *cEntityManager::impl() {
 	return static_cast<cEntityManager_Impl *>(this);
 }
 
+std::vector<cGameEntity*> vec_gameEntities;
+
 //////////////////////////////////////////////////////////
 //////   loadGameFromXML Method - XML file loader   //////
 /////////////////////////////////////////////////////////
@@ -64,20 +66,7 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 	category_node = root_node->first_node("Meshes");
 		GraphicsEngine::cGraphicsEngine::instance()->loadMeshes(category_node);
 
-		// TODO: LOAD GAME ( PUT IN NEW FUNCTION )
-	category_node = root_node->first_node("GameEntities");
-	for (rapidxml::xml_node<> *cGameEntity_node = category_node->first_node("GameEntity");
-		cGameEntity_node; cGameEntity_node = cGameEntity_node->next_sibling("GameEntity")) {
-		// Register new state node for the component..
-		cGameEntity* gameEntity = new cGameEntity();
-		
-		std::string stateNodeID = g_pComponentEngine->registerNewEntity();
-
-		
-		// These components are loaded and share a state! ...
-			gameEntity->vec_pComponents = g_pComponentEngine->loadFromXML(cGameEntity_node, stateNodeID);
-		//this->impl()->vec_pEntites.push_back(gameEntity);
-	}
+		loadGameEntitiesFromXML(0);
 
 
 	return 1;
@@ -111,7 +100,6 @@ void cEntityManager::spawnObjectsAtSelectedTile()
 
 	for each(sAABB aabb in aabbs)
 	{
-
 		cGameEntity* gameEntity = new cGameEntity();
 		gameEntity->stateNodeID = g_pComponentEngine->registerNewEntity(); // Create new entity
 		iState* tempStateGraphics = g_pComponentEngine->subcribeToState(gameEntity->stateNodeID); // Get a state for graphics component
@@ -122,17 +110,68 @@ void cEntityManager::spawnObjectsAtSelectedTile()
 
 		g_pPhysicsEngine->addPhysicsObject(aabb.position, tempStatePhysics); // Rigid body contains the basic information about the object's scale, position, and, velocity, etc.. 
 		iState* tempStateAI = g_pComponentEngine->subcribeToState(gameEntity->stateNodeID);
+		
 		//g_pAIEngine->addAIObject(aabb.position, tempStateAI);
-		//vec_gameEntities.push_back(gameEntity); // Needs to be pushed to this vector if you want the objects to be included in the XML file at SaveGame()
-												// TODO: Create another state for the AIEngine to use if object is monster etc..
+		vec_gameEntities.push_back(gameEntity); // Needs to be pushed to this vector if you want the objects to be included in the XML file at SaveGame()
+		// TODO: Create another state for the AIEngine to use if object is monster etc..
 	}
 }
 
-// Redo the load game entities process..
-void loadGameFromXML(std::string filename) {
-	// TODO: Delete all of the components.. 
+// For each entity request entity xml node from state manager.. state manager will get each all of the entities component nodes 
+void saveGameToXML(int difficulty) {
+	std::string filename;
+	// TODO: Delete all of the components properly.. 
+	if (difficulty == 0)
+		filename = "GameEntities.xml";
+	else
+		return;
+	//if (difficulty == 1)
+	//	filename = "config30.xml";
+	//else
+	//	if (difficulty == 2)
+	//		filename = "config40.xml";
+	//	else return;
 
-	std::cout << "Loading saved game entities data..\n";
+
+	std::string xmlString;
+	xmlString += "<GameEntities>";
+
+	// Iterate over each game entity in vec entities..
+	for each(cGameEntity* gameEntity in vec_gameEntities)
+		xmlString.append(g_pComponentEngine->getGameEntityXML(gameEntity->stateNodeID));
+	xmlString += "</GameEntities>";
+
+	std::cout << xmlString;
+
+	// Save to file
+	std::ofstream file_stored;
+	file_stored.open(filename, std::ofstream::out | std::ofstream::trunc);
+	file_stored << xmlString;
+	file_stored.close();
+
+	// Save file == done...
+}
+
+
+// Loads game entities..
+void cEntityManager::loadGameEntitiesFromXML(int difficulty) {
+	std::string filename;
+	// TODO: Delete all of the components properly.. 
+	if (difficulty == 0)
+		filename = "GameEntities.xml";
+	//else
+	//if (difficulty == 1)
+	//filename = "config30.xml";
+	//else
+	//if (difficulty == 2)
+	//filename = "config40.xml";
+	else return;
+	g_pGraphicsEngine->clearGameObjects();
+	g_pComponentEngine->clearStateInfo();
+	vec_gameEntities.clear();
+
+
+	std::cout << "Loading saved game entities data..\nDifficulty == " << difficulty << std::endl;
 	rapidxml::xml_document<> theDoc;
 	rapidxml::xml_node<> *root_node;
 
@@ -141,11 +180,10 @@ void loadGameFromXML(std::string filename) {
 		std::istreambuf_iterator<char>());
 	bufData.push_back('\0');
 	theDoc.parse<0>(&bufData[0]);
-	root_node = theDoc.first_node("GameAssets");
-	rapidxml::xml_node<> *category_node;
 
-	category_node = root_node->first_node("GameEntities");
-	for (rapidxml::xml_node<> *cGameEntity_node = category_node->first_node("GameEntity");
+	bool tardis = true;
+	root_node = theDoc.first_node("GameEntities");
+	for (rapidxml::xml_node<> *cGameEntity_node = root_node->first_node("GameEntity");
 		cGameEntity_node; cGameEntity_node = cGameEntity_node->next_sibling("GameEntity")) {
 		// Register new state node for the component..
 		cGameEntity* gameEntity = new cGameEntity();
@@ -154,17 +192,60 @@ void loadGameFromXML(std::string filename) {
 
 		// These components are loaded and share a state! ...
 		gameEntity->vec_pComponents = g_pComponentEngine->loadFromXML(cGameEntity_node, gameEntity->stateNodeID);
+		vec_gameEntities.push_back(gameEntity);
 		//this->impl()->vec_pEntites.push_back(gameEntity);
+		if (tardis == true) {
+			iState* tempState = g_pComponentEngine->subcribeToState(gameEntity->stateNodeID);
+			//g_pAIEngine->tardis = tempState; // TODO: Pointer to player? Remove this?
+			tardis = false;
+		}
 	}
 
 
+	// TODO: REMOVE THIS
+	//generateObjects(); // Use this to spawn entities via c++
+
+
 }
+
 
 // For each entity request entity xml node from state manager.. state manager will get each all of the entities component nodes 
-void saveGameToXML() {
+void cEntityManager::saveGameToXML(int difficulty) {
+
+	std::string filename;
+	// TODO: Delete all of the components properly.. 
+	if (difficulty == 0)
+		filename = "GameEntities.xml";
+	else
+		return;
+	//if (difficulty == 1)
+	//	filename = "config30.xml";
+	//else
+	//	if (difficulty == 2)
+	//		filename = "config40.xml";
+	//	else return;
 
 
+	std::string xmlString;
+	xmlString += "<GameEntities>";
+
+	// Iterate over each game entity in vec entities..
+	for each(cGameEntity* gameEntity in vec_gameEntities)
+		xmlString.append(g_pComponentEngine->getGameEntityXML(gameEntity->stateNodeID));
+	xmlString += "</GameEntities>";
+
+	std::cout << xmlString;
+
+	// Save to file
+	std::ofstream file_stored;
+	file_stored.open(filename, std::ofstream::out | std::ofstream::trunc);
+	file_stored << xmlString;
+	file_stored.close();
+
+	// Save file == done...
 }
+
+
 
 
 cEntityManager *cEntityManager::instance() {

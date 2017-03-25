@@ -71,6 +71,7 @@ namespace PhysicsEngine {
 	public:
 		//cRigidBody(cCollisionObject* object);
 		_btRigidBody(const sRigidBody& rigidBody, iCollisionShape* collisionShape);
+		_btRigidBody() {}
 		~_btRigidBody();
 		virtual PhysicsEngine_API void getOrientation(glm::mat4& orientation);
 		//virtual void getTransform(glm::mat4& transform);
@@ -86,7 +87,7 @@ namespace PhysicsEngine {
 		virtual PhysicsEngine_API void isCollision(bool& collision);
 		virtual PhysicsEngine_API void setCollision(bool& collision);
 		//virtual void translate(glm::vec3& translation);
-	private:
+	//private:
 		btRigidBody* m_rigidBody;
 
 	};

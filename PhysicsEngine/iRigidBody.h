@@ -2,6 +2,7 @@
 #define _iRigidBody_HG_
 #include "stdafx.h"
 #include "cCollisionObject.h"
+#include <sstream>
 #ifdef PhysicsEngine_EXPORTS
 #define PhysicsEngine_API __declspec(dllexport)
 #else
@@ -25,6 +26,7 @@ namespace PhysicsEngine {
 
 	class iRigidBody: public cCollisionObject {
 	public:
+		iState* state;
 		virtual ~iRigidBody() {}
 		virtual PhysicsEngine_API void getOrientation(glm::mat4& orientation) = 0;
 		//virtual void getTransform(glm::mat4& transform) = 0;
@@ -39,7 +41,28 @@ namespace PhysicsEngine {
 		virtual PhysicsEngine_API void applyForce(const glm::vec3 velocity) = 0;
 		virtual PhysicsEngine_API void isCollision(bool& collision) = 0;
 		virtual PhysicsEngine_API void setCollision(bool& collision) = 0;
+		std::string saveToXMLNode() {
+			std::string componentNode;
+			glm::vec3 position;
+			this->state->getPosition(position);
+			componentNode = "<PhysicsComponent>";
+			componentNode += "<RigidBody ";
+			componentNode += "offsetX=\"";
+			//glm::to_string()
+			std::stringstream string;
+			string.precision(6);
+			string << position.x <<
+				"\" " << "offsetY=\"" <<
+				position.y << "\" " << "offsetZ=\""
+				<< position.z << "\"" 
+				<< " mass=\"" << "0.0f\"" 
+				<< "/>"
+				
+				<< "</PhysicsComponent>";
 
+			componentNode += string.str();
+			return componentNode;
+		}
 	protected:
 		iRigidBody() {}
 	private:

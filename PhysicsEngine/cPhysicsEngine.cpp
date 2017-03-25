@@ -32,32 +32,88 @@ namespace PhysicsEngine {
 		return static_cast<cPhysicsEngine_Impl *>(this);
 	}
 	std::vector<iRigidBody*> vec_rigidBodies;
-//#define BULLET
+#define BULLET
 #ifdef BULLET
 
 	cPhysicsEngine::cPhysicsEngine() {
 		this->impl()->m_btWorld = new _btWorld();
+		//btContactSolverInfo si = this->impl()->m_btWorld->m_btWorld->getSolverInfo();
+		//si.m_splitImpulsePenetrationThreshold = -0.0004f;
+		//int numManifolds = this->impl()->m_btWorld->m_dispatcher->getNumManifolds();
+		//
+		//for (int i = 0; i < numManifolds; i++)
+		//{
+		//	btPersistentManifold* contactManifold = this->impl()->m_btWorld->m_dispatcher->getManifoldByIndexInternal(i);
+		//	btScalar contactThreshold = -0.0002;
+		//	contactManifold->setContactBreakingThreshold(contactThreshold);
+		//}
 	}
 
-//	DWORD cPhysicsEngine::physicsThread(void *lpParam) {
-//		std::chrono::high_resolution_clock::time_point lastTime =
-//			std::chrono::high_resolution_clock::now();
-//		std::chrono::duration<float> deltaTime;
-//		cPhysicsEngine *physicsEngine =
-//			reinterpret_cast<cPhysicsEngine *>(lpParam);
-//		do {
-//			std::chrono::high_resolution_clock::time_point t2 =
-//				std::chrono::high_resolution_clock::now();
-//			deltaTime =
-//				std::chrono::duration_cast<std::chrono::duration<float>>(
-//					std::chrono::high_resolution_clock::now() -
-//					lastTime); // Get the time that as passed
-//			physicsEngine->impl()->m_btWorld->step(deltaTime.count());
-//			lastTime = std::chrono::high_resolution_clock::now();
-//			Sleep(35); // Free the thread
-//} while (true);
-//return 0;
-//}
+
+
+	DWORD cPhysicsEngine::physicsThread(void *lpParam) {
+		std::chrono::high_resolution_clock::time_point lastTime =
+			std::chrono::high_resolution_clock::now();
+		std::chrono::duration<float> deltaTime;
+		cPhysicsEngine *physicsEngine =
+			reinterpret_cast<cPhysicsEngine *>(lpParam);
+		do {
+			while (g_pGameState == 0 || g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(50); }
+			std::chrono::high_resolution_clock::time_point t2 =
+				std::chrono::high_resolution_clock::now();
+			deltaTime =
+				std::chrono::duration_cast<std::chrono::duration<float>>(
+					std::chrono::high_resolution_clock::now() -
+					lastTime); // Get the time that as passed
+
+			for each(_btRigidBody* rb in vec_rigidBodies) {
+				if (rb->m_rigidBody != 0) {
+					glm::vec3 currentImpluse = rb->state->getImpluse();
+					if (currentImpluse != glm::vec3(0.0f))
+					{
+						//btTransform trans;
+						//rb->m_rigidBody->getMotionState()->getWorldTransform(trans);
+						//	trans.setOrigin(trans.getOrigin() + btVector3(currentImpluse.x, currentImpluse.y, currentImpluse.z) * deltaTime.count());
+					//	rb->m_rigidBody->applyCentralImpulse(btVector3(currentImpluse.x, currentImpluse.y, currentImpluse.z) * 10);
+					//rb->m_rigidBody->applyCentralForce(btVector3(currentImpluse.x, currentImpluse.y, currentImpluse.z) * 10);
+
+						rb->m_rigidBody->setLinearVelocity(btVector3(currentImpluse.x, currentImpluse.y, currentImpluse.z) * 10);
+						rb->state->setImpluse(glm::vec3(0.0f));
+
+							//glm::mat4 transformation = rb->state->getTransform();
+							//glm::vec3 scale;
+							//glm::quat rotation;
+							//glm::vec3 translation;
+							//glm::vec3 skew;
+							//glm::vec4 perspective;
+							//glm::decompose(transformation, scale, rotation, translation, skew, perspective);
+							//rotation = glm::conjugate(rotation);
+							//
+							//
+							//trans.setRotation(btQuaternion(glm::yaw(rotation), glm::pitch(rotation), glm::roll(rotation)));
+							//rb->m_rigidBody->setWorldTransform(trans);
+					}
+				}
+			}
+
+			physicsEngine->impl()->m_btWorld->step(0.016f);
+
+
+			for each(_btRigidBody* rb in vec_rigidBodies) {
+				if (rb->m_rigidBody != 0 && rb->m_rigidBody->getInvMass() != 0) {
+					
+					btVector3 btVec = rb->m_rigidBody->getWorldTransform().getOrigin();
+					glm::vec3 positionResult = glm::vec3(btVec[0], btVec[1], btVec[2]) - rb->state->getAABB().position;
+					//positionResult.y = 1.0f;
+					rb->state->setPosition(positionResult);
+				}
+			}
+
+			lastTime = std::chrono::high_resolution_clock::now();
+			Sleep(1); // Free the thread
+} while (true);
+return 0;
+}
 
 	PhysicsEngine_API iCollisionShape * cPhysicsEngine::createCollisionShape(eShapeType shapeType)
 	{
@@ -73,10 +129,10 @@ namespace PhysicsEngine {
 		return rb;
 	}
 
-	PhysicsEngine_API void cPhysicsEngine::update(float deltaTime)
-	{
-		impl()->m_btWorld->step(deltaTime);
-	}
+	//PhysicsEngine_API void cPhysicsEngine::update(float deltaTime)
+	//{
+	//	impl()->m_btWorld->step(deltaTime);
+	//}
 
 	PhysicsEngine_API bool cPhysicsEngine::loadPhysicsComponent(rapidxml::xml_node<>* componentNode, iState * state)
 	{
@@ -86,7 +142,48 @@ namespace PhysicsEngine {
 			glm::mat4 transform;
 			glm::vec3 offset = glm::vec3(std::stof(cRigidBody_node->first_attribute("offsetX")->value()), std::stof(cRigidBody_node->first_attribute("offsetY")->value()), std::stof(cRigidBody_node->first_attribute("offsetZ")->value()));
 			transform[3] = glm::vec4(offset, 1.0f);
+
+			_btRigidBody* rb = new _btRigidBody();
+		    
+			rb->state = state;
+			state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&_btRigidBody::saveToXMLNode, rb)));
+
 			state->setTransform(transform);
+
+			vec_rigidBodies.push_back(rb);
+
+			glm::vec3 colShapePos = state->getAABB().position;
+
+			btTransform worldTransform;
+			worldTransform.setIdentity();
+			worldTransform.setOrigin(btVector3(offset.x, offset.y, offset.z) + btVector3(colShapePos.x, colShapePos.y, colShapePos.z));
+
+			btScalar mass = std::stof(cRigidBody_node->first_attribute("mass")->value());
+
+			//rigidbody is dynamic if and only if mass is non zero, otherwise static
+			bool isDynamic = (mass != 0.f);
+			btVector3 localInertia(0.0f, 0.0f, 0.0f);
+			glm::vec3 boxHalfWidth = state->getAABB().scale;
+			btBoxShape* bs = new btBoxShape(btVector3(boxHalfWidth.x / 2, boxHalfWidth.y / 2, boxHalfWidth.z / 2));
+			
+			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+			btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+			if (isDynamic)
+				bs->calculateLocalInertia(mass, localInertia);
+			
+			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, bs, localInertia);
+			rb->m_rigidBody = new btRigidBody(rbInfo);
+			rb->m_rigidBody->setRestitution(.0f);
+			rb->m_rigidBody->setFriction(.4f);
+	
+			if (isDynamic)
+			{
+				rb->m_rigidBody->activate(true);
+				rb->m_rigidBody->forceActivationState(DISABLE_DEACTIVATION);
+				rb->m_rigidBody->setCollisionFlags(rb->m_rigidBody->getCollisionFlags() );
+			}
+				s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody);
+
 		}
 		return true;
 	}
@@ -104,20 +201,7 @@ namespace PhysicsEngine {
 
 
 #else
-	PhysicsEngine_API void cPhysicsEngine::initializeGameStateHandle(iGameState * pGameState)
-	{
-		g_pGameState = pGameState;
-	}
 
-	PhysicsEngine_API void cPhysicsEngine::initializeWorldHandle(iWorld * pWorld)
-	{
-		g_pWorld = pWorld;
-	}
-
-	PhysicsEngine_API void cPhysicsEngine::initializeDebugRendererHandle(iDebugRenderer * pDebugRenderer)
-	{
-		g_pDebugRenderer = pDebugRenderer;
-	}
 
 	cPhysicsEngine::cPhysicsEngine() {
 		this->impl()->m_cWorld = new cWorld();
@@ -130,7 +214,27 @@ namespace PhysicsEngine {
 			glm::mat4 transform;
 			glm::vec3 offset = glm::vec3(std::stof(cRigidBody_node->first_attribute("offsetX")->value()), std::stof(cRigidBody_node->first_attribute("offsetY")->value()), std::stof(cRigidBody_node->first_attribute("offsetZ")->value()));
 			transform[3] = glm::vec4(offset, 1.0f);
+
+			cRigidBody* rb = new cRigidBody();
+			rb->state = state;
+			rb->setPosition(offset);
+			state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cRigidBody::saveToXMLNode, rb)));
+
 			state->setTransform(transform);
+
+			vec_rigidBodies.push_back(rb);
+
+			//s_cPhysicsEngine->impl()->m_btWorld->addCollisionObject(rb);
+
+			// TODO: Add static box to btWorld at transform[3].xyz. Then add character set pState->setIsColliding to change color status of pState's AABBs
+
+			btCollisionObject colObj;
+			//colObj.isStaticObject = true;
+			//colObj.
+			sAABB aabb = state->getAABB();
+
+			btBoxShape shape(btVector3(aabb.scale.x, aabb.scale.y, aabb.scale.z));
+			btRigidBodyData rbData;
 		}
 		return true;
 	}
@@ -195,7 +299,20 @@ namespace PhysicsEngine {
 	}
 
 #endif
+	PhysicsEngine_API void cPhysicsEngine::initializeGameStateHandle(iGameState * pGameState)
+	{
+		g_pGameState = pGameState;
+	}
 
+	PhysicsEngine_API void cPhysicsEngine::initializeWorldHandle(iWorld * pWorld)
+	{
+		g_pWorld = pWorld;
+	}
+
+	PhysicsEngine_API void cPhysicsEngine::initializeDebugRendererHandle(iDebugRenderer * pDebugRenderer)
+	{
+		g_pDebugRenderer = pDebugRenderer;
+	}
 
 	cPhysicsEngine * cPhysicsEngine::instance() {
 		if (!s_cPhysicsEngine)
@@ -212,11 +329,50 @@ namespace PhysicsEngine {
 	}
 	PhysicsEngine_API bool cPhysicsEngine::addPhysicsObject(glm::vec3 position, iState * state)
 	{
-		cRigidBody * rb = new cRigidBody();
-		state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cRigidBody::saveToXMLNode, rb)));
+		_btRigidBody * rb = new _btRigidBody();
+		state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&_btRigidBody::saveToXMLNode, rb)));
+
 		rb->state = state;
 		state->setPosition(position);
+
+
+
+		glm::vec3 colShapePos = state->getAABB().position;
+
+		btTransform worldTransform;
+		worldTransform.setIdentity();
+		worldTransform.setOrigin(btVector3(position.x, position.y, position.z) + btVector3(colShapePos.x, colShapePos.y, colShapePos.z));
+
+		btScalar mass = 0.0f;
+
+		//rigidbody is dynamic if and only if mass is non zero, otherwise static
+		bool isDynamic = (mass != 0.f);
+		btVector3 localInertia(0.0f, 0.0f, 0.0f);
+		glm::vec3 boxHalfWidth = state->getAABB().scale;
+		btBoxShape* bs = new btBoxShape(btVector3(boxHalfWidth.x / 2, boxHalfWidth.y / 2, boxHalfWidth.z / 2));
+
+		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+		btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+		if (isDynamic)
+			bs->calculateLocalInertia(mass, localInertia);
+
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, bs, localInertia);
+		rb->m_rigidBody = new btRigidBody(rbInfo);
+
+		rb->m_rigidBody->activate(true);
+		rb->m_rigidBody->forceActivationState(DISABLE_DEACTIVATION);
+		rb->m_rigidBody->setCollisionFlags(rb->m_rigidBody->getCollisionFlags());
+
+		rb->m_rigidBody->setFriction(0.8f);
+
+		s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody);
+
+
+
 		vec_rigidBodies.push_back(rb);
+
+
+
 		return true;
 	}
 }

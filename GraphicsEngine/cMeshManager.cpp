@@ -183,14 +183,16 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 	{
 		sAABB aabb;
 		aabb.scale = glm::vec3(max.x - min.x, max.y - min.y, max.x - min.x); // Skeleton moves around and rotates. So we need to use it's largest extents on each axis
-		aabb.position.y += 5.0f;
+		aabb.position.y += (max.y - min.y) / 2;
 		// TODO: add a flag for this..
 		m_MapMeshNameToAABB[name] = aabb;
 	}
 	else {
 		sAABB aabb;
 		aabb.scale = glm::vec3(max.x - min.x, (max.y - min.y) + 1.0f, max.z - min.z);
+		aabb.position.y += (max.y - min.y) / 2;
 		m_MapMeshNameToAABB[name] = aabb;
+
 	}
 	return true;
 }

@@ -181,44 +181,20 @@ void cRenderManager::renderScene()
 				glm::value_ptr(glm::vec4(1.0f)));
 			glUniform1f(gUniformId_Alpha, 1.0f);
 
-			if (mesh->meshName == "Street_FLAT" || mesh->meshName == "Building_1" || mesh->meshName == "Building_2" || mesh->meshName == "Building_3")
+			if (mesh->meshName == "Portal")
 			{
-				glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, false);
-				if (mesh->meshName == "Street_FLAT")
-					glBindTexture(GL_TEXTURE_2D, g_pTextureManager->mapTextureNameToID["Grass"]);
-				else
-					glBindTexture(GL_TEXTURE_2D, g_pTextureManager->mapTextureNameToID["Brick"]);
+				glBindTexture(GL_TEXTURE_2D, g_pRenderManager->map_NameToFBOInfo["Portal"]->colorTextureID);
+				glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, false); // 
+				//glUniform1i(gUniformId_Toggle_Lights, false);
+			}
 				glDrawElementsBaseVertex(
 					GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].NumgIndices, GL_UNSIGNED_INT,
 					(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex),
 					g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex);
 				glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, true);
+				//glUniform1i(gUniformId_Toggle_Lights, true);
 				glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
-			}
-			else
-				//if(mesh->meshName == "Dalek")
-				//{
-				//	std::string meshNameResultLOD = "Dalek_";
-				//	float distanceFromCamera = glm::abs( glm::distance(glm::vec3(transform[3]), glm::vec3(gCamera->m_viewMatrix[3])));
-				//
-				//	if (distanceFromCamera < 100.0f)
-				//		meshNameResultLOD += "1";
-				//	else
-				//		if (distanceFromCamera < 500.0f)
-				//			meshNameResultLOD += "2";
-				//		else
-				//			meshNameResultLOD += "3";
-				//	glDrawElementsBaseVertex(
-				//		GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[meshNameResultLOD].NumgIndices, GL_UNSIGNED_INT,
-				//		(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[meshNameResultLOD].BaseIndex),
-				//		g_pMeshManager->m_MapMeshNameTocMeshEntry[meshNameResultLOD].BaseIndex);
-				//
-				//}
-				//else
-				glDrawElementsBaseVertex(
-					GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].NumgIndices, GL_UNSIGNED_INT,
-					(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex),
-					g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex);
+		
 		}
 
 
@@ -257,7 +233,7 @@ void cRenderManager::renderScene()
 
 			glUniformMatrix4fv(
 				gUniformId_ModelMatrix, 1, GL_FALSE,
-				glm::value_ptr(glm::scale(transform, aabb.scale)));
+				glm::value_ptr(glm::scale(transform, aabb.scale * graphicObject->pState->getScale())));
 			glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
 				glm::value_ptr(glm::mat4()));
 			if (graphicObject->pState->getIsColliding())
@@ -331,7 +307,7 @@ void cRenderManager::renderScene()
 				(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].BaseIndex),
 				g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].BaseIndex);
 		}
-
+		glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, true);
 		glUniform1i(gUniformId_Toggle_Textures, 1);
 		glUniform1i(gUniformId_Toggle_Lights, true);
 		g_pDebugRenderer->unlock(0);
@@ -599,7 +575,7 @@ void cMSFBOInfo::createFrameBuffer()
 	glGenTextures(1, &this->msColorTexture);
 	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, this->msColorTexture);
 
-	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, // TODO: Make number of samples non-hardcoded
+	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 8, // TODO: Make number of samples non-hardcoded
 		GL_RGBA, this->width, this->height, GL_TRUE);
 
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, this->msColorTexture, 0);
@@ -608,7 +584,7 @@ void cMSFBOInfo::createFrameBuffer()
 	GLuint renderbuffer;
 	glGenRenderbuffers(1, &renderbuffer);
 	glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
-	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, this->width, this->height);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 8, GL_DEPTH24_STENCIL8, this->width, this->height);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer);
 
