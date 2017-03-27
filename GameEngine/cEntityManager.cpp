@@ -74,7 +74,7 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 
 void cEntityManager::spawnObjectsAtSelectedTile()
 {
-	std::vector<sAABB> aabbs = g_pWorld->getSelectionAABBs();
+	std::vector<sBoundingBox> boundingBoxes = g_pWorld->getSelectionAABBs();
 
 	std::string meshName;
 	switch (g_pWorld->getActiveSelectionMode())
@@ -98,7 +98,7 @@ void cEntityManager::spawnObjectsAtSelectedTile()
 		break;
 	}
 
-	for each(sAABB aabb in aabbs)
+	for each(sBoundingBox boundingBox in boundingBoxes)
 	{
 		cGameEntity* gameEntity = new cGameEntity();
 		gameEntity->stateNodeID = g_pComponentEngine->registerNewEntity(); // Create new entity
@@ -108,10 +108,10 @@ void cEntityManager::spawnObjectsAtSelectedTile()
 
 		iState* tempStatePhysics = g_pComponentEngine->subcribeToState(gameEntity->stateNodeID);
 
-		g_pPhysicsEngine->addPhysicsObject(aabb.position, tempStatePhysics); // Rigid body contains the basic information about the object's scale, position, and, velocity, etc.. 
+		g_pPhysicsEngine->addPhysicsObject(boundingBox.position, tempStatePhysics); // Rigid body contains the basic information about the object's scale, position, and, velocity, etc.. 
 		iState* tempStateAI = g_pComponentEngine->subcribeToState(gameEntity->stateNodeID);
 		
-		//g_pAIEngine->addAIObject(aabb.position, tempStateAI);
+		//g_pAIEngine->addAIObject(boundingBox.position, tempStateAI);
 		vec_gameEntities.push_back(gameEntity); // Needs to be pushed to this vector if you want the objects to be included in the XML file at SaveGame()
 		// TODO: Create another state for the AIEngine to use if object is monster etc..
 	}

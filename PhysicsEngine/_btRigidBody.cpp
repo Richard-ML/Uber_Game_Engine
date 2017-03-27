@@ -144,14 +144,14 @@ PhysicsEngine_API void PhysicsEngine::_btRigidBody::applyForce(const glm::vec3 v
 	return;
 }
 
-PhysicsEngine_API void PhysicsEngine::_btRigidBody::isCollision(bool & collision)
+PhysicsEngine_API bool PhysicsEngine::_btRigidBody::isCollision()
 {
 	//return m_rigidBody.getCollisionFlags() != eCollisionFlags;
-	return;
+	return isColliding;
 }
 
-PhysicsEngine_API void PhysicsEngine::_btRigidBody::setCollision(bool & collision)
+PhysicsEngine_API void PhysicsEngine::_btRigidBody::setCollision(bool collision)
 {
-
+	isColliding = collision;
 	return;
 }

@@ -1,0 +1,15 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl Material__509
+Ns 9.803922
+Ka 0.588000 0.588000 0.588000
+Kd 0.588000 0.588000 0.588000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd C:\Users\Richard\Desktop\Custom Graphics\revolut1on1ze 2016-10-14 at 8.04.39 PM\Grim Bear top down dungeon building set - Volume 1\Grim Bear top down dungeon building set - Volume 1\arc_DIF.tga
+map_Bump C:\\Users\\Richard\\Desktop\\Custom Graphics\\revolut1on1ze 2016-10-14 at 8.04.39 PM\\Grim Bear top down dungeon building set - Volume 1\\Grim Bear top down dungeon building set - Volume 1\\arc_NRM.tga
+map_Ka C:\\Users\\Richard\\Desktop\\Custom Graphics\\revolut1on1ze 2016-10-14 at 8.04.39 PM\\Grim Bear top down dungeon building set - Volume 1\\Grim Bear top down dungeon building set - Volume 1\\arc_DIF.tga

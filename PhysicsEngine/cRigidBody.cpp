@@ -78,12 +78,12 @@ PhysicsEngine_API void PhysicsEngine::cRigidBody::applyForce(const glm::vec3 vel
 	this->m_rigidBody.velocity += velocity;
 }
 
-PhysicsEngine_API void PhysicsEngine::cRigidBody::isCollision(bool& collision)
+PhysicsEngine_API bool PhysicsEngine::cRigidBody::isCollision()
 {
-	collision = this->m_rigidBody.collision;
+	return  this->m_rigidBody.collision;
 }
 
-PhysicsEngine_API void PhysicsEngine::cRigidBody::setCollision(bool & collision)
+PhysicsEngine_API void PhysicsEngine::cRigidBody::setCollision(bool collision)
 {
 	this->m_rigidBody.collision = collision;
 }

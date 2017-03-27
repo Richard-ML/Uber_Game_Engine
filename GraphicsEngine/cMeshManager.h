@@ -43,7 +43,7 @@ public:
 	std::vector<unsigned int> indices;
 	std::vector<cMeshVertex> vertices;
 
-	std::map<std::string, sAABB> m_MapMeshNameToAABB;
+	std::map<std::string, sBoundingBox> m_MapMeshNameToAABB;
 	// Map... aka "dictionary" "look up table"
 	std::map<std::string, cMeshEntry> m_MapMeshNameTocMeshEntry;
 	std::map<glm::vec3, std::string> m_mapRGBToMeshName;

@@ -74,63 +74,63 @@ public:
 		unlock(0);
 		return tileSelection;
 	}
-	virtual std::vector<sAABB> getSelectionAABBs() {
-		std::vector<sAABB> vec_Result;
+	virtual std::vector<sBoundingBox> getSelectionAABBs() {
+		std::vector<sBoundingBox> vec_Result;
 		lock(0);
 		switch (m_tileSelectionMode)
 		{
 		case FLOOR:
 			for each(sWorldTile worldTile in m_vec_SelectedTiles)
 			{
-				sAABB aabb;
-				aabb.position.x = worldTile.position.x - (worldTile.scale.x / 2);
-				aabb.position.z = worldTile.position.z - (worldTile.scale.z / 2);
-				aabb.scale = worldTile.scale;
-				vec_Result.push_back(aabb);
+				sBoundingBox boundingBox;
+				boundingBox.position.x = worldTile.position.x - (worldTile.scale.x / 2);
+				boundingBox.position.z = worldTile.position.z - (worldTile.scale.z / 2);
+				boundingBox.scale = worldTile.scale;
+				vec_Result.push_back(boundingBox);
 			}
 			break;
 		case WALL_LEFT:
 			for each(sWorldTile worldTile in m_vec_SelectedTiles)
 			{
-				sAABB aabb;
-				aabb.position.x = worldTile.position.x - (worldTile.scale.x / 2) + 32.0f;
-				aabb.position.z = worldTile.position.z - (worldTile.scale.z / 2);
-				aabb.position.y = 16.0f;
-				aabb.scale = glm::vec3(6.0f, 32.0f, 64.0f);
-				vec_Result.push_back(aabb);
+				sBoundingBox boundingBox;
+				boundingBox.position.x = worldTile.position.x - (worldTile.scale.x / 2) + 32.0f;
+				boundingBox.position.z = worldTile.position.z - (worldTile.scale.z / 2);
+				boundingBox.position.y = 16.0f;
+				boundingBox.scale = glm::vec3(6.0f, 32.0f, 64.0f);
+				vec_Result.push_back(boundingBox);
 			}
 			break;
 		case WALL_RIGHT:
 			for each(sWorldTile worldTile in m_vec_SelectedTiles)
 			{
-				sAABB aabb;
-				aabb.position.x = worldTile.position.x - (worldTile.scale.x / 2) - 32.0f;
-				aabb.position.z = worldTile.position.z - (worldTile.scale.z / 2);
-				aabb.position.y = 16.0f;
-				aabb.scale = glm::vec3(6.0f, 32.0f, 64.0f);
-				vec_Result.push_back(aabb);
+				sBoundingBox boundingBox;
+				boundingBox.position.x = worldTile.position.x - (worldTile.scale.x / 2) - 32.0f;
+				boundingBox.position.z = worldTile.position.z - (worldTile.scale.z / 2);
+				boundingBox.position.y = 16.0f;
+				boundingBox.scale = glm::vec3(6.0f, 32.0f, 64.0f);
+				vec_Result.push_back(boundingBox);
 			}
 			break;
 		case WALL_FORWARD:
 			for each(sWorldTile worldTile in m_vec_SelectedTiles)
 			{
-				sAABB aabb;
-				aabb.position.x = worldTile.position.x - (worldTile.scale.x / 2);
-				aabb.position.z = worldTile.position.z - (worldTile.scale.z / 2) + 32.0f;
-				aabb.position.y = 16.0f;
-				aabb.scale = glm::vec3(64.0f, 32.0f, 6.0f);
-				vec_Result.push_back(aabb);
+				sBoundingBox boundingBox;
+				boundingBox.position.x = worldTile.position.x - (worldTile.scale.x / 2);
+				boundingBox.position.z = worldTile.position.z - (worldTile.scale.z / 2) + 32.0f;
+				boundingBox.position.y = 16.0f;
+				boundingBox.scale = glm::vec3(64.0f, 32.0f, 6.0f);
+				vec_Result.push_back(boundingBox);
 			}
 			break;
 		case WALL_BACKWARD:
 			for each(sWorldTile worldTile in m_vec_SelectedTiles)
 			{
-				sAABB aabb;
-				aabb.position.x = worldTile.position.x - (worldTile.scale.x / 2);
-				aabb.position.z = worldTile.position.z - (worldTile.scale.z / 2) - 32.0f;
-				aabb.position.y = 16.0f;
-				aabb.scale = glm::vec3(64.0f, 32.0f, 6.0f);
-				vec_Result.push_back(aabb);
+				sBoundingBox boundingBox;
+				boundingBox.position.x = worldTile.position.x - (worldTile.scale.x / 2);
+				boundingBox.position.z = worldTile.position.z - (worldTile.scale.z / 2) - 32.0f;
+				boundingBox.position.y = 16.0f;
+				boundingBox.scale = glm::vec3(64.0f, 32.0f, 6.0f);
+				vec_Result.push_back(boundingBox);
 			}
 			break;
 		default:

@@ -202,7 +202,7 @@ void cRenderManager::renderScene()
 		{
 			glUniform1i(gUniformId_Toggle_Textures, false);
 			glUniform1i(gUniformId_Toggle_Lights, false);
-			sAABB aabb = graphicObject->pState->getAABB();
+			sBoundingBox boundingBox = graphicObject->pState->getBoundingBox();
 			glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
 				glm::value_ptr(projectionMatrix));
 			glUniformMatrix4fv(gUniformId_ViewMatrix, 1, GL_FALSE,
@@ -228,12 +228,12 @@ void cRenderManager::renderScene()
 			//								 // you can pass here
 			//	GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
 
-
-			transform[3] = glm::vec4(graphicObject->pState->getPosition() + aabb.position, 1.0f);
+			transform = glm::mat4_cast(boundingBox.rotation);
+			transform[3] = glm::vec4(graphicObject->pState->getPosition() + boundingBox.position, 1.0f);
 
 			glUniformMatrix4fv(
 				gUniformId_ModelMatrix, 1, GL_FALSE,
-				glm::value_ptr(glm::scale(transform, aabb.scale * graphicObject->pState->getScale())));
+				glm::value_ptr(glm::scale(transform, boundingBox.scale * graphicObject->pState->getScale())));
 			glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
 				glm::value_ptr(glm::mat4()));
 			if (graphicObject->pState->getIsColliding())
@@ -289,7 +289,6 @@ void cRenderManager::renderScene()
 		for each(cDebugRenderer::sDebugShape shape in g_pDebugRenderer->m_vec_debugShapes) {
 
 			glm::mat4 transform;
-
 			transform[3] = glm::vec4(shape.position, 1.0f);
 
 			glUniformMatrix4fv(
@@ -317,8 +316,8 @@ void cRenderManager::renderScene()
 	{
 		glUniform1i(gUniformId_Toggle_Textures, false);
 		glUniform1i(gUniformId_Toggle_Lights, false);
-		std::vector<sAABB> aabbs = g_pWorld->getSelectionAABBs();
-		for each(sAABB aabb in aabbs)
+		std::vector<sBoundingBox> boundingBoxes = g_pWorld->getSelectionAABBs();
+		for each(sBoundingBox boundingBox in boundingBoxes)
 		{
 			glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
 				glm::value_ptr(projectionMatrix));
@@ -345,16 +344,14 @@ void cRenderManager::renderScene()
 											 // you can pass here
 				GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
 
-
-			transform[3] = glm::vec4(aabb.position, 1.0f);
-			//graphicObject->pState->getTransform(transform);
-			//graphicObject->pState->getScale(1);
+			transform = glm::mat4_cast(boundingBox.rotation);
+			transform[3] = glm::vec4(boundingBox.position, 1.0f);
 
 			glUniformMatrix4fv(
 				gUniformId_ModelMatrix, 1, GL_FALSE,
-				glm::value_ptr(glm::scale(transform, aabb.scale)));
+				glm::value_ptr(glm::scale(transform, boundingBox.scale)));
 			glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
-				glm::value_ptr(glm::mat4()));
+				glm::value_ptr(transform));
 			glUniform4fv(gUniformId_ModelColor, 1,
 				glm::value_ptr(glm::vec3(0.5f)));
 			glUniform1f(gUniformId_Alpha, 0.65f);

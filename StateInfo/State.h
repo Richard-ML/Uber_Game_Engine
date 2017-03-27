@@ -22,8 +22,8 @@ public:
 	virtual float getScale() = 0;
 	virtual glm::mat4 getTransform() = 0;
 
-	virtual void setAABB(sAABB aabb) = 0;
-	virtual sAABB getAABB() = 0;
+	virtual void setBoundingBox(sBoundingBox boundingBox) = 0;
+	virtual sBoundingBox getBoundingBox() = 0;
 };
 
 // Change of behaviour states etc.. (like angry) (dead) (static non-moving)
@@ -86,8 +86,11 @@ public:
 	virtual glm::vec3 getAcceleration() = 0;
 	virtual glm::vec3 getVelocity() = 0;
 
-	virtual void setAABB(sAABB aabb) = 0;
-	virtual sAABB getAABB() = 0;
+	virtual void setBoundingBox(sBoundingBox boundingBox) = 0;
+	virtual sBoundingBox getBoundingBox() = 0;
+
+	//virtual void setAABB(sAABB aabb) = 0;
+	//virtual sAABB getAABB() = 0;
 
 	virtual bool getIsColliding() = 0;
 	virtual bool getIsMoving() = 0;

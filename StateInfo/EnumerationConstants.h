@@ -13,6 +13,11 @@ typedef volatile LONG LOCK;
 
 enum eGameState { GAMESTATE_PAUSED = 0, GAMESTATE_LOADING, GAMESTATE_SAVING, GAMESTATE_EXIT, GAMESTATE_RUNNING };
 enum eDifficulty { CASUAL = 0, HARDCORE };
+struct sBoundingBox {
+	glm::vec3 scale;
+	glm::vec3 position;
+	glm::quat rotation;
+};
 struct sAABB {
 	glm::vec3 scale;
 	glm::vec3 position;

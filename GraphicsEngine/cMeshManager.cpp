@@ -169,10 +169,10 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 		tempVecTriFace.push_back(tempTriFace);
 	}
 
-	// Will add a way to send mesh to physics engine to generate aabb and stuff
+	// Will add a way to send mesh to physics engine to generate boundingBox and stuff
 
 	// TODO: Create the mesh's AABB based on its MAX and MIN extents
-	// AABB* aabb = new AABB(min, max, tempVecTriFace); // Voxel grid cell inside
+	// AABB* boundingBox = new AABB(min, max, tempVecTriFace); // Voxel grid cell inside
 	// of the world generation will contain these AABBs which point to the corresponding
 	// trifaces MAJOR enhancement..
 
@@ -181,17 +181,17 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 
 	if (name == "Skeleton")
 	{
-		sAABB aabb;
-		aabb.scale = glm::vec3(max.x - min.x, max.y - min.y, max.x - min.x); // Skeleton moves around and rotates. So we need to use it's largest extents on each axis
-		aabb.position.y += (max.y - min.y) / 2;
+		sBoundingBox boundingBox;
+		boundingBox.scale = glm::vec3(max.x - min.x, max.y - min.y, max.x - min.x); // Skeleton moves around and rotates. So we need to use it's largest extents on each axis
+		boundingBox.position.y += (max.y - min.y) / 2;
 		// TODO: add a flag for this..
-		m_MapMeshNameToAABB[name] = aabb;
+		m_MapMeshNameToAABB[name] = boundingBox;
 	}
 	else {
-		sAABB aabb;
-		aabb.scale = glm::vec3(max.x - min.x, (max.y - min.y) + 1.0f, max.z - min.z);
-		aabb.position.y += (max.y - min.y) / 2;
-		m_MapMeshNameToAABB[name] = aabb;
+		sBoundingBox boundingBox;
+		boundingBox.scale = glm::vec3(max.x - min.x, (max.y - min.y) + 1.0f, max.z - min.z);
+		boundingBox.position.y += (max.y - min.y) / 2;
+		m_MapMeshNameToAABB[name] = boundingBox;
 
 	}
 	return true;

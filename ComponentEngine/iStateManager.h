@@ -18,7 +18,7 @@ struct sState {
 	glm::vec3 target;
 
 	glm::vec3 impluse;
-	sAABB aabb;
+	sBoundingBox boundingBox;
 };
 // Forward declarations
 class iStateNode;
@@ -159,11 +159,11 @@ public:
 		return this->m_parentNode->getVelocity();
 	};
 
-	virtual void setAABB(sAABB aabb) {
-		this->m_parentNode->setAABB(aabb);
+	virtual void setBoundingBox(sBoundingBox boundingBox) {
+		this->m_parentNode->setBoundingBox(boundingBox);
 	}
-	virtual sAABB getAABB() {
-		return this->m_parentNode->getAABB();
+	virtual sBoundingBox getBoundingBox() {
+		return this->m_parentNode->getBoundingBox();
 	}
 
 	virtual bool getIsColliding() {
@@ -294,18 +294,18 @@ public:
 		unlock(7);
 		return velocityOut;
 	};
-	virtual void setAABB(sAABB aabb) {
+	virtual void setBoundingBox(sBoundingBox boundingBox) {
 		lock(12);
-		_localStateData.aabb = aabb;
+		_localStateData.boundingBox = boundingBox;
 		unlock(12);
 	}
 
-	virtual sAABB getAABB() {
-		sAABB aabb;
+	virtual sBoundingBox getBoundingBox() {
+		sBoundingBox boundingBox;
 		lock(12);
-		aabb = _localStateData.aabb;
+		boundingBox = _localStateData.boundingBox;
 		unlock(12);
-		return aabb;
+		return boundingBox;
 	}
 	virtual bool getIsColliding() {
 		bool isColliding;

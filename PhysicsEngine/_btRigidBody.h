@@ -68,7 +68,10 @@ namespace PhysicsEngine {
 	class _btRigidBody : public iRigidBody {
 		friend class _btWorld;
 		friend class _btCollisionShape;
+		// PROXY DATA-MEMBERS
+		bool isColliding;
 	public:
+
 		//cRigidBody(cCollisionObject* object);
 		_btRigidBody(const sRigidBody& rigidBody, iCollisionShape* collisionShape);
 		_btRigidBody() {}
@@ -84,8 +87,11 @@ namespace PhysicsEngine {
 		virtual PhysicsEngine_API void getAcceleration(glm::vec3& acceleration);
 		virtual PhysicsEngine_API void setAcceleration(const glm::vec3& acceleration);
 		virtual PhysicsEngine_API void applyForce(const glm::vec3 velocity);
-		virtual PhysicsEngine_API void isCollision(bool& collision);
-		virtual PhysicsEngine_API void setCollision(bool& collision);
+		virtual PhysicsEngine_API bool isCollision();
+		virtual PhysicsEngine_API void setCollision(bool collision);
+
+
+
 		//virtual void translate(glm::vec3& translation);
 	//private:
 		btRigidBody* m_rigidBody;

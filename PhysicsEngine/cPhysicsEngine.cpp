@@ -7,7 +7,7 @@
 
 #include <ctime>
 #include <chrono>
-
+#include <map>
 #include "_btRigidBody.h"
 #include "_btCollisionShape.h"
 
@@ -32,6 +32,7 @@ namespace PhysicsEngine {
 		return static_cast<cPhysicsEngine_Impl *>(this);
 	}
 	std::vector<iRigidBody*> vec_rigidBodies;
+	//std::map<int, iRigidBody*> map_rigidBodies;
 #define BULLET
 #ifdef BULLET
 
@@ -67,11 +68,12 @@ namespace PhysicsEngine {
 					lastTime); // Get the time that as passed
 
 			for each(_btRigidBody* rb in vec_rigidBodies) {
+				rb->setCollision(false);//Proxy to state collision flag. Set to true via callback when collision occurs. 
 				if (rb->m_rigidBody != 0) {
 					glm::vec3 currentImpluse = rb->state->getImpluse();
-					if (currentImpluse != glm::vec3(0.0f))
+					//if (currentImpluse != glm::vec3(0.0f))
 					{
-						//btTransform trans;
+						btTransform trans = rb->m_rigidBody->getWorldTransform();
 						//rb->m_rigidBody->getMotionState()->getWorldTransform(trans);
 						//	trans.setOrigin(trans.getOrigin() + btVector3(currentImpluse.x, currentImpluse.y, currentImpluse.z) * deltaTime.count());
 					//	rb->m_rigidBody->applyCentralImpulse(btVector3(currentImpluse.x, currentImpluse.y, currentImpluse.z) * 10);
@@ -80,34 +82,69 @@ namespace PhysicsEngine {
 						rb->m_rigidBody->setLinearVelocity(btVector3(currentImpluse.x, currentImpluse.y, currentImpluse.z) * 10);
 						rb->state->setImpluse(glm::vec3(0.0f));
 
-							//glm::mat4 transformation = rb->state->getTransform();
-							//glm::vec3 scale;
-							//glm::quat rotation;
-							//glm::vec3 translation;
-							//glm::vec3 skew;
-							//glm::vec4 perspective;
-							//glm::decompose(transformation, scale, rotation, translation, skew, perspective);
-							//rotation = glm::conjugate(rotation);
-							//
-							//
-							//trans.setRotation(btQuaternion(glm::yaw(rotation), glm::pitch(rotation), glm::roll(rotation)));
-							//rb->m_rigidBody->setWorldTransform(trans);
+							glm::mat4 transformation = rb->state->getTransform();
+							glm::vec3 scale;
+							glm::quat rotation;
+							glm::vec3 translation;
+							glm::vec3 skew;
+							glm::vec4 perspective;
+							glm::decompose(transformation, scale, rotation, translation, skew, perspective);
+							rotation = glm::conjugate(rotation);
+							
+							btQuaternion _btQuat;
+							_btQuat.setX(rotation.x);
+							_btQuat.setY(rotation.y);
+							_btQuat.setZ(rotation.z);
+							_btQuat.setW(rotation.w);
+							trans.setRotation(_btQuat);
+							rb->m_rigidBody->setWorldTransform(trans);
 					}
 				}
 			}
 
 			physicsEngine->impl()->m_btWorld->step(0.016f);
 
-
 			for each(_btRigidBody* rb in vec_rigidBodies) {
-				if (rb->m_rigidBody != 0 && rb->m_rigidBody->getInvMass() != 0) {
-					
-					btVector3 btVec = rb->m_rigidBody->getWorldTransform().getOrigin();
-					glm::vec3 positionResult = glm::vec3(btVec[0], btVec[1], btVec[2]) - rb->state->getAABB().position;
-					//positionResult.y = 1.0f;
-					rb->state->setPosition(positionResult);
+				
+				if (rb->m_rigidBody != 0) { // Objects can be added to the scene but not be initialized. 
+					rb->state->setIsColliding(rb->isCollision());
+					if (rb->m_rigidBody->getInvMass() != 0) {
+
+						btVector3 btVec = rb->m_rigidBody->getWorldTransform().getOrigin();
+						glm::vec3 positionResult = glm::vec3(btVec[0], btVec[1], btVec[2]) - rb->state->getBoundingBox().position;
+						//positionResult.y = 1.0f;
+						//rb->state->setPosition(positionResult);
+						btQuaternion rot = rb->m_rigidBody->getWorldTransform().getRotation();
+
+						glm::mat4 transform;
+
+						glm::quat quat;
+						quat.x = rot.getX();
+						quat.y = rot.getY();
+						quat.z = rot.getZ();
+						quat.w = rot.getW();
+
+						sBoundingBox boundingBox = rb->state->getBoundingBox();
+						boundingBox.rotation = quat;
+						rb->state->setBoundingBox(boundingBox);
+
+						transform = glm::mat4_cast(quat);
+						transform[3] = glm::vec4(positionResult, 1.0f);
+						rb->state->setTransform(transform);
+					}
 				}
 			}
+
+			//for (int nc = 0; nc < s_cPhysicsEngine->impl()->m_btWorld->m_dispatcher->getNumManifolds(); nc++)
+			//{
+			//	btPersistentManifold* contact = s_cPhysicsEngine->impl()->m_btWorld->m_dispatcher->getManifoldByIndexInternal(nc);
+			//	_btRigidBody* rb1 = reinterpret_cast<_btRigidBody*>(contact->getBody0()->getUserPointer());
+			//	rb1->state->setIsColliding(1);
+			//
+			//	_btRigidBody* rb2 = reinterpret_cast<_btRigidBody*>(contact->getBody1()->getUserPointer());;
+			//	rb2->state->setIsColliding(1);
+			//	//s_cPhysicsEngine->impl()->m_btWorld->m_dispatcher->clearManifold(contact); // O.o 
+			//}
 
 			lastTime = std::chrono::high_resolution_clock::now();
 			Sleep(1); // Free the thread
@@ -143,6 +180,13 @@ return 0;
 			glm::vec3 offset = glm::vec3(std::stof(cRigidBody_node->first_attribute("offsetX")->value()), std::stof(cRigidBody_node->first_attribute("offsetY")->value()), std::stof(cRigidBody_node->first_attribute("offsetZ")->value()));
 			transform[3] = glm::vec4(offset, 1.0f);
 
+
+			rapidxml::xml_attribute<char>* att = cRigidBody_node->first_attribute("hingeConstraint");
+			int value = 0;
+			if (att != 0)
+				value = std::stoi(att->value());
+		
+
 			_btRigidBody* rb = new _btRigidBody();
 		    
 			rb->state = state;
@@ -152,7 +196,7 @@ return 0;
 
 			vec_rigidBodies.push_back(rb);
 
-			glm::vec3 colShapePos = state->getAABB().position;
+			glm::vec3 colShapePos = state->getBoundingBox().position;
 
 			btTransform worldTransform;
 			worldTransform.setIdentity();
@@ -163,16 +207,35 @@ return 0;
 			//rigidbody is dynamic if and only if mass is non zero, otherwise static
 			bool isDynamic = (mass != 0.f);
 			btVector3 localInertia(0.0f, 0.0f, 0.0f);
-			glm::vec3 boxHalfWidth = state->getAABB().scale;
-			btBoxShape* bs = new btBoxShape(btVector3(boxHalfWidth.x / 2, boxHalfWidth.y / 2, boxHalfWidth.z / 2));
-			
-			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-			btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
-			if (isDynamic)
-				bs->calculateLocalInertia(mass, localInertia);
-			
-			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, bs, localInertia);
-			rb->m_rigidBody = new btRigidBody(rbInfo);
+			glm::vec3 boxHalfWidth = state->getBoundingBox().scale;
+			if (value == 2)
+			{
+				btSphereShape* bs = new btSphereShape(boxHalfWidth.x / 2);
+				//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+				btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+				if (isDynamic)
+					bs->calculateLocalInertia(mass, localInertia);
+
+				btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, bs, localInertia);
+
+				rb->m_rigidBody = new btRigidBody(rbInfo);
+			}
+			else {
+
+				btBoxShape* bs = new btBoxShape(btVector3(boxHalfWidth.x / 2, boxHalfWidth.y / 2, boxHalfWidth.z / 2));
+
+				//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+				btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+				if (isDynamic)
+					bs->calculateLocalInertia(mass, localInertia);
+
+				btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, bs, localInertia);
+
+				rb->m_rigidBody = new btRigidBody(rbInfo);
+			}
+
+
+
 			rb->m_rigidBody->setRestitution(.0f);
 			rb->m_rigidBody->setFriction(.4f);
 	
@@ -180,10 +243,50 @@ return 0;
 			{
 				rb->m_rigidBody->activate(true);
 				rb->m_rigidBody->forceActivationState(DISABLE_DEACTIVATION);
-				rb->m_rigidBody->setCollisionFlags(rb->m_rigidBody->getCollisionFlags() );
+				rb->m_rigidBody->setCollisionFlags(rb->m_rigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+			}
+
+
+			if (att != 0)
+			{
+				int value = std::stoi(att->value());
+				switch (value)
+				{
+				case 0:
+				{
+					btHingeConstraint* hinge = new btHingeConstraint(*rb->m_rigidBody, btVector3(5, 0, 0), btVector3(0, 1, 0), true);
+					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(hinge);
+					break;
+				}
+				case 1: {
+					btHingeConstraint* hinge = new btHingeConstraint(*rb->m_rigidBody, btVector3(-5, 0, 0), btVector3(0, 1, 0), true);
+					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(hinge);
+					break;
+				}
+				case 2:
+				{
+
+					break;
+				}
+				case 3:
+				{
+					break;
+				}
+
+				case 4:
+				{
+					break;
+				}
+				case 5:
+				{
+					break;
+				}
+				}
+
 			}
 				s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody);
 
+				rb->m_rigidBody->setUserPointer(rb);
 		}
 		return true;
 	}
@@ -231,9 +334,9 @@ return 0;
 			btCollisionObject colObj;
 			//colObj.isStaticObject = true;
 			//colObj.
-			sAABB aabb = state->getAABB();
+			sBoundingBox boundingBox = state->getBoundingBox();
 
-			btBoxShape shape(btVector3(aabb.scale.x, aabb.scale.y, aabb.scale.z));
+			btBoxShape shape(btVector3(boundingBox.scale.x, boundingBox.scale.y, boundingBox.scale.z));
 			btRigidBodyData rbData;
 		}
 		return true;
@@ -337,7 +440,7 @@ return 0;
 
 
 
-		glm::vec3 colShapePos = state->getAABB().position;
+		glm::vec3 colShapePos = state->getBoundingBox().position;
 
 		btTransform worldTransform;
 		worldTransform.setIdentity();
@@ -348,9 +451,8 @@ return 0;
 		//rigidbody is dynamic if and only if mass is non zero, otherwise static
 		bool isDynamic = (mass != 0.f);
 		btVector3 localInertia(0.0f, 0.0f, 0.0f);
-		glm::vec3 boxHalfWidth = state->getAABB().scale;
+		glm::vec3 boxHalfWidth = state->getBoundingBox().scale;
 		btBoxShape* bs = new btBoxShape(btVector3(boxHalfWidth.x / 2, boxHalfWidth.y / 2, boxHalfWidth.z / 2));
-
 		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 		btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
 		if (isDynamic)
@@ -358,21 +460,20 @@ return 0;
 
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, bs, localInertia);
 		rb->m_rigidBody = new btRigidBody(rbInfo);
-
-		rb->m_rigidBody->activate(true);
-		rb->m_rigidBody->forceActivationState(DISABLE_DEACTIVATION);
-		rb->m_rigidBody->setCollisionFlags(rb->m_rigidBody->getCollisionFlags());
-
-		rb->m_rigidBody->setFriction(0.8f);
-
+		if (isDynamic) {
+			rb->m_rigidBody->activate(true);
+			rb->m_rigidBody->forceActivationState(DISABLE_DEACTIVATION);
+			rb->m_rigidBody->setCollisionFlags(rb->m_rigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+			rb->m_rigidBody->setFriction(0.8f);
+		}
 		s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody);
 
 
 
 		vec_rigidBodies.push_back(rb);
+		//map_rigidBodies[rb->m_rigidBody->getUserIndex()] = rb;
 
-
-
+		rb->m_rigidBody->setUserPointer(rb);
 		return true;
 	}
 }

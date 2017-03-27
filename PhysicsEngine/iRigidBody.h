@@ -39,8 +39,8 @@ namespace PhysicsEngine {
 		virtual PhysicsEngine_API void getAcceleration(glm::vec3& acceleration) = 0;
 		virtual PhysicsEngine_API void setAcceleration(const glm::vec3& acceleration) = 0;
 		virtual PhysicsEngine_API void applyForce(const glm::vec3 velocity) = 0;
-		virtual PhysicsEngine_API void isCollision(bool& collision) = 0;
-		virtual PhysicsEngine_API void setCollision(bool& collision) = 0;
+		virtual PhysicsEngine_API bool isCollision() = 0;
+		virtual PhysicsEngine_API void setCollision(bool collision) = 0;
 		std::string saveToXMLNode() {
 			std::string componentNode;
 			glm::vec3 position;

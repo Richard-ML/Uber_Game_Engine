@@ -8,7 +8,7 @@ public:
 	virtual void clearSelection() = 0;
 	virtual void setActiveSelectionMode(eActiveWorldTileSelection tileSelection) = 0;
 	virtual eActiveWorldTileSelection getActiveSelectionMode() = 0;
-	virtual std::vector<sAABB> getSelectionAABBs() = 0;
+	virtual std::vector<sBoundingBox> getSelectionAABBs() = 0;
 	virtual void generateObjectAtSlection() = 0;
 };
 
@@ -20,7 +20,7 @@ public:
 	virtual void clearSelection() = 0;
 	virtual void setActiveSelectionMode(eActiveWorldTileSelection tileSelection) = 0;
 	virtual eActiveWorldTileSelection getActiveSelectionMode() = 0;
-	virtual std::vector<sAABB> getSelectionAABBs() = 0;
+	virtual std::vector<sBoundingBox> getSelectionAABBs() = 0;
 	virtual void generateObjectAtSlection() = 0;
 };
 

@@ -82,11 +82,11 @@ namespace PhysicsEngine {
 		iCollisionShape(eShapeType shapeType) : m_shapeType(shapeType), m_usrPointer(0) { }
 		virtual ~iCollisionShape(){ }
 
-		///calculateTemporalAabb calculates the enclosing aabb for the moving object over interval [0..timeStep)
+		///calculateTemporalAabb calculates the enclosing boundingBox for the moving object over interval [0..timeStep)
 		///result is conservative
 		// virtual void calculateTemporalAabb(const glm::mat4& transform, const glm::vec3& linvel, const glm::vec3& angvel, float timeStep, glm::vec3& temporalAabbMin, glm::vec3& temporalAabbMax) const = 0;
 
-		virtual void getAabb(const glm::mat4& transform, glm::vec3& aabbMin, glm::vec3& aabbMax) const {};
+		virtual void getBoundingBox(const glm::mat4& transform, glm::vec3& aabbMin, glm::vec3& aabbMax) const {};
 		virtual void getBoundingSphere(glm::vec3 &position, float& radius) const = 0;
 		virtual void setRadius(float radius) = 0;
 		inline virtual float getRadius() = 0;

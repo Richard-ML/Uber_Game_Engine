@@ -82,11 +82,11 @@ namespace GraphicsEngine {
 			graphicsObject->vec_meshes.push_back(mesh); // TODO: Offset scale rotation etc..
 			graphicsObject->pState = state;
 			graphicsObject->pState->setScale(1.0f);
-			sAABB aabb = graphicsObject->pState->getAABB();
-			aabb.scale = glm::vec3(glm::max(g_pMeshManager->m_MapMeshNameToAABB[mesh->meshName].scale.x , aabb.scale.x), glm::max(g_pMeshManager->m_MapMeshNameToAABB[mesh->meshName].scale.y, aabb.scale.y), glm::max(g_pMeshManager->m_MapMeshNameToAABB[mesh->meshName].scale.z, aabb.scale.z));
-			aabb.position.y = (aabb.scale.y) / 2;
+			sBoundingBox boundingBox = graphicsObject->pState->getBoundingBox();
+			boundingBox.scale = glm::vec3(glm::max(g_pMeshManager->m_MapMeshNameToAABB[mesh->meshName].scale.x , boundingBox.scale.x), glm::max(g_pMeshManager->m_MapMeshNameToAABB[mesh->meshName].scale.y, boundingBox.scale.y), glm::max(g_pMeshManager->m_MapMeshNameToAABB[mesh->meshName].scale.z, boundingBox.scale.z));
+			boundingBox.position.y = (boundingBox.scale.y) / 2;
 			
-			graphicsObject->pState->setAABB(aabb);
+			graphicsObject->pState->setBoundingBox(boundingBox);
 		}
 		for (rapidxml::xml_node<> *cRenderableComponentEntry_node = componentNode->first_node("Light");
 			cRenderableComponentEntry_node; cRenderableComponentEntry_node = cRenderableComponentEntry_node->next_sibling("Light")) {
@@ -125,9 +125,9 @@ namespace GraphicsEngine {
 		mesh->meshName = meshName;
 		mesh->toggleOutline = false;
 		graphicsObject->vec_meshes.push_back(mesh);
-		sAABB aabb = g_pMeshManager->m_MapMeshNameToAABB[meshName];
-		aabb.position.y -= aabb.scale.y / 2.0f;
-		state->setAABB(aabb);
+		sBoundingBox boundingBox = g_pMeshManager->m_MapMeshNameToAABB[meshName];
+		boundingBox.position.y -= boundingBox.scale.y / 2.0f;
+		state->setBoundingBox(boundingBox);
 		
 		state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cGraphicsObject::saveToXMLNode, graphicsObject)));
 		g_vec_pGraphicObjects.push_back(graphicsObject);
