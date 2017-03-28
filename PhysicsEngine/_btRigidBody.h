@@ -70,6 +70,9 @@ namespace PhysicsEngine {
 		friend class _btCollisionShape;
 		// PROXY DATA-MEMBERS
 		bool isColliding;
+
+		int collisionMask;
+		int collisionFilter;
 	public:
 
 		//cRigidBody(cCollisionObject* object);
@@ -89,6 +92,11 @@ namespace PhysicsEngine {
 		virtual PhysicsEngine_API void applyForce(const glm::vec3 velocity);
 		virtual PhysicsEngine_API bool isCollision();
 		virtual PhysicsEngine_API void setCollision(bool collision);
+		virtual PhysicsEngine_API int getCollisionMask();
+		virtual PhysicsEngine_API void setCollisionMask(int collisionMask);
+
+		virtual PhysicsEngine_API int getCollisionFilter();
+		virtual PhysicsEngine_API void setCollisionFilter(int collisionMask);
 
 
 

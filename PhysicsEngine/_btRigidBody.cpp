@@ -155,3 +155,24 @@ PhysicsEngine_API void PhysicsEngine::_btRigidBody::setCollision(bool collision)
 	isColliding = collision;
 	return;
 }
+
+PhysicsEngine_API int PhysicsEngine::_btRigidBody::getCollisionMask()
+{
+	return this->collisionMask;
+}
+
+PhysicsEngine_API void PhysicsEngine::_btRigidBody::setCollisionMask(int collisionMask)
+{
+	this->collisionMask = collisionFilter;
+	return;
+}
+
+PhysicsEngine_API int PhysicsEngine::_btRigidBody::getCollisionFilter()
+{
+	return this->collisionFilter;
+}
+
+PhysicsEngine_API void PhysicsEngine::_btRigidBody::setCollisionFilter(int collisionMask)
+{
+	this->collisionFilter = collisionMask;
+}

@@ -41,6 +41,12 @@ namespace PhysicsEngine {
 		virtual PhysicsEngine_API void applyForce(const glm::vec3 velocity) = 0;
 		virtual PhysicsEngine_API bool isCollision() = 0;
 		virtual PhysicsEngine_API void setCollision(bool collision) = 0;
+
+		virtual PhysicsEngine_API int getCollisionMask() = 0;
+		virtual PhysicsEngine_API void setCollisionMask(int collisionMask) = 0;
+
+		virtual PhysicsEngine_API int getCollisionFilter() = 0;
+		virtual PhysicsEngine_API void setCollisionFilter(int collisionMask) = 0;
 		std::string saveToXMLNode() {
 			std::string componentNode;
 			glm::vec3 position;
@@ -54,10 +60,14 @@ namespace PhysicsEngine {
 			string << position.x <<
 				"\" " << "offsetY=\"" <<
 				position.y << "\" " << "offsetZ=\""
-				<< position.z << "\"" 
-				<< " mass=\"" << "0.0f\"" 
-				<< "/>"
-				
+				<< position.z << "\""
+				<< " mass=\"" << "0.0f\""
+				<< ">"
+				"<CollisionInfo collisionMask=\"" << getCollisionMask()
+				<< "\" >"
+				<< "<CollidesWith collisionMask=\"" << getCollisionFilter() << "\"/>"
+				<< "</CollisionInfo>"
+				<< "</RigidBody>"
 				<< "</PhysicsComponent>";
 
 			componentNode += string.str();

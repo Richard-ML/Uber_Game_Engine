@@ -510,7 +510,7 @@ void cFBOInfo::createFrameBuffer()
 
 void cMSFBOInfo::renderSceneToFBO()
 {
-	glViewport(0.0f, 0.0f, this->width, this->height);
+	glViewport(0, 0, (GLint) this->width, (GLint) this->height);
 	// Draw scene to multi-sampled buffer
 	glBindFramebuffer(GL_FRAMEBUFFER, this->msFramebufferID);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -519,8 +519,8 @@ void cMSFBOInfo::renderSceneToFBO()
 
 	if (g_bool_toggleScissor) {
 		glEnable(GL_SCISSOR_TEST);
-		glScissor((float)gWindowWidth / 5.5f, (float)gWindowHeight / 8.5f,
-			(float)gWindowWidth / 1.55f, (float)gWindowHeight / 1.2f);
+		glScissor((GLint)((float)gWindowWidth / 5.5f),(GLint)( (float)gWindowHeight / 8.5f),
+			(GLint)((float)gWindowWidth / 1.55f), (GLint)((float)gWindowHeight / 1.2f));
 	}
 	glClearStencil(0);
 	glClear(GL_STENCIL_BUFFER_BIT);
@@ -559,7 +559,7 @@ void cMSFBOInfo::renderSceneToFBO()
 	glClear(GL_COLOR_BUFFER_BIT); 
 	//glDisable(GL_DEPTH_TEST);
 
-	glViewport(0.0f, 0.0f, gWindowWidth, gWindowHeight);
+	glViewport(0, 0, gWindowWidth, gWindowHeight);
 
 	glDisable(GL_SCISSOR_TEST);
 	glDisable(GL_STENCIL_TEST);
