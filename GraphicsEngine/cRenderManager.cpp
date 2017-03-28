@@ -117,6 +117,8 @@ void cRenderManager::renderTheSkybox() {
 
 void cRenderManager::renderScene()
 {
+
+	
 	// Render Skybox
 	renderTheSkybox();
 
@@ -135,6 +137,9 @@ void cRenderManager::renderScene()
 	for each(cGraphicsObject* graphicObject in g_vec_pGraphicObjects)
 	{
 		for each(cMesh* mesh in graphicObject->vec_meshes) {
+			//glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, false);
+			
+			//glUniform1i(gUniformId_Toggle_Lights, false); // TODO: REMOVE THIS IT'S HERE FOR COMPAT WITH OLD PC
 			// per frame uniforms
 			glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
 				glm::value_ptr(projectionMatrix));
@@ -541,8 +546,6 @@ void cMSFBOInfo::renderSceneToFBO()
 
 	glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
 
-
-
 	g_pRenderManager->renderScene();
 
 	// Blit the multi-sampled buffer
@@ -572,7 +575,7 @@ void cMSFBOInfo::createFrameBuffer()
 	glGenTextures(1, &this->msColorTexture);
 	glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, this->msColorTexture);
 
-	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 8, // TODO: Make number of samples non-hardcoded
+	glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, // TODO: Make number of samples non-hardcoded
 		GL_RGBA, this->width, this->height, GL_TRUE);
 
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, this->msColorTexture, 0);
@@ -581,7 +584,7 @@ void cMSFBOInfo::createFrameBuffer()
 	GLuint renderbuffer;
 	glGenRenderbuffers(1, &renderbuffer);
 	glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
-	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 8, GL_DEPTH24_STENCIL8, this->width, this->height);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, this->width, this->height);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer);
 

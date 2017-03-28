@@ -1,4 +1,4 @@
-#version 450 core
+#version 410 core
 
 out VS_OUT { vec3 tc; }
 vs_out;

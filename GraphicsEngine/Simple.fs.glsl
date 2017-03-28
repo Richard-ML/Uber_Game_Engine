@@ -1,4 +1,4 @@
-#version 450 core
+#version 420 core
 #define MAX_LIGHTS 30
 out vec4 out_Color;
 // Input from vertex shader
@@ -78,8 +78,8 @@ void main(void) {
     // float mipmapLevel = mip_map_level(fs_in.textureCoord.xy); //TODO: use
     // mipmap
     vec4 textureResult = textureLod(
-        Texture0, ((fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
-                   (vec2(512) * fs_in.textureUnits.xy) / vec2(7680)),
+        Texture0, ((fs_in.textureCoord.xy * (vec2(512) / vec2(3072))) +
+                   (vec2(512) * fs_in.textureUnits.xy) / vec2(3072)),
         0);
 
     tempColor = textureResult.rgb;
@@ -107,21 +107,21 @@ vec3 processPointLight(in vec3 norm, in vec3 pos, in int lightIndex) {
 	if(Toggle_NormalAndSpecularMaps == true){
     textureDifResult =
         textureLod(Texture0,
-                   ((fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
-                    (vec2(512) * (fs_in.textureUnits.xy)) / vec2(7680)),
+                   ((fs_in.textureCoord.xy * (vec2(512) / vec2(3072))) +
+                    (vec2(512) * (fs_in.textureUnits.xy)) / vec2(3072)),
                    0)
             .rgb;
 
 
     textureNrmResult =
         textureLod(Texture0,
- (fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
-                    (vec2(512) * (vec2(fs_in.textureUnits.x + 1, fs_in.textureUnits.y)) / vec2(7680) ),
+ (fs_in.textureCoord.xy * (vec2(512) / vec2(3072))) +
+                    (vec2(512) * (vec2(fs_in.textureUnits.x + 1, fs_in.textureUnits.y)) / vec2(3072) ),
                    0)
             .rgb;
     textureSpecResult = textureLod(Texture0,
- (fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
-                    (vec2(512) * (vec2(fs_in.textureUnits.x + 2, fs_in.textureUnits.y)) / vec2(7680) ),
+ (fs_in.textureCoord.xy * (vec2(512) / vec2(3072))) +
+                    (vec2(512) * (vec2(fs_in.textureUnits.x + 2, fs_in.textureUnits.y)) / vec2(3072) ),
                    0)
             .rgb;
     // Transform normal vector to range [-1,1]
@@ -172,21 +172,21 @@ vec3 processDirectionalLight(in vec3 norm, in vec3 pos, in int lightIndex) {
 				if(Toggle_NormalAndSpecularMaps == true){
     textureDifResult =
         textureLod(Texture0,
-                   ((fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
-                    (vec2(512) * (fs_in.textureUnits.xy)) / vec2(7680)),
+                   ((fs_in.textureCoord.xy * (vec2(512) / vec2(3072))) +
+                    (vec2(512) * (fs_in.textureUnits.xy)) / vec2(3072)),
                    0)
             .rgb;
 
     textureNrmResult =
         textureLod(Texture0,
- (fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
-                    (vec2(512) * (vec2(fs_in.textureUnits.x + 1, fs_in.textureUnits.y)) / vec2(7680) ),
+ (fs_in.textureCoord.xy * (vec2(512) / vec2(3072))) +
+                    (vec2(512) * (vec2(fs_in.textureUnits.x + 1, fs_in.textureUnits.y)) / vec2(3072) ),
                    0)
             .rgb;
     textureSpecResult =
         textureLod(Texture0,
- (fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
-                    (vec2(512) * (vec2(fs_in.textureUnits.x + 2, fs_in.textureUnits.y)) / vec2(7680) ),
+ (fs_in.textureCoord.xy * (vec2(512) / vec2(3072))) +
+                    (vec2(512) * (vec2(fs_in.textureUnits.x + 2, fs_in.textureUnits.y)) / vec2(3072) ),
                    0)
             .rgb;
     // Transform normal vector to range [-1,1]
@@ -241,21 +241,21 @@ vec3 processSpotLight(in vec3 norm, in vec3 pos, in int lightIndex) {
 				if(Toggle_NormalAndSpecularMaps == true){
     textureDifResult =
         textureLod(Texture0,
-                   ((fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
-                    (vec2(512) * (fs_in.textureUnits.xy)) / vec2(7680)),
+                   ((fs_in.textureCoord.xy * (vec2(512) / vec2(3072))) +
+                    (vec2(512) * (fs_in.textureUnits.xy)) / vec2(3072)),
                    0)
             .rgb;
 
     textureNrmResult =
         textureLod(Texture0,
-                   (fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
-                    (vec2(512) * (vec2(fs_in.textureUnits.x + 1, fs_in.textureUnits.y)) / vec2(7680) ),
+                   (fs_in.textureCoord.xy * (vec2(512) / vec2(3072))) +
+                    (vec2(512) * (vec2(fs_in.textureUnits.x + 1, fs_in.textureUnits.y)) / vec2(3072) ),
                    0)
             .rgb;
     textureSpecResult =
         textureLod(Texture0,
-                   (fs_in.textureCoord.xy * (vec2(512) / vec2(7680))) +
-                    (vec2(512) * (vec2(fs_in.textureUnits.x + 2, fs_in.textureUnits.y)) / vec2(7680) ),
+                   (fs_in.textureCoord.xy * (vec2(512) / vec2(3072))) +
+                    (vec2(512) * (vec2(fs_in.textureUnits.x + 2, fs_in.textureUnits.y)) / vec2(3072) ),
                    0)
             .rgb;
     // Transform normal vector to range [-1,1]

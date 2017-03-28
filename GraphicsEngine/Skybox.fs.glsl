@@ -1,4 +1,4 @@
-#version 450 core
+#version 410 core
 
 uniform samplerCube skybox;
 uniform bool Toggle_Skybox_Textures;

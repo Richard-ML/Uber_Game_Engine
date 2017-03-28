@@ -257,7 +257,7 @@ namespace GraphicsEngine {
 			g_pLightManager->updateLightUniforms();
 		
 		// Render Scene to FBO
-		g_pRenderManager->renderSceneToFBO("Portal");
+		//g_pRenderManager->renderSceneToFBO("Portal");
 		
 		// Render objects
 		g_pRenderManager->renderScene();
@@ -288,7 +288,7 @@ void initializeGLFW() {
 		system("pause");
 	}
 	//glEnable(GL_MULTISAMPLE);
-	glfwWindowHint(GLFW_SAMPLES, 16);
+	glfwWindowHint(GLFW_SAMPLES, 8);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,

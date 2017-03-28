@@ -55,6 +55,14 @@
 
 
 
+	<GameEntity>
+		<RenderableComponent>
+			<Mesh name="Cone" outline="true" />
+		</RenderableComponent>
+		<PhysicsComponent>
+			<RigidBody offsetX="0" offsetY="3.0f" offsetZ="-25.0f" mass="0.1f" hingeConstraint="2"/>
+		</PhysicsComponent>
+	</GameEntity>
 
 
 

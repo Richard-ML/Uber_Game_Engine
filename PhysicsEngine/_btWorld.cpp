@@ -48,9 +48,11 @@ void PhysicsEngine::_btWorld::addCollisionObject(iRigidBody * object)
 bool PhysicsEngine::_btWorld::contact_callback(btManifoldPoint & cp, const btCollisionObjectWrapper * colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper * colObj1Wrap, int partId1, int index1)
 {
 	_btRigidBody* rb1 = reinterpret_cast<_btRigidBody*>(colObj0Wrap->getCollisionObject()->getUserPointer());
+	if(rb1 != 0)
 	rb1->setCollision(true);
 
 	_btRigidBody* rb2 = reinterpret_cast<_btRigidBody*>(colObj1Wrap->getCollisionObject()->getUserPointer());
+	if (rb2 != 0)
 	rb2->setCollision(true);
 	return false;
 }

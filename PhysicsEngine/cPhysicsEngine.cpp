@@ -210,6 +210,9 @@ return 0;
 			glm::vec3 boxHalfWidth = state->getBoundingBox().scale;
 			if (value == 2)
 			{
+				sBoundingBox boundingBox;
+				boundingBox.scale = glm::vec3(3.0f);
+				rb->state->setBoundingBox(boundingBox);
 				btSphereShape* bs = new btSphereShape(boxHalfWidth.x / 2);
 				//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 				btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
@@ -237,7 +240,7 @@ return 0;
 
 
 			rb->m_rigidBody->setRestitution(.0f);
-			rb->m_rigidBody->setFriction(.4f);
+			rb->m_rigidBody->setFriction(.3f);
 	
 			if (isDynamic)
 			{
@@ -265,7 +268,37 @@ return 0;
 				}
 				case 2:
 				{
+		
+					btBoxShape* bs = new btBoxShape(btVector3(0, 0, 0));
+					//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin()));
+					btRigidBody::btRigidBodyConstructionInfo rbInfo(0, motionState, bs, btVector3(0.0,0.0,0.0));
+					btRigidBody* rb2 = new btRigidBody(rbInfo);
 
+					//rb->m_rigidBody = new btRigidBody(rbInfo);
+					rb2->setActivationState(DISABLE_DEACTIVATION);
+					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb2);
+					btTransform frame1, frame2;
+					frame1 = btTransform::getIdentity();
+					frame1.setOrigin(btVector3(btScalar(10.), btScalar(0.), btScalar(10.)));
+					frame2 = btTransform::getIdentity();
+					frame2.setOrigin(btVector3(btScalar(0.), btScalar(0.), btScalar(0.)));
+
+					btGeneric6DofSpringConstraint* springConstraint = new btGeneric6DofSpringConstraint( *rb2, *rb->m_rigidBody, frame1, frame2, true);
+					springConstraint->setLinearUpperLimit(btVector3(80., 0., 0.));
+					springConstraint->setLinearLowerLimit(btVector3(-80., 0., 0.));
+
+					springConstraint->setAngularLowerLimit(btVector3(-.5f, 0.f, -.0f));
+					springConstraint->setAngularUpperLimit(btVector3(.5f, 0.f, .0f));
+
+					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(springConstraint, true);
+					springConstraint->enableSpring(0, true);
+					springConstraint->setStiffness(0, 5.0f);
+					springConstraint->setDamping(0, 0.1f);
+					springConstraint->enableSpring(5, true);
+					springConstraint->setStiffness(5, 5.0f);
+					springConstraint->setDamping(0, 0.1f);
+					//springConstraint->setEquilibriumPoint();
 					break;
 				}
 				case 3:

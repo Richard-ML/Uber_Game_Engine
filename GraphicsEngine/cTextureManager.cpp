@@ -68,7 +68,7 @@ void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
 		glTexStorage2D(GL_TEXTURE_2D, // 2D texture
 			1,             // 8 mipmap levels
 			GL_RGBA32F,    // 32-bit floating-point RGBA data
-			7680, 7680);   // 512 x 512 texels
+			3072, 3072);   // 512 x 512 texels
 						   //////////////////////
 
 	}
@@ -163,7 +163,7 @@ void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
 
 	currentMipmapCol += 3;
 
-	if (currentMipmapCol >= 15)
+	if (currentMipmapCol >= 6)
 	{
 		currentMipmapRow += 1;
 		currentMipmapCol = 0;

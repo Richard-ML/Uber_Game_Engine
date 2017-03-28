@@ -49,15 +49,15 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 	/* Load the Mipmap Textures */
 	category_node = root_node->first_node("MipmapTextures");
 	GraphicsEngine::cGraphicsEngine::instance()->loadMipmapTextures(category_node);
-	
+
 
 	/* Load the Cubemaps */
 	category_node = root_node->first_node("Cubemaps");
 	GraphicsEngine::cGraphicsEngine::instance()->loadCubemaps(category_node);
 
 		/* Load the Textures */
-	category_node = root_node->first_node("Textures");
-	GraphicsEngine::cGraphicsEngine::instance()->loadTextures(category_node);
+	//category_node = root_node->first_node("Textures");
+	//GraphicsEngine::cGraphicsEngine::instance()->loadTextures(category_node);
 
 	category_node = root_node->first_node("FrameBufferObjects");
 	GraphicsEngine::cGraphicsEngine::instance()->loadFramebufferObjects(category_node);
