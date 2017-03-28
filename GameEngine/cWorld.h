@@ -37,7 +37,7 @@ public:
 		sWorldTile worldTile;
 		worldTile.position = glm::vec3((glm::round(position.x / worldTile.scale.x) * 64.0f) + 32.0f, 0.0f, glm::round(glm::round(position.z / worldTile.scale.z) * 64.0f) + 8.0f);
 		lock(0);
-		for (int nc = 0; nc < m_vec_SelectedTiles.size(); nc++)
+		for (unsigned int nc = 0; nc < m_vec_SelectedTiles.size(); nc++)
 			if (worldTile.position == m_vec_SelectedTiles.at(nc).position)
 			{
 				m_vec_SelectedTiles.erase(m_vec_SelectedTiles.begin() + nc);

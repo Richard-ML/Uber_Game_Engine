@@ -41,7 +41,7 @@
     <Mesh path="Assets/TileMeshes/ArcDoor.obj" scale="1.0f" name="ArcDoor" r="0" g="6" b="0"/>
 	<Mesh path="Assets/TileMeshes/ArcDoor2.obj" scale="1.0f" name="ArcDoor2" r="0" g="6" b="0"/>
 	<Mesh path="Assets/Sphere.obj" scale="1.0f" name="Sphere" r="0" g="6" b="0"/>
-    	<Mesh path="Assets/shape_Cone.obj" scale="1.0f" name="Cone" r="0" g="6" b="0"/>
+    	<!--<Mesh path="Assets/shape_Cone.obj" scale="1.0f" name="Cone" r="0" g="6" b="0"/>-->
  </Meshes>
 
   <PhysicsMeshes>

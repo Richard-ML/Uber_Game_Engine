@@ -6,7 +6,16 @@
 			<Light type="PointLight" isEnabled="1" coneAngle="0" specularPower="1" directionX="0" directionY="0" directionZ="0" offsetX="0" offsetY="10" offsetZ="0" ambientR="0" ambientG="0" ambientB="0" diffuseR="0.31" diffuseG="0.3" diffuseB="0.3" specularR="0.6" specularG="0.3" specularB="0.3" attenConst="0.2" attenLinear="0.00091427" attenQuad="6.5429e-05" />
 		</RenderableComponent>
 		<PhysicsComponent>
-			<RigidBody offsetX="0" offsetY="0.0f" offsetZ="-5" mass="1.0f"/>
+			<RigidBody offsetX="0.0653804" offsetY="1.00003" offsetZ="-5.43859" mass="1.0f">
+				<CollisionInfo collisionMask="1" >
+					<CollidesWith collisionMask="0"/>
+					<CollidesWith collisionMask="1"/>
+					<CollidesWith collisionMask="2"/>
+					<CollidesWith collisionMask="3"/>
+					<CollidesWith collisionMask="4"/>
+					<CollidesWith collisionMask="5"/>
+				</CollisionInfo>
+			</RigidBody>
 		</PhysicsComponent>
 	</GameEntity>
 	<GameEntity>
@@ -16,7 +25,11 @@
 			<Light type="PointLight" isEnabled="1" coneAngle="0" specularPower="10" directionX="0" directionY="0" directionZ="0" offsetX="0" offsetY="40" offsetZ="0" ambientR="0" ambientG="0" ambientB="0" diffuseR="0.2" diffuseG="0.2" diffuseB="0.2" specularR="0.3" specularG="0.3" specularB="0.3" attenConst="0.2" attenLinear="0.0091427" attenQuad="0.00065429" />
 		</RenderableComponent>
 		<PhysicsComponent>
-			<RigidBody offsetX="0" offsetY="0" offsetZ="0" mass="0.1f" hingeConstraint="1"/>
+			<RigidBody offsetX="-0.415862" offsetY="1.00008" offsetZ="1.84574" mass="0.1f" hingeConstraint="1">
+				<CollisionInfo collisionMask="0" >
+					<CollidesWith collisionMask="1"/>
+				</CollisionInfo>
+			</RigidBody>
 		</PhysicsComponent>
 	</GameEntity>
 	<GameEntity>
@@ -24,62 +37,48 @@
 			<Mesh name="ArcDoor" outline="false" />
 		</RenderableComponent>
 		<PhysicsComponent>
-			<RigidBody offsetX="0" offsetY="0" offsetZ="50.0f" mass="0.1f" hingeConstraint="0"/>
+			<RigidBody offsetX="-0.637498" offsetY="1.00189" offsetZ="49.1624" mass="0.1f" hingeConstraint="0">
+				<CollisionInfo collisionMask="0" >
+					<CollidesWith collisionMask="1"/>
+				</CollisionInfo>
+			</RigidBody>
 		</PhysicsComponent>
-	</GameEntity>	
+	</GameEntity>
 	<GameEntity>
 		<RenderableComponent>
 			<Mesh name="ArcDoor2" outline="false" />
 		</RenderableComponent>
 		<PhysicsComponent>
-			<RigidBody offsetX="0" offsetY="0" offsetZ="50.0f" mass="0.1f" hingeConstraint="1"/>
+			<RigidBody offsetX="-0.640062" offsetY="1.0016" offsetZ="50.1885" mass="0.1f" hingeConstraint="1">
+				<CollisionInfo collisionMask="0" >
+					<CollidesWith collisionMask="1"/>
+				</CollisionInfo>
+			</RigidBody>
 		</PhysicsComponent>
 	</GameEntity>
-
-
-
-
-
-
-	<!-- Physics Project Stuff to remove BEGIN -->
-
-
 	<GameEntity>
 		<RenderableComponent>
 			<Mesh name="Sphere" outline="false" />
 		</RenderableComponent>
 		<PhysicsComponent>
-			<RigidBody offsetX="0" offsetY="3.0f" offsetZ="-50.0f" mass="0.1f" hingeConstraint="2"/>
+			<RigidBody offsetX="0" offsetY="3.0" offsetZ="-50" mass="0.1f" hingeConstraint="2">
+				<CollisionInfo collisionMask="3" >
+					<CollidesWith collisionMask="1"/>
+					<CollidesWith collisionMask="0"/>
+				</CollisionInfo>
+			</RigidBody>
 		</PhysicsComponent>
 	</GameEntity>
-
-
-
 	<GameEntity>
 		<RenderableComponent>
 			<Mesh name="Cone" outline="true" />
 		</RenderableComponent>
 		<PhysicsComponent>
-			<RigidBody offsetX="0" offsetY="3.0f" offsetZ="-25.0f" mass="0.1f" hingeConstraint="2"/>
-		</PhysicsComponent>
-	</GameEntity>
-
-
-
-
-
-
-
-
-	<!-- Physics Project Stuff to remove END -->
-
-
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="0" offsetY="0" offsetZ="-24" mass="0.0f"/>
+			<RigidBody offsetX="25" offsetY="-1341.76" offsetZ="-25" mass="0.0f">
+				<CollisionInfo collisionMask="0" >
+					<CollidesWith collisionMask="4"/>
+				</CollisionInfo>
+			</RigidBody>
 		</PhysicsComponent>
 	</GameEntity>
 	<GameEntity>
@@ -87,7 +86,11 @@
 			<Mesh name="FloorTile" outline="false" />
 		</RenderableComponent>
 		<PhysicsComponent>
-			<RigidBody offsetX="0" offsetY="0" offsetZ="40" mass="0.0f"/>
+			<RigidBody offsetX="0" offsetY="0" offsetZ="-24" mass="0.0f">
+				<CollisionInfo collisionMask="0" >
+					<CollidesWith collisionMask="1"/>
+				</CollisionInfo>
+			</RigidBody>
 		</PhysicsComponent>
 	</GameEntity>
 	<GameEntity>
@@ -95,7 +98,11 @@
 			<Mesh name="FloorTile" outline="false" />
 		</RenderableComponent>
 		<PhysicsComponent>
-			<RigidBody offsetX="64" offsetY="0" offsetZ="40" mass="0.0f"/>
+			<RigidBody offsetX="0" offsetY="0" offsetZ="40" mass="0.0f">
+				<CollisionInfo collisionMask="0" >
+					<CollidesWith collisionMask="1"/>
+				</CollisionInfo>
+			</RigidBody>
 		</PhysicsComponent>
 	</GameEntity>
 	<GameEntity>
@@ -103,7 +110,11 @@
 			<Mesh name="FloorTile" outline="false" />
 		</RenderableComponent>
 		<PhysicsComponent>
-			<RigidBody offsetX="64" offsetY="0" offsetZ="-24" mass="0.0f"/>
+			<RigidBody offsetX="0" offsetY="0" offsetZ="-88" mass="0.0f">
+				<CollisionInfo collisionMask="0" >
+					<CollidesWith collisionMask="1"/>
+				</CollisionInfo>
+			</RigidBody>
 		</PhysicsComponent>
 	</GameEntity>
 	<GameEntity>
@@ -111,359 +122,12 @@
 			<Mesh name="FloorTile" outline="false" />
 		</RenderableComponent>
 		<PhysicsComponent>
-			<RigidBody offsetX="64" offsetY="0" offsetZ="-88" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="0" offsetY="0" offsetZ="-88" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-64" offsetY="0" offsetZ="-88" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-64" offsetY="0" offsetZ="-24" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-64" offsetY="0" offsetZ="40" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-64" offsetY="0" offsetZ="104" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="0" offsetY="0" offsetZ="104" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="64" offsetY="0" offsetZ="104" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="128" offsetY="0" offsetZ="104" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="128" offsetY="0" offsetZ="40" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="128" offsetY="0" offsetZ="-24" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="128" offsetY="0" offsetZ="-88" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="128" offsetY="0" offsetZ="-152" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="64" offsetY="0" offsetZ="-152" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="0" offsetY="0" offsetZ="-152" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-64" offsetY="0" offsetZ="-152" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-128" offsetY="0" offsetZ="-152" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-128" offsetY="0" offsetZ="-88" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-128" offsetY="0" offsetZ="-24" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-128" offsetY="0" offsetZ="40" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-128" offsetY="0" offsetZ="104" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-128" offsetY="0" offsetZ="168" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-64" offsetY="0" offsetZ="168" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="0" offsetY="0" offsetZ="168" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="64" offsetY="0" offsetZ="168" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="128" offsetY="0" offsetZ="168" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="192" offsetY="0" offsetZ="168" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="192" offsetY="0" offsetZ="104" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="192" offsetY="0" offsetZ="40" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="192" offsetY="0" offsetZ="-24" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="192" offsetY="0" offsetZ="-88" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="192" offsetY="0" offsetZ="-152" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="192" offsetY="0" offsetZ="-216" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="128" offsetY="0" offsetZ="-216" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="64" offsetY="0" offsetZ="-216" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="0" offsetY="0" offsetZ="-216" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-64" offsetY="0" offsetZ="-216" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-128" offsetY="0" offsetZ="-216" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-192" offsetY="0" offsetZ="-216" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-192" offsetY="0" offsetZ="-152" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-192" offsetY="0" offsetZ="-88" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-192" offsetY="0" offsetZ="-24" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-192" offsetY="0" offsetZ="40" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-192" offsetY="0" offsetZ="104" mass="0.0f"/>
-		</PhysicsComponent>
-	</GameEntity>
-	<GameEntity>
-		<RenderableComponent>
-			<Mesh name="FloorTile" outline="false" />
-		</RenderableComponent>
-		<PhysicsComponent>
-			<RigidBody offsetX="-192" offsetY="0" offsetZ="168" mass="0.0f"/>
+			<RigidBody offsetX="0" offsetY="0" offsetZ="-152" mass="0.0f">
+				<CollisionInfo collisionMask="0" >
+					<CollidesWith collisionMask="1"/>
+					<CollidesWith collisionMask="3"/>
+				</CollisionInfo>
+			</RigidBody>
 		</PhysicsComponent>
 	</GameEntity>
 </GameEntities>

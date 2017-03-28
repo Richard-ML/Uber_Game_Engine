@@ -10,7 +10,7 @@
 #include <map>
 #include "_btRigidBody.h"
 #include "_btCollisionShape.h"
-
+#define BIT(x) (1<<(x))
 // The PIMPL idiom aka Compilation Firewall
 // Purpose: Encapsulate private member variables. Reduces make-time,
 // compile-time, and the Fragile Binary Interface Problem.
@@ -179,18 +179,29 @@ return 0;
 			glm::mat4 transform;
 			glm::vec3 offset = glm::vec3(std::stof(cRigidBody_node->first_attribute("offsetX")->value()), std::stof(cRigidBody_node->first_attribute("offsetY")->value()), std::stof(cRigidBody_node->first_attribute("offsetZ")->value()));
 			transform[3] = glm::vec4(offset, 1.0f);
-
-
 			rapidxml::xml_attribute<char>* att = cRigidBody_node->first_attribute("hingeConstraint");
 			int value = 0;
 			if (att != 0)
 				value = std::stoi(att->value());
 		
 
+			// Get the collsion details for this object
+			// These details will include the collision mask for the specific object and the collsion masks of objects that it collides with. 
+			rapidxml::xml_node<> * collisionInfo_node = cRigidBody_node->first_node("CollisionInfo");
+			int collisionMask = BIT(std::stoi( collisionInfo_node->first_attribute("collisionMask")->value()));
+
+			int collisionFilterResult = 0; // No objects are assigned a collsion mask of 0: Therefore objects without specified collision filters do not collides with anything
+
+			for (rapidxml::xml_node<> *CollisionFilter_node = collisionInfo_node->first_node("CollidesWith");
+			CollisionFilter_node; CollisionFilter_node = CollisionFilter_node->next_sibling("CollidesWith")) {
+				collisionFilterResult |= BIT( std::stoi(CollisionFilter_node->first_attribute("collisionMask")->value()));
+			}
+			
 			_btRigidBody* rb = new _btRigidBody();
-		    
+			rb->setCollisionMask(collisionMask);
+			rb->setCollisionFilter(collisionFilterResult);
 			rb->state = state;
-			state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&_btRigidBody::saveToXMLNode, rb)));
+			state->registerComponentXMLDataCallback(std::function< std::string() >(std::bind(&_btRigidBody::saveToXMLNode, rb)));
 
 			state->setTransform(transform);
 
@@ -267,38 +278,37 @@ return 0;
 					break;
 				}
 				case 2:
-				{
-		
+				{	//
 					btBoxShape* bs = new btBoxShape(btVector3(0, 0, 0));
 					//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin()));
-					btRigidBody::btRigidBodyConstructionInfo rbInfo(0, motionState, bs, btVector3(0.0,0.0,0.0));
+					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin() + btVector3(0.0f, 8.0f, 0.0f)));
+					btRigidBody::btRigidBodyConstructionInfo rbInfo(0, motionState, bs, btVector3(0.0f, 0.0f,0.0f));
 					btRigidBody* rb2 = new btRigidBody(rbInfo);
-
+					
 					//rb->m_rigidBody = new btRigidBody(rbInfo);
 					rb2->setActivationState(DISABLE_DEACTIVATION);
-					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb2);
+					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb2, 9,0);
 					btTransform frame1, frame2;
 					frame1 = btTransform::getIdentity();
-					frame1.setOrigin(btVector3(btScalar(10.), btScalar(0.), btScalar(10.)));
+					frame1.setOrigin(btVector3(btScalar(10.), btScalar(0.), btScalar(0.)));
 					frame2 = btTransform::getIdentity();
 					frame2.setOrigin(btVector3(btScalar(0.), btScalar(0.), btScalar(0.)));
-
-					btGeneric6DofSpringConstraint* springConstraint = new btGeneric6DofSpringConstraint( *rb2, *rb->m_rigidBody, frame1, frame2, true);
-					springConstraint->setLinearUpperLimit(btVector3(80., 0., 0.));
-					springConstraint->setLinearLowerLimit(btVector3(-80., 0., 0.));
-
-					springConstraint->setAngularLowerLimit(btVector3(-.5f, 0.f, -.0f));
-					springConstraint->setAngularUpperLimit(btVector3(.5f, 0.f, .0f));
-
+					
+					btGeneric6DofSpringConstraint* springConstraint = new btGeneric6DofSpringConstraint( *rb->m_rigidBody, *rb2, frame1, frame2, true);
+					springConstraint->setLinearUpperLimit(btVector3(80.f, 0.f, 0.f));
+					springConstraint->setLinearLowerLimit(btVector3(-80.f, 0.f, 0.f));
+					
+					springConstraint->setAngularLowerLimit(btVector3(-1.57f, 0.f, 0.0f));
+					springConstraint->setAngularUpperLimit(btVector3(1.57f, 0.f, 0.0f));
+					
 					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(springConstraint, true);
 					springConstraint->enableSpring(0, true);
-					springConstraint->setStiffness(0, 5.0f);
-					springConstraint->setDamping(0, 0.1f);
+					springConstraint->setStiffness(0, 10.0f);
+					springConstraint->setDamping(0, 0.01f);
 					springConstraint->enableSpring(5, true);
-					springConstraint->setStiffness(5, 5.0f);
-					springConstraint->setDamping(0, 0.1f);
-					//springConstraint->setEquilibriumPoint();
+					springConstraint->setStiffness(5, 10.0f);
+					springConstraint->setDamping(0, 0.01f);
+					springConstraint->setEquilibriumPoint();
 					break;
 				}
 				case 3:
@@ -317,8 +327,8 @@ return 0;
 				}
 
 			}
-				s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody);
-
+				s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody, collisionMask, collisionFilterResult);
+			//s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody);
 				rb->m_rigidBody->setUserPointer(rb);
 		}
 		return true;
@@ -471,7 +481,8 @@ return 0;
 		rb->state = state;
 		state->setPosition(position);
 
-
+		rb->setCollisionMask(5);
+		rb->setCollisionFilter(1);
 
 		glm::vec3 colShapePos = state->getBoundingBox().position;
 
