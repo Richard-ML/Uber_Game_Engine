@@ -279,36 +279,36 @@ return 0;
 				}
 				case 2:
 				{	//
-					//btBoxShape* bs = new btBoxShape(btVector3(0, 0, 0));
-					////using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-					//btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin() + btVector3(0.0f, 1.0f, 0.0f)));
-					//btRigidBody::btRigidBodyConstructionInfo rbInfo(0, motionState, bs, btVector3(0.0f, 0.0f,0.0f));
-					//btRigidBody* rb2 = new btRigidBody(rbInfo);
-					//
-					////rb->m_rigidBody = new btRigidBody(rbInfo);
-					//rb2->setActivationState(DISABLE_DEACTIVATION);
-					//s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb2, 9,0);
-					//btTransform frame1, frame2;
-					//frame1 = btTransform::getIdentity();
-					//frame1.setOrigin(btVector3(btScalar(10.), btScalar(0.), btScalar(0.)));
-					//frame2 = btTransform::getIdentity();
-					//frame2.setOrigin(btVector3(btScalar(0.), btScalar(0.), btScalar(0.)));
-					//
-					//btGeneric6DofSpringConstraint* springConstraint = new btGeneric6DofSpringConstraint( *rb->m_rigidBody, *rb2, frame1, frame2, true);
-					//springConstraint->setLinearUpperLimit(btVector3(80.f, 0.f, 0.f));
-					//springConstraint->setLinearLowerLimit(btVector3(-80.f, 0.f, 0.f));
-					//
-					//springConstraint->setAngularLowerLimit(btVector3(-1.57f, 0.f, 0.0f));
-					//springConstraint->setAngularUpperLimit(btVector3(1.57f, 0.f, 0.0f));
-					//
-					//s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(springConstraint, true);
-					//springConstraint->enableSpring(0, true);
-					//springConstraint->setStiffness(0, 10.0f);
-					//springConstraint->setDamping(0, 0.01f);
-					//springConstraint->enableSpring(5, true);
-					//springConstraint->setStiffness(5, 10.0f);
-					//springConstraint->setDamping(0, 0.01f);
-					//springConstraint->setEquilibriumPoint();
+					btBoxShape* bs = new btBoxShape(btVector3(0, 0, 0));
+					//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin() + btVector3(0.0f, 8.0f, 0.0f)));
+					btRigidBody::btRigidBodyConstructionInfo rbInfo(0, motionState, bs, btVector3(0.0f, 0.0f,0.0f));
+					btRigidBody* rb2 = new btRigidBody(rbInfo);
+					
+					//rb->m_rigidBody = new btRigidBody(rbInfo);
+					rb2->setActivationState(DISABLE_DEACTIVATION);
+					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb2, 9,0);
+					btTransform frame1, frame2;
+					frame1 = btTransform::getIdentity();
+					frame1.setOrigin(btVector3(btScalar(10.), btScalar(0.), btScalar(0.)));
+					frame2 = btTransform::getIdentity();
+					frame2.setOrigin(btVector3(btScalar(0.), btScalar(0.), btScalar(0.)));
+					
+					btGeneric6DofSpringConstraint* springConstraint = new btGeneric6DofSpringConstraint( *rb->m_rigidBody, *rb2, frame1, frame2, true);
+					springConstraint->setLinearUpperLimit(btVector3(80.f, 0.f, 0.f));
+					springConstraint->setLinearLowerLimit(btVector3(-80.f, 0.f, 0.f));
+					
+					springConstraint->setAngularLowerLimit(btVector3(-1.57f, 0.f, 0.0f));
+					springConstraint->setAngularUpperLimit(btVector3(1.57f, 0.f, 0.0f));
+					
+					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(springConstraint, true);
+					springConstraint->enableSpring(0, true);
+					springConstraint->setStiffness(0, 10.0f);
+					springConstraint->setDamping(0, 0.01f);
+					springConstraint->enableSpring(5, true);
+					springConstraint->setStiffness(5, 10.0f);
+					springConstraint->setDamping(0, 0.01f);
+					springConstraint->setEquilibriumPoint();
 					break;
 				}
 				case 3:
@@ -327,8 +327,8 @@ return 0;
 				}
 
 			}
-				//s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody, collisionMask, collisionFilterResult);
-			s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody);
+				s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody, collisionMask, collisionFilterResult);
+			//s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody);
 				rb->m_rigidBody->setUserPointer(rb);
 		}
 		return true;
