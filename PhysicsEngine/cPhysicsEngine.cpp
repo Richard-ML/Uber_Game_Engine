@@ -313,15 +313,56 @@ return 0;
 				}
 				case 3:
 				{
+					btTransform frameInA, frameInB;
+					frameInA = btTransform::getIdentity();
+					frameInB = btTransform::getIdentity();
+
+
+					btBoxShape* bs = new btBoxShape(btVector3(0, 0, 0));
+					//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin() + btVector3(25.0f, 8.0f, 25.0f)));
+					btRigidBody::btRigidBodyConstructionInfo rbInfo(0, motionState, bs, btVector3(0.0f, 0.0f, 0.0f));
+					btRigidBody* rb2 = new btRigidBody(rbInfo);
+
+					//rb->m_rigidBody = new btRigidBody(rbInfo);
+					rb2->setActivationState(DISABLE_DEACTIVATION);
+					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb2, 10, 0);
+
+
+					// create slider constraint between A1 and B1 and add it to world
+
+					btSliderConstraint* sliderConstraint = new btSliderConstraint(*rb->m_rigidBody, *rb2, frameInA, frameInB, true);
+					sliderConstraint->setLowerLinLimit(-15.0F);
+					sliderConstraint->setUpperLinLimit(-5.0F);
+
+					sliderConstraint->setLowerAngLimit(-SIMD_PI / 3.0F);
+					sliderConstraint->setUpperAngLimit(SIMD_PI / 3.0F);
+
+					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(sliderConstraint, true);
+
 					break;
 				}
-
 				case 4:
 				{
-					break;
-				}
-				case 5:
-				{
+					btBoxShape* bs = new btBoxShape(btVector3(0, 0, 0));
+					//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin() + btVector3(0.0f, 8.0f, 0.0f)));
+					btRigidBody::btRigidBodyConstructionInfo rbInfo(0, motionState, bs, btVector3(0.0f, 0.0f, 0.0f));
+					btRigidBody* rb2 = new btRigidBody(rbInfo);
+					
+					btTransform frameInA, frameInB;
+					frameInA = btTransform::getIdentity();
+					frameInA.getBasis().setEulerZYX(0, 0, glm::pi<float>() * 0.5f);
+					frameInA.setOrigin(btVector3(btScalar(0.), btScalar(-5.), btScalar(0.)));
+					frameInB = btTransform::getIdentity();
+					frameInB.getBasis().setEulerZYX(0, 0, glm::pi<float>() * 0.5f);
+					frameInB.setOrigin(btVector3(btScalar(0.), btScalar(5.), btScalar(0.)));
+					
+					btConeTwistConstraint * coneTwistConstraint = new btConeTwistConstraint(*rb->m_rigidBody, *rb2, frameInA, frameInB);
+					
+					coneTwistConstraint->setLimit(btScalar(glm::pi<float>() * 0.25f *0.6f), btScalar(glm::pi<float>() * 0.25f), btScalar(glm::pi<float>() * 0.8f), 0.5f);
+					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(coneTwistConstraint, true);
+
 					break;
 				}
 				}

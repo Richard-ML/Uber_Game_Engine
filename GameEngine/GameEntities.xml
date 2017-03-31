@@ -71,12 +71,13 @@
 	</GameEntity>
 	<GameEntity>
 		<RenderableComponent>
-			<Mesh name="Cone" outline="true" />
+			<Mesh name="Sphere" outline="true" />
 		</RenderableComponent>
 		<PhysicsComponent>
-			<RigidBody offsetX="25" offsetY="-1341.76" offsetZ="-25" mass="0.0f">
-				<CollisionInfo collisionMask="0" >
-					<CollidesWith collisionMask="4"/>
+			<RigidBody offsetX="0" offsetY="3.0" offsetZ="-25" mass="0.1f">
+				<CollisionInfo collisionMask="3" >
+					<CollidesWith collisionMask="1"/>
+					<CollidesWith collisionMask="0"/>
 				</CollisionInfo>
 			</RigidBody>
 		</PhysicsComponent>
@@ -89,6 +90,7 @@
 			<RigidBody offsetX="0" offsetY="0" offsetZ="-24" mass="0.0f">
 				<CollisionInfo collisionMask="0" >
 					<CollidesWith collisionMask="1"/>
+					<CollidesWith collisionMask="3"/>
 				</CollisionInfo>
 			</RigidBody>
 		</PhysicsComponent>
@@ -101,6 +103,7 @@
 			<RigidBody offsetX="0" offsetY="0" offsetZ="40" mass="0.0f">
 				<CollisionInfo collisionMask="0" >
 					<CollidesWith collisionMask="1"/>
+					<CollidesWith collisionMask="3"/>
 				</CollisionInfo>
 			</RigidBody>
 		</PhysicsComponent>
@@ -113,6 +116,7 @@
 			<RigidBody offsetX="0" offsetY="0" offsetZ="-88" mass="0.0f">
 				<CollisionInfo collisionMask="0" >
 					<CollidesWith collisionMask="1"/>
+					<CollidesWith collisionMask="3"/>
 				</CollisionInfo>
 			</RigidBody>
 		</PhysicsComponent>
