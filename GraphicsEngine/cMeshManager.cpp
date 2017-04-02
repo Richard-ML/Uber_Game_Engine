@@ -79,8 +79,10 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 		aiVector3D UVW;
 		aiVector3D pos1 = mesh->mVertices[i];
 		pos1 *= scale;
+		aiVector3D t1;
 		aiVector3D n1 = mesh->mNormals[i];
-		aiVector3D t1 = mesh->mTangents[i];
+		if(mesh->mTangents != NULL)
+			t1 = mesh->mTangents[i];
 		cMeshVertex &vert1 = vertices[vertexOffset + i];
 		glm::ivec4 tempTextureUnit0 = glm::ivec4(0);
 		if (mesh->mMaterialIndex >= 0) {
@@ -180,7 +182,7 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 	m_MapMeshNameTocMeshEntry[name] = entryOut;
 
 		sBoundingBox boundingBox;
-		boundingBox.scale = glm::vec3(max.x - min.x, (max.y - min.y) + 1.0f, max.z - min.z);
+		boundingBox.scale = glm::vec3(max.x - min.x, (max.y - min.y), max.z - min.z);
 		boundingBox.position.y += (max.y - min.y) / 2;
 		m_MapMeshNameToAABB[name] = boundingBox;
 	return true;
