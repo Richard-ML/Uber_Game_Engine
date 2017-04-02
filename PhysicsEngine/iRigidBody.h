@@ -27,6 +27,13 @@ namespace PhysicsEngine {
 	class iRigidBody: public cCollisionObject {
 	public:
 		iState* state;
+		// TEMP VARIABLES///////////////////////
+		int collisionMask = 0;
+		int collisionFilter;
+		std::vector<int> collisionFilters;
+		int hingeID = 0;
+		float mass = 0;
+		///////////////////////////////////////
 		virtual ~iRigidBody() {}
 		virtual PhysicsEngine_API void getOrientation(glm::mat4& orientation) = 0;
 		//virtual void getTransform(glm::mat4& transform) = 0;
@@ -61,11 +68,18 @@ namespace PhysicsEngine {
 				"\" " << "offsetY=\"" <<
 				position.y << "\" " << "offsetZ=\""
 				<< position.z << "\""
-				<< " mass=\"" << "0.0f\""
+				<< " mass=\"" << this->mass << "\""
+
+				<< " hingeConstraint=\"" << this->hingeID << "\" "
 				<< ">"
-				"<CollisionInfo collisionMask=\"" << getCollisionMask()
-				<< "\" >"
-				<< "<CollidesWith collisionMask=\"" << getCollisionFilter() << "\"/>"
+				"<CollisionInfo collisionMask=\"" << collisionMask
+				<< "\" >";
+
+			for each(int filter in collisionFilters)
+			{
+				string << "<CollidesWith collisionMask=\"" << filter << "\" />";
+			}
+			string 
 				<< "</CollisionInfo>"
 				<< "</RigidBody>"
 				<< "</PhysicsComponent>";

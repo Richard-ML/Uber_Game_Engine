@@ -15,6 +15,24 @@
 // Purpose: Encapsulate private member variables. Reduces make-time,
 // compile-time, and the Fragile Binary Interface Problem.
 namespace PhysicsEngine {
+
+
+	void gLock(int varNum) {
+#if !defined(SKIP_LOCKING)  
+		while (_InterlockedExchange(&g_pLock->lock, LOCKED) == UNLOCKED) {
+			// spin!  
+		}
+		// At this point, the lock is acquired. ;)
+
+#endif  
+	}
+
+	void gUnlock(int varNum) {
+#if !defined(SKIP_LOCKING)  
+		_InterlockedExchange(&g_pLock->lock, UNLOCKED);
+#endif  
+	}
+
 	cPhysicsEngine *cPhysicsEngine::s_cPhysicsEngine =
 		0; // Allocating pointer to static instance of cPhysicsEngine (singleton)
 
@@ -66,7 +84,7 @@ namespace PhysicsEngine {
 				std::chrono::duration_cast<std::chrono::duration<float>>(
 					std::chrono::high_resolution_clock::now() -
 					lastTime); // Get the time that as passed
-
+			gLock(0);
 			for each(_btRigidBody* rb in vec_rigidBodies) {
 				rb->setCollision(false);//Proxy to state collision flag. Set to true via callback when collision occurs. 
 				if (rb->m_rigidBody != 0) {
@@ -134,7 +152,7 @@ namespace PhysicsEngine {
 					}
 				}
 			}
-
+			gUnlock(0);
 			//for (int nc = 0; nc < s_cPhysicsEngine->impl()->m_btWorld->m_dispatcher->getNumManifolds(); nc++)
 			//{
 			//	btPersistentManifold* contact = s_cPhysicsEngine->impl()->m_btWorld->m_dispatcher->getManifoldByIndexInternal(nc);
@@ -188,16 +206,20 @@ return 0;
 			// Get the collsion details for this object
 			// These details will include the collision mask for the specific object and the collsion masks of objects that it collides with. 
 			rapidxml::xml_node<> * collisionInfo_node = cRigidBody_node->first_node("CollisionInfo");
-			int collisionMask = BIT(std::stoi( collisionInfo_node->first_attribute("collisionMask")->value()));
-
+			int collisionMask = std::stoi( collisionInfo_node->first_attribute("collisionMask")->value());
+			
 			int collisionFilterResult = 0; // No objects are assigned a collsion mask of 0: Therefore objects without specified collision filters do not collides with anything
-
+			_btRigidBody* rb = new _btRigidBody();
+			
+			rb->hingeID = value;
 			for (rapidxml::xml_node<> *CollisionFilter_node = collisionInfo_node->first_node("CollidesWith");
 			CollisionFilter_node; CollisionFilter_node = CollisionFilter_node->next_sibling("CollidesWith")) {
-				collisionFilterResult |= BIT( std::stoi(CollisionFilter_node->first_attribute("collisionMask")->value()));
+				int filter = std::stoi(CollisionFilter_node->first_attribute("collisionMask")->value());
+				rb->collisionFilters.push_back(filter);
+				collisionFilterResult |= BIT(filter);
 			}
 			
-			_btRigidBody* rb = new _btRigidBody();
+	
 			rb->setCollisionMask(collisionMask);
 			rb->setCollisionFilter(collisionFilterResult);
 			rb->state = state;
@@ -214,7 +236,7 @@ return 0;
 			worldTransform.setOrigin(btVector3(offset.x, offset.y, offset.z) + btVector3(colShapePos.x, colShapePos.y, colShapePos.z));
 
 			btScalar mass = std::stof(cRigidBody_node->first_attribute("mass")->value());
-
+			rb->mass = mass;
 			//rigidbody is dynamic if and only if mass is non zero, otherwise static
 			bool isDynamic = (mass != 0.f);
 			btVector3 localInertia(0.0f, 0.0f, 0.0f);
@@ -264,6 +286,7 @@ return 0;
 			if (att != 0)
 			{
 				int value = std::stoi(att->value());
+		
 				switch (value)
 				{
 				case 0:
@@ -368,7 +391,7 @@ return 0;
 				}
 
 			}
-				s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody, collisionMask, collisionFilterResult);
+				s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody, BIT(collisionMask), collisionFilterResult);
 			//s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody);
 				rb->m_rigidBody->setUserPointer(rb);
 		}
@@ -507,6 +530,9 @@ return 0;
 			printf("Physics Engine Initialized\n");
 			//TODO: Run initialize() for shapes
 			s_cPhysicsEngine = new cPhysicsEngine();
+			sSpinLock* pSpinLock = new sSpinLock();
+			pSpinLock->lock = 0; // Create a lock for vec rigid bodies
+			g_pLock = pSpinLock;
 
 			DWORD myThreadID;
 			HANDLE myHandle = CreateThread(NULL, 0, // stack size
@@ -516,6 +542,7 @@ return 0;
 	}
 	PhysicsEngine_API bool cPhysicsEngine::addPhysicsObject(glm::vec3 position, iState * state)
 	{
+		gLock(0);
 		_btRigidBody * rb = new _btRigidBody();
 		state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&_btRigidBody::saveToXMLNode, rb)));
 
@@ -551,14 +578,26 @@ return 0;
 			rb->m_rigidBody->setCollisionFlags(rb->m_rigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 			rb->m_rigidBody->setFriction(0.8f);
 		}
-		s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody);
+		rb->hingeID = -1; // No hinge
+		int collisionFilterResult = 0; // No objects are assigned a collision mask of 0: Therefore objects without specified collision filters do not collides with anything
+
+		//for (int nc = 0; nc < 5; nc++)
+		//{
+				rb->collisionFilters.push_back(1);
+				collisionFilterResult |= BIT(1);
+
+				rb->collisionFilters.push_back(3);
+				collisionFilterResult |= BIT(3);
+		//}
+		s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody, 0, collisionFilterResult);
+		rb->m_rigidBody->setUserPointer(rb);
 
 
 
 		vec_rigidBodies.push_back(rb);
 		//map_rigidBodies[rb->m_rigidBody->getUserIndex()] = rb;
-
-		rb->m_rigidBody->setUserPointer(rb);
+		gUnlock(0);
 		return true;
 	}
+
 }

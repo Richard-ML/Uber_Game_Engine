@@ -71,10 +71,7 @@ namespace PhysicsEngine {
 		// PROXY DATA-MEMBERS
 		bool isColliding;
 
-		int collisionMask;
-		int collisionFilter;
 	public:
-
 		//cRigidBody(cCollisionObject* object);
 		_btRigidBody(const sRigidBody& rigidBody, iCollisionShape* collisionShape);
 		_btRigidBody() {}

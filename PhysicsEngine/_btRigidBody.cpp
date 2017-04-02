@@ -163,7 +163,7 @@ PhysicsEngine_API int PhysicsEngine::_btRigidBody::getCollisionMask()
 
 PhysicsEngine_API void PhysicsEngine::_btRigidBody::setCollisionMask(int collisionMask)
 {
-	this->collisionMask = collisionFilter;
+	this->collisionMask = collisionMask;
 	return;
 }
 
