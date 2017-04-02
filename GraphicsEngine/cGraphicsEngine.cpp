@@ -206,8 +206,6 @@ namespace GraphicsEngine {
 			{
 				glm::mat4 newTrans = glm::translate(controlComponent.pState->getTransform(), translation);
 				// PROJECT CODE: Position restriction
-				//tempTrans[3] = glm::clamp(tempTrans[3], glm::vec4(-1000.0f, 0.0f, -1000.0f, 0.0f), glm::vec4(1000.0f, 1.0f, -5.0f, 1.0f));
-				//controlComponent.pState->setTransform(tempTrans);
 				glm::mat4 tempTrans = controlComponent.pState->getTransform();
 				tempTrans[3] = glm::vec4(0.0f);
 				controlComponent.pState->setImpluse(glm::vec3(glm::translate(tempTrans, translation)[3])- glm::vec3(glm::vec3(0.0f)));

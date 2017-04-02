@@ -206,6 +206,7 @@ copy /Y "$(SolutionDir)Include\FreeImage\FreeImage.dll" "$(TargetDir)FreeImage.d
   </ItemGroup>
   <ItemGroup>
     <Xml Include="GameAssets.xml" />
+    <Xml Include="GameEntities.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
