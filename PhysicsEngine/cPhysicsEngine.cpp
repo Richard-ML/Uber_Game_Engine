@@ -364,7 +364,7 @@ namespace PhysicsEngine {
 				}
 				case 5:
 				{
-					//rb->m_rigidBody->setAngularFactor(btVector3(0, 1.0, 0)); // prevent player from falling over
+					rb->m_rigidBody->setAngularFactor(btVector3(0, 1.0, 0)); // prevent player from falling over
 					break;
 				}
 
