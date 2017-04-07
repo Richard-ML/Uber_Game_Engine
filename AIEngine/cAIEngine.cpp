@@ -52,8 +52,10 @@ namespace AIEngine {
 			   std::chrono::duration_cast<std::chrono::duration<float>>(
 				   std::chrono::high_resolution_clock::now() -
 				   lastTime); // Get the time that as passed
-		   aiEngine->update(deltaTime.count());
 		   lastTime = std::chrono::high_resolution_clock::now();
+
+		   aiEngine->update(deltaTime.count());
+
 		   Sleep(15); // Free the thread
 	   } while (true);
 	   return 0;

@@ -76,13 +76,14 @@ int main()
 			std::chrono::duration_cast<std::chrono::duration<float>>(
 				std::chrono::high_resolution_clock::now() -
 				lastTime); // Get the time that as passed
+		lastTime = std::chrono::high_resolution_clock::now();
+
 		/////////////////////////////////////////////////////////////
 		// The GraphicsEngine is updated here on the main thread. The other engines have their own threads.
 		g_pGraphicsEngine->update(deltaTime.count());
 		// CORE ROUTINE --- END
 		Sleep(10);
-		lastTime = std::chrono::high_resolution_clock::now();
-	
+
 
 	} while (true);
 

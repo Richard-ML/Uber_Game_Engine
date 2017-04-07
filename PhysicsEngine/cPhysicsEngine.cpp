@@ -84,6 +84,7 @@ namespace PhysicsEngine {
 				std::chrono::duration_cast<std::chrono::duration<float>>(
 					std::chrono::high_resolution_clock::now() -
 					lastTime); // Get the time that as passed
+			lastTime = std::chrono::high_resolution_clock::now();
 			gLock(0);
 			for each(_btRigidBody* rb in vec_rigidBodies) {
 				rb->setCollision(false);//Proxy to state collision flag. Set to true via callback when collision occurs. 
@@ -119,8 +120,8 @@ namespace PhysicsEngine {
 					}
 				}
 			}
-
-			physicsEngine->impl()->m_btWorld->step(0.016f);
+			physicsEngine->impl()->m_btWorld->step(deltaTime.count());
+			//physicsEngine->impl()->m_btWorld->step(0.016f);
 
 			for each(_btRigidBody* rb in vec_rigidBodies) {
 
@@ -164,8 +165,8 @@ namespace PhysicsEngine {
 			//	//s_cPhysicsEngine->impl()->m_btWorld->m_dispatcher->clearManifold(contact); // O.o 
 			//}
 
-			lastTime = std::chrono::high_resolution_clock::now();
-			Sleep(1); // Free the thread
+
+			Sleep(10); // Free the thread
 		} while (true);
 		return 0;
 	}
@@ -364,7 +365,9 @@ namespace PhysicsEngine {
 				}
 				case 5:
 				{
-					rb->m_rigidBody->setAngularFactor(btVector3(0, 1.0, 0)); // prevent player from falling over
+					rb->m_rigidBody->setFriction(0.0f);
+					rb->m_rigidBody->setRestitution(0.0f);
+					//rb->m_rigidBody->setAngularFactor(btVector3(0, 1.0, 0)); // prevent player from falling over
 					break;
 				}
 
