@@ -56,16 +56,6 @@ namespace PhysicsEngine {
 
 	cPhysicsEngine::cPhysicsEngine() {
 		this->impl()->m_btWorld = new _btWorld();
-		//btContactSolverInfo si = this->impl()->m_btWorld->m_btWorld->getSolverInfo();
-		//si.m_splitImpulsePenetrationThreshold = -0.0004f;
-		//int numManifolds = this->impl()->m_btWorld->m_dispatcher->getNumManifolds();
-		//
-		//for (int i = 0; i < numManifolds; i++)
-		//{
-		//	btPersistentManifold* contactManifold = this->impl()->m_btWorld->m_dispatcher->getManifoldByIndexInternal(i);
-		//	btScalar contactThreshold = -0.0002;
-		//	contactManifold->setContactBreakingThreshold(contactThreshold);
-		//}
 	}
 
 
@@ -90,14 +80,8 @@ namespace PhysicsEngine {
 				rb->setCollision(false);//Proxy to state collision flag. Set to true via callback when collision occurs. 
 				if (rb->m_rigidBody != 0) {
 					glm::vec3 currentImpluse = rb->state->getImpluse();
-					//if (currentImpluse != glm::vec3(0.0f))
-					{
-						btTransform trans = rb->m_rigidBody->getWorldTransform();
-						//rb->m_rigidBody->getMotionState()->getWorldTransform(trans);
-						//	trans.setOrigin(trans.getOrigin() + btVector3(currentImpluse.x, currentImpluse.y, currentImpluse.z) * deltaTime.count());
-					//	rb->m_rigidBody->applyCentralImpulse(btVector3(currentImpluse.x, currentImpluse.y, currentImpluse.z) * 10);
-					//rb->m_rigidBody->applyCentralForce(btVector3(currentImpluse.x, currentImpluse.y, currentImpluse.z) * 10);
 
+						btTransform trans = rb->m_rigidBody->getWorldTransform();
 						rb->m_rigidBody->setLinearVelocity(btVector3(currentImpluse.x, currentImpluse.y, currentImpluse.z) * 10);
 						rb->state->setImpluse(glm::vec3(0.0f));
 
@@ -117,7 +101,6 @@ namespace PhysicsEngine {
 						_btQuat.setW(rotation.w);
 						trans.setRotation(_btQuat);
 						rb->m_rigidBody->setWorldTransform(trans);
-					}
 				}
 			}
 			physicsEngine->impl()->m_btWorld->step(deltaTime.count());
@@ -125,7 +108,7 @@ namespace PhysicsEngine {
 
 			for each(_btRigidBody* rb in vec_rigidBodies) {
 
-				if (rb->m_rigidBody != 0) { // Objects can be added to the scene but not be initialized. 
+				if (rb->m_rigidBody != 0) { // Objects can be added to the scene and not be initialized yet. Check to see if the bullet rigid body exists.
 					rb->state->setIsColliding(rb->isCollision());
 					if (rb->m_rigidBody->getInvMass() != 0) {
 
@@ -242,61 +225,10 @@ namespace PhysicsEngine {
 			bool isDynamic = (mass != 0.f);
 			btVector3 localInertia(0.0f, 0.0f, 0.0f);
 			glm::vec3 boxHalfWidth = state->getBoundingBox().scale;
-			if (hingeID == 2)
-			{
-				sBoundingBox boundingBox;
-				boundingBox.scale = glm::vec3(2.0f);
-				rb->state->setBoundingBox(boundingBox);
-				// SPHERE SHAPE HERE
-				btSphereShape* ss = new btSphereShape(boxHalfWidth.x / 2);
-				//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-				btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
-				if (isDynamic)
-					ss->calculateLocalInertia(mass, localInertia);
 
-				btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, ss, localInertia);
+			//rb->m_rigidBody->setRestitution(.0f);
+			//rb->m_rigidBody->setFriction(.3f);
 
-				rb->m_rigidBody = new btRigidBody(rbInfo);
-			}
-			else {
-				if (hingeID == 4)
-				{
-					// CONE SHAPE HERE
-					btConeShape* cs = new btConeShape(boxHalfWidth.x / 2, boxHalfWidth.y / 2);
-
-					//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
-					if (isDynamic)
-						cs->calculateLocalInertia(mass, localInertia);
-
-					btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, cs, localInertia);
-
-					rb->m_rigidBody = new btRigidBody(rbInfo);
-				}
-				else {
-					// BOX SHAPES HERE AND PLANE ;)
-					btBoxShape* bs = new btBoxShape(btVector3(boxHalfWidth.x / 2, boxHalfWidth.y / 2, boxHalfWidth.z / 2));
-
-					//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
-					if (isDynamic)
-						bs->calculateLocalInertia(mass, localInertia);
-
-					btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, bs, localInertia);
-
-					rb->m_rigidBody = new btRigidBody(rbInfo);
-				}
-			}
-
-			rb->m_rigidBody->setRestitution(.0f);
-			rb->m_rigidBody->setFriction(.3f);
-
-			if (isDynamic)
-			{
-				rb->m_rigidBody->activate(true);
-				rb->m_rigidBody->forceActivationState(DISABLE_DEACTIVATION);
-				rb->m_rigidBody->setCollisionFlags(rb->m_rigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
-			}
 
 			if (att != 0)
 			{
@@ -304,12 +236,32 @@ namespace PhysicsEngine {
 				{
 				case 0:
 				{
+					// BOX SHAPES HERE AND PLANE ;)
+					btBoxShape* bs = new btBoxShape(btVector3(boxHalfWidth.x / 2, boxHalfWidth.y / 2, boxHalfWidth.z / 2));
+
+					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+					if (isDynamic)
+						bs->calculateLocalInertia(mass, localInertia);
+
+					btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, bs, localInertia);
+
+					rb->m_rigidBody = new btRigidBody(rbInfo);
 					// Arc door 1
 					btHingeConstraint* hinge = new btHingeConstraint(*rb->m_rigidBody, btVector3(5, 0, 0), btVector3(0, 1, 0), true);
 					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(hinge);
 					break;
 				}
 				case 1: {
+					// BOX SHAPES HERE AND PLANE ;)
+					btBoxShape* bs = new btBoxShape(btVector3(boxHalfWidth.x / 2, boxHalfWidth.y / 2, boxHalfWidth.z / 2));
+
+					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+					if (isDynamic)
+						bs->calculateLocalInertia(mass, localInertia);
+
+					btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, bs, localInertia);
+
+					rb->m_rigidBody = new btRigidBody(rbInfo);
 					// Arc door 2
 					btHingeConstraint* hinge = new btHingeConstraint(*rb->m_rigidBody, btVector3(-5, 0, 0), btVector3(0, 1, 0), true);
 					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(hinge);
@@ -317,6 +269,21 @@ namespace PhysicsEngine {
 				}
 				case 2:
 				{
+					sBoundingBox boundingBox;
+					boundingBox.scale = glm::vec3(2.0f);
+					rb->state->setBoundingBox(boundingBox);
+					// SPHERE SHAPE HERE
+					btSphereShape* ss = new btSphereShape(boxHalfWidth.x / 2);
+					//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+					if (isDynamic)
+						ss->calculateLocalInertia(mass, localInertia);
+
+					btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, ss, localInertia);
+
+					rb->m_rigidBody = new btRigidBody(rbInfo);
+
+
 					// Spring constraint!! 
 					btTransform frame2;
 					frame2 = btTransform::getIdentity();
@@ -341,6 +308,16 @@ namespace PhysicsEngine {
 				}
 				case 3:
 				{
+					// BOX SHAPES HERE AND PLANE ;)
+					btBoxShape* bs = new btBoxShape(btVector3(boxHalfWidth.x / 2, boxHalfWidth.y / 2, boxHalfWidth.z / 2));
+
+					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+					if (isDynamic)
+						bs->calculateLocalInertia(mass, localInertia);
+
+					btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, bs, localInertia);
+
+					rb->m_rigidBody = new btRigidBody(rbInfo);
 					// This is a plane. (Box with 0 scale on one axis..)
 					btTransform frameInB;
 					frameInB = btTransform::getIdentity();
@@ -357,6 +334,17 @@ namespace PhysicsEngine {
 				}
 				case 4:
 				{
+					// CONE SHAPE HERE
+					btConeShape* cs = new btConeShape(boxHalfWidth.x / 2, boxHalfWidth.y / 2);
+
+					//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+					if (isDynamic)
+						cs->calculateLocalInertia(mass, localInertia);
+
+					btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, cs, localInertia);
+
+					rb->m_rigidBody = new btRigidBody(rbInfo);
 					rb->m_rigidBody->setFriction(0.1f); // less friction here.. Just a swinging light or something. Use your IMAGINATION James Lucas. ;)
 					btVector3 constraintPivot(btVector3(0.0f, 8.0f, 0.0f));
 					btTypedConstraint* p2p = new btPoint2PointConstraint(*rb->m_rigidBody, constraintPivot);
@@ -365,14 +353,58 @@ namespace PhysicsEngine {
 				}
 				case 5:
 				{
+					btConvexShape* capsuleShape = new btCapsuleShape(glm::max( boxHalfWidth.x, boxHalfWidth.z), boxHalfWidth.y);
+
+					//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+					if (isDynamic)
+						capsuleShape->calculateLocalInertia(mass, localInertia);
+
+					btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, capsuleShape, localInertia);
+
+					rb->m_rigidBody = new btRigidBody(rbInfo);
+
+					// Friction will be applied manually..
 					rb->m_rigidBody->setFriction(0.0f);
 					rb->m_rigidBody->setRestitution(0.0f);
-					//rb->m_rigidBody->setAngularFactor(btVector3(0, 1.0, 0)); // prevent player from falling over
+					//rb->m_rigidBody->setDamping
+
+					rb->m_rigidBody->setAngularFactor(0.0f); // Keep the character from falling over..
+					
+					rb->m_rigidBody->setActivationState(DISABLE_DEACTIVATION);
+				
+
+					rb->m_ghostObject = new btPairCachingGhostObject();
+					rb->m_ghostObject->setCollisionShape(capsuleShape);
+					rb->m_ghostObject->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
+
+					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addCollisionObject(rb->m_ghostObject, btBroadphaseProxy::KinematicFilter, btBroadphaseProxy::StaticFilter | btBroadphaseProxy::DefaultFilter);
+
+					break;
+				}
+				default:
+				{
+					// BOX SHAPES HERE AND PLANE ;)
+					btBoxShape* bs = new btBoxShape(btVector3(boxHalfWidth.x / 2, boxHalfWidth.y / 2, boxHalfWidth.z / 2));
+
+					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+					if (isDynamic)
+						bs->calculateLocalInertia(mass, localInertia);
+
+					btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, bs, localInertia);
+					rb->m_rigidBody = new btRigidBody(rbInfo);
 					break;
 				}
 
 				}
 
+
+				if (isDynamic)
+				{
+					rb->m_rigidBody->activate(true);
+					rb->m_rigidBody->forceActivationState(DISABLE_DEACTIVATION);
+					rb->m_rigidBody->setCollisionFlags(rb->m_rigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+				}
 			}
 			s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody, BIT(collisionMask), collisionFilterResult);
 			rb->m_rigidBody->setUserPointer(rb);

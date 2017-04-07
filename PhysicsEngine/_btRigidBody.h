@@ -100,6 +100,7 @@ namespace PhysicsEngine {
 		//virtual void translate(glm::vec3& translation);
 	//private:
 		btRigidBody* m_rigidBody;
+		btPairCachingGhostObject* m_ghostObject;
 
 	};
 }

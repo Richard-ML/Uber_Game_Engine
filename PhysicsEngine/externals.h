@@ -11,7 +11,10 @@
 #include "..\Include\Bullet\src\LinearMath\btVector3.h"
 #include "..\Include\Bullet\src\LinearMath\btAlignedObjectArray.h"
 #include "..\Include\Bullet\src\btBulletDynamicsCommon.h"
-
+//#include "..\Include\Bullet\src\BulletDynamics\Character\btKinematicCharacterController.h" 
+//#include <BulletCollision\CollisionDispatch\btGhostObject.h>
+#include "..\Include\Bullet\src\BulletCollision\BroadphaseCollision\btOverlappingPairCallback.h"
+#include "..\Include\Bullet\src\BulletCollision\CollisionDispatch\btGhostObject.h"
 
 #include "..\Include\rapidxml\rapidxml.hpp"
 #include "..\StateInfo\State.h"
