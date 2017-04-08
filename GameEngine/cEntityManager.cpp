@@ -208,6 +208,14 @@ void cEntityManager::loadGameEntitiesFromXML(int difficulty) {
 
 }
 
+void cEntityManager::cleanup()
+{
+	for each(cGameEntity* entity in vec_gameEntities) {
+		delete entity;
+	}
+	vec_gameEntities.clear();
+}
+
 
 // For each entity request entity xml node from state manager.. state manager will get each all of the entities component nodes 
 void cEntityManager::saveGameToXML(int difficulty) {

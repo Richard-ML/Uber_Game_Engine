@@ -53,7 +53,13 @@ namespace AIEngine {
 				   std::chrono::high_resolution_clock::now() -
 				   lastTime); // Get the time that as passed
 		   lastTime = std::chrono::high_resolution_clock::now();
-
+		   switch (g_pGameState->getGameState())
+		   {
+		   case GAMESTATE_EXIT:
+			   s_cAIEngine->cleanup();
+			   return 0;
+			   break;
+		   }
 		   aiEngine->update(deltaTime.count());
 
 		   Sleep(15); // Free the thread
@@ -67,6 +73,15 @@ namespace AIEngine {
 	   //printf("AI did stuff!\n");
 	   return;
 
+   }
+   void cAIEngine::cleanup()
+   {
+	   s_cAIEngine->~cAIEngine();
+
+	  // NOTE: These global pointers are shared with each engine. The GameEngine Thread will delete them once it's ready to exit. 
+	  // delete g_pDebugRenderer;
+	  // delete g_pGameState;
+	  // delete g_pWorld;
    }
    AIEngine_API void cAIEngine::initializeGameStateHandle(iGameState * pGameState)
    {

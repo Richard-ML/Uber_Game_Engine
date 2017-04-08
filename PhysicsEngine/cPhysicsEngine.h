@@ -32,6 +32,7 @@ namespace PhysicsEngine {
 		cPhysicsEngine &operator=(const cPhysicsEngine &physicsManager) {
 		} // Disallow assignment operator
 		static DWORD __cdecl physicsThread(void* lpParam);
+		void cleanup();
 	public:
 		//int loadGameFromXML(std::string filename);
 		static PhysicsEngine_API  cPhysicsEngine *instance();

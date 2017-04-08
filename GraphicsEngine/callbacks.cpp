@@ -13,7 +13,10 @@ void callback_windowResize(GLFWwindow *window, int width, int height) {
 
 void callback_WindowClose(GLFWwindow *window) {
 	glfwSetWindowShouldClose(window, 1);
+
 	// TODO: Something better than just this
+	g_pGameState->setGameState(GAMESTATE_EXIT);
+
 	glfwTerminate();
 }
 
@@ -78,6 +81,17 @@ void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 			case GLFW_KEY_ENTER:
 			{
 				g_pWorld->generateObjectAtSlection();
+			}
+			break;
+
+			case GLFW_KEY_ESCAPE:
+			{
+				glfwSetWindowShouldClose(window, 1);
+
+				// TODO: Something better than just this
+				g_pGameState->setGameState(GAMESTATE_EXIT);
+
+				glfwTerminate();
 			}
 			break;
 			}

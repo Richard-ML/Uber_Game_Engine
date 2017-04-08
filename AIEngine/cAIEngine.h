@@ -30,6 +30,7 @@ namespace AIEngine {
 		} // Disallow assignment operator
 		static DWORD cAIEngine::aiThread(void *lpParam);
 		void update(float deltaTime);
+		void cleanup();
 	public:
 		static AIEngine_API  cAIEngine *instance();
 		AIEngine_API void initializeGameStateHandle(iGameState* pGameState);

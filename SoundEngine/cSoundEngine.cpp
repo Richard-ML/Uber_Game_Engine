@@ -40,7 +40,7 @@ namespace SoundEngine {
 		std::chrono::high_resolution_clock::time_point lastTime =
 			std::chrono::high_resolution_clock::now();
 		std::chrono::duration<float> deltaTime;
-		cSoundEngine *physicsEngine =
+		cSoundEngine *soundEngine =
 			reinterpret_cast<cSoundEngine *>(lpParam);
 		while (g_pGameState == 0 || g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(50); }
 		do {
@@ -52,7 +52,13 @@ namespace SoundEngine {
 					lastTime); // Get the time that as passed
 			lastTime = std::chrono::high_resolution_clock::now();
 			// DO STUFF!!! 
-	
+			switch (g_pGameState->getGameState())
+			{
+			case GAMESTATE_EXIT:
+				soundEngine->s_cSoundEngine->~cSoundEngine();
+				return 0;
+				break;
+			}
 			//////////////
 			Sleep(35); // Free the thread
 		} while (true);

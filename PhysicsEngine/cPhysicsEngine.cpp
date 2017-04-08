@@ -58,13 +58,22 @@ namespace PhysicsEngine {
 
 
 	DWORD cPhysicsEngine::physicsThread(void *lpParam) {
+		while (g_pGameState == 0 || g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(50); }
 		std::chrono::high_resolution_clock::time_point lastTime =
 			std::chrono::high_resolution_clock::now();
 		std::chrono::duration<float> deltaTime;
 		cPhysicsEngine *physicsEngine =
 			reinterpret_cast<cPhysicsEngine *>(lpParam);
+
 		do {
-			while (g_pGameState == 0 || g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(50); }
+	
+			switch (g_pGameState->getGameState())
+			{
+			case GAMESTATE_EXIT:
+				physicsEngine->s_cPhysicsEngine->~cPhysicsEngine();
+				return 0;
+				break;
+			}
 			std::chrono::high_resolution_clock::time_point t2 =
 				std::chrono::high_resolution_clock::now();
 			deltaTime =
@@ -149,6 +158,14 @@ namespace PhysicsEngine {
 			Sleep(10); // Free the thread
 		} while (true);
 		return 0;
+	}
+
+	void cPhysicsEngine::cleanup()
+	{
+		for each(iRigidBody* rb in vec_rigidBodies) {
+			rb->~iRigidBody();
+		}
+		vec_rigidBodies.clear();
 	}
 
 	PhysicsEngine_API bool cPhysicsEngine::loadPhysicsComponent(rapidxml::xml_node<>* componentNode, iState * state)

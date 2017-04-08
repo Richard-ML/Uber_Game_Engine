@@ -42,9 +42,6 @@ int main()
 	g_pDebugRenderer->createCube(glm::vec3(0.0f, 6.0f, -12.0f),glm::vec3(6.0f, 5.0f, 6.0f), 1.0f, glm::vec3(0.4f, 0.5f, 0.25f));
 
 
-
-
-
 	// TODO: Crate window using g_pGraphicsEngine interface..
 	// .. Load XML data & create entities
 	g_pEntityManager->loadGameFromXML("GameAssets.xml");
@@ -67,6 +64,13 @@ int main()
 			Sleep(90);
 			g_pEntityManager->saveGameToXML((int)g_pGameState->getDifficulty());
 			g_pGameState->setGameState(GAMESTATE_RUNNING);
+			break;
+		case GAMESTATE_EXIT:
+			g_pEntityManager->cleanup();
+			delete g_pDebugRenderer;
+			delete g_pGameState;
+			delete g_pWorld;
+			_exit(EXIT_SUCCESS);
 			break;
 		}
 		//Engines are running! CORE ROUTINE --- BEGIN
