@@ -94,13 +94,8 @@ namespace PhysicsEngine {
 
 		virtual PhysicsEngine_API int getCollisionFilter();
 		virtual PhysicsEngine_API void setCollisionFilter(int collisionMask);
-
-
-
-		//virtual void translate(glm::vec3& translation);
 	//private:
 		btRigidBody* m_rigidBody;
-		btPairCachingGhostObject* m_ghostObject;
 
 	};
 }

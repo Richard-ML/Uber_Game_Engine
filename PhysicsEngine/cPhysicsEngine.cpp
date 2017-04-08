@@ -353,7 +353,7 @@ namespace PhysicsEngine {
 				}
 				case 5:
 				{
-					btConvexShape* capsuleShape = new btCapsuleShape(glm::max( boxHalfWidth.x, boxHalfWidth.z), boxHalfWidth.y);
+					btConvexShape* capsuleShape = new btCapsuleShape(glm::max( boxHalfWidth.x, boxHalfWidth.z)/2.0f, boxHalfWidth.y/2.0f);
 
 					//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
@@ -373,13 +373,6 @@ namespace PhysicsEngine {
 					
 					rb->m_rigidBody->setActivationState(DISABLE_DEACTIVATION);
 				
-
-					rb->m_ghostObject = new btPairCachingGhostObject();
-					rb->m_ghostObject->setCollisionShape(capsuleShape);
-					rb->m_ghostObject->setCollisionFlags(btCollisionObject::CF_NO_CONTACT_RESPONSE);
-
-					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addCollisionObject(rb->m_ghostObject, btBroadphaseProxy::KinematicFilter, btBroadphaseProxy::StaticFilter | btBroadphaseProxy::DefaultFilter);
-
 					break;
 				}
 				default:

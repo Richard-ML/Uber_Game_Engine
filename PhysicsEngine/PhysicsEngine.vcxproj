@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\GLM;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\Bullet\src;$(SolutionDir)Include\GLM;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\Bullet\lib\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -80,8 +80,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(SolutionDir)StateInfo;$(SolutionDir)Include\GLM;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(SolutionDir)StateInfo;$SolutionDir)Include\Bullet\src;$(SolutionDir)Include\GLM;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\Bullet\lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -96,13 +96,14 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;PhysicsEngine_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)Include\Bullet\src;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>..\Include\Assimp\Assimp.lib;..\Include\Bullet\lib\Debug\BulletDynamics_Debug.lib;..\Include\Bullet\lib\Debug\BulletCollision_Debug.lib;..\Include\Bullet\lib\Debug\LinearMath_Debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\Include\Assimp\Assimp.lib;BulletDynamics_Debug.lib;BulletCollision_Debug.lib;LinearMath_Debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference />
   </ItemDefinitionGroup>
@@ -132,7 +133,8 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PhysicsEngine_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)Include\Bullet\src;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -140,7 +142,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>..\Include\Assimp\Assimp.lib;..\Include\Bullet\lib\Release\BulletDynamics.lib;..\Include\Bullet\lib\Release\BulletCollision.lib;..\Include\Bullet\lib\Release\LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\Include\Assimp\Assimp.lib;BulletDynamics.lib;BulletCollision.lib;LinearMath.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference />
   </ItemDefinitionGroup>
