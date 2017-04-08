@@ -69,17 +69,8 @@
     <ClInclude Include="externals.h">
       <Filter>Config\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cRigidBody.h">
-      <Filter>DataModel\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cPhysicsEngine.h">
       <Filter>View\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cWorld.h">
-      <Filter>DataModel\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="iCollisionShape.h">
-      <Filter>ViewModel\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="iRigidBody.h">
       <Filter>ViewModel\Header Files</Filter>
@@ -87,19 +78,10 @@
     <ClInclude Include="global.h">
       <Filter>Config\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cCollisionObject.h">
-      <Filter>DataModel\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="_btRigidBody.h">
       <Filter>DataModel\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="_btWorld.h">
-      <Filter>DataModel\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="_btCollisionShape.h">
-      <Filter>DataModel\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cSoftBodyManager.h">
       <Filter>DataModel\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="iPhysicsWorld.h">
@@ -113,25 +95,13 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Config\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cRigidBody.cpp">
-      <Filter>DataModel\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cPhysicsEngine.cpp">
       <Filter>View\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cWorld.cpp">
-      <Filter>DataModel\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="_btRigidBody.cpp">
       <Filter>DataModel\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="_btWorld.cpp">
-      <Filter>DataModel\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="_btCollisionShape.cpp">
-      <Filter>DataModel\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cSoftBodyManager.cpp">
       <Filter>DataModel\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="global.cpp">

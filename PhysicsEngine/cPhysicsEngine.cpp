@@ -9,7 +9,6 @@
 #include <chrono>
 #include <map>
 #include "_btRigidBody.h"
-#include "_btCollisionShape.h"
 #define BIT(x) (1<<(x))
 // The PIMPL idiom aka Compilation Firewall
 // Purpose: Encapsulate private member variables. Reduces make-time,
@@ -51,8 +50,6 @@ namespace PhysicsEngine {
 	}
 	std::vector<iRigidBody*> vec_rigidBodies;
 	//std::map<int, iRigidBody*> map_rigidBodies;
-#define BULLET
-#ifdef BULLET
 
 	cPhysicsEngine::cPhysicsEngine() {
 		this->impl()->m_btWorld = new _btWorld();
@@ -153,25 +150,6 @@ namespace PhysicsEngine {
 		} while (true);
 		return 0;
 	}
-
-	PhysicsEngine_API iCollisionShape * cPhysicsEngine::createCollisionShape(eShapeType shapeType)
-	{
-		// TODO: Store a local copy of shapes when they are created so we can reuse them!
-		iCollisionShape* collisionShape = new _btCollisionShape(shapeType);
-		return collisionShape;
-	}
-
-	PhysicsEngine_API iRigidBody * cPhysicsEngine::createRigidBody(iCollisionShape * shape, sRigidBody & rigidBody)
-	{
-		iRigidBody* rb = new _btRigidBody(rigidBody, shape);
-		rb->setCollisionShape(shape);
-		return rb;
-	}
-
-	//PhysicsEngine_API void cPhysicsEngine::update(float deltaTime)
-	//{
-	//	impl()->m_btWorld->step(deltaTime);
-	//}
 
 	PhysicsEngine_API bool cPhysicsEngine::loadPhysicsComponent(rapidxml::xml_node<>* componentNode, iState * state)
 	{
@@ -405,117 +383,11 @@ namespace PhysicsEngine {
 		return true;
 	}
 
-	PhysicsEngine_API void cPhysicsEngine::addRigidBodyToWorld(iRigidBody* rigidBody) {
-		s_cPhysicsEngine->impl()->m_btWorld->addCollisionObject(rigidBody);
-		return;
-	}
-
 	PhysicsEngine_API void cPhysicsEngine::loadClothMesh(rapidxml::xml_node<>* clothMeshNode, iState * state)
 	{
 
 	}
 
-
-
-#else
-
-
-	cPhysicsEngine::cPhysicsEngine() {
-		this->impl()->m_cWorld = new cWorld();
-	}
-	PhysicsEngine_API bool cPhysicsEngine::loadPhysicsComponent(rapidxml::xml_node<>* componentNode, iState * state)
-	{
-		for (rapidxml::xml_node<> *cRigidBody_node = componentNode->first_node("RigidBody");
-		cRigidBody_node; cRigidBody_node = cRigidBody_node->next_sibling("RigidBody")) {
-			// TODO: create base physics object that contains state pointer. Load offsets etcetera..
-			glm::mat4 transform;
-			glm::vec3 offset = glm::vec3(std::stof(cRigidBody_node->first_attribute("offsetX")->value()), std::stof(cRigidBody_node->first_attribute("offsetY")->value()), std::stof(cRigidBody_node->first_attribute("offsetZ")->value()));
-			transform[3] = glm::vec4(offset, 1.0f);
-
-			cRigidBody* rb = new cRigidBody();
-			rb->state = state;
-			rb->setPosition(offset);
-			state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&cRigidBody::saveToXMLNode, rb)));
-
-			state->setTransform(transform);
-
-			vec_rigidBodies.push_back(rb);
-
-			//s_cPhysicsEngine->impl()->m_btWorld->addCollisionObject(rb);
-
-			// TODO: Add static box to btWorld at transform[3].xyz. Then add character set pState->setIsColliding to change color status of pState's AABBs
-
-			btCollisionObject colObj;
-			//colObj.isStaticObject = true;
-			//colObj.
-			sBoundingBox boundingBox = state->getBoundingBox();
-
-			btBoxShape shape(btVector3(boundingBox.scale.x, boundingBox.scale.y, boundingBox.scale.z));
-			btRigidBodyData rbData;
-		}
-		return true;
-	}
-	DWORD cPhysicsEngine::physicsThread(void *lpParam) {
-		std::chrono::high_resolution_clock::time_point lastTime =
-			std::chrono::high_resolution_clock::now();
-		std::chrono::duration<float> deltaTime;
-		cPhysicsEngine *physicsEngine =
-			reinterpret_cast<cPhysicsEngine *>(lpParam);
-
-		while (g_pGameState == 0 || g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(50); }
-		do {
-			std::chrono::high_resolution_clock::time_point t2 =
-				std::chrono::high_resolution_clock::now();
-			deltaTime =
-				std::chrono::duration_cast<std::chrono::duration<float>>(
-					std::chrono::high_resolution_clock::now() -
-					lastTime); // Get the time that as passed
-
-			physicsEngine->impl()->m_cWorld->step(deltaTime.count());
-			lastTime = std::chrono::high_resolution_clock::now();
-			Sleep(35); // Free the thread
-		} while (true);
-		return 0;
-	}
-	void cPhysicsEngine::update(float deltaTime)
-	{
-		impl()->m_cWorld->step(deltaTime);
-	}
-
-	PhysicsEngine_API iCollisionShape * cPhysicsEngine::createCollisionShape(eShapeType shapeType)
-	{
-		// TODO: Store a local copy of shapes when they are created so we can reuse them!
-		switch (shapeType)
-		{
-		case PhysicsEngine::UNKNOWN:
-			return nullptr;
-			break;
-		case PhysicsEngine::SPHERE:
-			return new cSphere();
-			break;
-		case PhysicsEngine::PLANE:
-			return new cPlane();
-			break;
-		default:
-			return nullptr;
-			break;
-		}
-	}
-
-	PhysicsEngine_API iRigidBody * cPhysicsEngine::createRigidBody(iCollisionShape * shape, sRigidBody & rigidBody)
-	{
-		cRigidBody* rb = new cRigidBody(rigidBody);
-		rb->setCollisionShape(shape);
-		return rb;
-	}
-
-	PhysicsEngine_API void cPhysicsEngine::addRigidBodyToWorld(iRigidBody * rigidBody)
-	{
-		s_cPhysicsEngine->impl()->m_cWorld->addCollisionObject(rigidBody);
-		return;
-	}
-
-#endif
 	PhysicsEngine_API void cPhysicsEngine::initializeGameStateHandle(iGameState * pGameState)
 	{
 		g_pGameState = pGameState;

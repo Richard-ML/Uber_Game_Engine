@@ -36,14 +36,6 @@ void PhysicsEngine::_btWorld::step(float deltaTime)
 	m_btWorld->stepSimulation(deltaTime, 7);
 }
 
-void PhysicsEngine::_btWorld::addCollisionObject(iRigidBody * object)
-{
-	_btRigidBody* rb = 	dynamic_cast<_btRigidBody*>(object);
-	//if(rb->getCollisionShape()->getShapeType() == eShapeType::PLANE)
-	//m_btWorld->addCollisionObject(rb->m_rigidBody);
-	//else
-	m_btWorld->addRigidBody(rb->m_rigidBody);
-}
 
 bool PhysicsEngine::_btWorld::contact_callback(btManifoldPoint & cp, const btCollisionObjectWrapper * colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper * colObj1Wrap, int partId1, int index1)
 {

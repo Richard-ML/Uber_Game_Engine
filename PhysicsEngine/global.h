@@ -1,7 +1,5 @@
-#pragma once // It's lonely here..
-#include "cSoftBodyManager.h"
+#pragma once 
 // Managers
-extern cSoftBodyManager *g_pSoftBodyManager;
 extern iGameState * g_pGameState;
 extern iDebugRenderer* g_pDebugRenderer;
 extern iWorld* g_pWorld;

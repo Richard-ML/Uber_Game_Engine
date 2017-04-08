@@ -1,7 +1,6 @@
 #ifndef _iRigidBody_HG_
 #define _iRigidBody_HG_
 #include "stdafx.h"
-#include "cCollisionObject.h"
 #include <sstream>
 #ifdef PhysicsEngine_EXPORTS
 #define PhysicsEngine_API __declspec(dllexport)
@@ -17,14 +16,13 @@ namespace PhysicsEngine {
 		float mass;
 		glm::mat4 transform;
 		glm::vec3 acceleration;
-		eCollisionFlags collisionFlag;
 		bool collision;
 		glm::vec3 position;
 		glm::quat orientation; 
 		glm::mat4 rotMatrix;
 	};
 
-	class iRigidBody: public cCollisionObject {
+	class iRigidBody {
 	public:
 		iState* state;
 		// TEMP VARIABLES///////////////////////

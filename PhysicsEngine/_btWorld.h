@@ -17,8 +17,6 @@ namespace PhysicsEngine {
 		virtual ~_btWorld();
 		// Inherited via iWorld
 		virtual void step(float deltaTime) override;
-		virtual void addCollisionObject(iRigidBody * object) override;
-
 		static bool contact_callback(btManifoldPoint& cp, const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1);
 	};
 

@@ -1,9 +1,7 @@
 #ifndef __btRigidBody_HG_
 #define __btRigidBody_HG_
-#include "cCollisionObject.h"
 #include "iRigidBody.h"
 #include "_btWorld.h"
-#include "_btCollisionShape.h"
 #include "stdafx.h"
 #ifdef PhysicsEngine_EXPORTS
 #define PhysicsEngine_API __declspec(dllexport)
@@ -72,8 +70,6 @@ namespace PhysicsEngine {
 		bool isColliding;
 
 	public:
-		//cRigidBody(cCollisionObject* object);
-		_btRigidBody(const sRigidBody& rigidBody, iCollisionShape* collisionShape);
 		_btRigidBody() {}
 		~_btRigidBody();
 		virtual PhysicsEngine_API void getOrientation(glm::mat4& orientation);
