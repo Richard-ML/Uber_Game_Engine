@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "cEntityManager.h"
 #include "global.h"
+/// <summary>
+/// Each entity can contain a collection of components.
+/// Each component has is provided an iState interface instance.
+/// The iState interface enables different components to share basic information
+/// Information such as, position, behavioural state, etc..
+/// </summary>
 class cGameEntity {
 public:
 	std::vector<std::shared_ptr<cComponent>>
@@ -25,12 +31,16 @@ inline const cEntityManager_Impl *cEntityManager::impl() const {
 inline cEntityManager_Impl *cEntityManager::impl() {
 	return static_cast<cEntityManager_Impl *>(this);
 }
-
+/// <summary>
+/// Collection of game entities. These entities are only stored in this vector in case we need a handle to save them to XML later. 
+/// </summary>
 std::vector<cGameEntity*> vec_gameEntities;
 
-//////////////////////////////////////////////////////////
-//////   loadGameFromXML Method - XML file loader   //////
-/////////////////////////////////////////////////////////
+/// <summary>
+/// Load game assets from an XML document. Then load game entities based on current difficulty.  
+/// </summary>
+/// <param name="filename">XML game asset filename</param>
+/// <returns></returns>
 int cEntityManager::loadGameFromXML(std::string filename) {
 	std::cout << "Loading saved cEntity data..\n";
 	rapidxml::xml_document<> theDoc;
@@ -68,10 +78,11 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 
 		loadGameEntitiesFromXML(0);
 
-
 	return 1;
 }
-
+/// <summary>
+/// Places new game entity at selected tile
+/// </summary>
 void cEntityManager::spawnObjectsAtSelectedTile()
 {
 	std::vector<sBoundingBox> boundingBoxes = g_pWorld->getSelectionAABBs();
@@ -117,43 +128,10 @@ void cEntityManager::spawnObjectsAtSelectedTile()
 	}
 }
 
-// For each entity request entity xml node from state manager.. state manager will get each all of the entities component nodes 
-void saveGameToXML(int difficulty) {
-	std::string filename;
-	// TODO: Delete all of the components properly.. 
-	if (difficulty == 0)
-		filename = "GameEntities.xml";
-	else
-		return;
-	//if (difficulty == 1)
-	//	filename = "config30.xml";
-	//else
-	//	if (difficulty == 2)
-	//		filename = "config40.xml";
-	//	else return;
-
-
-	std::string xmlString;
-	xmlString += "<GameEntities>";
-
-	// Iterate over each game entity in vec entities..
-	for each(cGameEntity* gameEntity in vec_gameEntities)
-		xmlString.append(g_pComponentEngine->getGameEntityXML(gameEntity->stateNodeID));
-	xmlString += "</GameEntities>";
-
-	std::cout << xmlString;
-
-	// Save to file
-	std::ofstream file_stored;
-	file_stored.open(filename, std::ofstream::out | std::ofstream::trunc);
-	file_stored << xmlString;
-	file_stored.close();
-
-	// Save file == done...
-}
-
-
-// Loads game entities..
+/// <summary>
+/// Loads game entities
+/// </summary>
+/// <param name="difficulty">Can load from a different XML document for different game difficulties</param>
 void cEntityManager::loadGameEntitiesFromXML(int difficulty) {
 	std::string filename;
 	// TODO: Delete all of the components properly.. 
@@ -207,7 +185,9 @@ void cEntityManager::loadGameEntitiesFromXML(int difficulty) {
 
 
 }
-
+/// <summary>
+/// Clean up resources
+/// </summary>
 void cEntityManager::cleanup()
 {
 	for each(cGameEntity* entity in vec_gameEntities) {
@@ -216,8 +196,10 @@ void cEntityManager::cleanup()
 	vec_gameEntities.clear();
 }
 
-
-// For each entity request entity xml node from state manager.. state manager will get each all of the entities component nodes 
+/// <summary>
+/// For each entity request entity xml node from state manager.. state manager will get each all of the entities component nodes 
+/// </summary>
+/// <param name="difficulty">A different XML output file could be used based on difficulty</param>
 void cEntityManager::saveGameToXML(int difficulty) {
 
 	std::string filename;
@@ -255,7 +237,10 @@ void cEntityManager::saveGameToXML(int difficulty) {
 
 
 
-
+/// <summary>
+/// Singleton instance of the main Entity Manager
+/// </summary>
+/// <returns>Pointer to singleton instance</returns>
 cEntityManager *cEntityManager::instance() {
 	if (!s_cEntityManager)
 		s_cEntityManager = new cEntityManager();

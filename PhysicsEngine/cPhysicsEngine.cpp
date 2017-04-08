@@ -400,11 +400,6 @@ namespace PhysicsEngine {
 		return true;
 	}
 
-	PhysicsEngine_API void cPhysicsEngine::loadClothMesh(rapidxml::xml_node<>* clothMeshNode, iState * state)
-	{
-
-	}
-
 	PhysicsEngine_API void cPhysicsEngine::initializeGameStateHandle(iGameState * pGameState)
 	{
 		g_pGameState = pGameState;

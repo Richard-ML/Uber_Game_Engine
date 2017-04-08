@@ -36,7 +36,19 @@ void PhysicsEngine::_btWorld::step(float deltaTime)
 	m_btWorld->stepSimulation(deltaTime, 7);
 }
 
-
+/// <summary>
+/// Custom collision callback.
+/// When two objects collide this method is triggered and the is colliding flag is set to true
+/// in the iState interface. 
+/// </summary>
+/// <param name="cp"></param>
+/// <param name="colObj0Wrap"></param>
+/// <param name="partId0"></param>
+/// <param name="index0"></param>
+/// <param name="colObj1Wrap"></param>
+/// <param name="partId1"></param>
+/// <param name="index1"></param>
+/// <returns></returns>
 bool PhysicsEngine::_btWorld::contact_callback(btManifoldPoint & cp, const btCollisionObjectWrapper * colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper * colObj1Wrap, int partId1, int index1)
 {
 	_btRigidBody* rb1 = reinterpret_cast<_btRigidBody*>(colObj0Wrap->getCollisionObject()->getUserPointer());
@@ -46,6 +58,6 @@ bool PhysicsEngine::_btWorld::contact_callback(btManifoldPoint & cp, const btCol
 	_btRigidBody* rb2 = reinterpret_cast<_btRigidBody*>(colObj1Wrap->getCollisionObject()->getUserPointer());
 	if (rb2 != 0)
 	rb2->setCollision(true);
-	return false;
+	return true;
 }
 

@@ -30,6 +30,10 @@ namespace SoundEngine {
 		} // Disallow assignment operator
 
 	public:
+		/// <summary>
+		/// Returns singleton instance to SoundEngine
+		/// </summary>
+		/// <returns>SoundEngine handle</returns>
 		static SoundEngine_API  cSoundEngine *instance();
 		static DWORD __cdecl soundThread(void* lpParam);
 		SoundEngine_API void initializeGameStateHandle(iGameState* pGameState);

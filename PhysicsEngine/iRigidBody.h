@@ -52,6 +52,10 @@ namespace PhysicsEngine {
 
 		virtual PhysicsEngine_API int getCollisionFilter() = 0;
 		virtual PhysicsEngine_API void setCollisionFilter(int collisionMask) = 0;
+		/// <summary>
+		/// Returns rigid-body's information in an XML formatted string 
+		/// </summary>
+		/// <returns>XML formatted string</returns>
 		std::string saveToXMLNode() {
 			std::string componentNode;
 			glm::vec3 position;

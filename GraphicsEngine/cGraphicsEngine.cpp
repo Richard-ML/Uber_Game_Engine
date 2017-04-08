@@ -158,7 +158,11 @@ namespace GraphicsEngine {
 
 		return true;
 	}
-
+	/// <summary>
+	/// Extract Framebuffer information from XML formatted string
+	/// </summary>
+	/// <param name="framebuffersNode">XML formatted string containing Framebuffers</param>
+	/// <returns></returns>
 	GraphicsEngine_API bool cGraphicsEngine::loadFramebufferObjects(rapidxml::xml_node<>* framebuffersNode)
 	{
 		for (rapidxml::xml_node<> *cFBO_node = framebuffersNode->first_node("FrameBufferObject");
@@ -173,7 +177,13 @@ namespace GraphicsEngine {
 
 		return true;
 	}
-
+	/// <summary>
+	/// Main graphics update routine. Trigged from the main game loop inside of GameEngine.cpp
+	/// The main graphics routine should be on the applications primary thread to simplify 
+	/// GLFW context management
+	/// </summary>
+	/// <param name="deltaTime">Time that has passed</param>
+	/// <returns></returns>
 	GraphicsEngine_API void cGraphicsEngine::update(float deltaTime)
 	{
 		// TODO: Can't initialize buffers until some mesh data exists. Fix this. See TAG: 001
@@ -266,6 +276,12 @@ namespace GraphicsEngine {
 
 		return;
 	}
+	/// <summary>
+	/// Game state handle that is shared by all engines. Enables any engine to trigger application-wide events.
+	/// Including pausing the game, saving, loading, exiting, etc...
+	/// </summary>
+	/// <param name="pGameState">Handle to Game State provided by GameEngine</param>
+	/// <returns></returns>
 	GraphicsEngine_API void cGraphicsEngine::initializeGameStateHandle(iGameState * pGameState)
 	{
 		g_pGameState = pGameState;
@@ -274,11 +290,18 @@ namespace GraphicsEngine {
 	{
 		g_pWorld = pWorld;
 	}
+	/// <summary>
+	/// Provides debug renderer handle that will enable other projects to draw debug objects
+	/// </summary>
+	/// <returns>Handle to Debug Renderer provided by GraphicsEngine</returns>
 	GraphicsEngine_API iDebugRenderer* cGraphicsEngine::getDebugRendererHandle()
 	{
 		return dynamic_cast<iDebugRenderer*>(g_pDebugRenderer);
 	}
-}
+} // END OF GraphicsEngine namespace block
+/// <summary>
+/// Initializes the graphics environment
+/// </summary>
 void initializeGLFW() {
 	gWindowTitle = "UBER GAME ENGINE - WASD to move & Arrows control camera rotation around player";
 	if (!glfwInit()) {
@@ -350,7 +373,9 @@ void initializeGLFW() {
 
 	gCamera->windowResize(gWindowWidth, gWindowHeight);
 }
-
+/// <summary>
+/// Initializes GLFW buffers
+/// </summary>
 void createTheBuffers() {
 	glGenVertexArrays(1, &gVertexBufferID);
 	glBindVertexArray(gVertexBufferID);

@@ -29,6 +29,11 @@ public:
 		m_gameState = gameState;
 		unlock(0);
 	};
+	/// <summary>
+	/// Returns GameState
+	/// Loading, Saving, etc..
+	/// </summary>
+	/// <returns>GameState</returns>
 	virtual eGameState getGameState() override {
 		eGameState gameState;
 		lock(0);
@@ -36,7 +41,10 @@ public:
 		unlock(0);
 		return gameState;
 	};
-
+	/// <summary>
+	/// Returns the current game difficulty
+	/// </summary>
+	/// <returns>Game Difficulty</returns>
 	virtual eDifficulty getDifficulty() {
 		eDifficulty difficulty;
 		lock(1);
@@ -44,6 +52,10 @@ public:
 		unlock(1);
 		return difficulty;
 	}
+	/// <summary>
+	///  Sets the game difficulty
+	/// </summary>
+	/// <param name="difficulty">Game Difficulty</param>
 	virtual void setDifficulty(eDifficulty difficulty) {
 		lock(1);
 		m_difficulty = difficulty;

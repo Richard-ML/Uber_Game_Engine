@@ -1,4 +1,5 @@
 #pragma once 
+#include "externals.h"
 // Managers
 extern iGameState * g_pGameState;
 extern iDebugRenderer* g_pDebugRenderer;
@@ -13,4 +14,6 @@ struct sSpinLock {
 	LOCK lock;
 };
 
+// Lock used when an rigid-body is being created from another thread.
+// vec_rigidbodies must be locked to prevent incompatible iterators within the Physics thread.
 extern sSpinLock * g_pLock;

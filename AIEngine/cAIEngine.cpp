@@ -83,6 +83,7 @@ namespace AIEngine {
 	  // delete g_pGameState;
 	  // delete g_pWorld;
    }
+   
    AIEngine_API void cAIEngine::initializeGameStateHandle(iGameState * pGameState)
    {
 	   g_pGameState = pGameState;
