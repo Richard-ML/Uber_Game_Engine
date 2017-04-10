@@ -6,7 +6,7 @@
       <Light type="PointLight" isEnabled="1" coneAngle="0" specularPower="1" directionX="0" directionY="0" directionZ="0" offsetX="0" offsetY="10" offsetZ="0" ambientR="0" ambientG="0" ambientB="0" diffuseR="0.31" diffuseG="0.3" diffuseB="0.3" specularR="0.6" specularG="0.3" specularB="0.3" attenConst="0.2" attenLinear="0.00091427" attenQuad="6.5429e-05" />
     </RenderableComponent>
     <PhysicsComponent>
-      <RigidBody offsetX="0.622838" offsetY="1.00005" offsetZ="-109.989" mass="1" hingeConstraint="5" >
+      <RigidBody offsetX="-2.3657" offsetY="1.11831" offsetZ="-36.6898" mass="1" hingeConstraint="5" >
         <CollisionInfo collisionMask="1" >
           <CollidesWith collisionMask="0" />
           <CollidesWith collisionMask="1" />
@@ -61,7 +61,7 @@
       <Mesh name="Sphere" outline="false" />
     </RenderableComponent>
     <PhysicsComponent>
-      <RigidBody offsetX="-13.2556" offsetY="6.02369" offsetZ="-50" mass="0.1" hingeConstraint="2" >
+      <RigidBody offsetX="-13.2556" offsetY="8.02369" offsetZ="-50" mass="0.1" hingeConstraint="2" >
         <CollisionInfo collisionMask="3" >
           <CollidesWith collisionMask="1" />
           <CollidesWith collisionMask="0" />
@@ -82,13 +82,12 @@
       </RigidBody>
     </PhysicsComponent>
   </GameEntity>
-
   <GameEntity>
     <RenderableComponent>
       <Mesh name="Cone" outline="false" />
     </RenderableComponent>
     <PhysicsComponent>
-      <RigidBody offsetX="10.18576" offsetY="2" offsetZ="-40.6876" mass="0.1" hingeConstraint="4" >
+      <RigidBody offsetX="10.1858" offsetY="2" offsetZ="-40.6876" mass="0.1" hingeConstraint="4" >
         <CollisionInfo collisionMask="3" >
           <CollidesWith collisionMask="1" />
           <CollidesWith collisionMask="0" />
@@ -96,13 +95,12 @@
       </RigidBody>
     </PhysicsComponent>
   </GameEntity>
-
   <GameEntity>
     <RenderableComponent>
       <Mesh name="Cone" outline="false" />
     </RenderableComponent>
     <PhysicsComponent>
-      <RigidBody offsetX="20.18576" offsetY="2" offsetZ="-30.6876" mass="0.1" hingeConstraint="4" >
+      <RigidBody offsetX="20.1858" offsetY="2" offsetZ="-30.6876" mass="0.1" hingeConstraint="4" >
         <CollisionInfo collisionMask="3" >
           <CollidesWith collisionMask="1" />
           <CollidesWith collisionMask="0" />
@@ -110,8 +108,6 @@
       </RigidBody>
     </PhysicsComponent>
   </GameEntity>
-  
-  
   <GameEntity>
     <RenderableComponent>
       <Mesh name="Plane2" outline="false" />
@@ -125,7 +121,6 @@
       </RigidBody>
     </PhysicsComponent>
   </GameEntity>
-  
   <GameEntity>
     <RenderableComponent>
       <Mesh name="FloorTile" outline="false" />
@@ -161,6 +156,18 @@
         <CollisionInfo collisionMask="0" >
           <CollidesWith collisionMask="1" />
           <CollidesWith collisionMask="3" />
+        </CollisionInfo>
+      </RigidBody>
+    </PhysicsComponent>
+  </GameEntity>
+  <GameEntity>
+    <RenderableComponent>
+      <Mesh name="Stairs" outline="false" />
+    </RenderableComponent>
+    <PhysicsComponent>
+      <RigidBody offsetX="0" offsetY="0" offsetZ="-88" mass="0" hingeConstraint="-1" >
+        <CollisionInfo collisionMask="-1" >
+          <CollidesWith collisionMask="-1" />
         </CollisionInfo>
       </RigidBody>
     </PhysicsComponent>
@@ -275,6 +282,45 @@
     </RenderableComponent>
     <PhysicsComponent>
       <RigidBody offsetX="-64" offsetY="0" offsetZ="-152" mass="0" hingeConstraint="-1" >
+        <CollisionInfo collisionMask="5" >
+          <CollidesWith collisionMask="1" />
+          <CollidesWith collisionMask="3" />
+        </CollisionInfo>
+      </RigidBody>
+    </PhysicsComponent>
+  </GameEntity>
+  <GameEntity>
+    <RenderableComponent>
+      <Mesh name="WallZ" outline="false" />
+    </RenderableComponent>
+    <PhysicsComponent>
+      <RigidBody offsetX="32" offsetY="16" offsetZ="-88" mass="0" hingeConstraint="-1" >
+        <CollisionInfo collisionMask="5" >
+          <CollidesWith collisionMask="1" />
+          <CollidesWith collisionMask="3" />
+        </CollisionInfo>
+      </RigidBody>
+    </PhysicsComponent>
+  </GameEntity>
+  <GameEntity>
+    <RenderableComponent>
+      <Mesh name="WallZ" outline="false" />
+    </RenderableComponent>
+    <PhysicsComponent>
+      <RigidBody offsetX="-32" offsetY="16" offsetZ="-88" mass="0" hingeConstraint="-1" >
+        <CollisionInfo collisionMask="5" >
+          <CollidesWith collisionMask="1" />
+          <CollidesWith collisionMask="3" />
+        </CollisionInfo>
+      </RigidBody>
+    </PhysicsComponent>
+  </GameEntity>
+  <GameEntity>
+    <RenderableComponent>
+      <Mesh name="WallX" outline="false" />
+    </RenderableComponent>
+    <PhysicsComponent>
+      <RigidBody offsetX="0" offsetY="16" offsetZ="-120" mass="0" hingeConstraint="-1" >
         <CollisionInfo collisionMask="5" >
           <CollidesWith collisionMask="1" />
           <CollidesWith collisionMask="3" />

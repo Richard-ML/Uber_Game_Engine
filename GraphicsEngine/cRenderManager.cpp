@@ -234,7 +234,7 @@ void cRenderManager::renderScene()
 			//	GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
 
 			transform = glm::mat4_cast(boundingBox.rotation);
-			transform[3] = glm::vec4(graphicObject->pState->getPosition() + boundingBox.position, 1.0f);
+			transform[3] = glm::vec4(graphicObject->pState->getPosition(), 1.0f);
 
 			glUniformMatrix4fv(
 				gUniformId_ModelMatrix, 1, GL_FALSE,

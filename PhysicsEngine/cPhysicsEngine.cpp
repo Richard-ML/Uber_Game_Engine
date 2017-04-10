@@ -109,8 +109,8 @@ namespace PhysicsEngine {
 						rb->m_rigidBody->setWorldTransform(trans);
 				}
 			}
-			physicsEngine->impl()->m_btWorld->step(deltaTime.count());
-			//physicsEngine->impl()->m_btWorld->step(0.016f);
+			//physicsEngine->impl()->m_btWorld->step(deltaTime.count());
+			physicsEngine->impl()->m_btWorld->step(0.016f);
 
 			for each(_btRigidBody* rb in vec_rigidBodies) {
 
@@ -119,7 +119,7 @@ namespace PhysicsEngine {
 					if (rb->m_rigidBody->getInvMass() != 0) {
 
 						btVector3 btVec = rb->m_rigidBody->getWorldTransform().getOrigin();
-						glm::vec3 positionResult = glm::vec3(btVec[0], btVec[1], btVec[2]) - rb->state->getBoundingBox().position;
+						glm::vec3 positionResult = glm::vec3(btVec[0], btVec[1], btVec[2]);
 						//positionResult.y = 1.0f;
 						//rb->state->setPosition(positionResult);
 						btQuaternion rot = rb->m_rigidBody->getWorldTransform().getRotation();
@@ -212,7 +212,7 @@ namespace PhysicsEngine {
 
 			btTransform worldTransform;
 			worldTransform.setIdentity();
-			worldTransform.setOrigin(btVector3(offset.x, offset.y, offset.z) + btVector3(colShapePos.x, colShapePos.y, colShapePos.z));
+			worldTransform.setOrigin(btVector3(offset.x, offset.y, offset.z));
 
 			btScalar mass = std::stof(cRigidBody_node->first_attribute("mass")->value());
 			rb->mass = mass;
@@ -396,6 +396,38 @@ namespace PhysicsEngine {
 			}
 			s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody, BIT(collisionMask), collisionFilterResult);
 			rb->m_rigidBody->setUserPointer(rb);
+		}
+		{
+			btTriangleMesh* triangleMeshTerrain = new btTriangleMesh();
+			triangleMeshTerrain->addTriangle(
+				btVector3(32.0f, 32.0f, -50.0f), btVector3(-32.0f, 0.0f, -0.0f),
+				btVector3(-32.0f, 32.0f, -50.0f)
+				);
+			triangleMeshTerrain->addTriangle(
+				btVector3(32.0f, 32.0f, -50.0f), btVector3(32.0f, 0.0f, -0.0f),
+				btVector3(-32.0f, 0.0f, -0.0f)
+				);
+			int numTri = triangleMeshTerrain->getNumTriangles();
+			btCollisionShape* collisionShapeTerrain = new btBvhTriangleMeshShape(triangleMeshTerrain, true);
+
+			btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(0, 0, -64)));
+
+			btRigidBody::btRigidBodyConstructionInfo rigidBodyConstructionInfo(0.0f, motionState, collisionShapeTerrain, btVector3(0, 0, 0));
+			btRigidBody* rigidBodyTerrain = new btRigidBody(rigidBodyConstructionInfo);
+			rigidBodyTerrain->setFriction(btScalar(0.9));
+
+			g_pDebugRenderer->createCube(glm::vec3(-32.0f, 32.0f, -114.0f), glm::vec3(1.0f), -1, glm::vec3(1.0f));
+			g_pDebugRenderer->createCube(glm::vec3(32.0f, 32.0f, -114.0f), glm::vec3(1.0f), -1, glm::vec3(1.0f));
+			g_pDebugRenderer->createCube(glm::vec3(-32.0f, 0.0f, -64.0f), glm::vec3(1.0f), -1, glm::vec3(1.0f));
+			g_pDebugRenderer->createCube(glm::vec3(32.0f, 0.0f, -64.0f), glm::vec3(1.0f), -1, glm::vec3(1.0f));
+
+
+			int collisionFilterResult = 0;
+			collisionFilterResult |= BIT(1);
+			collisionFilterResult |= BIT(3);
+
+			int collisionFilter = BIT(0);
+			s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rigidBodyTerrain, collisionFilter, collisionFilterResult);
 		}
 		return true;
 	}

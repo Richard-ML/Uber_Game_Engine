@@ -68,6 +68,12 @@ namespace GraphicsEngine {
 		}
 		return;
 	}
+	/// <summary>
+	/// Load graphics object from XML formatted string.
+	/// </summary>
+	/// <param name="componentNode">XML formatted string with graphic object's information</param>
+	/// <param name="state">State handle</param>
+	/// <returns></returns>
 	GraphicsEngine_API bool cGraphicsEngine::loadRenderableComponent(rapidxml::xml_node<>* componentNode, iState* state)
 	{
 		cGraphicsObject* graphicsObject = new cGraphicsObject();
@@ -116,7 +122,12 @@ namespace GraphicsEngine {
 		g_vec_playerControlComponents.clear();
 		g_pLightManager->vecLights.clear();
 	}
-
+	/// <summary>
+	/// Add graphics object to scene during runtime
+	/// </summary>
+	/// <param name="state">State handle</param>
+	/// <param name="meshName">Name of mesh</param>
+	/// <returns></returns>
 	GraphicsEngine_API void cGraphicsEngine::addObject(iState * state, std::string meshName)
 	{
 		cGraphicsObject * graphicsObject = new cGraphicsObject();
@@ -133,7 +144,11 @@ namespace GraphicsEngine {
 		g_vec_pGraphicObjects.push_back(graphicsObject);
 	}
 
-
+	/// <summary>
+	/// Load meshes based on information inside XML formatted string
+	/// </summary>
+	/// <param name="meshesNode"></param>
+	/// <returns></returns>
 	GraphicsEngine_API bool cGraphicsEngine::loadMeshes(rapidxml::xml_node<> *meshesNode) {
 		for (rapidxml::xml_node<> *cMeshEntry_node = meshesNode->first_node("Mesh");
 			cMeshEntry_node; cMeshEntry_node = cMeshEntry_node->next_sibling()) {

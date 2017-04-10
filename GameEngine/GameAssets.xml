@@ -11,6 +11,7 @@
 	<MipmapTexture name="Wall" pathDif="assets/TileMeshes/WallTiles/textures/wall_DIF.tga" pathNrm="assets/TileMeshes/WallTiles/textures/wall_NRM.tga" pathSpec="assets/TileMeshes/WallTiles/textures/wall_SPEC.tga" />
 	<MipmapTexture name="Floor" pathDif="assets/TileMeshes/Textures/floor_DIF.tga" pathNrm="assets/TileMeshes/Textures/floor_NRM.tga" pathSpec="assets/TileMeshes/Textures/floor_SPEC.tga" />
   <MipmapTexture name="Skeleton" pathDif="assets/Skeleton/Skeleton_dif.png" pathNrm="assets/Skeleton/Skeleton_norm.png" pathSpec="assets/Skeleton/Skeleton_spec.png" />
+    <!--<MipmapTexture name="Stairs" pathDif="assets/TileMeshes/Stairs/stairs_DIF.tga" pathNrm="assets/TileMeshes/Stairs/stairs_NRM.tga" pathSpec="assets/TileMeshes/Stairs/stairs_SPEC.tga" />-->
   </MipmapTextures>
 
   <FrameBufferObjects>
@@ -32,7 +33,7 @@
     <Mesh path="Assets/Skeleton/Skeleton.obj" scale="1.0f" name="Skeleton" r="6" g="0" b="0"/>
     <!--<Mesh path="Assets/TileMeshes/GrassTile.obj" scale="10.0f" name="GrassTile" r="0" g="6" b="0"/>-->
     <Mesh path="Assets/Arc/Arc.obj" scale="1.0f" name="Arc" r="0" g="12" b="0"/>
-    <Mesh path="Assets/Arc/Portal.obj" scale="10.0f" name="Portal" r="0" g="32" b="0"/>
+    <Mesh path="Assets/Arc/Portal.obj" scale="1.0f" name="Portal" r="0" g="32" b="0"/>
     <Mesh path="Assets/Plane/Plane.obj" scale="1.0f" name="Plane" r="0" g="39" b="0"/>
     <Mesh path="Assets/Basic Shapes/Cube.obj" scale="1.0f" name="Cube" r="0" g="39" b="0"/>
     <Mesh path="Assets/TileMeshes/WallTiles/WallZ.obj" scale="1.0f" name="WallZ" r="0" g="6" b="0"/>
@@ -43,10 +44,14 @@
   	<Mesh path="Assets/Sphere.obj" scale="1.0f" name="Sphere" r="0" g="6" b="0"/>
     <Mesh path="Assets/Cone.obj" scale="1.0f" name="Cone" r="0" g="6" b="0"/>
     <Mesh path="Assets/Plane.obj" scale="1.0f" name="Plane2" r="0" g="6" b="0"/>
+    <Mesh path="Assets/TileMeshes/Stairs/StairsUp.obj" scale="1.0f" name="Stairs" r="0" g="6" b="0"/>
  </Meshes>
 
   <PhysicsMeshes>
     <!-- maybe someday -->
+    <PhysicsMesh name="Stairs">
+      <Triangle x1="32.0f" y1="32.0f" z1="-50.0f"  x2="-32.0f" y2="0.0f" z2="0.0f" x3="-32.0f" y3="32.0f" z3="-50.0f" />
+      <Triangle x1="32.0f" y1="32.0f" z1="-50.0f"  x2="32.0f" y2="0.0f" z2="0.0f" x3="-32.0f" y3="0.0f" z3="0.0f" />
+    </PhysicsMesh>
   </PhysicsMeshes>
 </GameAssets>
-

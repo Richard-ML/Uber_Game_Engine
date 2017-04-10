@@ -108,7 +108,7 @@ void cEntityManager::spawnObjectsAtSelectedTile()
 	default:
 		break;
 	}
-
+	// Bounding boxes are the same boxes used to display selection
 	for each(sBoundingBox boundingBox in boundingBoxes)
 	{
 		cGameEntity* gameEntity = new cGameEntity();

@@ -183,7 +183,7 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 
 		sBoundingBox boundingBox;
 		boundingBox.scale = glm::vec3(max.x - min.x, (max.y - min.y), max.z - min.z);
-		boundingBox.position.y += (max.y - min.y) / 2;
+		boundingBox.position = (max - min) / 2.0f;
 		m_MapMeshNameToAABB[name] = boundingBox;
 	return true;
 }
