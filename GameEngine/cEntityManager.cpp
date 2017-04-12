@@ -1,46 +1,96 @@
 #include "stdafx.h"
 #include "cEntityManager.h"
 #include "global.h"
+
+///-------------------------------------------------------------------------------------------------
 /// <summary>
-/// Each entity can contain a collection of components.
-/// Each component has is provided an iState interface instance.
-/// The iState interface enables different components to share basic information
-/// Information such as, position, behavioural state, etc..
+/// Each entity can contain a collection of components. Each component has is provided an iState
+/// interface instance. The iState interface enables different components to share basic
+/// information Information such as, position, behavioural state, etc.
 /// </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 class cGameEntity {
 public:
+	/// <summary>	The vector component pointers. </summary>
 	std::vector<std::shared_ptr<cComponent>>
 		vec_pComponents; // Components that belong to this entity..
 	// Used by the entity manager during the save game process..
 	std::string stateNodeID = "";
 
 };
-// The PIMPL idiom aka Compilation Firewall
-// Purpose: Encapsulate private member variables. Reduces make-time,
-// compile-time, and the Fragile Binary Interface Problem.
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>
+/// An entity manager implementation. The PIMPL idiom aka Compilation Firewall Purpose:
+/// Encapsulate private member variables. Reduces make-time, compile-time, and the Fragile Binary
+/// Interface Problem.
+/// </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 class cEntityManager_Impl : public cEntityManager {
 	// Boilerplate
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Manager for entities. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	friend class cEntityManager;
 
 public: 
 	//std::vector<cGameEntity*> vec_pEntites;
 };
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets the implementation. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	Null if it fails, else a pointer to a const cEntityManager_Impl. </returns>
+///-------------------------------------------------------------------------------------------------
+
 inline const cEntityManager_Impl *cEntityManager::impl() const {
 	return static_cast<const cEntityManager_Impl *>(this);
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets the implementation. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	Null if it fails, else a pointer to a cEntityManager_Impl. </returns>
+///-------------------------------------------------------------------------------------------------
+
 inline cEntityManager_Impl *cEntityManager::impl() {
 	return static_cast<cEntityManager_Impl *>(this);
 }
+
+///-------------------------------------------------------------------------------------------------
 /// <summary>
-/// Collection of game entities. These entities are only stored in this vector in case we need a handle to save them to XML later. 
+/// Collection of game entities. These entities are only stored in this vector in case we need a
+/// handle to save them to XML later.
 /// </summary>
+///-------------------------------------------------------------------------------------------------
+
 std::vector<cGameEntity*> vec_gameEntities;
 
+///-------------------------------------------------------------------------------------------------
 /// <summary>
 /// Load game assets from an XML document. Then load game entities based on current difficulty.  
 /// </summary>
-/// <param name="filename">XML game asset filename</param>
-/// <returns></returns>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="filename">	XML game asset filename. </param>
+///
+/// <returns>	Success or fail BIT. </returns>
+///-------------------------------------------------------------------------------------------------
 int cEntityManager::loadGameFromXML(std::string filename) {
 	std::cout << "Loading saved cEntity data..\n";
 	rapidxml::xml_document<> theDoc;
@@ -128,10 +178,16 @@ void cEntityManager::spawnObjectsAtSelectedTile()
 	}
 }
 
-/// <summary>
-/// Loads game entities
-/// </summary>
-/// <param name="difficulty">Can load from a different XML document for different game difficulties</param>
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads game entities. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="difficulty">
+/// Can load from a different XML document for different game difficulties.
+/// </param>
+///-------------------------------------------------------------------------------------------------
+
 void cEntityManager::loadGameEntitiesFromXML(int difficulty) {
 	std::string filename;
 	// TODO: Delete all of the components properly.. 
@@ -185,9 +241,13 @@ void cEntityManager::loadGameEntitiesFromXML(int difficulty) {
 
 
 }
-/// <summary>
-/// Clean up resources
-/// </summary>
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Clean up resources. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 void cEntityManager::cleanup()
 {
 	for each(cGameEntity* entity in vec_gameEntities) {
@@ -196,10 +256,19 @@ void cEntityManager::cleanup()
 	vec_gameEntities.clear();
 }
 
+///-------------------------------------------------------------------------------------------------
 /// <summary>
-/// For each entity request entity xml node from state manager.. state manager will get each all of the entities component nodes 
+/// For each entity request entity xml node from state manager.. state manager will get each all
+/// of the entities component nodes.
 /// </summary>
-/// <param name="difficulty">A different XML output file could be used based on difficulty</param>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="difficulty">
+/// A different XML output file could be used based on difficulty.
+/// </param>
+///-------------------------------------------------------------------------------------------------
+
 void cEntityManager::saveGameToXML(int difficulty) {
 
 	std::string filename;
@@ -235,12 +304,14 @@ void cEntityManager::saveGameToXML(int difficulty) {
 	// Save file == done...
 }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Singleton instance of the main Entity Manager. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	Pointer to singleton instance. </returns>
+///-------------------------------------------------------------------------------------------------
 
-
-/// <summary>
-/// Singleton instance of the main Entity Manager
-/// </summary>
-/// <returns>Pointer to singleton instance</returns>
 cEntityManager *cEntityManager::instance() {
 	if (!s_cEntityManager)
 		s_cEntityManager = new cEntityManager();

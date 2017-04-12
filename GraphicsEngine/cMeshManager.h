@@ -1,6 +1,13 @@
 #ifndef _cMeshManager_HG_
 #define _cMeshManager_HG_
 #include "stdafx.h"
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	A mesh entry. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 struct cMeshEntry {
 	int NumgIndices;
 	int NumgVertices;
@@ -8,11 +15,24 @@ struct cMeshEntry {
 	int BaseVertex;
 };
 /* Mesh Information */
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	A triangle face. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 struct triFace {
 	glm::vec3 v1;
 	glm::vec3 v2;
 	glm::vec3 v3;
 };
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	A mesh vertex. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
 
 struct cMeshVertex {
 	glm::vec4 Position;
@@ -22,19 +42,84 @@ struct cMeshVertex {
 	glm::uvec4 textureUnits; // TODO: Switch to uvec4 (GL_UNSIGNED_INT) or
 							 // (GL_UNSIGNED_BYTE)
 };
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Manager for meshes. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 class cMeshManager {
 	static cMeshManager *s_cMeshManager;
 	// Boilerplate
 	friend class cMeshManager_Impl; // The PIMPL idiom aka Compilation Firewall
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets the implementation. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <returns>	Null if it fails, else a pointer to a const cMeshManager_Impl. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	const cMeshManager_Impl *impl() const;
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets the implementation. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <returns>	Null if it fails, else a pointer to a cMeshManager_Impl. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	cMeshManager_Impl *impl();
 
 public:
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets the instance. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <returns>	Null if it fails, else a pointer to a cMeshManager. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	static cMeshManager *instance();
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Loads mesh file into gl buffer. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="name"> 	The name. </param>
+	/// <param name="path"> 	Full pathname of the file. </param>
+	/// <param name="scale">	The scale. </param>
+	///
+	/// <returns>	True if it succeeds, false if it fails. </returns>
+	///-------------------------------------------------------------------------------------------------
 
 	bool loadMeshFileIntoGLBuffer(std::string name, const char *path,
 		float scale);
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Loads fbx mesh file into gl buffer. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="name"> 	The name. </param>
+	/// <param name="path"> 	Full pathname of the file. </param>
+	/// <param name="scale">	The scale. </param>
+	///
+	/// <returns>	True if it succeeds, false if it fails. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	bool loadFBXMeshFileIntoGLBuffer(std::string name, const char *path, float scale);
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Loads the world. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
 
 	void loadWorld();
 

@@ -2,13 +2,30 @@
 #include "stdafx.h"
 #include "global.h"
 
-
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets the instance. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	Null if it fails, else a pointer to a cShaderManager. </returns>
+///-------------------------------------------------------------------------------------------------
 
 cShaderManager *cShaderManager::instance() {
 	if (!s_cShaderManager)
 		s_cShaderManager = new cShaderManager();
 	return s_cShaderManager;
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads the shaders. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="vertex_file_path">  	Full pathname of the vertex file. </param>
+/// <param name="fragment_file_path">	Full pathname of the fragment file. </param>
+///
+/// <returns>	The shaders. </returns>
+///-------------------------------------------------------------------------------------------------
 
 GLuint cShaderManager::loadShaders(const char *vertex_file_path,
 	const char *fragment_file_path) {
@@ -104,6 +121,18 @@ GLuint cShaderManager::loadShaders(const char *vertex_file_path,
 
 	return ProgramID;
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads the shaders. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="vertex_file_path">  	Full pathname of the vertex file. </param>
+/// <param name="fragment_file_path">	Full pathname of the fragment file. </param>
+/// <param name="geometry_file_path">	Full pathname of the geometry file. </param>
+///
+/// <returns>	The shaders. </returns>
+///-------------------------------------------------------------------------------------------------
 
 GLuint cShaderManager::loadShaders(const char *vertex_file_path,
 	const char *fragment_file_path,
@@ -236,6 +265,13 @@ GLuint cShaderManager::loadShaders(const char *vertex_file_path,
 	return ProgramID;
 }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Sets up the shaders. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	True if it succeeds, false if it fails. </returns>
+///-------------------------------------------------------------------------------------------------
 
 bool cShaderManager::setupTheShaders() {
 		//Create and compile our GLSL program from the shaders

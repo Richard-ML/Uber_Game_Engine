@@ -5,6 +5,13 @@
 #include "cLightManager.h"
 
 // TODO: Move this
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	A mesh. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 class cMesh {
 public:
 	// TODO: Offset ect.
@@ -19,6 +26,13 @@ public:
 		xmlString += "\" />";
 	}
 };
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	The graphics object. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 class cGraphicsObject {
 public:
 
@@ -28,7 +42,14 @@ public:
 	// Whatever other internal graphics stuff you want!
 	std::vector<cLight*> vec_lights; // Lights that belong to this object..
 
-									 // Takes a reference to an existing xml node. (RenderableComponent) Then appends nodes to it containing all of it's information
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Saves to formatted XML string. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <returns>	A std::string. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	std::string saveToXMLNode() {
 		std::string componentNode = "<RenderableComponent>";
 		for each(cMesh* mesh in vec_meshes)

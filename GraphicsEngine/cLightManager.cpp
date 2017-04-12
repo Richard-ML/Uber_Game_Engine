@@ -8,25 +8,65 @@
 // compile-time, and the Fragile Binary Interface Problem.
 class cLightManager_Impl : public cLightManager {
 	// Boilerplate
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Manager for the lights. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	friend class cLightManager;
 
 public:
 	//	static std::map<std::tuple<float, float, float>, aiLight>
 	//m_map_RGBToLight;
 };
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets the implementation. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	Null if it fails, else a pointer to a const cLightManager_Impl. </returns>
+///-------------------------------------------------------------------------------------------------
+
 inline const cLightManager_Impl *cLightManager::impl() const {
 	return static_cast<const cLightManager_Impl *>(this);
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets the implementation. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	Null if it fails, else a pointer to a cLightManager_Impl. </returns>
+///-------------------------------------------------------------------------------------------------
+
 inline cLightManager_Impl *cLightManager::impl() {
 	return static_cast<cLightManager_Impl *>(this);
 }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets the instance. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	Null if it fails, else a pointer to a cLightManager. </returns>
+///-------------------------------------------------------------------------------------------------
 
 cLightManager *cLightManager::instance() {
 	if (!s_cLightManager)
 		s_cLightManager = new cLightManager();
 	return s_cLightManager;
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads light info from XML. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="lightNode">	[in,out] If non-null, the light node. </param>
+///-------------------------------------------------------------------------------------------------
 
 void cLightManager::loadLightFromXML(rapidxml::xml_node<>* lightNode)
 {
@@ -195,6 +235,12 @@ void cLightManager::loadLightFromXML(rapidxml::xml_node<>* lightNode)
 		vecLights.push_back(tempLight);
 	}
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Updates the light uniforms. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
 
 void cLightManager::updateLightUniforms() {
 

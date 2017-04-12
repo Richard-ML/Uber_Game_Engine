@@ -1,12 +1,28 @@
 #include "stdafx.h"
 #include "cRenderManager.h"
 #include "global.h"
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets the instance. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	Null if it fails, else a pointer to a cRenderManager. </returns>
+///-------------------------------------------------------------------------------------------------
+
 cRenderManager * cRenderManager::instance()
 {
 	if (!s_cRenderManager)
 		s_cRenderManager = new cRenderManager();
 	return s_cRenderManager;
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Draw full screen plane. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 void drawFullScreenPlane()
 {
 	glDisable(GL_DEPTH_TEST);
@@ -49,6 +65,20 @@ void drawFullScreenPlane()
 
 	glEnable(GL_DEPTH_TEST);
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Creates frame buffer object. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="name">		   	The name. </param>
+/// <param name="width">	   	The width. </param>
+/// <param name="height">	   	The height. </param>
+/// <param name="multisampled">	True if multisampled. </param>
+///
+/// <returns>	The new frame buffer object. </returns>
+///-------------------------------------------------------------------------------------------------
+
 GLuint cRenderManager::createFrameBufferObject(std::string name, int width, int height, bool multisampled)
 {
 	iFBOInfo* pFBOInfo;
@@ -68,6 +98,12 @@ GLuint cRenderManager::createFrameBufferObject(std::string name, int width, int 
 
 	return pFBOInfo->framebufferID;
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Renders the skybox. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
 
 void cRenderManager::renderTheSkybox() {
 	//////////////////////////////////////////////////////////
@@ -114,6 +150,12 @@ void cRenderManager::renderTheSkybox() {
 		glEnable(GL_DEPTH_TEST);
 	}
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Renders the scene. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
 
 void cRenderManager::renderScene()
 {
@@ -373,6 +415,13 @@ void cRenderManager::renderScene()
 	}
 
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Bind the buffers. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 void cRenderManager::bindTheBuffers()
 {
 	glBindVertexArray(gVertexBufferID);
@@ -420,6 +469,15 @@ void cRenderManager::bindTheBuffers()
 		(GLvoid *)offsetToTextureInfoInBytes); // Offset in bytes to Texture Info
 }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Renders the scene to fbo described by name. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="name">	The name. </param>
+///
+/// <returns>	True if it succeeds, false if it fails. </returns>
+///-------------------------------------------------------------------------------------------------
 
 bool cRenderManager::renderSceneToFBO(std::string name)
 {
@@ -450,6 +508,12 @@ bool cRenderManager::renderSceneToFBO(std::string name)
 	return true;
 }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Renders the scene to fbo. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 void cFBOInfo::renderSceneToFBO()
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->framebufferID);
@@ -465,6 +529,12 @@ void cFBOInfo::renderSceneToFBO()
 	g_pRenderManager->renderScene();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Creates a frame buffer. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
 
 void cFBOInfo::createFrameBuffer()
 {
@@ -508,6 +578,12 @@ void cFBOInfo::createFrameBuffer()
 	static const GLenum draw_buffers[] = { GL_COLOR_ATTACHMENT0 };
 	glDrawBuffers(1, draw_buffers);
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Renders the scene to frame buffer. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
 
 void cMSFBOInfo::renderSceneToFBO()
 {
@@ -566,6 +642,11 @@ void cMSFBOInfo::renderSceneToFBO()
 	glDisable(GL_STENCIL_TEST);
 }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Creates a multi-sampled frame buffer. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
 
 void cMSFBOInfo::createFrameBuffer()
 {

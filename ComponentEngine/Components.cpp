@@ -3,6 +3,11 @@
 #include "cComponentEngine.h"
 #include "global.h"
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	An ai control component. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
 
 class AIControlComponent : public cComponent {
 public:
@@ -14,13 +19,28 @@ REGISTER_COMPONENT(AIControlComponent, "AIControlComponent")
 AIControlComponent::~AIControlComponent() {
 }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads from XML. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="componentNode">	[in,out] If non-null, the component node. </param>
+/// <param name="stateNodeID">  	Identifier for the state node. </param>
+///
+/// <returns>	True if it succeeds, false if it fails. </returns>
+///-------------------------------------------------------------------------------------------------
+
 bool AIControlComponent::loadFromXML(rapidxml::xml_node<> *componentNode, std::string stateNodeID) {
 	// Dispatch to corresponding engine to create.. 
 
 	return true;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///-------------------------------------------------------------------------------------------------
+/// <summary>	An input control component. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
 
 class InputControlComponent : public cComponent {
 public:
@@ -31,6 +51,16 @@ REGISTER_COMPONENT(InputControlComponent, "InputControlComponent")
 
 InputControlComponent::~InputControlComponent() {}
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads from XML. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="componentNode">	[in,out] If non-null, the component node. </param>
+/// <param name="stateNodeID">  	Identifier for the state node. </param>
+///
+/// <returns>	True if it succeeds, false if it fails. </returns>
+///-------------------------------------------------------------------------------------------------
 
 bool InputControlComponent::loadFromXML(rapidxml::xml_node<> *componentNode, std::string stateNodeID) {
 
@@ -38,12 +68,11 @@ bool InputControlComponent::loadFromXML(rapidxml::xml_node<> *componentNode, std
 	return true;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
+///-------------------------------------------------------------------------------------------------
+/// <summary>	The physics component. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
 
 class PhysicsComponent : public cComponent {
 public:
@@ -54,6 +83,16 @@ REGISTER_COMPONENT(PhysicsComponent, "PhysicsComponent")
 
 PhysicsComponent::~PhysicsComponent() { }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads from XML. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="componentNode">	[in,out] If non-null, the component node. </param>
+/// <param name="stateNodeID">  	Identifier for the state node. </param>
+///
+/// <returns>	True if it succeeds, false if it fails. </returns>
+///-------------------------------------------------------------------------------------------------
 
 bool PhysicsComponent::loadFromXML(
 	rapidxml::xml_node<> *componentNode, std::string stateNodeID) {
@@ -96,9 +135,11 @@ bool PhysicsComponent::loadFromXML(
 //	return true;
 //}
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+///-------------------------------------------------------------------------------------------------
+/// <summary>	A renderable component. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
 
 class RenderableComponent : public cComponent {
 public:
@@ -109,6 +150,16 @@ REGISTER_COMPONENT(RenderableComponent, "RenderableComponent")
 
 RenderableComponent::~RenderableComponent() { }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads from XML. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="componentNode">	[in,out] If non-null, the component node. </param>
+/// <param name="stateNodeID">  	Identifier for the state node. </param>
+///
+/// <returns>	True if it succeeds, false if it fails. </returns>
+///-------------------------------------------------------------------------------------------------
 
 bool RenderableComponent::loadFromXML(
 	rapidxml::xml_node<> *componentNode, std::string stateNodeID) {
@@ -117,9 +168,6 @@ bool RenderableComponent::loadFromXML(
 	// Dispatch to corresponding engine to create.. 
 	return true;
 }
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 
 //class LuaComponent : public cComponent {

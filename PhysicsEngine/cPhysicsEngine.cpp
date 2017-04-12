@@ -42,12 +42,31 @@ namespace PhysicsEngine {
 		_btWorld* m_btWorld;
 		iPhysicsWorld* m_cWorld;
 	};
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets the implementation. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <returns>	Null if it fails, else a pointer to a const cPhysicsEngine_Impl. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	inline const cPhysicsEngine_Impl *cPhysicsEngine::impl() const {
 		return static_cast<const cPhysicsEngine_Impl *>(this);
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets the implementation. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <returns>	Null if it fails, else a pointer to a cPhysicsEngine_Impl. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	inline cPhysicsEngine_Impl *cPhysicsEngine::impl() {
 		return static_cast<cPhysicsEngine_Impl *>(this);
 	}
+	/// <summary>	The vector rigid bodies. </summary>
 	std::vector<iRigidBody*> vec_rigidBodies;
 	//std::map<int, iRigidBody*> map_rigidBodies;
 
@@ -55,7 +74,15 @@ namespace PhysicsEngine {
 		this->impl()->m_btWorld = new _btWorld();
 	}
 
-
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Physics thread. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="lpParam">	[in,out] If non-null, the parameter. </param>
+	///
+	/// <returns>	A DWORD. </returns>
+	///-------------------------------------------------------------------------------------------------
 
 	DWORD cPhysicsEngine::physicsThread(void *lpParam) {
 		while (g_pGameState == 0 || g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(50); }
@@ -160,13 +187,33 @@ namespace PhysicsEngine {
 		return 0;
 	}
 
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Cleans up resources. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	void cPhysicsEngine::cleanup()
 	{
-		for each(iRigidBody* rb in vec_rigidBodies) {
-			rb->~iRigidBody();
-		}
-		vec_rigidBodies.clear();
+		//TODO:
+		//No constraints should point to this rigidbody
+		//Remove constraints from the dynamics world before you delete the related rigidbodies. 
+		//for each(iRigidBody* rb in vec_rigidBodies) {
+		//	rb->~iRigidBody();
+		//}
+		//vec_rigidBodies.clear();
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Loads physics component. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="componentNode">	[in,out] If non-null, the component node. </param>
+	/// <param name="state">			[in,out] If non-null, the state. </param>
+	///
+	/// <returns>	True if it succeeds, false if it fails. </returns>
+	///-------------------------------------------------------------------------------------------------
 
 	PhysicsEngine_API bool cPhysicsEngine::loadPhysicsComponent(rapidxml::xml_node<>* componentNode, iState * state)
 	{
@@ -432,20 +479,52 @@ namespace PhysicsEngine {
 		return true;
 	}
 
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Initializes the game state handle. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="pGameState">	[in,out] If non-null, state of the game. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	PhysicsEngine_API void cPhysicsEngine::initializeGameStateHandle(iGameState * pGameState)
 	{
 		g_pGameState = pGameState;
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Initializes the world handle. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="pWorld">	[in,out] If non-null, the world. </param>
+	///-------------------------------------------------------------------------------------------------
 
 	PhysicsEngine_API void cPhysicsEngine::initializeWorldHandle(iWorld * pWorld)
 	{
 		g_pWorld = pWorld;
 	}
 
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Initializes the debug renderer handle. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="pDebugRenderer">	[in,out] If non-null, the debug renderer. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	PhysicsEngine_API void cPhysicsEngine::initializeDebugRendererHandle(iDebugRenderer * pDebugRenderer)
 	{
 		g_pDebugRenderer = pDebugRenderer;
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets the instance. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <returns>	Null if it fails, else a pointer to a cPhysicsEngine. </returns>
+	///-------------------------------------------------------------------------------------------------
 
 	cPhysicsEngine * cPhysicsEngine::instance() {
 		if (!s_cPhysicsEngine)
@@ -463,6 +542,18 @@ namespace PhysicsEngine {
 		}
 		return s_cPhysicsEngine;
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Adds the physics object with specified 'state'. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="position">	The position. </param>
+	/// <param name="state">   	[in,out] If non-null, the state. </param>
+	///
+	/// <returns>	True if it succeeds, false if it fails. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	PhysicsEngine_API bool cPhysicsEngine::addPhysicsObject(glm::vec3 position, iState * state)
 	{
 		gLock(0);

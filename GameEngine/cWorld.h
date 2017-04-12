@@ -8,6 +8,15 @@ class cWorld : public iWorld {
 		//volatile LONG isLocked = 0; // 0 unlocked : 1 locked
 		LOCK lock;
 	}m_lock[10]; // 10 locks. One should be used per variable
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Locks. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="varNum">	The variable number. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	virtual void lock(int varNum) {
 #if !defined(SKIP_LOCKING)  
 		while (_InterlockedExchange(&m_lock[varNum].lock, LOCKED) == UNLOCKED) {
@@ -17,22 +26,38 @@ class cWorld : public iWorld {
 #endif  
 	}
 
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Unlocks. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="varNum">	The variable number. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	virtual void unlock(int varNum) {
 #if !defined(SKIP_LOCKING)  
 		_InterlockedExchange(&m_lock[varNum].lock, UNLOCKED);
 #endif  
 	}
-	// Floor tile with 4 adjacent walls
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	A world tile. "Floor tile with 4 adjacent walls" </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	struct sWorldTile {
 		glm::vec3 position;
 		glm::vec3 scale = glm::vec3(64.0f, 0.1f, 64.0f);
 	};
 	eActiveWorldTileSelection m_tileSelectionMode;
 
+	/// <summary>	The vector selected tiles. </summary>
 	std::vector<sWorldTile> m_vec_SelectedTiles;
+	/// <summary>	The world tiles[ 64][64]. </summary>
 	sWorldTile m_worldTiles[64][64];
 public:
-	std::function<void()> generateObjectsAtSelectedTiles; // NOTE: This is public, but only GameEngine can see it! :P
+	/// <summary>	NOTE: This is public, but only GameEngine uses it! :P. </summary>
+	std::function<void()> generateObjectsAtSelectedTiles;
 	virtual void deselectTileAtPosition(glm::vec3 position) {
 		sWorldTile worldTile;
 		worldTile.position = glm::vec3((glm::round(position.x / worldTile.scale.x) * 64.0f) + 32.0f, 0.0f, glm::round(glm::round(position.z / worldTile.scale.z) * 64.0f) + 8.0f);
@@ -46,6 +71,15 @@ public:
 
 		unlock(0);
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Select tile at position. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="position">	The position. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	virtual void selectTileAtPosition(glm::vec3 position) {
 		sWorldTile worldTile;
 		worldTile.position = glm::vec3((glm::round(position.x / worldTile.scale.x) * 64.0f) + 32.0f, 0.0f, glm::round(glm::round(position.z / worldTile.scale.z) * 64.0f) + 8.0f);
@@ -57,16 +91,41 @@ public:
 	SKIP_ADD_TILE_ALREADY_SELECTED:
 		unlock(0);
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Clears the selection. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	virtual void clearSelection() {
 		lock(0);
 		m_vec_SelectedTiles.clear();
 		unlock(0);
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Sets active selection mode. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="tileSelection">	The tile selection. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	virtual void setActiveSelectionMode(eActiveWorldTileSelection tileSelection) {
 		lock(0);
 		m_tileSelectionMode = tileSelection;
 		unlock(0);
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets active selection mode. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <returns>	The active selection mode. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	virtual eActiveWorldTileSelection getActiveSelectionMode() {
 		eActiveWorldTileSelection tileSelection;
 		lock(0);
@@ -74,6 +133,15 @@ public:
 		unlock(0);
 		return tileSelection;
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets selection bounding boxes </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <returns>	The selection bounding boxes. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	virtual std::vector<sBoundingBox> getSelectionAABBs() {
 		std::vector<sBoundingBox> vec_Result;
 		lock(0);
@@ -141,6 +209,13 @@ public:
 		unlock(0);
 		return vec_Result;
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Generates an object at selection. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+	// TODO: FIX TYPO
 	virtual void generateObjectAtSlection() {
 		generateObjectsAtSelectedTiles(); // Magic
 	}

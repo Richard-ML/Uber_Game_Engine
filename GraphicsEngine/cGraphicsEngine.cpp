@@ -24,6 +24,14 @@ namespace GraphicsEngine {
 		return static_cast<cGraphicsEngine_Impl *>(this);
 	}
 
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Constructor. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="parameter1">	The first parameter. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	_declspec(dllexport) cGraphicsEngine * cGraphicsEngine::instance()
 	{
 		if (!s_cGraphicsEngine)
@@ -44,6 +52,14 @@ namespace GraphicsEngine {
 		return s_cGraphicsEngine;
 	}
 
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Loads the cubemaps. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="cubemapsNode">	[in,out] If non-null, the cubemaps node. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	GraphicsEngine_API void cGraphicsEngine::loadCubemaps(rapidxml::xml_node<>* cubemapsNode)
 	{
 		for (rapidxml::xml_node<> *cubemap_node = cubemapsNode->first_node("Cubemap");
@@ -52,6 +68,15 @@ namespace GraphicsEngine {
 		}
 		return;
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Loads mipmap textures. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="mipmapTexturesNode">	[in,out] If non-null, the mipmap textures node. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	GraphicsEngine_API void cGraphicsEngine::loadMipmapTextures(rapidxml::xml_node<>* mipmapTexturesNode)
 	{
 		for (rapidxml::xml_node<> *mipmap_node = mipmapTexturesNode->first_node("MipmapTexture");
@@ -60,6 +85,15 @@ namespace GraphicsEngine {
 		}
 		return;
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Loads the textures. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="texturesNode">	[in,out] If non-null, the textures node. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	GraphicsEngine_API void cGraphicsEngine::loadTextures(rapidxml::xml_node<>* texturesNode)
 	{
 		for (rapidxml::xml_node<> *texture_node = texturesNode->first_node("Texture");
@@ -68,12 +102,20 @@ namespace GraphicsEngine {
 		}
 		return;
 	}
-	/// <summary>
-	/// Load graphics object from XML formatted string.
-	/// </summary>
-	/// <param name="componentNode">XML formatted string with graphic object's information</param>
-	/// <param name="state">State handle</param>
-	/// <returns></returns>
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Load graphics object from XML formatted string. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="componentNode">
+	/// [in,out] XML formatted string with graphic object's information.
+	/// </param>
+	/// <param name="state">			[in,out] State handle. </param>
+	///
+	/// <returns>	True if it succeeds, false if it fails. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	GraphicsEngine_API bool cGraphicsEngine::loadRenderableComponent(rapidxml::xml_node<>* componentNode, iState* state)
 	{
 		cGraphicsObject* graphicsObject = new cGraphicsObject();
@@ -116,18 +158,29 @@ namespace GraphicsEngine {
 
 		return true;
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Clears the game objects. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	GraphicsEngine_API void cGraphicsEngine::clearGameObjects()
 	{
 		g_vec_pGraphicObjects.clear();
 		g_vec_playerControlComponents.clear();
 		g_pLightManager->vecLights.clear();
 	}
-	/// <summary>
-	/// Add graphics object to scene during runtime
-	/// </summary>
-	/// <param name="state">State handle</param>
-	/// <param name="meshName">Name of mesh</param>
-	/// <returns></returns>
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Add graphics object to scene during runtime. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="state">   	[in,out] State handle. </param>
+	/// <param name="meshName">	Name of mesh. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	GraphicsEngine_API void cGraphicsEngine::addObject(iState * state, std::string meshName)
 	{
 		cGraphicsObject * graphicsObject = new cGraphicsObject();
@@ -144,11 +197,16 @@ namespace GraphicsEngine {
 		g_vec_pGraphicObjects.push_back(graphicsObject);
 	}
 
-	/// <summary>
-	/// Load meshes based on information inside XML formatted string
-	/// </summary>
-	/// <param name="meshesNode"></param>
-	/// <returns></returns>
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Load meshes based on information inside XML formatted string. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="meshesNode">	[in,out]. </param>
+	///
+	/// <returns>	True if it succeeds, false if it fails. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	GraphicsEngine_API bool cGraphicsEngine::loadMeshes(rapidxml::xml_node<> *meshesNode) {
 		for (rapidxml::xml_node<> *cMeshEntry_node = meshesNode->first_node("Mesh");
 			cMeshEntry_node; cMeshEntry_node = cMeshEntry_node->next_sibling()) {
@@ -173,11 +231,17 @@ namespace GraphicsEngine {
 
 		return true;
 	}
-	/// <summary>
-	/// Extract Framebuffer information from XML formatted string
-	/// </summary>
-	/// <param name="framebuffersNode">XML formatted string containing Framebuffers</param>
-	/// <returns></returns>
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Extract Framebuffer information from XML formatted string. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="framebuffersNode">	[in,out] XML formatted string containing Framebuffers. </param>
+	///
+	/// <returns>	True if it succeeds, false if it fails. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	GraphicsEngine_API bool cGraphicsEngine::loadFramebufferObjects(rapidxml::xml_node<>* framebuffersNode)
 	{
 		for (rapidxml::xml_node<> *cFBO_node = framebuffersNode->first_node("FrameBufferObject");
@@ -192,13 +256,19 @@ namespace GraphicsEngine {
 
 		return true;
 	}
+
+	///-------------------------------------------------------------------------------------------------
 	/// <summary>
-	/// Main graphics update routine. Trigged from the main game loop inside of GameEngine.cpp
-	/// The main graphics routine should be on the applications primary thread to simplify 
-	/// GLFW context management
+	/// Main graphics update routine. Trigged from the main game loop inside of GameEngine.cpp The
+	/// main graphics routine should be on the applications primary thread to simplify GLFW context
+	/// management.
 	/// </summary>
-	/// <param name="deltaTime">Time that has passed</param>
-	/// <returns></returns>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="deltaTime">	Time that has passed. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	GraphicsEngine_API void cGraphicsEngine::update(float deltaTime)
 	{
 		// TODO: Can't initialize buffers until some mesh data exists. Fix this. See TAG: 001
@@ -291,32 +361,60 @@ namespace GraphicsEngine {
 
 		return;
 	}
+
+	///-------------------------------------------------------------------------------------------------
 	/// <summary>
-	/// Game state handle that is shared by all engines. Enables any engine to trigger application-wide events.
-	/// Including pausing the game, saving, loading, exiting, etc...
+	/// Game state handle that is shared by all engines. Enables any engine to trigger application-
+	/// wide events. Including pausing the game, saving, loading, exiting, etc...
 	/// </summary>
-	/// <param name="pGameState">Handle to Game State provided by GameEngine</param>
-	/// <returns></returns>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="pGameState">	[in,out] Handle to Game State provided by GameEngine. </param>
+	///
+	/// ### <returns>	. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	GraphicsEngine_API void cGraphicsEngine::initializeGameStateHandle(iGameState * pGameState)
 	{
 		g_pGameState = pGameState;
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Initializes the world handle. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="pWorld">	[in,out] If non-null, the world. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	GraphicsEngine_API void cGraphicsEngine::initializeWorldHandle(iWorld * pWorld)
 	{
 		g_pWorld = pWorld;
 	}
+
+	///-------------------------------------------------------------------------------------------------
 	/// <summary>
-	/// Provides debug renderer handle that will enable other projects to draw debug objects
+	/// Provides debug renderer handle that will enable other projects to draw debug objects.
 	/// </summary>
-	/// <returns>Handle to Debug Renderer provided by GraphicsEngine</returns>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <returns>	Handle to Debug Renderer provided by GraphicsEngine. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	GraphicsEngine_API iDebugRenderer* cGraphicsEngine::getDebugRendererHandle()
 	{
 		return dynamic_cast<iDebugRenderer*>(g_pDebugRenderer);
 	}
 } // END OF GraphicsEngine namespace block
-/// <summary>
-/// Initializes the graphics environment
-/// </summary>
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Initializes the graphics environment. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 void initializeGLFW() {
 	gWindowTitle = "UBER GAME ENGINE - WASD to move & Arrows control camera rotation around player";
 	if (!glfwInit()) {
@@ -388,9 +486,13 @@ void initializeGLFW() {
 
 	gCamera->windowResize(gWindowWidth, gWindowHeight);
 }
-/// <summary>
-/// Initializes GLFW buffers
-/// </summary>
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Initializes GLFW buffers. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 void createTheBuffers() {
 	glGenVertexArrays(1, &gVertexBufferID);
 	glBindVertexArray(gVertexBufferID);

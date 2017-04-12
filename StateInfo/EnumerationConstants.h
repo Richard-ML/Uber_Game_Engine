@@ -11,17 +11,51 @@
  enum { UNLOCKED = 0, LOCKED = 1 };
 typedef volatile LONG LOCK;
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Values that represent game state. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 enum eGameState { GAMESTATE_PAUSED = 0, GAMESTATE_LOADING, GAMESTATE_SAVING, GAMESTATE_EXIT, GAMESTATE_RUNNING };
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Values that represent difficulties. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 enum eDifficulty { CASUAL = 0, HARDCORE };
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	A bounding box. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 struct sBoundingBox {
 	glm::vec3 scale;
 	glm::vec3 position;
 	glm::quat rotation;
 };
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	A Axis Aligned Bounding Box. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 struct sAABB {
 	glm::vec3 scale;
 	glm::vec3 position;
 };
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Values that represent active world tile selections. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 enum eActiveWorldTileSelection { FLOOR, WALL_LEFT, WALL_RIGHT, WALL_FORWARD, WALL_BACKWARD };
 
 #endif

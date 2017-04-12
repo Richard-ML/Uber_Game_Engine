@@ -79,6 +79,15 @@ namespace ComponentManager {
 			}
 
 		private:
+
+			///-------------------------------------------------------------------------------------------------
+			/// <summary>	Constructor. </summary>
+			///
+			/// <remarks>	Richard, 4/12/2017. </remarks>
+			///
+			/// <param name="name">	The name. </param>
+			///-------------------------------------------------------------------------------------------------
+
 			ComponentEntry(const std::string &name) {
 				map_ComponentRegistry &reg = getComponentRegistry();
 				func_createComponent func = createComponent<T>;

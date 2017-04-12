@@ -9,6 +9,13 @@
 #endif // PhysicsEngine_EXPORTS
 namespace PhysicsEngine {
 	// Constructor info for the rigid body
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	A rigid body. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	struct sRigidBody {
 		int motionState;
 		glm::vec3 turnVelocity;
@@ -24,6 +31,7 @@ namespace PhysicsEngine {
 
 	class iRigidBody {
 	public:
+		/// <summary>	The state. </summary>
 		iState* state;
 		// TEMP VARIABLES///////////////////////
 		int collisionMask = 0;
@@ -52,10 +60,15 @@ namespace PhysicsEngine {
 
 		virtual PhysicsEngine_API int getCollisionFilter() = 0;
 		virtual PhysicsEngine_API void setCollisionFilter(int collisionMask) = 0;
-		/// <summary>
-		/// Returns rigid-body's information in an XML formatted string 
-		/// </summary>
-		/// <returns>XML formatted string</returns>
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Returns rigid-body's information in an XML formatted string. </summary>
+		///
+		/// <remarks>	Richard, 4/12/2017. </remarks>
+		///
+		/// <returns>	XML formatted string. </returns>
+		///-------------------------------------------------------------------------------------------------
+
 		std::string saveToXMLNode() {
 			std::string componentNode;
 			glm::vec3 position;

@@ -1,11 +1,26 @@
 #include "cCamera.h"
 #include "stdafx.h"
 #include "global.h"
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Default constructor. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 cCamera::cCamera() {
 	m_width = 800;
 	m_height = 600;
 }
 cCamera::~cCamera() {}
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets projection matrix. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="projOut">	[in,out] The projection. </param>
+///-------------------------------------------------------------------------------------------------
 
 void cCamera::getProjectionMatrix(glm::mat4 &projOut) {
 	// set up the projection matrix
@@ -13,7 +28,23 @@ void cCamera::getProjectionMatrix(glm::mat4 &projOut) {
 		glm::perspective(1.0f,(float)m_width / (float)m_height, 0.1f, 100000.f);
 }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets view matrix. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="viewOut">	[in,out] The view out. </param>
+///-------------------------------------------------------------------------------------------------
+
 void cCamera::getViewMatrix(glm::mat4 &viewOut) { viewOut = m_viewMatrix; }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets eye position. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="eyeOut">	[in,out] The eye out. </param>
+///-------------------------------------------------------------------------------------------------
 
 void cCamera::getEyePosition(glm::vec4 &eyeOut) {
 	eyeOut.x = m_viewMatrix[3].x;
@@ -21,12 +52,29 @@ void cCamera::getEyePosition(glm::vec4 &eyeOut) {
 	eyeOut.z = m_viewMatrix[3].z;
 	eyeOut.w = 1.f;
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets eye position. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	The eye position. </returns>
+///-------------------------------------------------------------------------------------------------
+
 glm::vec4 cCamera::getEyePosition() { return m_viewMatrix[3]; }
 
 void cCamera::windowResize(int width, int height) {
 	m_width = width;
 	m_height = height;
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Updates based on the given delta time. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="dt">	The delta time. </param>
+///-------------------------------------------------------------------------------------------------
 
 void cCamera::update(float dt) {
 	if(m_zoom.pendingDistanceOffset != 0.0f)
@@ -65,6 +113,12 @@ void cCamera::update(float dt) {
 	updateView();
 }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Updates the view. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 void cCamera::updateView() {
 	// NOTE: The camera does not currently inherit the target's orientation as its base orientation. 
 	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -92,10 +146,26 @@ void cCamera::updateView() {
 
 }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Sets target transform. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="targetTransform">	[in,out] Target transform. </param>
+///-------------------------------------------------------------------------------------------------
+
 void cCamera::setTargetTransform(glm::mat4 &targetTransform) {
 	m_targetTransform = targetTransform;
 	m_viewMatrix = glm::lookAtRH(glm::vec3( m_viewMatrix[3] ), glm::vec3( targetTransform[3] ), glm::vec3(0.0f, 1.0f, 0.0f));
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads from XML. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="cameraNode">	[in,out] If non-null, the camera node. </param>
+///-------------------------------------------------------------------------------------------------
 
 void cCamera::loadFromXML(rapidxml::xml_node<> *cameraNode) {
 

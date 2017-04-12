@@ -24,16 +24,29 @@ private:
 	}
 public:
 	// Inherited via iGameState
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Sets game state. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="gameState">	State of the game. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	virtual void setGameState(eGameState gameState) override {
 		lock(0);
 		m_gameState = gameState;
 		unlock(0);
 	};
-	/// <summary>
-	/// Returns GameState
-	/// Loading, Saving, etc..
-	/// </summary>
-	/// <returns>GameState</returns>
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Returns GameState Loading, Saving, etc. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <returns>	GameState. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	virtual eGameState getGameState() override {
 		eGameState gameState;
 		lock(0);
@@ -41,10 +54,15 @@ public:
 		unlock(0);
 		return gameState;
 	};
-	/// <summary>
-	/// Returns the current game difficulty
-	/// </summary>
-	/// <returns>Game Difficulty</returns>
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Returns the current game difficulty. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <returns>	Game Difficulty. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	virtual eDifficulty getDifficulty() {
 		eDifficulty difficulty;
 		lock(1);
@@ -52,10 +70,15 @@ public:
 		unlock(1);
 		return difficulty;
 	}
-	/// <summary>
-	///  Sets the game difficulty
-	/// </summary>
-	/// <param name="difficulty">Game Difficulty</param>
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Sets the game difficulty. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="difficulty">	Game Difficulty. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	virtual void setDifficulty(eDifficulty difficulty) {
 		lock(1);
 		m_difficulty = difficulty;

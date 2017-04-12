@@ -3,6 +3,15 @@
 #include <iostream>
 #include "global.h"
 #include <chrono>
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Main entry-point for this application. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	Exit-code for the process - 0 for success, else an error code. </returns>
+///-------------------------------------------------------------------------------------------------
+
 int main()
 {
 	// Set game state to loading. This way the threads will wait until content loading is complete before starting their routines.

@@ -1,5 +1,12 @@
 #include "stdafx.h"
 #include "_btWorld.h"
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Default constructor. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 PhysicsEngine::_btWorld::_btWorld()
 {
 		//TODO: CLEAN UP THESE POINTERS WHEN WE ARE DONE WITH THEM
@@ -22,6 +29,13 @@ PhysicsEngine::_btWorld::_btWorld()
 	
 
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Destructor. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 PhysicsEngine::_btWorld::~_btWorld()
 {
 		delete m_btWorld;
@@ -30,25 +44,40 @@ PhysicsEngine::_btWorld::~_btWorld()
 		delete m_overlappingPairCache;
 		delete m_solver;
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Steps the simulation based on given delta time </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="deltaTime">	The delta time. </param>
+///-------------------------------------------------------------------------------------------------
+
 void PhysicsEngine::_btWorld::step(float deltaTime)
 {
 	//printf("STEP!");
 	m_btWorld->stepSimulation(deltaTime, 7);
 }
 
+///-------------------------------------------------------------------------------------------------
 /// <summary>
-/// Custom collision callback.
-/// When two objects collide this method is triggered and the is colliding flag is set to true
-/// in the iState interface. 
+/// Custom collision callback. When two objects collide this method is triggered and the is
+/// colliding flag is set to true in the iState interface.
 /// </summary>
-/// <param name="cp"></param>
-/// <param name="colObj0Wrap"></param>
-/// <param name="partId0"></param>
-/// <param name="index0"></param>
-/// <param name="colObj1Wrap"></param>
-/// <param name="partId1"></param>
-/// <param name="index1"></param>
-/// <returns></returns>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="cp">		  	[in,out] The cp. </param>
+/// <param name="colObj0Wrap">	The col object 0 wrap. </param>
+/// <param name="partId0">	  	The part identifier 0. </param>
+/// <param name="index0">	  	The index 0. </param>
+/// <param name="colObj1Wrap">	The col object 1 wrap. </param>
+/// <param name="partId1">	  	The first part identifier. </param>
+/// <param name="index1">	  	The first index. </param>
+///
+/// <returns>	True if it succeeds, false if it fails. </returns>
+///-------------------------------------------------------------------------------------------------
+
 bool PhysicsEngine::_btWorld::contact_callback(btManifoldPoint & cp, const btCollisionObjectWrapper * colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper * colObj1Wrap, int partId1, int index1)
 {
 	_btRigidBody* rb1 = reinterpret_cast<_btRigidBody*>(colObj0Wrap->getCollisionObject()->getUserPointer());

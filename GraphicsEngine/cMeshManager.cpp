@@ -8,19 +8,51 @@
 // compile-time, and the Fragile Binary Interface Problem.
 class cMeshManager_Impl : public cMeshManager {
 	// Boilerplate
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Manager for the meshes. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	friend class cMeshManager;
 
 public:
 	//	static std::map<std::tuple<float, float, float>, aiMesh>
 	//m_map_RGBToMesh;
 };
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets the implementation. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	Null if it fails, else a pointer to a const cMeshManager_Impl. </returns>
+///-------------------------------------------------------------------------------------------------
+
 inline const cMeshManager_Impl *cMeshManager::impl() const {
 	return static_cast<const cMeshManager_Impl *>(this);
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets the implementation. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	Null if it fails, else a pointer to a cMeshManager_Impl. </returns>
+///-------------------------------------------------------------------------------------------------
+
 inline cMeshManager_Impl *cMeshManager::impl() {
 	return static_cast<cMeshManager_Impl *>(this);
 }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets the instance. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	Null if it fails, else a pointer to a cMeshManager. </returns>
+///-------------------------------------------------------------------------------------------------
 
 cMeshManager *cMeshManager::instance() {
 	if (!s_cMeshManager)
@@ -37,6 +69,18 @@ cMeshManager *cMeshManager::instance() {
 */
 
 // TODO: I know it does not load into gl buffer yet...
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads mesh file into gl buffer. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="name"> 	The name. </param>
+/// <param name="path"> 	Full pathname of the file. </param>
+/// <param name="scale">	The scale. </param>
+///
+/// <returns>	True if it succeeds, false if it fails. </returns>
+///-------------------------------------------------------------------------------------------------
+
 bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, float scale) {
 	cMeshEntry entryOut; // not actually entry out.. so fix this TODO: 
 	entryOut.BaseIndex = 0;
@@ -186,12 +230,30 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 	return true;
 }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads fbx mesh file into gl buffer. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="name"> 	The name. </param>
+/// <param name="path"> 	Full pathname of the file. </param>
+/// <param name="scale">	The scale. </param>
+///
+/// <returns>	True if it succeeds, false if it fails. </returns>
+///-------------------------------------------------------------------------------------------------
+
 bool cMeshManager::loadFBXMeshFileIntoGLBuffer(std::string name, const char * path, float scale)
 {
 
 
 	return true;
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads the world. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
 
 void cMeshManager::loadWorld()
 {

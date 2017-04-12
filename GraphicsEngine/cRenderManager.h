@@ -8,6 +8,13 @@
 
 
 // TODO: Move FBO stuff to its own header file..
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Information about the fbo. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 class iFBOInfo {
 public:
 	std::string name;
@@ -59,17 +66,47 @@ public:
 
 // Used primary for managing OpenGL FBOs (FrameBuffer Objects)
 class cRenderManager {
+	/// <summary>	Manager for render. </summary>
 	static cRenderManager *s_cRenderManager;
 
 public:
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets the instance. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <returns>	Null if it fails, else a pointer to a cRenderManager. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	static cRenderManager *instance();
 	std::map<std::string, iFBOInfo*> map_NameToFBOInfo;
 
 	GLuint createFrameBufferObject(std::string name, int width, int height, bool multisampled);
 	bool renderSceneToFBO(std::string name);
 
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Renders the skybox. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	void renderTheSkybox();
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Renders the scene. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	void renderScene();
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Bind the buffers. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	void bindTheBuffers();
 private:
 	cRenderManager() {

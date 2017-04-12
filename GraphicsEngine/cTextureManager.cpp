@@ -2,11 +2,27 @@
 #include "stdafx.h"
 #include "global.h"
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Gets the instance. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <returns>	Null if it fails, else a pointer to a cTextureManager. </returns>
+///-------------------------------------------------------------------------------------------------
+
 cTextureManager *cTextureManager::instance() {
 	if (!s_cTextureManager)
 		s_cTextureManager = new cTextureManager();
 	return s_cTextureManager;
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads a texture. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="textureNode">	[in,out] If non-null, the texture node. </param>
+///-------------------------------------------------------------------------------------------------
 
 void cTextureManager::loadTexture(rapidxml::xml_node<> *textureNode) {
 	std::string path = textureNode->first_attribute("path")->value();
@@ -52,6 +68,14 @@ void cTextureManager::loadTexture(rapidxml::xml_node<> *textureNode) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads texture mipmap. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="textureNode">	[in,out] If non-null, the texture node. </param>
+///-------------------------------------------------------------------------------------------------
 
 void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
 	// TODO: Fix this so it supports more mipmaps
@@ -172,6 +196,14 @@ void cTextureManager::loadTextureMipmap(rapidxml::xml_node<> *textureNode) {
 	//  glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &MaxTextureImageUnits);
 }
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads world tiles from image. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="worldNode">	[in,out] If non-null, the world node. </param>
+///-------------------------------------------------------------------------------------------------
+
 void cTextureManager::loadWorldTilesFromImage(rapidxml::xml_node<> *worldNode) {
 	// std::vector<std::vector <std::vector<std::tuple<float, float, float>>>>
 	// vecWorldTiles;
@@ -231,6 +263,16 @@ void cTextureManager::loadWorldTilesFromImage(rapidxml::xml_node<> *worldNode) {
 		FreeImage_Unload(imagen);
 	}
 }
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads cube map. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="cubeNode">	[in,out] If non-null, the cube node. </param>
+///
+/// <returns>	The cube map. </returns>
+///-------------------------------------------------------------------------------------------------
 
 GLuint cTextureManager::loadCubeMap(rapidxml::xml_node<> *cubeNode) {
 	int width, height;

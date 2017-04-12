@@ -1,13 +1,20 @@
 #include "stdafx.h"
 #include "global.h"
 #include "cGraphicsEngine.h"
+
+///-------------------------------------------------------------------------------------------------
 /// <summary>
-/// Updates global window information when the window is resized.
-/// Updates camera's properties with new values.
+/// Updates global window information when the window is resized. Updates camera's properties
+/// with new values.
 /// </summary>
-/// <param name="window"></param>
-/// <param name="width"></param>
-/// <param name="height"></param>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="window">	window handle[in,out]. </param>
+/// <param name="width"> 	width </param>
+/// <param name="height">   height </param>
+///-------------------------------------------------------------------------------------------------
+
 void callback_windowResize(GLFWwindow *window, int width, int height) {
 	if (width != 0 && height != 0)
 	{
@@ -17,11 +24,18 @@ void callback_windowResize(GLFWwindow *window, int width, int height) {
 
 	}
 }
+
+///-------------------------------------------------------------------------------------------------
 /// <summary>
-/// Tells the application that it's time to exit when the application's window is exited.
-/// Unloads GLFW resources.
+/// Tells the application that it's time to exit when the application's window is exited. Unloads
+/// GLFW resources.
 /// </summary>
-/// <param name="window">GLFW window handle</param>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="window">	[in,out] GLFW window handle. </param>
+///-------------------------------------------------------------------------------------------------
+
 void callback_WindowClose(GLFWwindow *window) {
 	glfwSetWindowShouldClose(window, 1);
 
@@ -30,14 +44,19 @@ void callback_WindowClose(GLFWwindow *window) {
 
 	glfwTerminate();
 }
-/// <summary>
-/// Key press event handler
-/// </summary>
-/// <param name="window"></param>
-/// <param name="key"></param>
-/// <param name="scancode"></param>
-/// <param name="action"></param>
-/// <param name="mods"></param>
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Key press event handler. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="window">  	[in,out] If non-null, the window. </param>
+/// <param name="key">	   	The key. </param>
+/// <param name="scancode">	The scancode. </param>
+/// <param name="action">  	The action. </param>
+/// <param name="mods">	   	The mods. </param>
+///-------------------------------------------------------------------------------------------------
+
 void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 	int mods) {
 	// NOTE: Does not work for buttons being held-down. See TAG: 001X
@@ -116,21 +135,30 @@ void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 		}
 	}
 }
-/// <summary>
-/// VERY simple error handler
-/// </summary>
-/// <param name=""></param>
-/// <param name="error"></param>
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	VERY simple error handler. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+/// <param name="parameter1">	The first parameter. </param>
+/// <param name="error">	 	The error. </param>
+///-------------------------------------------------------------------------------------------------
+
 void callback_Error(int, const char* error)
 {
 	std::cout << "GLFW Error: " << error << std::endl;
 }
-/// <summary>
-/// Mouse wheel event handler
-/// </summary>
-/// <param name="window"></param>
-/// <param name="xoffset"></param>
-/// <param name="yoffset"></param>
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Mouse wheel event handler. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="window"> 	[in,out] If non-null, the window. </param>
+/// <param name="xoffset">	The xoffset. </param>
+/// <param name="yoffset">	The yoffset. </param>
+///-------------------------------------------------------------------------------------------------
+
 void callback_scroll(GLFWwindow* window, double xoffset, double yoffset)
 {
 	// Scrolling: backwards = 1 || forwards = -1
@@ -138,13 +166,24 @@ void callback_scroll(GLFWwindow* window, double xoffset, double yoffset)
 	gCamera->m_zoom.distance -= (float)yoffset * gCamera->m_zoom.rate;
 }
 
-/// <summary>
-/// Mouse button event handler
-/// </summary>
-/// <param name="window"></param>
-/// <param name="button"></param>
-/// <param name="action"></param>
-/// <param name="mods"></param>
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Mouse button event handler. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+
+///-------------------------------------------------------------------------------------------------
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Callback mouse button. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///
+/// <param name="window">	[in,out] If non-null, the window. </param>
+/// <param name="button">	The button. </param>
+/// <param name="action">	The action. </param>
+/// <param name="mods">  	The mods. </param>
+///-------------------------------------------------------------------------------------------------
+
 void callback_mouse_button(GLFWwindow* window, int button, int action, int mods)
 {
 	if (g_bool_toggleWorldEditMode) {
