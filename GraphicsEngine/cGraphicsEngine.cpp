@@ -233,7 +233,7 @@ namespace GraphicsEngine {
 				// PROJECT CODE: Position restriction
 				glm::mat4 tempTrans = controlComponent.pState->getTransform();
 				tempTrans[3] = glm::vec4(0.0f);
-				controlComponent.pState->setImpluse(glm::vec3(glm::translate(tempTrans, translation)[3])- glm::vec3(glm::vec3(0.0f)));
+				controlComponent.pState->setImpluse(glm::vec3(glm::translate(tempTrans, translation)[3])); // -glm::vec3(glm::vec3(0.0f)));
 				gCamera->setTargetTransform(newTrans);
 			}
 		}

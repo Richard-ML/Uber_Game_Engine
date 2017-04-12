@@ -88,7 +88,7 @@ namespace PhysicsEngine {
 					glm::vec3 currentImpluse = rb->state->getImpluse();
 
 						btTransform trans = rb->m_rigidBody->getWorldTransform();
-						rb->m_rigidBody->setLinearVelocity(btVector3(currentImpluse.x, currentImpluse.y, currentImpluse.z) * 10);
+						rb->m_rigidBody->setLinearVelocity(btVector3(currentImpluse.x, currentImpluse.y + 1, currentImpluse.z) * 10);
 						rb->state->setImpluse(glm::vec3(0.0f));
 
 						glm::mat4 transformation = rb->state->getTransform();
@@ -117,9 +117,9 @@ namespace PhysicsEngine {
 				if (rb->m_rigidBody != 0) { // Objects can be added to the scene and not be initialized yet. Check to see if the bullet rigid body exists.
 					rb->state->setIsColliding(rb->isCollision());
 					if (rb->m_rigidBody->getInvMass() != 0) {
-
+						sBoundingBox boundingBox = rb->state->getBoundingBox();
 						btVector3 btVec = rb->m_rigidBody->getWorldTransform().getOrigin();
-						glm::vec3 positionResult = glm::vec3(btVec[0], btVec[1], btVec[2]);
+						glm::vec3 positionResult = glm::vec3(btVec[0], btVec[1], btVec[2]);// +boundingBox.position;
 						//positionResult.y = 1.0f;
 						//rb->state->setPosition(positionResult);
 						btQuaternion rot = rb->m_rigidBody->getWorldTransform().getRotation();
@@ -132,7 +132,7 @@ namespace PhysicsEngine {
 						quat.z = rot.getZ();
 						quat.w = rot.getW();
 
-						sBoundingBox boundingBox = rb->state->getBoundingBox();
+						
 						boundingBox.rotation = quat;
 						rb->state->setBoundingBox(boundingBox);
 
@@ -212,7 +212,7 @@ namespace PhysicsEngine {
 
 			btTransform worldTransform;
 			worldTransform.setIdentity();
-			worldTransform.setOrigin(btVector3(offset.x, offset.y, offset.z));
+			worldTransform.setOrigin(btVector3(offset.x, offset.y, offset.z) + btVector3(colShapePos.x, colShapePos.y, colShapePos.z));
 
 			btScalar mass = std::stof(cRigidBody_node->first_attribute("mass")->value());
 			rb->mass = mass;
@@ -306,7 +306,7 @@ namespace PhysicsEngine {
 					// BOX SHAPES HERE AND PLANE ;)
 					btBoxShape* bs = new btBoxShape(btVector3(boxHalfWidth.x / 2, boxHalfWidth.y / 2, boxHalfWidth.z / 2));
 
-					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin() )); // TODO: cleanup
 					if (isDynamic)
 						bs->calculateLocalInertia(mass, localInertia);
 
@@ -340,7 +340,7 @@ namespace PhysicsEngine {
 					btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, cs, localInertia);
 
 					rb->m_rigidBody = new btRigidBody(rbInfo);
-					rb->m_rigidBody->setFriction(0.1f); // less friction here.. Just a swinging light or something. Use your IMAGINATION James Lucas. ;)
+					rb->m_rigidBody->setFriction(0.1f); 
 					btVector3 constraintPivot(btVector3(0.0f, 8.0f, 0.0f));
 					btTypedConstraint* p2p = new btPoint2PointConstraint(*rb->m_rigidBody, constraintPivot);
 					s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(p2p, true);
@@ -374,8 +374,8 @@ namespace PhysicsEngine {
 				{
 					// BOX SHAPES HERE AND PLANE ;)
 					btBoxShape* bs = new btBoxShape(btVector3(boxHalfWidth.x / 2, boxHalfWidth.y / 2, boxHalfWidth.z / 2));
-
-					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+				
+					btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin() + btVector3(colShapePos.x, colShapePos.y, colShapePos.z))); // TODO: cleanup
 					if (isDynamic)
 						bs->calculateLocalInertia(mass, localInertia);
 

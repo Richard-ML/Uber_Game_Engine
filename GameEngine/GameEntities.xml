@@ -294,7 +294,7 @@
       <Mesh name="WallZ" outline="false" />
     </RenderableComponent>
     <PhysicsComponent>
-      <RigidBody offsetX="32" offsetY="16" offsetZ="-88" mass="0" hingeConstraint="-1" >
+      <RigidBody offsetX="32" offsetY="0" offsetZ="-88" mass="0" hingeConstraint="-1" >
         <CollisionInfo collisionMask="5" >
           <CollidesWith collisionMask="1" />
           <CollidesWith collisionMask="3" />
@@ -307,7 +307,7 @@
       <Mesh name="WallZ" outline="false" />
     </RenderableComponent>
     <PhysicsComponent>
-      <RigidBody offsetX="-32" offsetY="16" offsetZ="-88" mass="0" hingeConstraint="-1" >
+      <RigidBody offsetX="-32" offsetY="0" offsetZ="-88" mass="0" hingeConstraint="-1" >
         <CollisionInfo collisionMask="5" >
           <CollidesWith collisionMask="1" />
           <CollidesWith collisionMask="3" />
@@ -320,7 +320,7 @@
       <Mesh name="WallX" outline="false" />
     </RenderableComponent>
     <PhysicsComponent>
-      <RigidBody offsetX="0" offsetY="16" offsetZ="-120" mass="0" hingeConstraint="-1" >
+      <RigidBody offsetX="0" offsetY="0" offsetZ="-120" mass="0" hingeConstraint="-1" >
         <CollisionInfo collisionMask="5" >
           <CollidesWith collisionMask="1" />
           <CollidesWith collisionMask="3" />

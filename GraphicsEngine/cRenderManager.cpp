@@ -174,6 +174,7 @@ void cRenderManager::renderScene()
 
 			glm::mat4 transform;
 			graphicObject->pState->getTransform(transform);
+			transform[3] -= glm::vec4( graphicObject->pState->getBoundingBox().position, 0.0f);
 			float scale;
 			graphicObject->pState->getScale(scale);
 

@@ -173,16 +173,14 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 
 	// Will add a way to send mesh to physics engine to generate boundingBox and stuff
 
-	// TODO: Create the mesh's AABB based on its MAX and MIN extents
-	// AABB* boundingBox = new AABB(min, max, tempVecTriFace); // Voxel grid cell inside
-	// of the world generation will contain these AABBs which point to the corresponding
-	// trifaces MAJOR enhancement..
+	// Generate a bounding box to be used as a collision volume and to be used in debug rendering
 
 	meshFaces.push_back(tempVecTriFace);
 	m_MapMeshNameTocMeshEntry[name] = entryOut;
 
 		sBoundingBox boundingBox;
-		boundingBox.scale = glm::vec3(max.x - min.x, (max.y - min.y), max.z - min.z);
+		boundingBox.scale = (max - min); // NOTE: This is not the boxes half-widths. This is the actual scale factor that is applied to the cube primitive. 
+										 //glm::vec3(max.x - min.x, (max.y - min.y), max.z - min.z);
 		boundingBox.position = (max - min) / 2.0f;
 		m_MapMeshNameToAABB[name] = boundingBox;
 	return true;
