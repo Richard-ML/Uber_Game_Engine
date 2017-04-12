@@ -4,6 +4,13 @@
 #include "EnumerationConstants.h"
 // World editor. Creates bounding boxes to represent tile sections. Can be used to spawn objects at specific locations in the world. More features coming soon! 
 class cWorld : public iWorld {
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	A spin lock. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	struct sSpinLock {
 		//volatile LONG isLocked = 0; // 0 unlocked : 1 locked
 		LOCK lock;
@@ -49,6 +56,7 @@ class cWorld : public iWorld {
 		glm::vec3 position;
 		glm::vec3 scale = glm::vec3(64.0f, 0.1f, 64.0f);
 	};
+	/// <summary>	The tile selection mode. </summary>
 	eActiveWorldTileSelection m_tileSelectionMode;
 
 	/// <summary>	The vector selected tiles. </summary>
@@ -58,6 +66,15 @@ class cWorld : public iWorld {
 public:
 	/// <summary>	NOTE: This is public, but only GameEngine uses it! :P. </summary>
 	std::function<void()> generateObjectsAtSelectedTiles;
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Deselect tile at given position. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="position">	The position. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	virtual void deselectTileAtPosition(glm::vec3 position) {
 		sWorldTile worldTile;
 		worldTile.position = glm::vec3((glm::round(position.x / worldTile.scale.x) * 64.0f) + 32.0f, 0.0f, glm::round(glm::round(position.z / worldTile.scale.z) * 64.0f) + 8.0f);

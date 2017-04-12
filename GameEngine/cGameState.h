@@ -3,11 +3,29 @@
 
 class cGameState : public iGameState {
 private:
+	/// <summary>	State of the game. </summary>
 	eGameState m_gameState;
+
 	eDifficulty m_difficulty = CASUAL;
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	A spin lock. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	struct sSpinLock {
 		LOCK lock;
 	}m_lock[2]; // 2 locks. One should be used per variable
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Locks. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="varNum">	The variable number. </param>
+	///-------------------------------------------------------------------------------------------------
+
 	virtual void lock(int varNum) {
 #if !defined(SKIP_LOCKING)  
 		while (_InterlockedExchange(&m_lock[varNum].lock, LOCKED) == UNLOCKED) {
@@ -16,6 +34,14 @@ private:
 		// At this point, the lock is acquired. ;)
 #endif  
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Unlocks. </summary>
+	///
+	/// <remarks>	Richard, 4/12/2017. </remarks>
+	///
+	/// <param name="varNum">	The variable number. </param>
+	///-------------------------------------------------------------------------------------------------
 
 	virtual void unlock(int varNum) {
 #if !defined(SKIP_LOCKING)  

@@ -91,6 +91,7 @@ std::vector<cGameEntity*> vec_gameEntities;
 ///
 /// <returns>	Success or fail BIT. </returns>
 ///-------------------------------------------------------------------------------------------------
+
 int cEntityManager::loadGameFromXML(std::string filename) {
 	std::cout << "Loading saved cEntity data..\n";
 	rapidxml::xml_document<> theDoc;
@@ -130,9 +131,13 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 
 	return 1;
 }
-/// <summary>
-/// Places new game entity at selected tile
-/// </summary>
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Places new game entity at selected tile. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 void cEntityManager::spawnObjectsAtSelectedTile()
 {
 	std::vector<sBoundingBox> boundingBoxes = g_pWorld->getSelectionAABBs();
@@ -257,10 +262,7 @@ void cEntityManager::cleanup()
 }
 
 ///-------------------------------------------------------------------------------------------------
-/// <summary>
-/// For each entity request entity xml node from state manager.. state manager will get each all
-/// of the entities component nodes.
-/// </summary>
+/// <summary>	For each entity request entity xml node from state manager. </summary>
 ///
 /// <remarks>	Richard, 4/12/2017. </remarks>
 ///
