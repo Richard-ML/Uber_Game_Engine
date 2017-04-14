@@ -207,6 +207,7 @@ void cEntityManager::loadGameEntitiesFromXML(int difficulty) {
 	else return;
 	g_pGraphicsEngine->clearGameObjects();
 	g_pComponentEngine->clearStateInfo();
+	g_pPhysicsEngine->clearGameObjects();
 	vec_gameEntities.clear();
 
 

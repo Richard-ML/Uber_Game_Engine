@@ -138,6 +138,8 @@ namespace PhysicsEngine {
 		PhysicsEngine_API bool generateConvexHull(std::string meshName, std::vector<sTriangleFace*> triangleFaces);
 
 		PhysicsEngine_API bool generatePhysicsMesh(std::string meshName, unsigned int * indices, sMeshVertex * vertices, int numVertices, int numIndices);
+
+		PhysicsEngine_API void clearGameObjects();
 	};
 
 }

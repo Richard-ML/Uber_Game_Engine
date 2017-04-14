@@ -93,7 +93,7 @@ namespace PhysicsEngine {
 			reinterpret_cast<cPhysicsEngine *>(lpParam);
 
 		do {
-
+			while (g_pGameState == 0 || g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(50); }
 			switch (g_pGameState->getGameState())
 			{
 			case GAMESTATE_EXIT:
@@ -647,6 +647,17 @@ namespace PhysicsEngine {
 		return true;
 	}
 
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Generates a convex hull. </summary>
+	///
+	/// <remarks>	Richard, 4/13/2017. </remarks>
+	///
+	/// <param name="meshName">			Name of the mesh. </param>
+	/// <param name="triangleFaces">	[in,out] If non-null, the triangle faces. </param>
+	///
+	/// <returns>	True if it succeeds, false if it fails. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	PhysicsEngine_API bool cPhysicsEngine::generateConvexHull(std::string meshName, std::vector<sTriangleFace*> triangleFaces)
 	{
 
@@ -686,12 +697,13 @@ namespace PhysicsEngine {
 
 	PhysicsEngine_API bool cPhysicsEngine::generatePhysicsMesh(std::string meshName, unsigned int * indices, sMeshVertex * vertices, int numVertices, int numIndices)
 	{
-
-		btTriangleMesh* triangleMeshTerrain = new btTriangleMesh();
+		gLock(0);
+		btTriangleMesh* triangleMeshTerrain = new btTriangleMesh(false, false);
 		triangleMeshTerrain->preallocateVertices(numVertices);
 		triangleMeshTerrain->preallocateIndices(numIndices);
-
-		for (int index = 0; index < numVertices; index++)
+	
+		//printf(std::to_string( vertices[0].Position.x).c_str());
+		for (unsigned int index = 0; index < numVertices; index++)
 		{
 			triangleMeshTerrain->findOrAddVertex(
 				btVector3(
@@ -710,10 +722,19 @@ namespace PhysicsEngine {
 				indices[index + 2]);
 		}
 		m_map_MeshNameToTriangleMesh[meshName] = triangleMeshTerrain;
-
+		gUnlock(0);
 		// Cast to btBvhTriangleMeshShape((m_map_MeshNameToTriangleMesh[rb->state->getMeshName()], true); for static objects
 		// Cast to btConvexTriangleMeshShape((m_map_MeshNameToTriangleMesh[rb->state->getMeshName()]); for dynamic objects
 		return true;
+	}
+	PhysicsEngine_API void cPhysicsEngine::clearGameObjects()
+	{
+		gLock(0);
+
+		vec_rigidBodies.clear();
+
+
+		gUnlock(0);
 	}
 }
 

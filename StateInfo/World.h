@@ -37,6 +37,6 @@ public:
 	virtual void generateObjectAtSlection() = 0;
 
 	virtual bool generateConvexHull(std::string meshName, std::vector<sTriangleFace*> triangleFaces) = 0;
-	virtual bool generatePhysicsMesh(std::string meshName, unsigned int * indices, sMeshVertex * vertices, int numVertices, int numIndices) = 0;
+	virtual bool generatePhysicsMesh(std::string meshName, unsigned int* indices, sMeshVertex* vertices, int numVertices, int numIndices) = 0;
 };
 

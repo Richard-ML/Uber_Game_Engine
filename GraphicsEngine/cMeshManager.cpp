@@ -215,15 +215,6 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 		tempVecsTriangleFace.push_back(tempsTriangleFace);
 	}
 
-
-	//{
-	//std::vector<sTriangleFace> triFaces;
-	//for each(sTriangleFace* triFace in tempVecsTriangleFace)
-	//	triFaces.push_back(*triFace);
-	if (name != "Skeleton" && name != "FloorTile")
-	 g_pWorld->generatePhysicsMesh(	name, &indices[indexOffset], &vertices[vertexOffset], mesh->mNumVertices, mesh->mNumFaces * 3);
-	//g_pWorld->generateConvexHull(name, tempVecsTriangleFace);
-
 	meshFaces.push_back(tempVecsTriangleFace);
 	m_MapMeshNameTocMeshEntry[name] = entryOut;
 
@@ -232,6 +223,13 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 										 //glm::vec3(max.x - min.x, (max.y - min.y), max.z - min.z);
 		boundingBox.position = (max - min) / 2.0f;
 		m_MapMeshNameToAABB[name] = boundingBox;
+
+
+
+		if (name != "Skeleton" && name != "FloorTile")
+			g_pWorld->generatePhysicsMesh(name, &indices[indexOffset], &vertices[vertexOffset], mesh->mNumVertices, mesh->mNumFaces * 3);
+
+		//g_pWorld->generateConvexHull(name, tempVecsTriangleFace);
 	return true;
 }
 
