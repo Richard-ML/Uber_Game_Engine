@@ -49,6 +49,33 @@ struct sAABB {
 	glm::vec3 scale;
 	glm::vec3 position;
 };
+/* Mesh Information */
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	A mesh vertex. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
+struct sMeshVertex {
+	glm::vec4 Position;
+	glm::vec4 TexCoord;
+	glm::vec4 Normal;
+	glm::vec4 Tangent;
+	glm::uvec4 textureUnits; // TODO: Switch to uvec4 (GL_UNSIGNED_INT) or
+							 // (GL_UNSIGNED_BYTE)
+};
+///-------------------------------------------------------------------------------------------------
+/// <summary>	A triangle face. </summary>
+///
+/// <remarks>	Richard, 4/12/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
+struct sTriangleFace {
+	glm::vec3 v1;
+	glm::vec3 v2;
+	glm::vec3 v3;
+};
 
 ///-------------------------------------------------------------------------------------------------
 /// <summary>	Values that represent active world tile selections. </summary>

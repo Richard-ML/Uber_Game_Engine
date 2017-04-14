@@ -14,34 +14,7 @@ struct cMeshEntry {
 	int BaseIndex;
 	int BaseVertex;
 };
-/* Mesh Information */
 
-///-------------------------------------------------------------------------------------------------
-/// <summary>	A triangle face. </summary>
-///
-/// <remarks>	Richard, 4/12/2017. </remarks>
-///-------------------------------------------------------------------------------------------------
-
-struct triFace {
-	glm::vec3 v1;
-	glm::vec3 v2;
-	glm::vec3 v3;
-};
-
-///-------------------------------------------------------------------------------------------------
-/// <summary>	A mesh vertex. </summary>
-///
-/// <remarks>	Richard, 4/12/2017. </remarks>
-///-------------------------------------------------------------------------------------------------
-
-struct cMeshVertex {
-	glm::vec4 Position;
-	glm::vec4 TexCoord;
-	glm::vec4 Normal;
-	glm::vec4 Tangent;
-	glm::uvec4 textureUnits; // TODO: Switch to uvec4 (GL_UNSIGNED_INT) or
-							 // (GL_UNSIGNED_BYTE)
-};
 
 ///-------------------------------------------------------------------------------------------------
 /// <summary>	Manager for meshes. </summary>
@@ -124,9 +97,9 @@ public:
 	void loadWorld();
 
 	// Could be in global.. 
-	std::vector<std::vector<triFace *>> meshFaces;
+	std::vector<std::vector<sTriangleFace *>> meshFaces;
 	std::vector<unsigned int> indices;
-	std::vector<cMeshVertex> vertices;
+	std::vector<sMeshVertex> vertices;
 
 	std::map<std::string, sBoundingBox> m_MapMeshNameToAABB;
 	// Map... aka "dictionary" "look up table"

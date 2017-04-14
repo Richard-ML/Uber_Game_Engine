@@ -65,7 +65,7 @@ void main() {
 }
 
 // Saving this for later ;)
-// glVertexAttribPointer(1, 1, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(cMeshVertex),
+// glVertexAttribPointer(1, 1, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(sMeshVertex),
 // (GLvoid*)offsetToTextureInfoInBytes);
 // layout(location = 1) in uint vertexColor;
 // byte components as RGBA values:

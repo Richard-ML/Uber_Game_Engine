@@ -56,14 +56,14 @@
       <FileName>cMeshManager.h</FileName>
     </TypeIdentifier>
   </Struct>
-  <Struct Name="triFace">
+  <Struct Name="sTriangleFace">
     <Position X="3.25" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAAAAAA=</HashCode>
       <FileName>cMeshManager.h</FileName>
     </TypeIdentifier>
   </Struct>
-  <Struct Name="cMeshVertex">
+  <Struct Name="sMeshVertex">
     <Position X="7" Y="5.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAIAAAAAAAAAAAgAAIAAAAAAAAIAAACAAAAAAAAAAA=</HashCode>

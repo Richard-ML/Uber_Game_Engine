@@ -18,15 +18,13 @@ int main()
 	g_pGameState = new cGameState();
 	g_pGameState->setGameState(GAMESTATE_LOADING);
 
-	g_pWorld = new cWorld();
-	g_pWorld->generateObjectsAtSelectedTiles = std::bind(&cEntityManager::spawnObjectsAtSelectedTile, g_pEntityManager);
 
 	ComponentEngine::cComponentEngine * g_pComponentEngine = ComponentEngine::cComponentEngine::instance();
 	PhysicsEngine::cPhysicsEngine *g_pPhysicsEngine = PhysicsEngine::cPhysicsEngine::instance();
 	GraphicsEngine::cGraphicsEngine * g_pGraphicsEngine = GraphicsEngine::cGraphicsEngine::instance();
 	SoundEngine::cSoundEngine * g_pSoundEngine = SoundEngine::cSoundEngine::instance();
 	AIEngine::cAIEngine * g_pAIEngine = AIEngine::cAIEngine::instance();
-
+	
 	std::cout << "GameEngine Initialized\n";
 
 	iGameState* gameState = dynamic_cast<iGameState*>(g_pGameState);
@@ -42,13 +40,16 @@ int main()
 	g_pSoundEngine->initializeDebugRendererHandle(g_pDebugRenderer);
 	g_pAIEngine->initializeDebugRendererHandle(g_pDebugRenderer);
 
+	g_pWorld = new cWorld();
+	g_pWorld->generateObjectsAtSelectedTiles = std::bind(&cEntityManager::spawnObjectsAtSelectedTile, g_pEntityManager);
+	g_pWorld->pPhysicsEngine = g_pPhysicsEngine;
 	iWorld* world = dynamic_cast<iWorld*>(g_pWorld);
 	g_pPhysicsEngine->initializeWorldHandle(world);
 	g_pGraphicsEngine->initializeWorldHandle(world);
 	g_pSoundEngine->initializeWorldHandle(world);
 	g_pAIEngine->initializeWorldHandle(world);
 	// TEST DEBUG RENDERER
-	g_pDebugRenderer->createCube(glm::vec3(0.0f, 6.0f, -12.0f),glm::vec3(6.0f, 5.0f, 6.0f), 1.0f, glm::vec3(0.4f, 0.5f, 0.25f));
+	//g_pDebugRenderer->createCube(glm::vec3(0.0f, 6.0f, -12.0f),glm::vec3(6.0f, 5.0f, 6.0f), 1.0f, glm::vec3(0.4f, 0.5f, 0.25f));
 
 
 	// TODO: Crate window using g_pGraphicsEngine interface..

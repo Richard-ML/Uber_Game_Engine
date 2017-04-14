@@ -112,8 +112,8 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 
 	// Fill gVertices positions
 	vertices.resize(vertexOffset + numgVertices);
-	std::vector<triFace *> tempVecTriFace;
-	// tempVecTriFace.reserve(mesh->mNumFaces);
+	std::vector<sTriangleFace *> tempVecsTriangleFace;
+	// tempVecsTriangleFace.reserve(mesh->mNumFaces);
 
 	// Extents for Voxel Grid and AABB
 	glm::vec3 min(0.0f);
@@ -125,9 +125,9 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 		pos1 *= scale;
 		aiVector3D t1;
 		aiVector3D n1 = mesh->mNormals[i];
-		if(mesh->mTangents != NULL)
+		if (mesh->mTangents != NULL)
 			t1 = mesh->mTangents[i];
-		cMeshVertex &vert1 = vertices[vertexOffset + i];
+		sMeshVertex &vert1 = vertices[vertexOffset + i];
 		glm::ivec4 tempTextureUnit0 = glm::ivec4(0);
 		if (mesh->mMaterialIndex >= 0) {
 			aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
@@ -198,28 +198,33 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 		indices[indexOffset + baseInd + 1] = mesh->mFaces[i].mIndices[1];
 		indices[indexOffset + baseInd + 2] = mesh->mFaces[i].mIndices[2];
 
-		triFace *tempTriFace = new triFace();
+		sTriangleFace *tempsTriangleFace = new sTriangleFace();
 
-		tempTriFace->v1 =
+		tempsTriangleFace->v1 =
 			glm::vec3(vertices[indices[indexOffset + baseInd]].Position.x,
 				vertices[indices[indexOffset + baseInd]].Position.y,
 				vertices[indices[indexOffset + baseInd]].Position.z);
-		tempTriFace->v2 =
+		tempsTriangleFace->v2 =
 			glm::vec3(vertices[indices[indexOffset + baseInd + 1]].Position.x,
 				vertices[indices[indexOffset + baseInd + 1]].Position.y,
 				vertices[indices[indexOffset + baseInd + 1]].Position.z);
-		tempTriFace->v3 =
+		tempsTriangleFace->v3 =
 			glm::vec3(vertices[indices[indexOffset + baseInd + 2]].Position.x,
 				vertices[indices[indexOffset + baseInd + 2]].Position.y,
 				vertices[indices[indexOffset + baseInd + 2]].Position.z);
-		tempVecTriFace.push_back(tempTriFace);
+		tempVecsTriangleFace.push_back(tempsTriangleFace);
 	}
 
-	// Will add a way to send mesh to physics engine to generate boundingBox and stuff
 
-	// Generate a bounding box to be used as a collision volume and to be used in debug rendering
+	//{
+	//std::vector<sTriangleFace> triFaces;
+	//for each(sTriangleFace* triFace in tempVecsTriangleFace)
+	//	triFaces.push_back(*triFace);
+	if (name != "Skeleton" && name != "FloorTile")
+	 g_pWorld->generatePhysicsMesh(	name, &indices[indexOffset], &vertices[vertexOffset], mesh->mNumVertices, mesh->mNumFaces * 3);
+	//g_pWorld->generateConvexHull(name, tempVecsTriangleFace);
 
-	meshFaces.push_back(tempVecTriFace);
+	meshFaces.push_back(tempVecsTriangleFace);
 	m_MapMeshNameTocMeshEntry[name] = entryOut;
 
 		sBoundingBox boundingBox;

@@ -6,7 +6,7 @@
 /// <summary>
 /// Each entity can contain a collection of components. Each component has is provided an iState
 /// interface instance. The iState interface enables different components to share basic
-/// information Information such as, position, behavioural state, etc.
+/// information such as, position, behavioural state, etc.
 /// </summary>
 ///
 /// <remarks>	Richard, 4/12/2017. </remarks>

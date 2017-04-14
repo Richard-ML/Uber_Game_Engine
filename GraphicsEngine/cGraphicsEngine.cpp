@@ -126,9 +126,11 @@ namespace GraphicsEngine {
 			// load the mesh buffers
 			cMesh* mesh = new cMesh();
 			mesh->meshName = cRenderableComponentEntry_node->first_attribute("name")->value();
+
 			mesh->toggleOutline = std::string(cRenderableComponentEntry_node->first_attribute("outline")->value()) == "true";
 			graphicsObject->vec_meshes.push_back(mesh); // TODO: Offset scale rotation etc..
 			graphicsObject->pState = state;
+			graphicsObject->pState->setMeshName(mesh->meshName);
 			graphicsObject->pState->setScale(1.0f);
 			sBoundingBox boundingBox = graphicsObject->pState->getBoundingBox();
 			boundingBox.scale = glm::vec3(glm::max(g_pMeshManager->m_MapMeshNameToAABB[mesh->meshName].scale.x , boundingBox.scale.x), glm::max(g_pMeshManager->m_MapMeshNameToAABB[mesh->meshName].scale.y, boundingBox.scale.y), glm::max(g_pMeshManager->m_MapMeshNameToAABB[mesh->meshName].scale.z, boundingBox.scale.z));
@@ -509,7 +511,7 @@ void createTheBuffers() {
 	glGenBuffers(1, &gTextureInfoBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, gTextureInfoBufferID);
 
-	int bytesInVertexArray = g_pMeshManager->vertices.size() * sizeof(cMeshVertex);
+	int bytesInVertexArray = g_pMeshManager->vertices.size() * sizeof(sMeshVertex);
 	glBufferData(GL_ARRAY_BUFFER, bytesInVertexArray, &g_pMeshManager->vertices[0], // TAG: 001
 		GL_STATIC_DRAW);
 

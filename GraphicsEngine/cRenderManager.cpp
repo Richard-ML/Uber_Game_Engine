@@ -180,7 +180,7 @@ void cRenderManager::renderScene()
 	{
 		for each(cMesh* mesh in graphicObject->vec_meshes) {
 			//glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, false);
-			
+
 			//glUniform1i(gUniformId_Toggle_Lights, false); // TODO: REMOVE THIS IT'S HERE FOR COMPAT WITH OLD PC
 			// per frame uniforms
 			glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
@@ -216,10 +216,17 @@ void cRenderManager::renderScene()
 
 			glm::mat4 transform;
 			graphicObject->pState->getTransform(transform);
-			transform[3] -= glm::vec4( graphicObject->pState->getBoundingBox().position, 0.0f);
-			float scale;
-			graphicObject->pState->getScale(scale);
+			//transform[3] -= glm::vec4( graphicObject->pState->getBoundingBox().position, 0.0f);
+			float scaleF; // Only storing 1 value for scale at the moment.. TODO
+			graphicObject->pState->getScale(scaleF);
+			glm::vec3 scale(scaleF);
 
+			if (mesh->meshName == "Skeleton") {
+				glm::vec3 box = graphicObject->pState->getBoundingBox().scale;
+				// Hard-coded offset and scale to accommodate for bullet's margins
+				transform[3].y -= ( box.y / 1.63f);
+				scale.y = 1.22f;
+			}
 			glUniformMatrix4fv(
 				gUniformId_ModelMatrix, 1, GL_FALSE,
 				glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
@@ -229,24 +236,56 @@ void cRenderManager::renderScene()
 				glm::value_ptr(glm::vec4(1.0f)));
 			glUniform1f(gUniformId_Alpha, 1.0f);
 
-			if (mesh->meshName == "Portal")
-			{
-				glBindTexture(GL_TEXTURE_2D, g_pRenderManager->map_NameToFBOInfo["Portal"]->colorTextureID);
-				glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, false); // 
-				//glUniform1i(gUniformId_Toggle_Lights, false);
+
+			glDrawElementsBaseVertex(
+				GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].NumgIndices, GL_UNSIGNED_INT,
+				(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex),
+				g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex);
+			glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, true);
+			//glUniform1i(gUniformId_Toggle_Lights, true);
+			glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
+
+
+			if (g_bool_toggleDebugShapes) {
+				glUniform1i(gUniformId_Toggle_Textures, false);
+				glUniform1i(gUniformId_Toggle_Lights, false);
+				// DRAW WIREFRAME MESHES OF COLLIDING OBJECTS
+				if (graphicObject->pState->getIsColliding())
+				{
+					glUniform4fv(gUniformId_ModelColor, 1,
+						glm::value_ptr(glm::vec3(0.5f, 0.0f, 0.0f)));
+
+					glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+													 // you can pass here
+						GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
+					glDisable(GL_CULL_FACE);
+					if (mesh->meshName != "Skeleton") {
+						glDrawElementsBaseVertex(
+							GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].NumgIndices, GL_UNSIGNED_INT,
+							(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex),
+							g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex);
+					}
+					else
+					{
+						glm::vec3 box = graphicObject->pState->getBoundingBox().scale;
+						float scaleXZ = glm::max(box.x, box.z);
+						//transform[3].y -= box.y / 2;
+						glUniformMatrix4fv(
+							gUniformId_ModelMatrix, 1, GL_FALSE,
+							glm::value_ptr(glm::scale(transform, glm::vec3(scaleXZ, (box.y / 1.63f), scaleXZ))));
+						glDrawElementsBaseVertex(
+							GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["Capsule"].NumgIndices, GL_UNSIGNED_INT,
+							(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["Capsule"].BaseIndex),
+							g_pMeshManager->m_MapMeshNameTocMeshEntry["Capsule"].BaseIndex);
+					}
+
+				}
+				glUniform1i(gUniformId_Toggle_Textures, true);
+				glUniform1i(gUniformId_Toggle_Lights, true);
 			}
-				glDrawElementsBaseVertex(
-					GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].NumgIndices, GL_UNSIGNED_INT,
-					(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex),
-					g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex);
-				glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, true);
-				//glUniform1i(gUniformId_Toggle_Lights, true);
-				glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
-		
 		}
-
-
-		if (g_bool_toggleDrawAABBs)
+	}
+		/*if (g_bool_toggleDrawAABBs)
 		{
 			glUniform1i(gUniformId_Toggle_Textures, false);
 			glUniform1i(gUniformId_Toggle_Lights, false);
@@ -277,7 +316,7 @@ void cRenderManager::renderScene()
 			//	GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
 
 			transform = glm::mat4_cast(boundingBox.rotation);
-			transform[3] = glm::vec4(graphicObject->pState->getPosition(), 1.0f);
+			transform[3] = glm::vec4(graphicObject->pState->getPosition() + boundingBox.position, 1.0f);
 
 			glUniformMatrix4fv(
 				gUniformId_ModelMatrix, 1, GL_FALSE,
@@ -303,9 +342,8 @@ void cRenderManager::renderScene()
 			glUniform1i(gUniformId_Toggle_Textures, true);
 			glUniform1i(gUniformId_Toggle_Lights, true);
 		}
-
-	}
-
+*/
+	
 	if (g_bool_toggleDebugShapes) {
 		glUniform1i(gUniformId_Toggle_Textures, false);
 		glUniform1i(gUniformId_Toggle_Lights, false);
@@ -442,30 +480,30 @@ void cRenderManager::bindTheBuffers()
 		4,        // Number of variables: vec4 would be 4 32-bit variables
 		GL_FLOAT, // Type: vec4 is float
 		GL_FALSE, // "normalize" the values (or not)
-		sizeof(cMeshVertex), // Number of bytes per vertex (the "stride")
+		sizeof(sMeshVertex), // Number of bytes per vertex (the "stride")
 		(GLvoid *)0); // Offset from vertex (position is first, so offset = 0
 
-	int offsetToTexCoordsInBytes = sizeof(((cMeshVertex *)0)->Position);
+	int offsetToTexCoordsInBytes = sizeof(((sMeshVertex *)0)->Position);
 	glVertexAttribPointer(
-		1, 4, GL_FLOAT, GL_FALSE, sizeof(cMeshVertex),
+		1, 4, GL_FLOAT, GL_FALSE, sizeof(sMeshVertex),
 		(GLvoid *)offsetToTexCoordsInBytes); // Offset in bytes to TexCoords
 
 	int offsetToNormalInBytes =
-		offsetToTexCoordsInBytes + sizeof(((cMeshVertex *)0)->TexCoord);
+		offsetToTexCoordsInBytes + sizeof(((sMeshVertex *)0)->TexCoord);
 	glVertexAttribPointer(
-		2, 4, GL_FLOAT, GL_FALSE, sizeof(cMeshVertex),
+		2, 4, GL_FLOAT, GL_FALSE, sizeof(sMeshVertex),
 		(GLvoid *)offsetToNormalInBytes); // Offset in bytes to Normal
 
 	int offsetToTangentInBytes =
-		offsetToNormalInBytes + sizeof(((cMeshVertex *)0)->Normal);
+		offsetToNormalInBytes + sizeof(((sMeshVertex *)0)->Normal);
 	glVertexAttribPointer(
-		3, 4, GL_FLOAT, GL_FALSE, sizeof(cMeshVertex),
+		3, 4, GL_FLOAT, GL_FALSE, sizeof(sMeshVertex),
 		(GLvoid *)offsetToTangentInBytes); // Offset in bytes to Tangent
 
 	int offsetToTextureInfoInBytes =
-		offsetToTangentInBytes + sizeof(((cMeshVertex *)0)->Tangent);
+		offsetToTangentInBytes + sizeof(((sMeshVertex *)0)->Tangent);
 	glVertexAttribIPointer(
-		4, 4, GL_UNSIGNED_INT, sizeof(cMeshVertex),
+		4, 4, GL_UNSIGNED_INT, sizeof(sMeshVertex),
 		(GLvoid *)offsetToTextureInfoInBytes); // Offset in bytes to Texture Info
 }
 

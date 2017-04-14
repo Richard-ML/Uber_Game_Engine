@@ -19,6 +19,8 @@ struct sState {
 
 	glm::vec3 impluse;
 	sBoundingBox boundingBox;
+
+	std::string meshName;
 };
 // Forward declarations
 class iStateNode;
@@ -80,6 +82,9 @@ public:
 	virtual void setIsMoving(bool isMoving) = 0;
 
 	// Inherited via iControl
+	
+	virtual std::string getMeshName() = 0;
+	virtual void setMeshName(std::string meshName) = 0;
 };
 
 class cState : public iState {
@@ -180,6 +185,16 @@ public:
 	virtual glm::vec3 getImpluse() {
 		return m_parentNode->getImpluse();
 	}
+
+	virtual std::string getMeshName() {
+		return m_parentNode->getMeshName();
+	}
+
+	virtual void setMeshName(std::string meshName)
+	{
+		m_parentNode->setMeshName(meshName);
+	}
+
 
 	cState() {
 
@@ -334,6 +349,21 @@ public:
 		unlock(13);
 		return impluseResult;
 	}
+
+	virtual std::string getMeshName() {
+		std::string meshName;
+		lock(14);
+		meshName = this->_localStateData.meshName;
+		unlock(14);
+		return meshName;
+	}
+	virtual void setMeshName(std::string meshName) {
+		lock(14);
+		this->_localStateData.meshName = meshName;
+		unlock(14);
+	}
+
+
 	cStateNode() {
 
 	}

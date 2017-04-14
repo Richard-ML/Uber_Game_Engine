@@ -2,9 +2,10 @@
 #include "stdafx.h"
 #include "World.h"
 #include "EnumerationConstants.h"
+#include "externals.h"
+#include "global.h"
 // World editor. Creates bounding boxes to represent tile sections. Can be used to spawn objects at specific locations in the world. More features coming soon! 
 class cWorld : public iWorld {
-
 	///-------------------------------------------------------------------------------------------------
 	/// <summary>	A spin lock. </summary>
 	///
@@ -236,4 +237,16 @@ public:
 	virtual void generateObjectAtSlection() {
 		generateObjectsAtSelectedTiles(); // Magic
 	}
+
+	PhysicsEngine::cPhysicsEngine* pPhysicsEngine = 0;
+	virtual bool generateConvexHull(std::string meshName, std::vector<sTriangleFace*> triangleFaces) {
+		pPhysicsEngine->generateConvexHull(meshName, triangleFaces);
+		return true;
+	}
+
+
+	virtual bool generatePhysicsMesh(std::string meshName, unsigned int * indices, sMeshVertex * vertices, int numVertices, int numIndices) {
+		return pPhysicsEngine->generatePhysicsMesh(meshName, indices, vertices, numVertices, numIndices);
+	}
 };
+

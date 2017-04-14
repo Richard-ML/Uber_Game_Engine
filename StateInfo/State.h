@@ -59,6 +59,8 @@ class iData {
 	*        components.
 	*/
 	virtual void registerComponentXMLDataCallback(std::function<std::string()> getComponentNode) = 0;
+	virtual std::string getMeshName() = 0;
+	virtual void setMeshName(std::string meshName) = 0;
 };
 
 // See cState for implementation!
@@ -94,4 +96,7 @@ public:
 
 	virtual bool getIsColliding() = 0;
 	virtual bool getIsMoving() = 0;
+
+	virtual std::string getMeshName() = 0;
+	virtual void setMeshName(std::string meshName) = 0;
 };

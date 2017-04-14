@@ -65,6 +65,7 @@ namespace PhysicsEngine {
 		} // Disallow assignment operator
 		static DWORD __cdecl physicsThread(void* lpParam);
 		void cleanup();
+
 	public:
 		//int loadGameFromXML(std::string filename);
 
@@ -133,7 +134,10 @@ namespace PhysicsEngine {
 		///-------------------------------------------------------------------------------------------------
 
 		static PhysicsEngine_API bool addPhysicsObject(glm::vec3 position, iState* state);
+		
+		PhysicsEngine_API bool generateConvexHull(std::string meshName, std::vector<sTriangleFace*> triangleFaces);
 
+		PhysicsEngine_API bool generatePhysicsMesh(std::string meshName, unsigned int * indices, sMeshVertex * vertices, int numVertices, int numIndices);
 	};
 
 }
