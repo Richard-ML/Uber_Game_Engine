@@ -192,6 +192,7 @@ namespace GraphicsEngine {
 		mesh->toggleOutline = false;
 		graphicsObject->vec_meshes.push_back(mesh);
 		sBoundingBox boundingBox = g_pMeshManager->m_MapMeshNameToAABB[meshName];
+		graphicsObject->pState->setMeshName(meshName);
 		boundingBox.position.y -= boundingBox.scale.y / 2.0f;
 		state->setBoundingBox(boundingBox);
 		

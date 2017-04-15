@@ -140,9 +140,12 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 
 void cEntityManager::spawnObjectsAtSelectedTile()
 {
+	g_pGameState->setGameState(GAMESTATE_PAUSED);
+	Sleep(45);
 	std::vector<sBoundingBox> boundingBoxes = g_pWorld->getSelectionAABBs();
 
 	std::string meshName;
+	glm::vec3 genObjectOffset; // Some objects such as the wall do not need the y offset applied to them. So we will adjust those values here for now..
 	switch (g_pWorld->getActiveSelectionMode())
 	{
 	case FLOOR:
@@ -150,15 +153,19 @@ void cEntityManager::spawnObjectsAtSelectedTile()
 		break;
 	case WALL_LEFT:
 		meshName = "WallZ";
+		genObjectOffset.y -= 16.0f;
 		break;
 	case WALL_RIGHT:
 		meshName = "WallZ";
+		genObjectOffset.y -= 16.0f;
 		break;
 	case WALL_FORWARD:
 		meshName = "WallX";
+		genObjectOffset.y -= 16.0f;
 		break;
 	case WALL_BACKWARD:
 		meshName = "WallX";
+		genObjectOffset.y -= 16.0f;
 		break;
 	default:
 		break;
@@ -173,14 +180,14 @@ void cEntityManager::spawnObjectsAtSelectedTile()
 		g_pGraphicsEngine->addObject(tempStateGraphics, meshName);
 
 		iState* tempStatePhysics = g_pComponentEngine->subcribeToState(gameEntity->stateNodeID);
-
-		g_pPhysicsEngine->addPhysicsObject(boundingBox.position, tempStatePhysics); // Rigid body contains the basic information about the object's scale, position, and, velocity, etc.. 
+		g_pPhysicsEngine->addPhysicsObject(boundingBox.position + genObjectOffset, tempStatePhysics); // Rigid body contains the basic information about the object's scale, position, and, velocity, etc.. 
 		iState* tempStateAI = g_pComponentEngine->subcribeToState(gameEntity->stateNodeID);
 		
 		//g_pAIEngine->addAIObject(boundingBox.position, tempStateAI);
 		vec_gameEntities.push_back(gameEntity); // Needs to be pushed to this vector if you want the objects to be included in the XML file at SaveGame()
 		// TODO: Create another state for the AIEngine to use if object is monster etc..
 	}
+	g_pGameState->setGameState(GAMESTATE_RUNNING);
 }
 
 ///-------------------------------------------------------------------------------------------------

@@ -22,7 +22,15 @@ namespace PhysicsEngine {
 		static cPhysicsEngine *s_cPhysicsEngine;
 		// Boilerplate
 		friend class cPhysicsEngine_Impl; // The PIMPL idiom aka Compilation Firewall
-
+										  //NOTE: Position shares lock with transform since both variables must be updated
+		//struct sSpinLock {
+		//	//volatile LONG isLocked = 0; // 0 unlocked : 1 locked
+		//	LOCK lock;
+		//};
+		//
+		//// Lock used when an rigid-body is being created from another thread.
+		//// vec_rigidbodies must be locked to prevent incompatible iterators within the Physics thread.
+	    //sSpinLock * g_pLock;
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Gets the implementation. </summary>
 		///
@@ -68,7 +76,8 @@ namespace PhysicsEngine {
 
 	public:
 		//int loadGameFromXML(std::string filename);
-
+	//	void gLock(int varNum);
+	//	void gUnlock(int varNum);
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Gets the instance. </summary>
 		///
@@ -137,7 +146,7 @@ namespace PhysicsEngine {
 		
 		PhysicsEngine_API bool generateConvexHull(std::string meshName, std::vector<sTriangleFace*> triangleFaces);
 
-		PhysicsEngine_API bool generatePhysicsMesh(std::string meshName, unsigned int * indices, sMeshVertex * vertices, int numVertices, int numIndices);
+		PhysicsEngine_API bool generatePhysicsMesh(std::string meshName, unsigned int * indices, sMeshVertex * vertices, const unsigned int numVertices, const unsigned int numIndices);
 
 		PhysicsEngine_API void clearGameObjects();
 	};

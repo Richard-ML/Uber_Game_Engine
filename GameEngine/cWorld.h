@@ -246,6 +246,7 @@ public:
 
 
 	virtual bool generatePhysicsMesh(std::string meshName, unsigned int * indices, sMeshVertex * vertices, int numVertices, int numIndices) {
+		std::cout << "Num verts " << numVertices << std::endl;
 		return pPhysicsEngine->generatePhysicsMesh(meshName, indices, vertices, numVertices, numIndices);
 	}
 };

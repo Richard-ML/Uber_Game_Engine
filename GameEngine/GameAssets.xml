@@ -32,9 +32,9 @@
   <Meshes>
     <Mesh path="Assets/Skeleton/Skeleton.obj" scale="1.0f" name="Skeleton" r="6" g="0" b="0"/>
     <!--<Mesh path="Assets/TileMeshes/GrassTile.obj" scale="10.0f" name="GrassTile" r="0" g="6" b="0"/>-->
-    <Mesh path="Assets/Arc/Arc.obj" scale="1.0f" name="Arc" r="0" g="12" b="0"/>
     <Mesh path="Assets/Arc/Portal.obj" scale="1.0f" name="Portal" r="0" g="32" b="0"/>
     <Mesh path="Assets/Plane/Plane.obj" scale="1.0f" name="Plane" r="0" g="39" b="0"/>
+    <Mesh path="Assets/Arc/Arc.obj" scale="1.0f" name="Arc" r="0" g="12" b="0"/>
     <Mesh path="Assets/Basic Shapes/Cube.obj" scale="1.0f" name="Cube" r="0" g="39" b="0"/>
     <Mesh path="Assets/TileMeshes/WallTiles/WallZ.obj" scale="1.0f" name="WallZ" r="0" g="6" b="0"/>
     <Mesh path="Assets/TileMeshes/WallTiles/WallX.obj" scale="1.0f" name="WallX" r="0" g="6" b="0"/>
