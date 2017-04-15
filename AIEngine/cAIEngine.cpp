@@ -85,7 +85,7 @@ namespace AIEngine {
 	   cAIEngine *aiEngine =
 		   reinterpret_cast<cAIEngine *>(lpParam);
 
-	   while ( g_pGameState->getGameState() != GAMESTATE_RUNNING) { Sleep(50); }
+	   while (g_pGameState == 0 || g_pGameState->getGameState() != GAMESTATE_RUNNING) { Sleep(50); }
 	   do {
 		   std::chrono::high_resolution_clock::time_point t2 =
 			   std::chrono::high_resolution_clock::now();
