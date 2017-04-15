@@ -232,7 +232,6 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 			const unsigned int numIndices = mesh->mNumFaces * 3;
 			const unsigned int numVertices = mesh->mNumVertices;
 			g_pWorld->generatePhysicsMesh(name, &indices[indexOffset], &vertices[vertexOffset], numIndices, numVertices);
-
 		}
 
 		//g_pWorld->generateConvexHull(name, tempVecsTriangleFace);

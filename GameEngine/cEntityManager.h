@@ -6,11 +6,36 @@ class cEntityManager_Impl; // Purpose: Encapsulate private member variables and
 						   // compile-time, and the Fragile Binary Interface
 						   // Problem.
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Manager for entities. </summary>
+///
+/// <remarks>	Richard, 4/15/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 class cEntityManager {
+	/// <summary>	Entity Manager. </summary>
 	static cEntityManager *s_cEntityManager;
 	// Boilerplate
 	friend class cEntityManager_Impl; // The PIMPL idiom aka Compilation Firewall
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets the implementation. </summary>
+	///
+	/// <remarks>	Richard, 4/15/2017. </remarks>
+	///
+	/// <returns>	Null if it fails, else a pointer to a const cEntityManager_Impl. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	const cEntityManager_Impl *impl() const;
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Gets the implementation. </summary>
+	///
+	/// <remarks>	Richard, 4/15/2017. </remarks>
+	///
+	/// <returns>	Null if it fails, else a pointer to a cEntityManager_Impl. </returns>
+	///-------------------------------------------------------------------------------------------------
+
 	cEntityManager_Impl *impl();
 
 public:

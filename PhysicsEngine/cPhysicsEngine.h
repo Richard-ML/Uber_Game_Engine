@@ -143,10 +143,41 @@ namespace PhysicsEngine {
 		///-------------------------------------------------------------------------------------------------
 
 		static PhysicsEngine_API bool addPhysicsObject(glm::vec3 position, iState* state);
-		
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Generates a convex hull. </summary>
+		///
+		/// <remarks>	Richard, 4/15/2017. </remarks>
+		///
+		/// <param name="meshName">			Name of the mesh. </param>
+		/// <param name="triangleFaces">	[in,out] If non-null, the triangle faces. </param>
+		///
+		/// <returns>	True if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
+
 		PhysicsEngine_API bool generateConvexHull(std::string meshName, std::vector<sTriangleFace*> triangleFaces);
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Generates a physics mesh. </summary>
+		///
+		/// <remarks>	Richard, 4/15/2017. </remarks>
+		///
+		/// <param name="meshName">   	Name of the mesh. </param>
+		/// <param name="indices">	  	[in,out] If non-null, the indices. </param>
+		/// <param name="vertices">   	[in,out] If non-null, the vertices. </param>
+		/// <param name="numVertices">	Number of vertices. </param>
+		/// <param name="numIndices"> 	Number of indices. </param>
+		///
+		/// <returns>	True if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
+
 		PhysicsEngine_API bool generatePhysicsMesh(std::string meshName, unsigned int * indices, sMeshVertex * vertices, const unsigned int numVertices, const unsigned int numIndices);
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Clears the game objects. </summary>
+		///
+		/// <remarks>	Richard, 4/15/2017. </remarks>
+		///-------------------------------------------------------------------------------------------------
 
 		PhysicsEngine_API void clearGameObjects();
 	};

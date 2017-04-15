@@ -18,7 +18,7 @@ Description: Contains core component details
 Author(s):
 Name: Richard Mills-Laursen
 Role(s): Student
-E-mail: R_MillsLaursen@FanshaweOnline.ca | Revolut1on1ze@Hotmail.ca
+E-mail: R_MillsLaursen@FanshaweOnline.ca | Revolut1on1ze@Hotmail.ca | Richard@Ubernetic.ca
 
 Name: Michael Feeney
 E-mail: MFeeney@FanshaweC.ca
@@ -55,7 +55,7 @@ E-Mail: L_Gustafson@FanshaweOnline.ca
 Role: Professor
 Course: INFO-6024-01 - Game Component Integration
 //===----------------------------------------------------------------------===//
-Status: Version 1.8 Alpha
+Status: Version 1.9 Alpha
 (c) Copyright(s): Fanshawe College
 //===----------------------------------------------------------------------===//
 */
