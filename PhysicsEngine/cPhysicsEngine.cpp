@@ -793,6 +793,12 @@ namespace PhysicsEngine {
 
 	}
 
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Removes the objects colliding with selection bounding boxes. </summary>
+	///
+	/// <remarks>	Richard, 4/16/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	PhysicsEngine_API void cPhysicsEngine::removeObjectsAtSelection()
 	{
 		//g_pGameState->setGameState(GAMESTATE_PAUSED);
