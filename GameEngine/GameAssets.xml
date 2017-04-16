@@ -1,4 +1,7 @@
 <GameAssets>
+  <Fonts>
+    <Font name="CourierNewBold" path="assets/fonts/courbd.ttf" height="16" />
+  </Fonts>
   <Textures>
   <!--<Texture name="Grass" path="assets/Textures/Grass.jpg"/>-->
   <!--<Texture name="Brick" path="assets/Textures/Brick.jpg"/>-->
@@ -32,9 +35,9 @@
   <Meshes>
     <Mesh path="Assets/Skeleton/Skeleton.obj" scale="1.0f" name="Skeleton" r="6" g="0" b="0"/>
     <!--<Mesh path="Assets/TileMeshes/GrassTile.obj" scale="10.0f" name="GrassTile" r="0" g="6" b="0"/>-->
-    <Mesh path="Assets/Arc/Arc.obj" scale="1.0f" name="Arc" r="0" g="12" b="0"/>
     <Mesh path="Assets/Arc/Portal.obj" scale="1.0f" name="Portal" r="0" g="32" b="0"/>
     <Mesh path="Assets/Plane/Plane.obj" scale="1.0f" name="Plane" r="0" g="39" b="0"/>
+    <Mesh path="Assets/Arc/Arc.obj" scale="1.0f" name="Arc" r="0" g="12" b="0"/>
     <Mesh path="Assets/Basic Shapes/Cube.obj" scale="1.0f" name="Cube" r="0" g="39" b="0"/>
     <Mesh path="Assets/TileMeshes/WallTiles/WallZ.obj" scale="1.0f" name="WallZ" r="0" g="6" b="0"/>
     <Mesh path="Assets/TileMeshes/WallTiles/WallX.obj" scale="1.0f" name="WallX" r="0" g="6" b="0"/>
@@ -42,7 +45,7 @@
     <Mesh path="Assets/TileMeshes/ArcDoor.obj" scale="1.0f" name="ArcDoor" r="0" g="6" b="0"/>
   	<Mesh path="Assets/TileMeshes/ArcDoor2.obj" scale="1.0f" name="ArcDoor2" r="0" g="6" b="0"/>
   	<Mesh path="Assets/Sphere.obj" scale="1.0f" name="Sphere" r="0" g="6" b="0"/>
-    <Mesh path="Assets/Cone.obj" scale="1.0f" name="Cone" r="0" g="6" b="0"/>
+    <Mesh path="Assets/Cone.obj" scale="5.0f" name="Cone" r="0" g="6" b="0"/>
     <Mesh path="Assets/Plane.obj" scale="1.0f" name="Plane2" r="0" g="6" b="0"/>
     <Mesh path="Assets/capsule_1x2.obj" scale="1.0f" name="Capsule" r="0" g="6" b="0"/>
     <!-- <Mesh path="Assets/TileMeshes/Stairs/StairsUp.obj" scale="1.0f" name="Stairs" r="0" g="6" b="0"/>-->

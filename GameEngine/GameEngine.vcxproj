@@ -107,7 +107,9 @@
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)Include\Assimp\Assimp32.dll" "$(TargetDir)Assimp32.dll"
 copy /Y "$(SolutionDir)Include\fmod\fmod.dll" "$(TargetDir)fmod.dll"
-copy /Y "$(SolutionDir)Include\FreeImage\FreeImage.dll" "$(TargetDir)FreeImage.dll"</Command>
+copy /Y "$(SolutionDir)Include\FreeImage\FreeImage.dll" "$(TargetDir)FreeImage.dll"
+copy /Y "$(SolutionDir)Include\FreeType\FreeType-6.dll" "$(TargetDir)FreeType-6.dll"
+copy /Y "$(SolutionDir)Include\FreeType\Zlib.dll" "$(TargetDir)Zlib.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

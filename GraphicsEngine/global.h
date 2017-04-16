@@ -9,6 +9,7 @@
 #include "cGraphicsObject.h"
 #include "cPlayerControlComponent.h"
 #include "cDebugRenderer.h"
+#include "cTextManager.h"
 // Window information
 extern GLFWwindow *gWindow;
 extern std::string gWindowTitle;
@@ -96,6 +97,7 @@ extern cRenderManager *g_pRenderManager;
 extern iGameState * g_pGameState;
 extern cDebugRenderer * g_pDebugRenderer;
 extern iWorld * g_pWorld;
+extern cTextManager* g_pTextManager;
 
 
 

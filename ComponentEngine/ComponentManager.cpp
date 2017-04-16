@@ -39,6 +39,18 @@ void ComponentManager::delete_Component(const cComponent *component) {
 	delete component;
 } // Component Manager delete_Component
 
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Default constructor. </summary>
+///
+/// <remarks>	Richard, 4/15/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+
 cComponent::cComponent() {}
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Destructor. </summary>
+///
+/// <remarks>	Richard, 4/15/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
 
 cComponent::~cComponent() {}

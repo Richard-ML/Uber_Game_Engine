@@ -77,6 +77,7 @@ int main()
 			break;
 		case GAMESTATE_EXIT:
 			g_pEntityManager->cleanup();
+			g_pPhysicsEngine->cleanup();
 			delete g_pDebugRenderer;
 			delete g_pGameState;
 			delete g_pWorld;

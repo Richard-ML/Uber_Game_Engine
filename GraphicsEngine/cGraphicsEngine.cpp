@@ -86,6 +86,16 @@ namespace GraphicsEngine {
 		return;
 	}
 
+	GraphicsEngine_API void cGraphicsEngine::loadFonts(rapidxml::xml_node<>* fontsNode)
+	{
+
+		for (rapidxml::xml_node<> *font_node = fontsNode->first_node("Font");
+			font_node; font_node = font_node->next_sibling()) {
+			g_pTextManager->loadFont(font_node->first_attribute("name")->value(), font_node->first_attribute("path")->value(), std::stoi(font_node->first_attribute("height")->value()));
+		}
+		return;
+	}
+
 	///-------------------------------------------------------------------------------------------------
 	/// <summary>	Loads the textures. </summary>
 	///
@@ -192,6 +202,7 @@ namespace GraphicsEngine {
 		mesh->toggleOutline = false;
 		graphicsObject->vec_meshes.push_back(mesh);
 		sBoundingBox boundingBox = g_pMeshManager->m_MapMeshNameToAABB[meshName];
+		graphicsObject->pState->setMeshName(meshName);
 		boundingBox.position.y -= boundingBox.scale.y / 2.0f;
 		state->setBoundingBox(boundingBox);
 		
@@ -290,6 +301,7 @@ namespace GraphicsEngine {
 		bool pressS = glfwGetKey(gWindow, GLFW_KEY_S) == GLFW_PRESS;
 		bool pressA = glfwGetKey(gWindow, GLFW_KEY_A) == GLFW_PRESS;
 		bool pressD = glfwGetKey(gWindow, GLFW_KEY_D) == GLFW_PRESS;
+		bool pressSpace = glfwGetKey(gWindow, GLFW_KEY_SPACE) == GLFW_PRESS;
 		bool pressShift = glfwGetKey(gWindow, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS || glfwGetKey(gWindow, GLFW_KEY_LEFT_SHIFT);
 		if (pressW != pressS)
 		{
@@ -305,7 +317,7 @@ namespace GraphicsEngine {
 				// PROJECT CODE: Position restriction
 				glm::mat4 tempTrans = controlComponent.pState->getTransform();
 				tempTrans[3] = glm::vec4(0.0f);
-				controlComponent.pState->setImpluse(glm::vec3(glm::translate(tempTrans, translation)[3])); // -glm::vec3(glm::vec3(0.0f)));
+				controlComponent.pState->setImpluse(glm::vec3(glm::translate(tempTrans, translation)[3]));
 				gCamera->setTargetTransform(newTrans);
 			}
 		}
@@ -326,7 +338,13 @@ namespace GraphicsEngine {
 			}
 
 		}
-
+		if (pressSpace)
+		{
+			for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
+			{
+				controlComponent.pState->setImpluse(controlComponent.pState->getImpluse() + glm::vec3(0.0f, 10.0f, 0.0f));
+			}
+		}
 		// TODO: Fix this so that it does not just set the camera target transform to the last player control component in the vector
 		gCamera->setTargetTransform(g_vec_playerControlComponents.back().pState->getTransform());
 		/////////////////////////////////////////////////////////////////////////////////////////

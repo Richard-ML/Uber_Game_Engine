@@ -26,3 +26,10 @@
 #include "..\StateInfo\GameState.h"
 #include "..\StateInfo\DebugRenderer.h"
 #include "..\StateInfo\World.h"
+
+
+#include "..\FreeType\ft2build.h"
+#include "..\FreeType\freetype\freetype.h"
+#include "..\FreeType\freetype\ftglyph.h"
+#include "..\FreeType\freetype\ftoutln.h"
+#include "..\FreeType\freetype\fttrigon.h"

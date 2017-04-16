@@ -3,6 +3,7 @@
 #include "iRigidBody.h"
 #include "_btWorld.h"
 #include "stdafx.h"
+#include "cPhysicsEngine.h"
 #ifdef PhysicsEngine_EXPORTS
 #define PhysicsEngine_API __declspec(dllexport)
 #else

@@ -66,7 +66,7 @@ struct sMeshVertex {
 							 // (GL_UNSIGNED_BYTE)
 };
 ///-------------------------------------------------------------------------------------------------
-/// <summary>	A triangle face. </summary>
+/// <summary>	A triangle face. Used by PhysicsEngine and Graphics Engine. Contains 3 vertices </summary>
 ///
 /// <remarks>	Richard, 4/12/2017. </remarks>
 ///-------------------------------------------------------------------------------------------------

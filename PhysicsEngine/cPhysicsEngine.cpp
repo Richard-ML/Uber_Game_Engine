@@ -16,22 +16,6 @@
 namespace PhysicsEngine {
 
 
-	void gLock(int varNum) {
-#if !defined(SKIP_LOCKING)  
-		while (_InterlockedExchange(&g_pLock->lock, LOCKED) == UNLOCKED) {
-			// spin!  
-		}
-		// At this point, the lock is acquired. ;)
-
-#endif  
-	}
-
-	void gUnlock(int varNum) {
-#if !defined(SKIP_LOCKING)  
-		_InterlockedExchange(&g_pLock->lock, UNLOCKED);
-#endif  
-	}
-
 	cPhysicsEngine *cPhysicsEngine::s_cPhysicsEngine =
 		0; // Allocating pointer to static instance of cPhysicsEngine (singleton)
 
@@ -93,10 +77,11 @@ namespace PhysicsEngine {
 			reinterpret_cast<cPhysicsEngine *>(lpParam);
 
 		do {
-			while (g_pGameState == 0 || g_pGameState->getGameState() == GAMESTATE_LOADING) { Sleep(50); }
+			while (g_pGameState->getGameState() != GAMESTATE_RUNNING) { Sleep(50); }
 			switch (g_pGameState->getGameState())
 			{
 			case GAMESTATE_EXIT:
+				physicsEngine->s_cPhysicsEngine->cleanup();
 				physicsEngine->s_cPhysicsEngine->~cPhysicsEngine();
 				return 0;
 				break;
@@ -108,7 +93,7 @@ namespace PhysicsEngine {
 					std::chrono::high_resolution_clock::now() -
 					lastTime); // Get the time that as passed
 			lastTime = std::chrono::high_resolution_clock::now();
-			gLock(0);
+			//physicsEngine->gLock(0);
 			for each(_btRigidBody* rb in vec_rigidBodies) {
 				rb->setCollision(false);//Proxy to state collision flag. Set to true via callback when collision occurs. 
 				if (rb->m_rigidBody != 0) {
@@ -169,7 +154,6 @@ namespace PhysicsEngine {
 					}
 				}
 			}
-			gUnlock(0);
 			//for (int nc = 0; nc < s_cPhysicsEngine->impl()->m_btWorld->m_dispatcher->getNumManifolds(); nc++)
 			//{
 			//	btPersistentManifold* contact = s_cPhysicsEngine->impl()->m_btWorld->m_dispatcher->getManifoldByIndexInternal(nc);
@@ -195,13 +179,20 @@ namespace PhysicsEngine {
 
 	void cPhysicsEngine::cleanup()
 	{
-		//TODO:
-		//No constraints should point to this rigidbody
-		//Remove constraints from the dynamics world before you delete the related rigidbodies. 
-		//for each(iRigidBody* rb in vec_rigidBodies) {
-		//	rb->~iRigidBody();
-		//}
-		//vec_rigidBodies.clear();
+
+		//Remove constraints from the dynamics world before the corresponding rigidbodies are deleted. 
+		for each(_btRigidBody* rb in vec_rigidBodies) {
+			for (int nc = 0; nc < rb->m_rigidBody->getNumConstraintRefs(); nc++) {
+				{
+					btTypedConstraint * constraint = rb->m_rigidBody->getConstraintRef(nc);
+					rb->m_rigidBody->removeConstraintRef(constraint); // Remove rigidbody's internal reference to constraint
+					this->impl()->m_btWorld->m_btWorld->removeConstraint(constraint); // Remove constraint from world
+					delete constraint; // Delete the pointer we have created
+
+				}
+			}
+		}
+
 	}
 
 	///-------------------------------------------------------------------------------------------------
@@ -230,7 +221,7 @@ namespace PhysicsEngine {
 
 
 			// Get the collsion details for this object
-			// These details will include the collision mask for the specific object and the collsion masks of objects that it collides with. 
+			// These details will include the collision mask for the specific object and the collision masks of objects that it collides with. 
 			rapidxml::xml_node<> * collisionInfo_node = cRigidBody_node->first_node("CollisionInfo");
 			int collisionMask = std::stoi(collisionInfo_node->first_attribute("collisionMask")->value());
 
@@ -324,45 +315,45 @@ namespace PhysicsEngine {
 						s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(hinge);
 						break;
 					}
-					//case 2:
-					//{
-					//	sBoundingBox boundingBox;
-					//	boundingBox.scale = glm::vec3(2.0f);
-					//	rb->state->setBoundingBox(boundingBox);
-					//	// SPHERE SHAPE HERE
-					//	btSphereShape* ss = new btSphereShape(boxHalfWidth.x / 2);
-					//	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-					//	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
-					//	if (isDynamic)
-					//		ss->calculateLocalInertia(mass, localInertia);
-					//
-					//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, ss, localInertia);
-					//
-					//	rb->m_rigidBody = new btRigidBody(rbInfo);
-					//
-					//
-					//	// Spring constraint!! 
-					//	btTransform frame2;
-					//	frame2 = btTransform::getIdentity();
-					//	frame2.setOrigin(btVector3(btScalar(0.), btScalar(0.), btScalar(0.)));
-					//
-					//	btGeneric6DofSpringConstraint* springConstraint = new btGeneric6DofSpringConstraint(*rb->m_rigidBody, frame2, true);
-					//	springConstraint->setLinearUpperLimit(btVector3(80.f, 0.f, 0.f));
-					//	springConstraint->setLinearLowerLimit(btVector3(-80.f, 0.f, 0.f));
-					//
-					//	springConstraint->setAngularLowerLimit(btVector3(-1.57f, 0.f, 0.0f));
-					//	springConstraint->setAngularUpperLimit(btVector3(1.57f, 0.f, 0.0f));
-					//
-					//	s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(springConstraint, true);
-					//	springConstraint->enableSpring(0, true);
-					//	springConstraint->setStiffness(0, 10.0f);
-					//	springConstraint->setDamping(0, 0.01f);
-					//	springConstraint->enableSpring(5, true);
-					//	springConstraint->setStiffness(5, 10.0f);
-					//	springConstraint->setDamping(0, 0.01f);
-					//	springConstraint->setEquilibriumPoint();
-					//	break;
-					//}
+					case 2:
+					{
+						sBoundingBox boundingBox;
+						boundingBox.scale = glm::vec3(2.0f);
+						rb->state->setBoundingBox(boundingBox);
+						// SPHERE SHAPE HERE
+						btSphereShape* ss = new btSphereShape(boxHalfWidth.x / 2);
+						//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+						btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+						if (isDynamic)
+							ss->calculateLocalInertia(mass, localInertia);
+					
+						btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, ss, localInertia);
+					
+						rb->m_rigidBody = new btRigidBody(rbInfo);
+					
+					
+						// Spring constraint!! 
+						btTransform frame2;
+						frame2 = btTransform::getIdentity();
+						frame2.setOrigin(btVector3(btScalar(0.), btScalar(0.), btScalar(0.)));
+					
+						btGeneric6DofSpringConstraint* springConstraint = new btGeneric6DofSpringConstraint(*rb->m_rigidBody, frame2, true);
+						springConstraint->setLinearUpperLimit(btVector3(80.f, 0.f, 0.f));
+						springConstraint->setLinearLowerLimit(btVector3(-80.f, 0.f, 0.f));
+					
+						springConstraint->setAngularLowerLimit(btVector3(-1.57f, 0.f, 0.0f));
+						springConstraint->setAngularUpperLimit(btVector3(1.57f, 0.f, 0.0f));
+					
+						s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(springConstraint, true);
+						springConstraint->enableSpring(0, true);
+						springConstraint->setStiffness(0, 10.0f);
+						springConstraint->setDamping(0, 0.01f);
+						springConstraint->enableSpring(5, true);
+						springConstraint->setStiffness(5, 10.0f);
+						springConstraint->setDamping(0, 0.01f);
+						springConstraint->setEquilibriumPoint();
+						break;
+					}
 					//case 3:
 					//{
 					//	// BOX SHAPES HERE AND PLANE ;)
@@ -389,25 +380,25 @@ namespace PhysicsEngine {
 					//	s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(sliderConstraint, true);
 					//	break;
 					//}
-					//case 4:
-					//{
-					//	// CONE SHAPE HERE
-					//	btConeShape* cs = new btConeShape(boxHalfWidth.x / 2, boxHalfWidth.y / 2);
-					//
-					//	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-					//	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
-					//	if (isDynamic)
-					//		cs->calculateLocalInertia(mass, localInertia);
-					//
-					//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, cs, localInertia);
-					//
-					//	rb->m_rigidBody = new btRigidBody(rbInfo);
-					//	rb->m_rigidBody->setFriction(0.1f); 
-					//	btVector3 constraintPivot(btVector3(0.0f, 8.0f, 0.0f));
-					//	btTypedConstraint* p2p = new btPoint2PointConstraint(*rb->m_rigidBody, constraintPivot);
-					//	s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(p2p, true);
-					//	break;
-					//}
+					case 4:
+					{
+						// CONE SHAPE HERE
+						btCollisionShape* collisionShapeTerrain = new btConvexTriangleMeshShape(m_map_MeshNameToTriangleMesh[rb->state->getMeshName()]);
+
+						//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+						btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+						if (isDynamic)
+							collisionShapeTerrain->calculateLocalInertia(mass, localInertia);
+					
+						btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, collisionShapeTerrain, localInertia);
+					
+						rb->m_rigidBody = new btRigidBody(rbInfo);
+						rb->m_rigidBody->setFriction(0.5f); 
+						btVector3 constraintPivot(btVector3(0.0f, 10.0f, 0.0f));
+						btTypedConstraint* p2p = new btPoint2PointConstraint(*rb->m_rigidBody, constraintPivot);
+						s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(p2p, true);
+						break;
+					}
 				case 5:
 				{
 					btConvexShape* capsuleShape = new btCapsuleShape(glm::max( boxHalfWidth.x, boxHalfWidth.z)/2.0f, boxHalfWidth.y/2.0f);
@@ -563,9 +554,9 @@ namespace PhysicsEngine {
 			printf("Physics Engine Initialized\n");
 			//TODO: Run initialize() for shapes
 			s_cPhysicsEngine = new cPhysicsEngine();
-			sSpinLock* pSpinLock = new sSpinLock();
-			pSpinLock->lock = 0; // Create a lock for vec rigid bodies
-			g_pLock = pSpinLock;
+		//sSpinLock* pSpinLock = new sSpinLock();
+		//	pSpinLock->lock = 0; // Create a lock for vec rigid bodies
+		//	s_cPhysicsEngine->g_pLock = pSpinLock;
 
 			DWORD myThreadID;
 			HANDLE myHandle = CreateThread(NULL, 0, // stack size
@@ -587,7 +578,7 @@ namespace PhysicsEngine {
 
 	PhysicsEngine_API bool cPhysicsEngine::addPhysicsObject(glm::vec3 position, iState * state)
 	{
-		gLock(0);
+		//PhysicsEngine::cPhysicsEngine::instance()->gLock(0);
 		_btRigidBody * rb = new _btRigidBody();
 		state->registerComponentXMLDataCallback(std::function<std::string() >(std::bind(&_btRigidBody::saveToXMLNode, rb)));
 
@@ -601,7 +592,7 @@ namespace PhysicsEngine {
 
 		btTransform worldTransform;
 		worldTransform.setIdentity();
-		worldTransform.setOrigin(btVector3(position.x, position.y, position.z) + btVector3(colShapePos.x, colShapePos.y, colShapePos.z));
+		worldTransform.setOrigin(btVector3(position.x, position.y, position.z));
 
 		btScalar mass = 0.0f;
 
@@ -609,22 +600,45 @@ namespace PhysicsEngine {
 		bool isDynamic = (mass != 0.f);
 		btVector3 localInertia(0.0f, 0.0f, 0.0f);
 		glm::vec3 boxHalfWidth = state->getBoundingBox().scale;
+		if (m_map_MeshNameToTriangleMesh[rb->state->getMeshName()] != 0)
+		{
+			btCollisionShape* collisionShapeTerrain = new btBvhTriangleMeshShape(m_map_MeshNameToTriangleMesh[rb->state->getMeshName()], true, true);
+			sBoundingBox bb = rb->state->getBoundingBox(); // For debugging
+			btVector3 localScaling = collisionShapeTerrain->getLocalScaling();
 
-		btBoxShape* bs = new btBoxShape(btVector3(boxHalfWidth.x / 2, boxHalfWidth.y / 2, boxHalfWidth.z / 2));
+			// if (isDynamic)
+			//	collisionShapeTerrain->calculateLocalInertia(mass, localInertia);
 
-		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-		btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
-		if (isDynamic)
-			bs->calculateLocalInertia(mass, localInertia);
+			btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin()));
+			// NOTE: 0.0f mass == static  && btVector3(0,0,0) == inertia
+			btRigidBody::btRigidBodyConstructionInfo rigidBodyConstructionInfo(0.0f, motionState, collisionShapeTerrain, localInertia);
+			btRigidBody* rigidBodyTerrain = new btRigidBody(rigidBodyConstructionInfo);
+			rigidBodyTerrain->setFriction(btScalar(0.9));
 
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, bs, localInertia);
-		rb->m_rigidBody = new btRigidBody(rbInfo);
-		if (isDynamic) {
-			rb->m_rigidBody->activate(true);
-			rb->m_rigidBody->forceActivationState(DISABLE_DEACTIVATION);
-			rb->m_rigidBody->setCollisionFlags(rb->m_rigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
-			rb->m_rigidBody->setFriction(0.8f);
+			rb->m_rigidBody = rigidBodyTerrain;
+
 		}
+		else {
+
+
+			btBoxShape* bs = new btBoxShape(btVector3(boxHalfWidth.x / 2, boxHalfWidth.y / 2, boxHalfWidth.z / 2));
+
+			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+			btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+			if (isDynamic)
+				bs->calculateLocalInertia(mass, localInertia);
+
+			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, bs, localInertia);
+
+			rb->m_rigidBody = new btRigidBody(rbInfo);
+			if (isDynamic) {
+				rb->m_rigidBody->activate(true);
+				rb->m_rigidBody->forceActivationState(DISABLE_DEACTIVATION);
+				rb->m_rigidBody->setCollisionFlags(rb->m_rigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+				rb->m_rigidBody->setFriction(0.8f);
+			}
+		}
+
 		rb->hingeID = -1; // No hinge
 		int collisionFilterResult = 0; // No objects are assigned a collision mask of 0: Therefore objects without specified collision filters do not collides with anything
 
@@ -643,7 +657,7 @@ namespace PhysicsEngine {
 
 		vec_rigidBodies.push_back(rb);
 		//map_rigidBodies[rb->m_rigidBody->getUserIndex()] = rb;
-		gUnlock(0);
+		//PhysicsEngine::cPhysicsEngine::instance()->gUnlock(0);
 		return true;
 	}
 
@@ -695,24 +709,28 @@ namespace PhysicsEngine {
 	/// <returns>	True if it succeeds, false if it fails. </returns>
 	///-------------------------------------------------------------------------------------------------
 
-	PhysicsEngine_API bool cPhysicsEngine::generatePhysicsMesh(std::string meshName, unsigned int * indices, sMeshVertex * vertices, int numVertices, int numIndices)
+	PhysicsEngine_API bool cPhysicsEngine::generatePhysicsMesh(std::string meshName, unsigned int * indices, sMeshVertex * vertices, const unsigned int numVertices, const unsigned int numIndices)
 	{
-		gLock(0);
-		btTriangleMesh* triangleMeshTerrain = new btTriangleMesh(false, false);
+	//	gLock(0);
+		btTriangleMesh* triangleMeshTerrain = new btTriangleMesh();
+		printf(std::to_string(numVertices).c_str());
+		printf(meshName.c_str());
+	
 		triangleMeshTerrain->preallocateVertices(numVertices);
 		triangleMeshTerrain->preallocateIndices(numIndices);
-	
-		//printf(std::to_string( vertices[0].Position.x).c_str());
-		for (unsigned int index = 0; index < numVertices; index++)
-		{
-			triangleMeshTerrain->findOrAddVertex(
-				btVector3(
-					vertices[index].Position.x,
-					vertices[index].Position.y,
-					vertices[index].Position.z
-				),
-				false);
-		}
+
+			//printf(std::to_string( vertices[0].Position.x).c_str());
+			for (unsigned int index = 0; index < numVertices; index++)
+			{
+				triangleMeshTerrain->findOrAddVertex(
+						btVector3(
+							vertices[index].Position.x,
+							vertices[index].Position.y,
+							vertices[index].Position.z
+						),
+					false);
+			}
+
 
 		for (int index = 0; index < numIndices; index += 3)
 		{
@@ -722,19 +740,33 @@ namespace PhysicsEngine {
 				indices[index + 2]);
 		}
 		m_map_MeshNameToTriangleMesh[meshName] = triangleMeshTerrain;
-		gUnlock(0);
 		// Cast to btBvhTriangleMeshShape((m_map_MeshNameToTriangleMesh[rb->state->getMeshName()], true); for static objects
 		// Cast to btConvexTriangleMeshShape((m_map_MeshNameToTriangleMesh[rb->state->getMeshName()]); for dynamic objects
 		return true;
 	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Clears the game objects and resets the bullet world. </summary>
+	///
+	/// <remarks>	Richard, 4/15/2017. </remarks>
+	///-------------------------------------------------------------------------------------------------
+
 	PhysicsEngine_API void cPhysicsEngine::clearGameObjects()
 	{
-		gLock(0);
+
 
 		vec_rigidBodies.clear();
-		//impl()->m_btWorld->m_btWorld = 
 
-		gUnlock(0);
+		if (PhysicsEngine::cPhysicsEngine::instance()->impl() != nullptr)
+		{
+			if (PhysicsEngine::cPhysicsEngine::instance()->impl()->m_btWorld != nullptr)
+			{	
+				//delete this->impl()->m_btWorld->m_btWorld;
+			PhysicsEngine::cPhysicsEngine::instance()->impl()->m_btWorld->~_btWorld();
+			PhysicsEngine::cPhysicsEngine::instance()->impl()->m_btWorld = new _btWorld();
+			}
+		}
+
 	}
 }
 

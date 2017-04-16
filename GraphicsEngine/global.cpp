@@ -49,6 +49,9 @@ cLightManager* g_pLightManager = cLightManager::instance();
 cRenderManager* cRenderManager::s_cRenderManager = 0;
 cRenderManager* g_pRenderManager = cRenderManager::instance();
 
+cTextManager* cTextManager::s_cTextManager = 0;
+cTextManager* g_pTextManager = cTextManager::instance();
+
 iGameState * g_pGameState = 0;
 cDebugRenderer * g_pDebugRenderer = 0;
 iWorld * g_pWorld = 0;

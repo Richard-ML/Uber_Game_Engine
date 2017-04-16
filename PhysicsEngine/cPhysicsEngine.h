@@ -18,11 +18,20 @@ namespace PhysicsEngine {
 							   // Problem.
 
 	class cPhysicsEngine {
+		friend class _btRigidBody;
 		/// <summary>	The physics engine. </summary>
 		static cPhysicsEngine *s_cPhysicsEngine;
 		// Boilerplate
 		friend class cPhysicsEngine_Impl; // The PIMPL idiom aka Compilation Firewall
-
+										  //NOTE: Position shares lock with transform since both variables must be updated
+		//struct sSpinLock {
+		//	//volatile LONG isLocked = 0; // 0 unlocked : 1 locked
+		//	LOCK lock;
+		//};
+		//
+		//// Lock used when an rigid-body is being created from another thread.
+		//// vec_rigidbodies must be locked to prevent incompatible iterators within the Physics thread.
+	    //sSpinLock * g_pLock;
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Gets the implementation. </summary>
 		///
@@ -64,11 +73,12 @@ namespace PhysicsEngine {
 		cPhysicsEngine &operator=(const cPhysicsEngine &physicsManager) {
 		} // Disallow assignment operator
 		static DWORD __cdecl physicsThread(void* lpParam);
-		void cleanup();
+	
 
 	public:
 		//int loadGameFromXML(std::string filename);
-
+	//	void gLock(int varNum);
+	//	void gUnlock(int varNum);
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Gets the instance. </summary>
 		///
@@ -134,12 +144,47 @@ namespace PhysicsEngine {
 		///-------------------------------------------------------------------------------------------------
 
 		static PhysicsEngine_API bool addPhysicsObject(glm::vec3 position, iState* state);
-		
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Generates a convex hull. </summary>
+		///
+		/// <remarks>	Richard, 4/15/2017. </remarks>
+		///
+		/// <param name="meshName">			Name of the mesh. </param>
+		/// <param name="triangleFaces">	[in,out] If non-null, the triangle faces. </param>
+		///
+		/// <returns>	True if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
+
 		PhysicsEngine_API bool generateConvexHull(std::string meshName, std::vector<sTriangleFace*> triangleFaces);
 
-		PhysicsEngine_API bool generatePhysicsMesh(std::string meshName, unsigned int * indices, sMeshVertex * vertices, int numVertices, int numIndices);
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Generates a physics mesh. </summary>
+		///
+		/// <remarks>	Richard, 4/15/2017. </remarks>
+		///
+		/// <param name="meshName">   	Name of the mesh. </param>
+		/// <param name="indices">	  	[in,out] If non-null, the indices. </param>
+		/// <param name="vertices">   	[in,out] If non-null, the vertices. </param>
+		/// <param name="numVertices">	Number of vertices. </param>
+		/// <param name="numIndices"> 	Number of indices. </param>
+		///
+		/// <returns>	True if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
+
+		PhysicsEngine_API bool generatePhysicsMesh(std::string meshName, unsigned int * indices, sMeshVertex * vertices, const unsigned int numVertices, const unsigned int numIndices);
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Clears the game objects. </summary>
+		///
+		/// <remarks>	Richard, 4/15/2017. </remarks>
+		///-------------------------------------------------------------------------------------------------
 
 		PhysicsEngine_API void clearGameObjects();
+
+
+
+		PhysicsEngine_API void cleanup();
 	};
 
 }
