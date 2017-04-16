@@ -2,13 +2,8 @@
 #include "cPhysicsEngine.h"
 #include <Windows.h>
 #include "global.h"
-#include <stdio.h>
-#include <stdlib.h>
 
-#include <ctime>
-#include <chrono>
-#include <map>
-#include "_btRigidBody.h"
+
 #define BIT(x) (1<<(x))
 // The PIMPL idiom aka Compilation Firewall
 // Purpose: Encapsulate private member variables. Reduces make-time,
@@ -23,7 +18,7 @@ namespace PhysicsEngine {
 		// Boilerplate
 		friend class cPhysicsEngine;
 	public:
-		_btWorld* m_btWorld;
+		
 
 	};
 	std::map<std::string, btTriangleMesh*>  m_map_MeshNameToTriangleMesh;
@@ -55,7 +50,7 @@ namespace PhysicsEngine {
 	//std::map<int, iRigidBody*> map_rigidBodies;
 
 	cPhysicsEngine::cPhysicsEngine() {
-		this->impl()->m_btWorld = new _btWorld();
+		g_btWorld = new _btWorld();
 	}
 
 	///-------------------------------------------------------------------------------------------------
@@ -122,7 +117,7 @@ namespace PhysicsEngine {
 				}
 			}
 			//physicsEngine->impl()->m_btWorld->step(deltaTime.count());
-			physicsEngine->impl()->m_btWorld->step(0.016f);
+			g_btWorld->step(0.016f);
 
 			for each(_btRigidBody* rb in vec_rigidBodies) {
 
@@ -186,7 +181,7 @@ namespace PhysicsEngine {
 				{
 					btTypedConstraint * constraint = rb->m_rigidBody->getConstraintRef(nc);
 					rb->m_rigidBody->removeConstraintRef(constraint); // Remove rigidbody's internal reference to constraint
-					this->impl()->m_btWorld->m_btWorld->removeConstraint(constraint); // Remove constraint from world
+					g_btWorld->m_btWorld->removeConstraint(constraint); // Remove constraint from world
 					delete constraint; // Delete the pointer we have created
 
 				}
@@ -293,7 +288,7 @@ namespace PhysicsEngine {
 						hinge->setOverrideNumSolverIterations(1);
 						//hinge->enableMotor(true);
 
-						s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(hinge);
+						g_btWorld->m_btWorld->addConstraint(hinge);
 
 						break;
 					}
@@ -312,11 +307,12 @@ namespace PhysicsEngine {
 						rb->m_rigidBody->setRestitution(0.0f);
 						// Arc door 2
 						btHingeConstraint* hinge = new btHingeConstraint(*rb->m_rigidBody, btVector3(-rb->state->getBoundingBox().scale.x, 0, 0), btVector3(0, 1, 0), true);
-						s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(hinge);
+						g_btWorld->m_btWorld->addConstraint(hinge);
 						break;
 					}
 					case 2:
 					{
+
 						sBoundingBox boundingBox;
 						boundingBox.scale = glm::vec3(2.0f);
 						rb->state->setBoundingBox(boundingBox);
@@ -344,7 +340,7 @@ namespace PhysicsEngine {
 						springConstraint->setAngularLowerLimit(btVector3(-1.57f, 0.f, 0.0f));
 						springConstraint->setAngularUpperLimit(btVector3(1.57f, 0.f, 0.0f));
 					
-						s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(springConstraint, true);
+						g_btWorld->m_btWorld->addConstraint(springConstraint, true);
 						springConstraint->enableSpring(0, true);
 						springConstraint->setStiffness(0, 10.0f);
 						springConstraint->setDamping(0, 0.01f);
@@ -396,7 +392,7 @@ namespace PhysicsEngine {
 						rb->m_rigidBody->setFriction(0.5f); 
 						btVector3 constraintPivot(btVector3(0.0f, 10.0f, 0.0f));
 						btTypedConstraint* p2p = new btPoint2PointConstraint(*rb->m_rigidBody, constraintPivot);
-						s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(p2p, true);
+						g_btWorld->m_btWorld->addConstraint(p2p, true);
 						break;
 					}
 				case 5:
@@ -464,7 +460,7 @@ namespace PhysicsEngine {
 					rb->m_rigidBody->setCollisionFlags(rb->m_rigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 				}
 			}
-			s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody, BIT(collisionMask), collisionFilterResult);
+			g_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody, BIT(collisionMask), collisionFilterResult);
 			rb->m_rigidBody->setUserPointer(rb);
 		}
 		{
@@ -496,7 +492,7 @@ namespace PhysicsEngine {
 			collisionFilterResult |= BIT(3);
 
 			int collisionFilter = BIT(0);
-			s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rigidBodyTerrain, collisionFilter, collisionFilterResult);
+			g_btWorld->m_btWorld->addRigidBody(rigidBodyTerrain, collisionFilter, collisionFilterResult);
 		}
 		return true;
 	}
@@ -650,7 +646,7 @@ namespace PhysicsEngine {
 		rb->collisionFilters.push_back(3);
 		collisionFilterResult |= BIT(3);
 		//}
-		s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody, BIT(5), collisionFilterResult);
+		g_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody, BIT(5), collisionFilterResult);
 		rb->m_rigidBody->setUserPointer(rb);
 
 
@@ -759,14 +755,18 @@ namespace PhysicsEngine {
 
 		if (PhysicsEngine::cPhysicsEngine::instance()->impl() != nullptr)
 		{
-			if (PhysicsEngine::cPhysicsEngine::instance()->impl()->m_btWorld != nullptr)
+			if (g_btWorld != nullptr)
 			{	
 				//delete this->impl()->m_btWorld->m_btWorld;
-			PhysicsEngine::cPhysicsEngine::instance()->impl()->m_btWorld->~_btWorld();
-			PhysicsEngine::cPhysicsEngine::instance()->impl()->m_btWorld = new _btWorld();
+			g_btWorld->~_btWorld();
+			g_btWorld = new _btWorld();
 			}
 		}
 
+	}
+	PhysicsEngine_API void cPhysicsEngine::removeObjectsAtSelection()
+	{
+		
 	}
 }
 

@@ -182,6 +182,7 @@ namespace PhysicsEngine {
 
 		PhysicsEngine_API void clearGameObjects();
 
+		PhysicsEngine_API void removeObjectsAtSelection();
 
 
 		PhysicsEngine_API void cleanup();

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "_btWorld.h"
-
+#include "global.h"
+#include "cPhysicsEngine.h"
 ///-------------------------------------------------------------------------------------------------
 /// <summary>	Default constructor. </summary>
 ///
@@ -89,6 +90,48 @@ bool PhysicsEngine::_btWorld::contact_callback(btManifoldPoint & cp, const btCol
 	_btRigidBody* rb2 = reinterpret_cast<_btRigidBody*>(colObj1Wrap->getCollisionObject()->getUserPointer());
 	if (rb2 != 0)
 	rb2->setCollision(true);
+	return true;
+}
+
+// Used by world editor to remove existing objects from the game based on world editor selection..
+bool PhysicsEngine::_btWorld::remove_callback(btManifoldPoint & cp, const btCollisionObjectWrapper * colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper * colObj1Wrap, int partId1, int index1)
+{
+	_btRigidBody* rb1 = reinterpret_cast<_btRigidBody*>(colObj0Wrap->getCollisionObject()->getUserPointer());
+	if (rb1 != 0)
+	{
+		if (!rb1->isWorldEditVolume) {
+			g_pGameState->setGameState(GAMESTATE_PAUSED);
+			rb1->setCollision(true);
+			rb1->state->registerComponentXMLDataCallback(nullptr);
+			for (int nc = 0; nc < rb1->m_rigidBody->getNumConstraintRefs(); nc++)
+			{
+				btTypedConstraint * constraint = rb1->m_rigidBody->getConstraintRef(nc);
+				rb1->m_rigidBody->removeConstraintRef(constraint); // Remove rigidbody's internal reference to constraint
+			    g_btWorld->m_btWorld->removeConstraint(constraint); // Remove constraint from world
+				delete constraint; // Delete the pointer we have created
+			}
+			g_pGameState->setGameState(GAMESTATE_RUNNING);
+		}
+	}
+	_btRigidBody* rb2 = reinterpret_cast<_btRigidBody*>(colObj1Wrap->getCollisionObject()->getUserPointer());
+	if (rb2 != 0)
+	{
+		if (!rb2->isWorldEditVolume) {
+			g_pGameState->setGameState(GAMESTATE_PAUSED);
+			rb2->setCollision(true);
+			rb2->state->registerComponentXMLDataCallback(nullptr);
+			for (int nc = 0; nc < rb1->m_rigidBody->getNumConstraintRefs(); nc++)
+			{
+				btTypedConstraint * constraint = rb2->m_rigidBody->getConstraintRef(nc);
+				rb2->m_rigidBody->removeConstraintRef(constraint); // Remove rigidbody's internal reference to constraint
+				g_btWorld->m_btWorld->removeConstraint(constraint); // Remove constraint from world
+				delete constraint; // Delete the pointer we have created
+			}
+			g_pGameState->setGameState(GAMESTATE_RUNNING);
+		}
+
+	}
+
 	return true;
 }
 

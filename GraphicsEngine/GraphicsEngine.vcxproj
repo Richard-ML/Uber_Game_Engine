@@ -216,6 +216,8 @@
     <None Include="Simple.vs.glsl" />
     <None Include="Skybox.fs.glsl" />
     <None Include="Skybox.vs.glsl" />
+    <None Include="Text.fs.glsl" />
+    <None Include="Text.vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

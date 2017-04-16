@@ -87,6 +87,9 @@ extern GLuint gSkyboxVMID;
 extern GLuint gUniformId_SamplerCube;
 extern GLuint gCubeVAO;
 
+// Text Rendering Shader
+extern GLuint gTextShaderID;
+
 
 // Managers
 extern cMeshManager *g_pMeshManager;

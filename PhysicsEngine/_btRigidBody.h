@@ -76,11 +76,11 @@ namespace PhysicsEngine {
 		friend class _btCollisionShape;
 		// PROXY DATA-MEMBERS
 		bool isColliding;
-
 	public:
 		_btRigidBody() {}
 		~_btRigidBody();
 
+		bool isWorldEditVolume;
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Gets the orientation. </summary>
 		///

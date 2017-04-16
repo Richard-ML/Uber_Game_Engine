@@ -321,6 +321,11 @@ bool cShaderManager::setupTheShaders() {
 		gSkyboxVMID = glGetUniformLocation(gSkyboxShaderID, "view_matrix");
 
 		gUniformId_SamplerCube = glGetUniformLocation(gSkyboxShaderID, "skybox");
+
+		gTextShaderID = ::g_pShaderManager->loadShaders(
+			"../GraphicsEngine/Text.vs.glsl", "../GraphicsEngine/Text.fs.glsl");
+
+
 		return true;
 	
 }

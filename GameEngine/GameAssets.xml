@@ -48,7 +48,7 @@
     <Mesh path="Assets/Cone.obj" scale="5.0f" name="Cone" r="0" g="6" b="0"/>
     <Mesh path="Assets/Plane.obj" scale="1.0f" name="Plane2" r="0" g="6" b="0"/>
     <Mesh path="Assets/capsule_1x2.obj" scale="1.0f" name="Capsule" r="0" g="6" b="0"/>
-    <!-- <Mesh path="Assets/TileMeshes/Stairs/StairsUp.obj" scale="1.0f" name="Stairs" r="0" g="6" b="0"/>-->
+    <Mesh path="Assets/TileMeshes/Stairs/StairsUp.obj" scale="1.0f" name="Stairs" r="0" g="6" b="0"/>
  </Meshes>
 
   <PhysicsMeshes>

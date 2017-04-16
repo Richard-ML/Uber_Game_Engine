@@ -150,5 +150,11 @@
     <None Include="Simple.vs.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Text.vs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Text.fs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

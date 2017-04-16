@@ -71,6 +71,12 @@ GLuint gSkyboxVMID = 0;
 GLuint gUniformId_SamplerCube = 0;
 GLuint gCubeVAO = 0;
 
+
+
+//
+GLuint gTextShaderID = 0;
+
+
 int gWindowWidth = 0;
 int gWindowHeight = 0;
 
