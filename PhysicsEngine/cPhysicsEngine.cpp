@@ -193,7 +193,7 @@ namespace PhysicsEngine {
 
 	void cPhysicsEngine::cleanup()
 	{
-
+		s_cPhysicsEngine->lock();
 		//Remove constraints from the dynamics world before the corresponding rigidbodies are deleted. 
 		for each(_btRigidBody* rb in vec_rigidBodies) {
 			for (int nc = 0; nc < rb->m_rigidBody->getNumConstraintRefs(); nc++) {
@@ -206,6 +206,7 @@ namespace PhysicsEngine {
 				}
 			}
 		}
+		s_cPhysicsEngine->unlock();
 
 	}
 
