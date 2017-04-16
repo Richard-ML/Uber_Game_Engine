@@ -123,7 +123,11 @@ void cRenderManager::renderTheSkybox() {
 
 		glm::mat4 viewMatrix;
 		gCamera->getViewMatrix(viewMatrix);
-		glm::vec3 eyePos = gCamera->getEyePosition();
+	    glm::vec3 eyePos = gCamera->getEyePosition();
+		//glm::vec3 viewDir = glm::vec3(viewMatrix[3] - glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, 0.0f))[3]);
+		//
+		//viewDir.y = 0;
+		//glm::mat4 viewTransfrom = glm::lookAt(glm::vec3(0.0f), viewDir, glm::vec3(0.0f, 1.0f, 0.0f));
 		// ;)
 		glm::mat4 camViewInverse(
 			viewMatrix[0][0], viewMatrix[1][0],
@@ -131,10 +135,12 @@ void cRenderManager::renderTheSkybox() {
 			viewMatrix[1][1], viewMatrix[2][1], 0.0f,
 			viewMatrix[0][2], viewMatrix[1][2],
 			viewMatrix[2][2], 0.0f, 1.0f, 1.0f, 1.0f, 1.0f);
-
+		
 		camViewInverse = glm::inverse(camViewInverse);
 
-		glClearBufferfv(GL_COLOR, 0, gray);
+		//glClearBufferfv(GL_COLOR, 0, gray);
+		static const GLfloat black[] = { 0.0f,0.0f,0.0f,1.0f };
+		glClearBufferfv(GL_COLOR, 0, black);
 		glClearBufferfv(GL_DEPTH, 0, ones);
 		glUseProgram(gSkyboxShaderID);
 
@@ -557,7 +563,7 @@ bool cRenderManager::renderSceneToFBO(std::string name)
 void cFBOInfo::renderSceneToFBO()
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->framebufferID);
-	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClearBufferfv(GL_COLOR, 0, glm::value_ptr(glm::vec3(0.0f, 120.0f, 0.0f)));
 	glClearBufferfv(GL_DEPTH, 0, glm::value_ptr(glm::vec3(0.0f, 120.0f, 0.0f)));
 	static const  GLenum attachments[] = { GL_COLOR_ATTACHMENT0, GL_DEPTH_COMPONENT };
@@ -630,7 +636,7 @@ void cMSFBOInfo::renderSceneToFBO()
 	glViewport(0, 0, (GLint) this->width, (GLint) this->height);
 	// Draw scene to multi-sampled buffer
 	glBindFramebuffer(GL_FRAMEBUFFER, this->msFramebufferID);
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 
@@ -672,7 +678,7 @@ void cMSFBOInfo::renderSceneToFBO()
 		this->width, this->height, GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT); 
 	//glDisable(GL_DEPTH_TEST);
 
