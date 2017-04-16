@@ -732,7 +732,7 @@ namespace PhysicsEngine {
 		gLock(0);
 
 		vec_rigidBodies.clear();
-
+		//impl()->m_btWorld->m_btWorld = 
 
 		gUnlock(0);
 	}
