@@ -7,3 +7,7 @@ extern iGameState * g_pGameState;
 extern iDebugRenderer* g_pDebugRenderer;
 extern iWorld* g_pWorld;
 extern PhysicsEngine::_btWorld* g_btWorld;
+struct sSpinLock {
+	LOCK lock;
+};
+extern sSpinLock* gLock;

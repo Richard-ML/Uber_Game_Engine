@@ -47,7 +47,6 @@ namespace PhysicsEngine {
 	}
 	/// <summary>	The vector rigid bodies. </summary>
 	std::vector<iRigidBody*> vec_rigidBodies;
-	//std::map<int, iRigidBody*> map_rigidBodies;
 
 	cPhysicsEngine::cPhysicsEngine() {
 		g_btWorld = new _btWorld();
@@ -164,6 +163,26 @@ namespace PhysicsEngine {
 			Sleep(10); // Free the thread
 		} while (true);
 		return 0;
+	}
+
+	void cPhysicsEngine::lock()
+	{
+#if !defined(SKIP_LOCKING)  
+		while (_InterlockedCompareExchange(&gLock->lock, LOCKED, UNLOCKED ) == UNLOCKED) {
+			// spin!  
+		}
+		//printf("Locked..\n");
+		// At this point, the lock is acquired. ;)
+
+#endif  
+	}
+
+	void cPhysicsEngine::unlock()
+	{
+#if !defined(SKIP_LOCKING)  
+		_InterlockedCompareExchange(&gLock->lock, UNLOCKED, LOCKED);
+		//printf("Unlocked..\n");
+#endif  
 	}
 
 	///-------------------------------------------------------------------------------------------------
@@ -438,6 +457,7 @@ namespace PhysicsEngine {
 						rigidBodyTerrain->setFriction(btScalar(0.9));
 
 						rb->m_rigidBody = rigidBodyTerrain;
+
 					}
 					else {
 						// BOX SHAPES HERE AND PLANE ;)
@@ -461,7 +481,10 @@ namespace PhysicsEngine {
 				}
 			}
 			g_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody, BIT(collisionMask), collisionFilterResult);
+
 			rb->m_rigidBody->setUserPointer(rb);
+			//rb->m_rigidBody->forceActivationState(DISABLE_DEACTIVATION);
+			rb->m_rigidBody->setCollisionFlags(rb->m_rigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
 		}
 		{
 			btTriangleMesh* triangleMeshTerrain = new btTriangleMesh();
@@ -550,9 +573,9 @@ namespace PhysicsEngine {
 			printf("Physics Engine Initialized\n");
 			//TODO: Run initialize() for shapes
 			s_cPhysicsEngine = new cPhysicsEngine();
-		//sSpinLock* pSpinLock = new sSpinLock();
-		//	pSpinLock->lock = 0; // Create a lock for vec rigid bodies
-		//	s_cPhysicsEngine->g_pLock = pSpinLock;
+		    sSpinLock* pSpinLock = new sSpinLock();
+			pSpinLock->lock = 0;
+			gLock = pSpinLock;
 
 			DWORD myThreadID;
 			HANDLE myHandle = CreateThread(NULL, 0, // stack size
@@ -764,9 +787,57 @@ namespace PhysicsEngine {
 		}
 
 	}
+
 	PhysicsEngine_API void cPhysicsEngine::removeObjectsAtSelection()
 	{
+		//g_pGameState->setGameState(GAMESTATE_PAUSED);
+		cPhysicsEngine::instance()->lock();
+		gContactAddedCallback = PhysicsEngine::_btWorld::remove_callback;
+		std::vector<sBoundingBox> boundingBoxes = g_pWorld->getSelectionAABBs();
+		std::vector<_btRigidBody*> tempRigidBodies;
+		for each(sBoundingBox bb in boundingBoxes)
+		{
+			_btRigidBody* rb = new _btRigidBody();
+			btTransform worldTransform;
+			worldTransform.setIdentity();
+			worldTransform.setOrigin(btVector3(bb.position.x, bb.position.y, bb.position.z));
+
+			btBoxShape* collisionShapeTerrain = new btBoxShape(btVector3(bb.scale.x / 2, bb.scale.y / 2 + 2, bb.scale.z / 2));
+			btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+			btVector3 localInertia(0.f, 0.f, 0.f);
+			collisionShapeTerrain->calculateLocalInertia(0.1f, localInertia);
+			btRigidBody::btRigidBodyConstructionInfo rbInfo(0.1f, motionState, collisionShapeTerrain, localInertia);
+			rb->m_rigidBody = new btRigidBody(rbInfo);
+			
+			tempRigidBodies.push_back(rb);
+
+			int collisionFilter = BIT(1);
+			int collisionFilterResult;
+			for (int nc = 0; nc < 6; nc++)
+				collisionFilterResult |= BIT(nc);
+
+
+			g_btWorld->m_btWorld->addRigidBody(rb->m_rigidBody, collisionFilter, collisionFilterResult);
+			rb->isWorldEditVolume = true;
+			rb->m_rigidBody->setCollisionFlags(rb->m_rigidBody->getCollisionFlags() | btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK);
+			rb->m_rigidBody->setUserPointer(rb);
+			rb->m_rigidBody->setGravity(btVector3(0.0f, 0.0f, 0.0f));
+			rb->m_rigidBody->forceActivationState(DISABLE_DEACTIVATION);
+		}
+	
+		cPhysicsEngine::instance()->unlock();
+
+		Sleep(1000);
+
+		cPhysicsEngine::instance()->lock();
+		for each(_btRigidBody* rb in tempRigidBodies)
+			g_btWorld->m_btWorld->removeRigidBody(rb->m_rigidBody);
 		
+		tempRigidBodies.clear();
+
+		gContactAddedCallback = PhysicsEngine::_btWorld::contact_callback;
+		cPhysicsEngine::instance()->unlock();
+		//g_pGameState->setGameState(GAMESTATE_RUNNING);
 	}
 }
 

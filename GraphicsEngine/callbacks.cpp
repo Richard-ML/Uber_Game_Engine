@@ -131,6 +131,11 @@ void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 				glfwTerminate();
 			}
 			break;
+			case GLFW_KEY_DELETE:
+			{
+				g_pWorld->removeObjectsAtSelection();
+			}
+			break;
 			}
 		}
 	}

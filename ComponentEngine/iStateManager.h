@@ -222,7 +222,7 @@ private:
 	}m_lock[14]; // 10 locks. One should be used per variable
 	virtual void lock(int varNum) {
 #if !defined(SKIP_LOCKING)  
-		while (_InterlockedExchange(&m_lock[varNum].lock, LOCKED) == UNLOCKED) {
+		while (_InterlockedCompareExchange(&m_lock[varNum].lock, LOCKED, UNLOCKED) == UNLOCKED) {
 			// spin!  
 		}
 		// At this point, the lock is acquired. ;)
@@ -232,7 +232,7 @@ private:
 
 	virtual void unlock(int varNum) {
 #if !defined(SKIP_LOCKING)  
-		_InterlockedExchange(&m_lock[varNum].lock, UNLOCKED);
+		_InterlockedCompareExchange(&m_lock[varNum].lock, UNLOCKED, LOCKED);
 #endif  
 	}
 public:

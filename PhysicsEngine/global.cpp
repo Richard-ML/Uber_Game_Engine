@@ -7,4 +7,4 @@ iDebugRenderer * g_pDebugRenderer = 0;
 iWorld* g_pWorld = 0;
 PhysicsEngine::_btWorld* g_btWorld = 0;
 //**************** Initialize Locks *******************
-//sSpinLock * g_pLock = 0;
+sSpinLock* gLock = 0;

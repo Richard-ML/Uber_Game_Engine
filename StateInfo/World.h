@@ -123,5 +123,8 @@ public:
 	///-------------------------------------------------------------------------------------------------
 
 	virtual bool generatePhysicsMesh(std::string meshName, unsigned int* indices, sMeshVertex* vertices, int numVertices, int numIndices) = 0;
+
+
+	virtual bool removeObjectsAtSelection() = 0;
 };
 

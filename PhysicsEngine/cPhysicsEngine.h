@@ -77,8 +77,8 @@ namespace PhysicsEngine {
 
 	public:
 		//int loadGameFromXML(std::string filename);
-	//	void gLock(int varNum);
-	//	void gUnlock(int varNum);
+		void lock();
+		void unlock();
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Gets the instance. </summary>
 		///

@@ -27,7 +27,7 @@ class cWorld : public iWorld {
 
 	virtual void lock(int varNum) {
 #if !defined(SKIP_LOCKING)  
-		while (_InterlockedExchange(&m_lock[varNum].lock, LOCKED) == UNLOCKED) {
+		while (_InterlockedCompareExchange(&m_lock[varNum].lock, LOCKED, UNLOCKED) == UNLOCKED) {
 			// spin!  
 		}
 		// At this point, the lock is acquired. ;)
@@ -44,7 +44,7 @@ class cWorld : public iWorld {
 
 	virtual void unlock(int varNum) {
 #if !defined(SKIP_LOCKING)  
-		_InterlockedExchange(&m_lock[varNum].lock, UNLOCKED);
+		_InterlockedCompareExchange(&m_lock[varNum].lock, UNLOCKED, LOCKED);
 #endif  
 	}
 	///-------------------------------------------------------------------------------------------------
@@ -246,8 +246,13 @@ public:
 
 
 	virtual bool generatePhysicsMesh(std::string meshName, unsigned int * indices, sMeshVertex * vertices, int numVertices, int numIndices) {
-		std::cout << "Num verts " << numVertices << std::endl;
+		//std::cout << "Num verts " << numVertices << std::endl;
 		return pPhysicsEngine->generatePhysicsMesh(meshName, indices, vertices, numVertices, numIndices);
+	}
+
+	virtual bool removeObjectsAtSelection() {
+		pPhysicsEngine->removeObjectsAtSelection();
+		return true;
 	}
 };
 

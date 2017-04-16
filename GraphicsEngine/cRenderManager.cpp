@@ -178,7 +178,9 @@ void cRenderManager::renderScene()
 	glEnable(GL_DEPTH_TEST);
 	for each(cGraphicsObject* graphicObject in g_vec_pGraphicObjects)
 	{
+		if (graphicObject->pState->getMeshName() != "")
 		for each(cMesh* mesh in graphicObject->vec_meshes) {
+			
 			//glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, false);
 
 			//glUniform1i(gUniformId_Toggle_Lights, false); // TODO: REMOVE THIS IT'S HERE FOR COMPAT WITH OLD PC
