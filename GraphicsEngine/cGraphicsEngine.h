@@ -68,6 +68,16 @@ namespace GraphicsEngine {
 		static GraphicsEngine_API void loadMipmapTextures(rapidxml::xml_node<>* mipmapTexturesNode);
 
 		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Loads the fonts. </summary>
+		///
+		/// <remarks>	Richard, 4/15/2017. </remarks>
+		///
+		/// <param name="fontsNode">	[in,out] If non-null, the fonts node. </param>
+		///-------------------------------------------------------------------------------------------------
+
+		static GraphicsEngine_API void loadFonts(rapidxml::xml_node<>* fontsNode);
+
+		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Loads the textures. </summary>
 		///
 		/// <remarks>	Richard, 4/12/2017. </remarks>

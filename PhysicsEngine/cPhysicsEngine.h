@@ -18,6 +18,7 @@ namespace PhysicsEngine {
 							   // Problem.
 
 	class cPhysicsEngine {
+		friend class _btRigidBody;
 		/// <summary>	The physics engine. </summary>
 		static cPhysicsEngine *s_cPhysicsEngine;
 		// Boilerplate
@@ -72,7 +73,7 @@ namespace PhysicsEngine {
 		cPhysicsEngine &operator=(const cPhysicsEngine &physicsManager) {
 		} // Disallow assignment operator
 		static DWORD __cdecl physicsThread(void* lpParam);
-		void cleanup();
+	
 
 	public:
 		//int loadGameFromXML(std::string filename);
@@ -180,6 +181,10 @@ namespace PhysicsEngine {
 		///-------------------------------------------------------------------------------------------------
 
 		PhysicsEngine_API void clearGameObjects();
+
+
+
+		PhysicsEngine_API void cleanup();
 	};
 
 }

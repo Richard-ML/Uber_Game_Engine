@@ -1,8 +1,15 @@
 #include "stdafx.h"
 #include "_btRigidBody.h"
+#include "cPhysicsEngine.h"
 
 PhysicsEngine::_btRigidBody::~_btRigidBody()
 {
+	for (int nc = 0; nc < m_rigidBody->getNumConstraintRefs(); nc++)
+	{
+		m_rigidBody->removeConstraintRef(m_rigidBody->getConstraintRef(nc));
+		//btTypedConstraint* constraint; 
+		// TODO: Remove constraint from world...
+	}
 	delete m_rigidBody;
 }
 

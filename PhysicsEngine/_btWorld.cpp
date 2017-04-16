@@ -45,6 +45,8 @@ PhysicsEngine::_btWorld::~_btWorld()
 		delete m_solver;
 }
 
+
+
 ///-------------------------------------------------------------------------------------------------
 /// <summary>	Steps the simulation based on given delta time </summary>
 ///

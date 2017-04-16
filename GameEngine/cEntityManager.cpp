@@ -107,6 +107,10 @@ int cEntityManager::loadGameFromXML(std::string filename) {
 
 	// Load game assets...
 
+	/* Load the fonts */
+	category_node = root_node->first_node("Fonts");
+	GraphicsEngine::cGraphicsEngine::instance()->loadFonts(category_node);
+
 	/* Load the Mipmap Textures */
 	category_node = root_node->first_node("MipmapTextures");
 	GraphicsEngine::cGraphicsEngine::instance()->loadMipmapTextures(category_node);

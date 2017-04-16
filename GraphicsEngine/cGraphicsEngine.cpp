@@ -86,6 +86,16 @@ namespace GraphicsEngine {
 		return;
 	}
 
+	GraphicsEngine_API void cGraphicsEngine::loadFonts(rapidxml::xml_node<>* fontsNode)
+	{
+
+		for (rapidxml::xml_node<> *font_node = fontsNode->first_node("Font");
+			font_node; font_node = font_node->next_sibling()) {
+			g_pTextManager->loadFont(font_node->first_attribute("name")->value(), font_node->first_attribute("path")->value(), std::stoi(font_node->first_attribute("height")->value()));
+		}
+		return;
+	}
+
 	///-------------------------------------------------------------------------------------------------
 	/// <summary>	Loads the textures. </summary>
 	///

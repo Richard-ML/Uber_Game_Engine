@@ -81,6 +81,7 @@ namespace PhysicsEngine {
 			switch (g_pGameState->getGameState())
 			{
 			case GAMESTATE_EXIT:
+				physicsEngine->s_cPhysicsEngine->cleanup();
 				physicsEngine->s_cPhysicsEngine->~cPhysicsEngine();
 				return 0;
 				break;
@@ -178,13 +179,20 @@ namespace PhysicsEngine {
 
 	void cPhysicsEngine::cleanup()
 	{
-		//TODO:
-		//No constraints should point to this rigidbody
-		//Remove constraints from the dynamics world before you delete the related rigidbodies. 
-		//for each(iRigidBody* rb in vec_rigidBodies) {
-		//	rb->~iRigidBody();
-		//}
-		//vec_rigidBodies.clear();
+
+		//Remove constraints from the dynamics world before the corresponding rigidbodies are deleted. 
+		for each(_btRigidBody* rb in vec_rigidBodies) {
+			for (int nc = 0; nc < rb->m_rigidBody->getNumConstraintRefs(); nc++) {
+				{
+					btTypedConstraint * constraint = rb->m_rigidBody->getConstraintRef(nc);
+					rb->m_rigidBody->removeConstraintRef(constraint); // Remove rigidbody's internal reference to constraint
+					this->impl()->m_btWorld->m_btWorld->removeConstraint(constraint); // Remove constraint from world
+					delete constraint; // Delete the pointer we have created
+
+				}
+			}
+		}
+
 	}
 
 	///-------------------------------------------------------------------------------------------------
@@ -213,7 +221,7 @@ namespace PhysicsEngine {
 
 
 			// Get the collsion details for this object
-			// These details will include the collision mask for the specific object and the collsion masks of objects that it collides with. 
+			// These details will include the collision mask for the specific object and the collision masks of objects that it collides with. 
 			rapidxml::xml_node<> * collisionInfo_node = cRigidBody_node->first_node("CollisionInfo");
 			int collisionMask = std::stoi(collisionInfo_node->first_attribute("collisionMask")->value());
 
@@ -307,45 +315,45 @@ namespace PhysicsEngine {
 						s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(hinge);
 						break;
 					}
-					//case 2:
-					//{
-					//	sBoundingBox boundingBox;
-					//	boundingBox.scale = glm::vec3(2.0f);
-					//	rb->state->setBoundingBox(boundingBox);
-					//	// SPHERE SHAPE HERE
-					//	btSphereShape* ss = new btSphereShape(boxHalfWidth.x / 2);
-					//	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-					//	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
-					//	if (isDynamic)
-					//		ss->calculateLocalInertia(mass, localInertia);
-					//
-					//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, ss, localInertia);
-					//
-					//	rb->m_rigidBody = new btRigidBody(rbInfo);
-					//
-					//
-					//	// Spring constraint!! 
-					//	btTransform frame2;
-					//	frame2 = btTransform::getIdentity();
-					//	frame2.setOrigin(btVector3(btScalar(0.), btScalar(0.), btScalar(0.)));
-					//
-					//	btGeneric6DofSpringConstraint* springConstraint = new btGeneric6DofSpringConstraint(*rb->m_rigidBody, frame2, true);
-					//	springConstraint->setLinearUpperLimit(btVector3(80.f, 0.f, 0.f));
-					//	springConstraint->setLinearLowerLimit(btVector3(-80.f, 0.f, 0.f));
-					//
-					//	springConstraint->setAngularLowerLimit(btVector3(-1.57f, 0.f, 0.0f));
-					//	springConstraint->setAngularUpperLimit(btVector3(1.57f, 0.f, 0.0f));
-					//
-					//	s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(springConstraint, true);
-					//	springConstraint->enableSpring(0, true);
-					//	springConstraint->setStiffness(0, 10.0f);
-					//	springConstraint->setDamping(0, 0.01f);
-					//	springConstraint->enableSpring(5, true);
-					//	springConstraint->setStiffness(5, 10.0f);
-					//	springConstraint->setDamping(0, 0.01f);
-					//	springConstraint->setEquilibriumPoint();
-					//	break;
-					//}
+					case 2:
+					{
+						sBoundingBox boundingBox;
+						boundingBox.scale = glm::vec3(2.0f);
+						rb->state->setBoundingBox(boundingBox);
+						// SPHERE SHAPE HERE
+						btSphereShape* ss = new btSphereShape(boxHalfWidth.x / 2);
+						//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+						btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+						if (isDynamic)
+							ss->calculateLocalInertia(mass, localInertia);
+					
+						btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, ss, localInertia);
+					
+						rb->m_rigidBody = new btRigidBody(rbInfo);
+					
+					
+						// Spring constraint!! 
+						btTransform frame2;
+						frame2 = btTransform::getIdentity();
+						frame2.setOrigin(btVector3(btScalar(0.), btScalar(0.), btScalar(0.)));
+					
+						btGeneric6DofSpringConstraint* springConstraint = new btGeneric6DofSpringConstraint(*rb->m_rigidBody, frame2, true);
+						springConstraint->setLinearUpperLimit(btVector3(80.f, 0.f, 0.f));
+						springConstraint->setLinearLowerLimit(btVector3(-80.f, 0.f, 0.f));
+					
+						springConstraint->setAngularLowerLimit(btVector3(-1.57f, 0.f, 0.0f));
+						springConstraint->setAngularUpperLimit(btVector3(1.57f, 0.f, 0.0f));
+					
+						s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(springConstraint, true);
+						springConstraint->enableSpring(0, true);
+						springConstraint->setStiffness(0, 10.0f);
+						springConstraint->setDamping(0, 0.01f);
+						springConstraint->enableSpring(5, true);
+						springConstraint->setStiffness(5, 10.0f);
+						springConstraint->setDamping(0, 0.01f);
+						springConstraint->setEquilibriumPoint();
+						break;
+					}
 					//case 3:
 					//{
 					//	// BOX SHAPES HERE AND PLANE ;)
@@ -372,25 +380,25 @@ namespace PhysicsEngine {
 					//	s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(sliderConstraint, true);
 					//	break;
 					//}
-					//case 4:
-					//{
-					//	// CONE SHAPE HERE
-					//	btConeShape* cs = new btConeShape(boxHalfWidth.x / 2, boxHalfWidth.y / 2);
-					//
-					//	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-					//	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
-					//	if (isDynamic)
-					//		cs->calculateLocalInertia(mass, localInertia);
-					//
-					//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, cs, localInertia);
-					//
-					//	rb->m_rigidBody = new btRigidBody(rbInfo);
-					//	rb->m_rigidBody->setFriction(0.1f); 
-					//	btVector3 constraintPivot(btVector3(0.0f, 8.0f, 0.0f));
-					//	btTypedConstraint* p2p = new btPoint2PointConstraint(*rb->m_rigidBody, constraintPivot);
-					//	s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(p2p, true);
-					//	break;
-					//}
+					case 4:
+					{
+						// CONE SHAPE HERE
+						btCollisionShape* collisionShapeTerrain = new btConvexTriangleMeshShape(m_map_MeshNameToTriangleMesh[rb->state->getMeshName()]);
+
+						//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+						btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), worldTransform.getOrigin())); // TODO: cleanup
+						if (isDynamic)
+							collisionShapeTerrain->calculateLocalInertia(mass, localInertia);
+					
+						btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, collisionShapeTerrain, localInertia);
+					
+						rb->m_rigidBody = new btRigidBody(rbInfo);
+						rb->m_rigidBody->setFriction(0.5f); 
+						btVector3 constraintPivot(btVector3(0.0f, 10.0f, 0.0f));
+						btTypedConstraint* p2p = new btPoint2PointConstraint(*rb->m_rigidBody, constraintPivot);
+						s_cPhysicsEngine->impl()->m_btWorld->m_btWorld->addConstraint(p2p, true);
+						break;
+					}
 				case 5:
 				{
 					btConvexShape* capsuleShape = new btCapsuleShape(glm::max( boxHalfWidth.x, boxHalfWidth.z)/2.0f, boxHalfWidth.y/2.0f);
