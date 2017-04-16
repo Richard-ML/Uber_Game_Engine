@@ -110,7 +110,7 @@ bool PhysicsEngine::_btWorld::remove_callback(btManifoldPoint & cp, const btColl
 					{
 						cPhysicsEngine::instance()->lock();
 						//g_pGameState->setGameState(GAMESTATE_PAUSED);
-						Sleep(90);
+						//Sleep(100);
 						//rb1->setCollision(true);
 						rb1->state->registerComponentXMLDataCallback(nullptr);
 						for (int nc = 0; nc < rb1->m_rigidBody->getNumConstraintRefs(); nc++)
@@ -121,9 +121,11 @@ bool PhysicsEngine::_btWorld::remove_callback(btManifoldPoint & cp, const btColl
 							delete constraint; // Delete the pointer we have created
 
 						}
+
 						g_btWorld->m_btWorld->removeRigidBody(rb1->m_rigidBody);
 						rb1->state->setMeshName(""); // Object no longer renders a mesh
 						rb1->state->setBoundingBox(sBoundingBox()); // No longer renders bounding box
+						rb1->state->setPendingDeletion(true);
 						cPhysicsEngine::instance()->unlock();
 					}
 
@@ -133,10 +135,11 @@ bool PhysicsEngine::_btWorld::remove_callback(btManifoldPoint & cp, const btColl
 			if (!rb2->isWorldEditVolume) {
 				if (rb1->isWorldEditVolume) {
 					cPhysicsEngine::instance()->lock();
+					//Sleep(100);
 					//g_pGameState->setGameState(GAMESTATE_PAUSED);
-					rb2->setCollision(true);
+					//rb2->setCollision(true);
 					rb2->state->registerComponentXMLDataCallback(nullptr); // Object will no longer be saved to xml
-					for (int nc = 0; nc < rb1->m_rigidBody->getNumConstraintRefs(); nc++)
+					 for (int nc = 0; nc < rb2->m_rigidBody->getNumConstraintRefs(); nc++)
 					{
 						btTypedConstraint * constraint = rb2->m_rigidBody->getConstraintRef(nc);
 						rb2->m_rigidBody->removeConstraintRef(constraint); // Remove rigidbody's internal reference to constraint
@@ -146,6 +149,7 @@ bool PhysicsEngine::_btWorld::remove_callback(btManifoldPoint & cp, const btColl
 					g_btWorld->m_btWorld->removeRigidBody(rb2->m_rigidBody);
 					rb2->state->setMeshName(""); // Object no longer renders a mesh
 					rb2->state->setBoundingBox(sBoundingBox()); // No longer renders bounding box
+					rb2->state->setPendingDeletion(true);
 					cPhysicsEngine::instance()->unlock();
 					//g_pGameState->setGameState(GAMESTATE_RUNNING);
 				}

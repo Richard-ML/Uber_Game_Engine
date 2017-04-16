@@ -21,6 +21,8 @@ struct sState {
 	sBoundingBox boundingBox;
 
 	std::string meshName;
+
+	bool pendingDeletion;
 };
 // Forward declarations
 class iStateNode;
@@ -85,6 +87,9 @@ public:
 	
 	virtual std::string getMeshName() = 0;
 	virtual void setMeshName(std::string meshName) = 0;
+
+	virtual void setPendingDeletion(bool pendingDeletion) = 0;
+	virtual bool getPendingDeletion() = 0;
 };
 
 class cState : public iState {
@@ -101,6 +106,9 @@ private:
 	std::function<std::string()> getComponentNode;
 	virtual void registerComponentXMLDataCallback(std::function<std::string()> getComponentNode) {
 		m_bool_HasXMLCallback = true;
+		if (getComponentNode == nullptr)
+			m_bool_HasXMLCallback = false;
+
 		this->getComponentNode = getComponentNode;
 	}
 
@@ -195,6 +203,12 @@ public:
 		m_parentNode->setMeshName(meshName);
 	}
 
+	virtual void setPendingDeletion(bool pendingDeletion) {
+		return m_parentNode->setPendingDeletion(pendingDeletion);
+	}
+	virtual bool getPendingDeletion() {
+		return m_parentNode->getPendingDeletion();
+	}
 
 	cState() {
 
@@ -219,7 +233,7 @@ private:
 	struct sSpinLock {
 		//volatile LONG isLocked = 0; // 0 unlocked : 1 locked
 		LOCK lock;
-	}m_lock[14]; // 10 locks. One should be used per variable
+	}m_lock[16]; // 10 locks. One should be used per variable
 	virtual void lock(int varNum) {
 #if !defined(SKIP_LOCKING)  
 		while (_InterlockedCompareExchange(&m_lock[varNum].lock, LOCKED, UNLOCKED) == UNLOCKED) {
@@ -363,6 +377,18 @@ public:
 		unlock(14);
 	}
 
+	virtual void setPendingDeletion(bool pendingDeletion) {
+		lock(15);
+		this->_localStateData.pendingDeletion = pendingDeletion;
+		unlock(15);
+	}
+	virtual bool getPendingDeletion() {
+		bool pendingDeletion;
+		lock(15);
+		pendingDeletion = this->_localStateData.pendingDeletion;
+		unlock(15);
+		return pendingDeletion;
+	}
 
 	cStateNode() {
 
@@ -406,20 +432,24 @@ public:
 	}
 
 	virtual std::string getGameEntityXML(std::string stateNodeID) {
+		std::string xmlStringResult;
 		cStateNode *stateNode = dynamic_cast<cStateNode *>(m_MapIDTOStateNode[stateNodeID]);
-		// XML Game entity with all of its components. 
-		std::string xmlStringResult = "<GameEntity>";
-		std::string requestedXMLString;
-
-		for each(iState* state in stateNode->m_childStates)
+		if (!stateNode->_localStateData.pendingDeletion)
 		{
-			cState * pState = dynamic_cast<cState *>(state);
-			if (pState->m_bool_HasXMLCallback)
-				requestedXMLString += pState->getComponentNode();
+			// XML Game entity with all of its components. 
+			xmlStringResult = "<GameEntity>";
+			std::string requestedXMLString;
 
+			for each(iState* state in stateNode->m_childStates)
+			{
+				cState * pState = dynamic_cast<cState *>(state);
+				if (pState->m_bool_HasXMLCallback)
+					requestedXMLString += pState->getComponentNode();
+
+			}
+			xmlStringResult += requestedXMLString;
+			xmlStringResult += "</GameEntity>";
 		}
-		xmlStringResult += requestedXMLString;
-		xmlStringResult += "</GameEntity>";
 		return xmlStringResult;
 	};
 	virtual void clearStateInfo() {

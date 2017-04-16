@@ -55,7 +55,7 @@ class cWorld : public iWorld {
 
 	struct sWorldTile {
 		glm::vec3 position;
-		glm::vec3 scale = glm::vec3(64.0f, 0.1f, 64.0f);
+		glm::vec3 scale = glm::vec3(64.0f, 2.0f, 64.0f);
 	};
 	/// <summary>	The tile selection mode. </summary>
 	eActiveWorldTileSelection m_tileSelectionMode;
@@ -182,7 +182,7 @@ public:
 				boundingBox.position.x = worldTile.position.x - (worldTile.scale.x / 2) + 32.0f;
 				boundingBox.position.z = worldTile.position.z - (worldTile.scale.z / 2);
 				boundingBox.position.y = 16.0f;
-				boundingBox.scale = glm::vec3(6.0f, 32.0f, 64.0f);
+				boundingBox.scale = glm::vec3(7.0f, 32.0f, 64.0f);
 				vec_Result.push_back(boundingBox);
 			}
 			break;
@@ -193,7 +193,7 @@ public:
 				boundingBox.position.x = worldTile.position.x - (worldTile.scale.x / 2) - 32.0f;
 				boundingBox.position.z = worldTile.position.z - (worldTile.scale.z / 2);
 				boundingBox.position.y = 16.0f;
-				boundingBox.scale = glm::vec3(6.0f, 32.0f, 64.0f);
+				boundingBox.scale = glm::vec3(7.0f, 32.0f, 64.0f);
 				vec_Result.push_back(boundingBox);
 			}
 			break;
@@ -204,7 +204,7 @@ public:
 				boundingBox.position.x = worldTile.position.x - (worldTile.scale.x / 2);
 				boundingBox.position.z = worldTile.position.z - (worldTile.scale.z / 2) + 32.0f;
 				boundingBox.position.y = 16.0f;
-				boundingBox.scale = glm::vec3(64.0f, 32.0f, 6.0f);
+				boundingBox.scale = glm::vec3(64.0f, 32.0f, 7.0f);
 				vec_Result.push_back(boundingBox);
 			}
 			break;
@@ -215,7 +215,7 @@ public:
 				boundingBox.position.x = worldTile.position.x - (worldTile.scale.x / 2);
 				boundingBox.position.z = worldTile.position.z - (worldTile.scale.z / 2) - 32.0f;
 				boundingBox.position.y = 16.0f;
-				boundingBox.scale = glm::vec3(64.0f, 32.0f, 6.0f);
+				boundingBox.scale = glm::vec3(64.0f, 32.0f, 7.0f);
 				vec_Result.push_back(boundingBox);
 			}
 			break;

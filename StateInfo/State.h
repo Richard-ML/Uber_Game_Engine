@@ -61,6 +61,9 @@ class iData {
 	virtual void registerComponentXMLDataCallback(std::function<std::string()> getComponentNode) = 0;
 	virtual std::string getMeshName() = 0;
 	virtual void setMeshName(std::string meshName) = 0;
+	virtual void setPendingDeletion(bool pendingDeletion) = 0;
+	virtual bool getPendingDeletion() = 0;
+
 };
 
 // See cState for implementation!
@@ -99,4 +102,7 @@ public:
 
 	virtual std::string getMeshName() = 0;
 	virtual void setMeshName(std::string meshName) = 0;
+
+	virtual void setPendingDeletion(bool pendingDeletion) = 0;
+	virtual bool getPendingDeletion() = 0;
 };

@@ -443,7 +443,12 @@ namespace PhysicsEngine {
 
 					if (m_map_MeshNameToTriangleMesh[rb->state->getMeshName()] != 0)
 					{
-						btCollisionShape* collisionShapeTerrain = new btBvhTriangleMeshShape( m_map_MeshNameToTriangleMesh[rb->state->getMeshName()], true, true);
+						// NOT THREAD SAFE....
+						//btCollisionShape* collisionShapeTerrain = new btBvhTriangleMeshShape( m_map_MeshNameToTriangleMesh[rb->state->getMeshName()], true, true);
+						
+						btCollisionShape* collisionShapeTerrain = new btConvexTriangleMeshShape(m_map_MeshNameToTriangleMesh[rb->state->getMeshName()]);
+
+						
 						sBoundingBox bb = rb->state->getBoundingBox(); // For debugging
 						btVector3 localScaling = collisionShapeTerrain->getLocalScaling();
 
