@@ -15,6 +15,7 @@
 	<MipmapTexture name="Floor" pathDif="assets/TileMeshes/Textures/floor_DIF.tga" pathNrm="assets/TileMeshes/Textures/floor_NRM.tga" pathSpec="assets/TileMeshes/Textures/floor_SPEC.tga" />
   <MipmapTexture name="Skeleton" pathDif="assets/Skeleton/Skeleton_dif.png" pathNrm="assets/Skeleton/Skeleton_norm.png" pathSpec="assets/Skeleton/Skeleton_spec.png" />
   <MipmapTexture name="Door" pathDif="assets/TileMeshes/Textures/Door_DIF.tga" pathNrm="assets/TileMeshes/Textures/Door_NRM.tga" pathSpec="assets/TileMeshes/Textures/Door_SPEC.tga" />
+  <MipmapTexture name="Stairs" pathDif="assets/TileMeshes/Stairs/Stairs_DIF.tga" pathNrm="assets/TileMeshes/Stairs/Stairs_NRM.tga" pathSpec="assets/TileMeshes/Stairs/Stairs_SPEC.tga" />
   <!--<MipmapTexture name="Stairs" pathDif="assets/TileMeshes/Stairs/stairs_DIF.tga" pathNrm="assets/TileMeshes/Stairs/stairs_NRM.tga" pathSpec="assets/TileMeshes/Stairs/stairs_SPEC.tga" />-->
   </MipmapTextures>
 
