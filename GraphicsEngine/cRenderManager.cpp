@@ -224,6 +224,7 @@ void cRenderManager::renderScene()
 
 			glm::mat4 transform;
 			graphicObject->pState->getTransform(transform);
+
 			//transform[3] -= glm::vec4( graphicObject->pState->getBoundingBox().position, 0.0f);
 			float scaleF; // Only storing 1 value for scale at the moment.. TODO
 			graphicObject->pState->getScale(scaleF);
@@ -231,9 +232,7 @@ void cRenderManager::renderScene()
 
 			if (mesh->meshName == "Skeleton") {
 				glm::vec3 box = graphicObject->pState->getBoundingBox().scale;
-				// Hard-coded offset and scale to accommodate for bullet's margins
-				transform[3].y -= ( box.y / 1.63f);
-				scale.y = 1.22f;
+				transform = glm::rotate(transform, -1.57f, glm::vec3(1.0f, 0.0f, 0.0f)); // So we are not rolling around on floor. Can't make changes to FBX..
 			}
 			glUniformMatrix4fv(
 				gUniformId_ModelMatrix, 1, GL_FALSE,
@@ -253,7 +252,14 @@ void cRenderManager::renderScene()
 			//glUniform1i(gUniformId_Toggle_Lights, true);
 			glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
 
-
+			if (mesh->meshName == "Skeleton") {
+				glm::vec3 box = graphicObject->pState->getBoundingBox().scale;
+				transform = glm::rotate(transform, 1.57f, glm::vec3(1.0f, 0.0f, 0.0f));
+				transform[3].y -= 0.5f;
+				glUniformMatrix4fv(
+					gUniformId_ModelMatrix, 1, GL_FALSE,
+					glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
+			}
 			if (g_bool_toggleDebugShapes) {
 				glUniform1i(gUniformId_Toggle_Textures, false);
 				glUniform1i(gUniformId_Toggle_Lights, false);
@@ -277,7 +283,7 @@ void cRenderManager::renderScene()
 					{
 						glm::vec3 box = graphicObject->pState->getBoundingBox().scale;
 						float scaleXZ = glm::max(box.x, box.z);
-						//transform[3].y -= box.y / 2;
+						transform[3].y -= box.y / 1.75;
 						glUniformMatrix4fv(
 							gUniformId_ModelMatrix, 1, GL_FALSE,
 							glm::value_ptr(glm::scale(transform, glm::vec3(scaleXZ, (box.y / 1.63f), scaleXZ))));

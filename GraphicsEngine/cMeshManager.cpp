@@ -3,6 +3,8 @@
 #include "global.h"
 
 
+#include <sstream>
+#include <fbxsdk.h>
 // The PIMPL idiom aka Compilation Firewall
 // Purpose: Encapsulate private member variables. Reduces make-time,
 // compile-time, and the Fragile Binary Interface Problem.
@@ -239,7 +241,209 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 }
 
 ///-------------------------------------------------------------------------------------------------
-/// <summary>	Loads fbx mesh file into gl buffer. </summary>
+/// <summary>	
+/// Printing node details to the console
+/// https://www.gamedev.net/resources/_/technical/graphics-programming-and-theory/how-to-work-with-fbx-sdk-r3582
+/// http://docs.autodesk.com/FBX/2014/ENU/FBX-SDK-Documentation/ 
+/// </summary>
+/// BEGIN
+///-------------------------------------------------------------------------------------------------
+
+///-------------------------------------------------------------------------------------------------
+/// <summary> Tab character ("\t") counter </summary>
+///-------------------------------------------------------------------------------------------------
+int tabs_count = 0;
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Print the required number of tabs. </summary>
+///
+/// <remarks>	Richard, 4/17/2017. </remarks>
+///-------------------------------------------------------------------------------------------------
+void cMeshManager::printTabs() {
+	for (int i = 0; i < tabs_count; i++)
+		printf("\t");
+}
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Return a string-based representation based on the attribute type. </summary>
+///
+/// <remarks>	Richard, 4/17/2017. </remarks>
+///
+/// <param name="type">	The type. </param>
+///
+/// <returns>	The attribute type name as string. </returns>
+///-------------------------------------------------------------------------------------------------
+FbxString cMeshManager::getAttributeTypeName(FbxNodeAttribute::EType type) {
+	switch (type) {
+	case FbxNodeAttribute::eUnknown: return "UNKNOWN";
+	case FbxNodeAttribute::eNull: return "NULL";
+	case FbxNodeAttribute::eMarker: return "MARKER";
+	case FbxNodeAttribute::eSkeleton: return "SKELETON";
+	case FbxNodeAttribute::eMesh: return "MESH";
+	case FbxNodeAttribute::eNurbs: return "NURBS";
+	case FbxNodeAttribute::eNurbsCurve: return "NURBS_CURVE";
+	case FbxNodeAttribute::eNurbsSurface: return "NURBS_SURFACE";
+	case FbxNodeAttribute::ePatch: return "PATCH";
+	case FbxNodeAttribute::eCamera: return "CAMERA";
+	case FbxNodeAttribute::eCameraStereo: return "CAMERA_STEREO";
+	case FbxNodeAttribute::eCameraSwitcher: return "CAMERA_SWITCHER";
+	case FbxNodeAttribute::eLight: return "LIGHT";
+	case FbxNodeAttribute::eOpticalReference: return "OPTICLAL_REFERENCE";
+	case FbxNodeAttribute::eOpticalMarker: return "OPTICAL_MARKER";
+	case FbxNodeAttribute::eTrimNurbsSurface: return "TRIM_NURBS_SURFACE";
+	case FbxNodeAttribute::eBoundary: return "BOUNDARY";
+	case FbxNodeAttribute::eShape: return "SHAPE";
+	case FbxNodeAttribute::eLODGroup: return "LOD_GROUP";
+	case FbxNodeAttribute::eSubDiv: return "SUB_DIVISION";
+	default: return "DEFAULT_VALUE";
+	}
+}
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Prints an attribute. </summary>
+///
+/// <remarks>	Richard, 4/17/2017. </remarks>
+///
+/// <param name="pAttribute">	[in,out] If non-null, the attribute. </param>
+///-------------------------------------------------------------------------------------------------
+void cMeshManager::printAttribute(FbxNodeAttribute* pAttribute) {
+	if (!pAttribute) return;
+
+	FbxString typeName = getAttributeTypeName(pAttribute->GetAttributeType());
+	FbxString attrName = pAttribute->GetName();
+	printTabs();
+	/// <summary> Use Buffer() to retrieve character array of FBX string. </summary>
+	printf("<attribute type='%s' name='%s'/>\n", typeName.Buffer(), attrName.Buffer());
+}
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>
+/// Printing node details to the console. Prints the node, its attributes, and all its children
+/// recursively.
+/// </summary>
+///
+/// <remarks> Richard, 4/17/2017. </remarks>
+///
+/// <param name="pNode"> [in,out] If non-null, the node. </param>
+///-------------------------------------------------------------------------------------------------
+void cMeshManager::printNode(FbxNode* pNode) {
+	printTabs();
+	const char* nodeName = pNode->GetName();
+	FbxDouble3 translation = pNode->LclTranslation.Get();
+	FbxDouble3 rotation = pNode->LclRotation.Get();
+	FbxDouble3 scale = pNode->LclScaling.Get();
+
+	/// <summary> Print the properties of the node. </summary>
+	printf("<node name='%s' translation='(%f, %f, %f)' rotation='(%f, %f, %f)' scaling='(%f, %f, %f)'>\n",
+		nodeName,
+		translation[0], translation[1], translation[2],
+		rotation[0], rotation[1], rotation[2],
+		scale[0], scale[1], scale[2]
+	);
+	std::string name = nodeName;
+	if (name == "skeleton_footman")
+	{
+		processFBXMeshNode(pNode);
+	}
+	tabs_count++;
+
+	/// <summary> Print each of the node's attributes. </summary>
+	for (int i = 0; i < pNode->GetNodeAttributeCount(); i++)
+		printAttribute(pNode->GetNodeAttributeByIndex(i));
+
+	/// <summary> Print each of children with a recursive call to this function. </summary>
+	for (int j = 0; j < pNode->GetChildCount(); j++)
+		printNode(pNode->GetChild(j));
+
+	tabs_count--;
+	printTabs();
+	printf("</node>\n");
+}
+
+bool cMeshManager::processFBXMeshNode(FbxNode* meshNode)
+{
+	FbxMesh* pMesh = meshNode->GetMesh();
+	/// <summary> Create and initialize a new Mesh Entry. </summary>
+	cMeshEntry meshEntry;
+	meshEntry.BaseIndex = 0;
+	meshEntry.BaseVertex = 0;
+	meshEntry.NumgIndices = 0;
+
+	unsigned int vertexOffset = vertices.size();
+	unsigned int indexOffset = indices.size();
+	unsigned int numgVertices = pMesh->GetPolygonVertexCount();
+	unsigned int numgIndices = pMesh->GetPolygonCount() * 3;
+
+
+	meshEntry.BaseIndex = indexOffset;
+	meshEntry.BaseVertex = vertexOffset;
+	meshEntry.NumgVertices = numgVertices;
+	meshEntry.NumgIndices = numgIndices;
+
+	// Fill gVertices positions
+	vertices.resize(vertexOffset + pMesh->GetPolygonVertexCount());
+	indices.resize(indexOffset + numgIndices);
+	std::vector<sTriangleFace *> tempVecsTriangleFace;
+	tempVecsTriangleFace.reserve(pMesh->GetPolygonCount());
+
+     FbxLayerElementUV* UVs = pMesh->GetLayer(0)->GetUVs();
+	 FbxLayerElementNormal * normals =  pMesh->GetLayer(0)->GetNormals();
+	 
+	double scale = 0.075;
+	
+		// Get control points (=vertices for a mesh)
+		FbxVector4* fbxControlPoints = pMesh->GetControlPoints();
+
+
+		/// <summary> Load Vertices </summary>
+	for (int ncPolygon = 0; ncPolygon < pMesh->GetPolygonCount(); ncPolygon++) {
+		// For each vertex in the polygon ( assume triangles ) 
+		for (unsigned ncVertex = 0; ncVertex < 3; ncVertex++) {
+			FbxVector4 vert = pMesh->GetControlPointAt((ncPolygon * 3) + ncVertex);
+			sMeshVertex &vert1 = vertices[vertexOffset + (ncPolygon * 3) + ncVertex];
+
+			vert1.textureUnits = g_pTextureManager->mapTextureNameToMipmapLevel["Skeleton"];
+			//int fbxCornerIndex = pMesh->GetPolygonVertex(ncPolygon, ncVertex);
+
+			FbxVector4 fbxVertex = fbxControlPoints[(ncPolygon * 3) + ncVertex];
+			// Get vertex position
+			vert1.Position = glm::vec4((float)fbxVertex.mData[0] * scale, (float)fbxVertex.mData[1] * scale, (float)fbxVertex.mData[2] * scale, 1.f);
+
+			// Get normal
+			FbxVector4 fbxNormal;
+			pMesh->GetPolygonVertexNormal(ncPolygon, ncVertex, fbxNormal);
+			fbxNormal.Normalize();
+			vert1.Normal = glm::vec4((float)fbxNormal.mData[0], (float)fbxNormal.mData[1], (float)fbxNormal.mData[2], (float)fbxNormal.mData[3]);
+
+			// Get texture coordinates
+			FbxLayerElementUV * texCoords =	pMesh->GetLayer(0)->GetUVs();
+			                                   //V Should be ncPolygon TEXTURE COORDINATE ISSUE HERE.
+			int index = pMesh->GetTextureUVIndex(6, ncVertex);
+			vert1.TexCoord = glm::vec4((float)texCoords->GetDirectArray().GetAt(index)[0],(float)texCoords->GetDirectArray().GetAt(index)[1],1.0f, 0.0f);
+		}
+	}
+	
+		for (int nc = 0; nc < pMesh->GetPolygonVertexCount(); nc++)
+		{
+			indices[indexOffset + nc] = pMesh->GetPolygonVertices()[nc];
+		}
+
+
+		
+	meshFaces.push_back(tempVecsTriangleFace);
+	m_MapMeshNameTocMeshEntry["Skeleton"] = meshEntry;
+
+	sBoundingBox boundingBox;
+	boundingBox.scale = (glm::vec3(9.0f, 12.5f, 7.0f)); // NOTE: This is not the boxes half-widths. This is the actual scale factor that is applied to the cube primitive. 
+									 //glm::vec3(max.x - min.x, (max.y - min.y), max.z - min.z);
+	//boundingBox.position = glm::vec3(0.0f);
+	m_MapMeshNameToAABB["Skeleton"] = boundingBox;
+
+	return true;
+}
+
+///-------------------------------------------------------------------------------------------------
+/// <summary>	Loads FBX mesh file into gl buffer. </summary>
 ///
 /// <remarks>	Richard, 4/12/2017. </remarks>
 ///
@@ -249,42 +453,52 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 ///
 /// <returns>	True if it succeeds, false if it fails. </returns>
 ///-------------------------------------------------------------------------------------------------
-
 bool cMeshManager::loadFBXMeshFileIntoGLBuffer(std::string name, const char * path, float scale)
 {
+	/// <summary> Create the SDK manager which handles memory management. </summary>
+	FbxManager* pSdkManager = FbxManager::Create();
+	/// <summary> Create the IO settings object. </summary>
+	FbxIOSettings *pIO_settings = FbxIOSettings::Create(pSdkManager, IOSROOT);
+	pSdkManager->SetIOSettings(pIO_settings);
 
+	/// <summary> Create the importer. </summary>
+	FbxImporter* pImporter = FbxImporter::Create(pSdkManager, "");
+
+	/// <summary> Pass filename to the importer. </summary>
+	if (!pImporter->Initialize(path, -1, pSdkManager->GetIOSettings())) {
+		printf("Call to FbxImporter::Initialize() failed.\n");
+		printf("Error returned: %s\n\n", pImporter->GetStatus().GetErrorString());
+		exit(-1);
+	}
+
+	/// <summary> Create a new Scene. </summary>
+	FbxScene* pScene = FbxScene::Create(pSdkManager, "myScene");
+
+	/// <summary> Import contents of FBX file into the scene. </summary>
+	pImporter->Import(pScene);
+
+	/// <summary> The file is now loaded into the scene. So we no longer need the importer. </summary>
+	pImporter->Destroy();
+
+	/// <summary> Print the nodes of the scene and their attributes recursively.
+	/// NOTE: We are not printing the root node because it should
+	///		  not contain any attributes. </summary>
+	FbxNode* pRootNode = pScene->GetRootNode();
+	if (pRootNode) {
+		for (int i = 0; i < pRootNode->GetChildCount(); i++)
+			printNode(pRootNode->GetChild(i));
+	}
+	/// <summary> Destroy the SDK manager deleting all objects that belong to it. </summary>
+	pSdkManager->Destroy();
 
 	return true;
 }
 
 ///-------------------------------------------------------------------------------------------------
-/// <summary>	Loads the world. </summary>
-///
-/// <remarks>	Richard, 4/12/2017. </remarks>
+/// <summary>	
+/// Printing node details to console
+/// https://www.gamedev.net/resources/_/technical/graphics-programming-and-theory/how-to-work-with-fbx-sdk-r3582
+/// http://docs.autodesk.com/FBX/2014/ENU/FBX-SDK-Documentation/ 
+/// </summary>
+/// END
 ///-------------------------------------------------------------------------------------------------
-
-void cMeshManager::loadWorld()
-{
-	//	for (int ncW = 0; ncW < 64; ncW++)
-	//	{
-	//		for (int ncD = 0; ncD < 64; ncD++)
-	//		{
-	//			float offsetX = (128 * ncW);
-	//			float offsetZ = (128 * ncD);
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//		// cMeshEntry meshEntry = 	g_pMeshManager->m_MapMeshNameTocMeshEntry[ g_pMeshManager->m_mapRGBToMeshName[ g_pTextureManager->worldTiles[ncW][ncD] ] ]
-	//		//std::make_tuple(g_vec_WorldTiles[ncW][ncD][layer][0], g_vec_WorldTiles[ncW][ncD][layer][1], g_vec_WorldTiles[ncW][ncD][layer][2])
-	//		}
-	//	}
-}
-

@@ -1,7 +1,7 @@
 #ifndef _cMeshManager_HG_
 #define _cMeshManager_HG_
 #include "stdafx.h"
-
+#include <fbxsdk.h>
 ///-------------------------------------------------------------------------------------------------
 /// <summary>	A mesh entry. </summary>
 ///
@@ -46,7 +46,11 @@ class cMeshManager {
 	///-------------------------------------------------------------------------------------------------
 
 	cMeshManager_Impl *impl();
-
+	bool processFBXMeshNode(FbxNode* meshNode);
+	void printNode(FbxNode* pNode);
+	void printAttribute(FbxNodeAttribute* pAttribute);
+	FbxString getAttributeTypeName(FbxNodeAttribute::EType type);
+	void printTabs();
 public:
 
 	///-------------------------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-#version 410
+#version 410 core
 
 varying vec2 texcoord;
 uniform sampler2D tex;

@@ -70,17 +70,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Include\FreeType;$(SolutionDir)StateInfo;$(SolutionDir)ComponentEngine;$(SolutionDir)Include\GLM;$(SolutionDir)Include\glfw\include;$(SolutionDir)Include\glew\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\FreeImage;$(SolutionDir)Include\Assimp</IncludePath>
-    <LibraryPath>$(SolutionDir)Include\FreeType\lib;$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\FreeImage;$(LibraryPath)</LibraryPath>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)\Include\FBX_SDK\Include;$(SolutionDir)Include\FreeType;$(SolutionDir)StateInfo;$(SolutionDir)ComponentEngine;$(SolutionDir)Include\GLM;$(SolutionDir)Include\glfw\include;$(SolutionDir)Include\glew\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\FreeImage;$(SolutionDir)Include\Assimp</IncludePath>
+    <LibraryPath>$(SolutionDir)\Include\FBX_SDK\lib;$(SolutionDir)Include\FreeType\lib;$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\FreeImage;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SolutionDir)\Include\FBX_SDK\Include;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)Include\FreeType;$(SolutionDir)StateInfo;$(SolutionDir)Include\glfw\include;$(SolutionDir)Include\glew\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\FreeImage;$(SolutionDir)Include\Assimp</IncludePath>
-    <LibraryPath>$(SolutionDir)Include\FreeType\lib;$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\FreeImage;$(SolutionDir)Include\FreeType;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\Include\FBX_SDK\Include;$(SolutionDir)Include\FreeType;$(SolutionDir)StateInfo;$(SolutionDir)Include\glfw\include;$(SolutionDir)Include\glew\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\FreeImage;$(SolutionDir)Include\Assimp</IncludePath>
+    <LibraryPath>$(SolutionDir)\Include\FBX_SDK\lib;$(SolutionDir)Include\FreeType\lib;$(SolutionDir)Include\Assimp;$(SolutionDir)Include\rapidxml;$(SolutionDir)Include\FreeImage;$(SolutionDir)Include\FreeType;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SolutionDir)\Include\FBX_SDK\Include;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -90,17 +92,20 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;GRAPHICSENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FBXSDK_SHARED;WIN32;_DEBUG;_WINDOWS;_USRDLL;GRAPHICSENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)StateInfo;$(SolutionDir)\Include\FreeType;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)StateInfo;$(SolutionDir)\Include\FreeType;$(SolutionDir)\Include\FBX_SDK\Include;</AdditionalIncludeDirectories>
       <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Include\FreeType;$(SolutionDir)Include\glfw\lib\$(Configuration);$(SolutionDir)Include\glew\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libfreetype.lib;Assimp.lib;FreeImage.lib;glfw3.lib;GLEW_1130.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Include\FBX_SDK\lib\vs2013\x86\debug;$(SolutionDir)Include\FreeType;$(SolutionDir)Include\glfw\lib\$(Configuration);$(SolutionDir)Include\glew\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libfbxsdk.lib;libfbxsdk-md.lib;libfreetype.lib;Assimp.lib;FreeImage.lib;glfw3.lib;GLEW_1130.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -127,18 +132,18 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;GRAPHICSENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FBXSDK_SHARED;WIN32;NDEBUG;_WINDOWS;_USRDLL;GRAPHICSENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)StateInfo;$(SolutionDir)\Include\FreeType;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)StateInfo;$(SolutionDir)\Include\FreeType;$(SolutionDir)\Include\FBX_SDK\Include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Include\glfw\lib\$(Configuration);$(SolutionDir)Include\glew\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libfreetype.lib;Assimp.lib;FreeImage.lib;glfw3.lib;GLEW_1130.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Include\FBX_SDK\lib\vs2013\x86\release;$(SolutionDir)Include\glfw\lib\$(Configuration);$(SolutionDir)Include\glew\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libfbxsdk.lib;libfbxsdk-mt.lib;libfreetype.lib;Assimp.lib;FreeImage.lib;glfw3.lib;GLEW_1130.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

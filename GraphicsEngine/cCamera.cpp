@@ -133,9 +133,7 @@ void cCamera::updateView() {
 	up = glm::vec3(rotation * glm::vec4(up, 0.0f));
 	glm::vec3 right = glm::cross(forward, up);
 	m_viewMatrix = glm::lookAt(position, targetPosition, up);
-
-	////glm::mat4 idenView = m_viewMatrix;
-	//glm::vec3 forward2 = 
+	/////////////////////////////
 	glm::mat4 temp;
 	getProjectionMatrix(temp);
 	m_viewIdentityMatrix *= glm::mat3(temp);

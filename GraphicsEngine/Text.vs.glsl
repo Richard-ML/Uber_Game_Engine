@@ -1,4 +1,4 @@
-#version 410
+#version 410 core
 
 attribute vec4 coord;
 varying vec2 texcoord;

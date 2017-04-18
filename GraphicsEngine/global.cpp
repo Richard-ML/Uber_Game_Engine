@@ -65,7 +65,7 @@ GLuint gTextureInfoBufferID = 0;
 GLuint gIndexBufferID = 0;
 // Sky-box Shader:
 GLuint gUniformId_ToggleSkyboxTextures = 0;
-bool gToggle_Skybox = 0;
+bool gToggle_Skybox = 1;
 GLuint gSkyboxShaderID = 0;
 GLuint gSkyboxVMID = 0;
 GLuint gUniformId_SamplerCube = 0;

@@ -109,7 +109,8 @@
 copy /Y "$(SolutionDir)Include\fmod\fmod.dll" "$(TargetDir)fmod.dll"
 copy /Y "$(SolutionDir)Include\FreeImage\FreeImage.dll" "$(TargetDir)FreeImage.dll"
 copy /Y "$(SolutionDir)Include\FreeType\FreeType-6.dll" "$(TargetDir)FreeType-6.dll"
-copy /Y "$(SolutionDir)Include\FreeType\Zlib.dll" "$(TargetDir)Zlib.dll"</Command>
+copy /Y "$(SolutionDir)Include\FreeType\Zlib.dll" "$(TargetDir)Zlib.dll"
+copy /Y "$(SolutionDir)Include\FBX_SDK\lib\vs2013\x86\debug\libfbxsdk.dll" "$(TargetDir)libfbxsdk.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -149,7 +150,8 @@ copy /Y "$(SolutionDir)Include\FreeType\Zlib.dll" "$(TargetDir)Zlib.dll"</Comman
 copy /Y "$(SolutionDir)Include\fmod\fmod.dll" "$(TargetDir)fmod.dll"
 copy /Y "$(SolutionDir)Include\FreeImage\FreeImage.dll" "$(TargetDir)FreeImage.dll"
 copy /Y "$(SolutionDir)Include\FreeType\FreeType-6.dll" "$(TargetDir)FreeType-6.dll"
-copy /Y "$(SolutionDir)Include\FreeType\Zlib.dll" "$(TargetDir)Zlib.dll"</Command>
+copy /Y "$(SolutionDir)Include\FreeType\Zlib.dll" "$(TargetDir)Zlib.dll"
+copy /Y "$(SolutionDir)Include\FBX_SDK\lib\vs2013\x86\release\libfbxsdk.dll" "$(TargetDir)libfbxsdk.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

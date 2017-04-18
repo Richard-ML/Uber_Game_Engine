@@ -33,3 +33,8 @@
 #include "..\FreeType\freetype\ftglyph.h"
 #include "..\FreeType\freetype\ftoutln.h"
 #include "..\FreeType\freetype\fttrigon.h"
+
+//#include <FBX_SDK\include\fbxsdk.h>
+//#include <fbxsdk/fbxsdk_def.h>
+
+//#include "..\FBX_SDK\include\fbxsdk.h"

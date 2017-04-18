@@ -229,11 +229,19 @@ namespace GraphicsEngine {
 
 			//glm::vec3 rgb = glm::vec3(std::stof(cMeshEntry_node->first_attribute("r")->value()), std::stof(cMeshEntry_node->first_attribute("g")->value()), std::stof(cMeshEntry_node->first_attribute("b")->value()));
 			//g_pMeshManager->m_mapRGBToMeshName[rgb] = meshName;
-			success = g_pMeshManager->loadMeshFileIntoGLBuffer(
-				meshName,
-				cMeshEntry_node->first_attribute("path")->value(),
-				std::stof(cMeshEntry_node->first_attribute("scale")->value()));
-
+			if (meshName == "Skeleton")
+			{
+				success = g_pMeshManager->loadFBXMeshFileIntoGLBuffer(
+					meshName,
+					cMeshEntry_node->first_attribute("path")->value(),
+					std::stof(cMeshEntry_node->first_attribute("scale")->value()));
+			}
+			else {
+				success = g_pMeshManager->loadMeshFileIntoGLBuffer(
+					meshName,
+					cMeshEntry_node->first_attribute("path")->value(),
+					std::stof(cMeshEntry_node->first_attribute("scale")->value()));
+			}
 			if (!success) {
 				std::cout << "We couldn't load a mesh. Please fix the XML File.."
 					<< std::endl;
