@@ -185,103 +185,97 @@ void cRenderManager::renderScene()
 	for each(cGraphicsObject* graphicObject in g_vec_pGraphicObjects)
 	{
 		if (graphicObject->pState->getMeshName() != "")
-		for each(cMesh* mesh in graphicObject->vec_meshes) {
-			
-			//glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, false);
+			for each(cMesh* mesh in graphicObject->vec_meshes) {
 
-			//glUniform1i(gUniformId_Toggle_Lights, false); // TODO: REMOVE THIS IT'S HERE FOR COMPAT WITH OLD PC
-			// per frame uniforms
-			glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
-				glm::value_ptr(projectionMatrix));
-			glUniformMatrix4fv(gUniformId_ViewMatrix, 1, GL_FALSE,
-				glm::value_ptr(viewMatrix));
-			glm::vec4 eye4;
-			gCamera->getEyePosition(eye4);
-			glUniform4fv(gUniformId_EyePosition, 1, glm::value_ptr(eye4));
-			glEnable(GL_MULTISAMPLE);
-			glEnable(GL_BLEND);
-			// glBlendEquation(GL_FUNC_ADD);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glEnable(GL_DEPTH_TEST);
+				//glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, false);
 
-			// glEnable(GL_COLOR_MATERIAL);
-			//if ((*iter)->isWireframe) {        // Turn off backface culling
-			//								   // Enable "wireframe" polygon mode
-			//	glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
-			//									 // you can pass here
-			//		GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
-			//	glDisable(GL_CULL_FACE);
-			//}
-			//else { // "Regular" rendering:
-			// Turn on backface culling
-			// Turn polygon mode to solid (Fill)
-			glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
-			glEnable(GL_CULL_FACE);
-			glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
-											 // you can pass here
-				GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
-								   //}
+				//glUniform1i(gUniformId_Toggle_Lights, false); // TODO: REMOVE THIS IT'S HERE FOR COMPAT WITH OLD PC
+				// per frame uniforms
+				glUniformMatrix4fv(gUniformId_PojectionMatrix, 1, GL_FALSE,
+					glm::value_ptr(projectionMatrix));
+				glUniformMatrix4fv(gUniformId_ViewMatrix, 1, GL_FALSE,
+					glm::value_ptr(viewMatrix));
+				glm::vec4 eye4;
+				gCamera->getEyePosition(eye4);
+				glUniform4fv(gUniformId_EyePosition, 1, glm::value_ptr(eye4));
+				glEnable(GL_MULTISAMPLE);
+				glEnable(GL_BLEND);
+				// glBlendEquation(GL_FUNC_ADD);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glEnable(GL_DEPTH_TEST);
 
-			glm::mat4 transform;
-			graphicObject->pState->getTransform(transform);
+				// glEnable(GL_COLOR_MATERIAL);
+				//if ((*iter)->isWireframe) {        // Turn off backface culling
+				//								   // Enable "wireframe" polygon mode
+				//	glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+				//									 // you can pass here
+				//		GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
+				//	glDisable(GL_CULL_FACE);
+				//}
+				//else { // "Regular" rendering:
+				// Turn on backface culling
+				// Turn polygon mode to solid (Fill)
+				glCullFace(GL_BACK); // GL_FRONT, GL_BACK, or GL_FRONT_AND_BACK
+				glEnable(GL_CULL_FACE);
+				glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+												 // you can pass here
+					GL_FILL);          // GL_POINT, GL_LINE, or GL_FILL
+									   //}
 
-			//transform[3] -= glm::vec4( graphicObject->pState->getBoundingBox().position, 0.0f);
-			float scaleF; // Only storing 1 value for scale at the moment.. TODO
-			graphicObject->pState->getScale(scaleF);
-			glm::vec3 scale(scaleF);
+				glm::mat4 transform;
+				graphicObject->pState->getTransform(transform);
 
-			if (mesh->meshName == "Skeleton") {
-				glm::vec3 box = graphicObject->pState->getBoundingBox().scale;
-				transform = glm::rotate(transform, -1.57f, glm::vec3(1.0f, 0.0f, 0.0f)); // So we are not rolling around on floor. Can't make changes to FBX..
-			}
-			glUniformMatrix4fv(
-				gUniformId_ModelMatrix, 1, GL_FALSE,
-				glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
-			glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
-				glm::value_ptr(glm::mat4()));
-			glUniform4fv(gUniformId_ModelColor, 1,
-				glm::value_ptr(glm::vec4(1.0f)));
-			glUniform1f(gUniformId_Alpha, 1.0f);
+				//transform[3] -= glm::vec4( graphicObject->pState->getBoundingBox().position, 0.0f);
+				float scaleF; // Only storing 1 value for scale at the moment.. TODO
+				graphicObject->pState->getScale(scaleF);
+				glm::vec3 scale(scaleF);
 
-
-			glDrawElementsBaseVertex(
-				GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].NumgIndices, GL_UNSIGNED_INT,
-				(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex),
-				g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex);
-			glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, true);
-			//glUniform1i(gUniformId_Toggle_Lights, true);
-			glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
-
-			if (mesh->meshName == "Skeleton") {
-				glm::vec3 box = graphicObject->pState->getBoundingBox().scale;
-				transform = glm::rotate(transform, 1.57f, glm::vec3(1.0f, 0.0f, 0.0f));
-				transform[3].y -= 0.5f;
-				glUniformMatrix4fv(
-					gUniformId_ModelMatrix, 1, GL_FALSE,
-					glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
-			}
-			if (g_bool_toggleDebugShapes) {
-				glUniform1i(gUniformId_Toggle_Textures, false);
-				glUniform1i(gUniformId_Toggle_Lights, false);
-				// DRAW WIREFRAME MESHES OF COLLIDING OBJECTS
-				if (graphicObject->pState->getIsColliding())
-				{
+				if (mesh->meshName == "Skeleton") {
+					transform = glm::rotate(transform, -1.57f, glm::vec3(1.0f, 0.0f, 0.0f)); // So we are not rolling around on floor. Can't make changes to FBX..
+					//g_pMeshManager->m_mapMeshNameToAnimatedMesh["Skeleton"]->draw(transform);
+					
+					glUniformMatrix4fv(
+						gUniformId_ModelMatrix, 1, GL_FALSE,
+						glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
+					glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
+						glm::value_ptr(glm::mat4()));
 					glUniform4fv(gUniformId_ModelColor, 1,
-						glm::value_ptr(glm::vec3(0.5f, 0.0f, 0.0f)));
+						glm::value_ptr(glm::vec4(1.0f)));
+					glUniform1f(gUniformId_Alpha, 1.0f);
 
-					glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
-													 // you can pass here
-						GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
-					glDisable(GL_CULL_FACE);
-					if (mesh->meshName != "Skeleton") {
-						glDrawElementsBaseVertex(
-							GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].NumgIndices, GL_UNSIGNED_INT,
-							(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex),
-							g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex);
-					}
-					else
+					glDrawElementsBaseVertex(
+						GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["skeleton_footman"].NumgIndices, GL_UNSIGNED_INT,
+						(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["skeleton_footman"].BaseIndex),
+						g_pMeshManager->m_MapMeshNameTocMeshEntry["skeleton_footman"].BaseIndex);
+
+
+					glDrawElementsBaseVertex(
+						GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["Skeleton_footman_arrmor"].NumgIndices, GL_UNSIGNED_INT,
+						(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["Skeleton_footman_arrmor"].BaseIndex),
+						g_pMeshManager->m_MapMeshNameTocMeshEntry["Skeleton_footman_arrmor"].BaseIndex);
+
+
+
+
+					if (graphicObject->pState->getIsColliding())
 					{
+						glUniform1i(gUniformId_Toggle_Textures, false);
+						glUniform1i(gUniformId_Toggle_Lights, false);
+						glUniform4fv(gUniformId_ModelColor, 1,
+							glm::value_ptr(glm::vec3(0.5f, 0.0f, 0.0f)));
+
+						glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+														 // you can pass here
+							GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
+						glDisable(GL_CULL_FACE);
+
 						glm::vec3 box = graphicObject->pState->getBoundingBox().scale;
+						transform = glm::rotate(transform, 1.57f, glm::vec3(1.0f, 0.0f, 0.0f));
+						transform[3].y -= 0.5f;
+						glUniformMatrix4fv(
+							gUniformId_ModelMatrix, 1, GL_FALSE,
+							glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
+
 						float scaleXZ = glm::max(box.x, box.z);
 						transform[3].y -= box.y / 1.75;
 						glUniformMatrix4fv(
@@ -291,13 +285,55 @@ void cRenderManager::renderScene()
 							GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["Capsule"].NumgIndices, GL_UNSIGNED_INT,
 							(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["Capsule"].BaseIndex),
 							g_pMeshManager->m_MapMeshNameTocMeshEntry["Capsule"].BaseIndex);
-					}
 
+						glUniform1i(gUniformId_Toggle_Textures, true);
+						glUniform1i(gUniformId_Toggle_Lights, true);
+					}
 				}
-				glUniform1i(gUniformId_Toggle_Textures, true);
-				glUniform1i(gUniformId_Toggle_Lights, true);
+				else {
+					glUniformMatrix4fv(
+						gUniformId_ModelMatrix, 1, GL_FALSE,
+						glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
+					glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
+						glm::value_ptr(glm::mat4()));
+					glUniform4fv(gUniformId_ModelColor, 1,
+						glm::value_ptr(glm::vec4(1.0f)));
+					glUniform1f(gUniformId_Alpha, 1.0f);
+
+
+					glDrawElementsBaseVertex(
+						GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].NumgIndices, GL_UNSIGNED_INT,
+						(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex),
+						g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex);
+					glUniform1i(gUniformId_Toggle_NormalAndSpecularMaps, true);
+					//glUniform1i(gUniformId_Toggle_Lights, true);
+					glBindTexture(GL_TEXTURE_2D, gUniformId_Texture0);
+
+					if (g_bool_toggleDebugShapes) {
+						glUniform1i(gUniformId_Toggle_Textures, false);
+						glUniform1i(gUniformId_Toggle_Lights, false);
+						// DRAW WIREFRAME MESHES OF COLLIDING OBJECTS
+						if (graphicObject->pState->getIsColliding())
+						{
+							glUniform4fv(gUniformId_ModelColor, 1,
+								glm::value_ptr(glm::vec3(0.5f, 0.0f, 0.0f)));
+
+							glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+															 // you can pass here
+								GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
+							glDisable(GL_CULL_FACE);
+							if (mesh->meshName != "Skeleton") {
+								glDrawElementsBaseVertex(
+									GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].NumgIndices, GL_UNSIGNED_INT,
+									(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex),
+									g_pMeshManager->m_MapMeshNameTocMeshEntry[mesh->meshName].BaseIndex);
+							}
+						}
+						glUniform1i(gUniformId_Toggle_Textures, true);
+						glUniform1i(gUniformId_Toggle_Lights, true);
+					}
+				}
 			}
-		}
 	}
 		/*if (g_bool_toggleDrawAABBs)
 		{

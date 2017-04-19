@@ -231,7 +231,7 @@ namespace GraphicsEngine {
 			//g_pMeshManager->m_mapRGBToMeshName[rgb] = meshName;
 			if (meshName == "Skeleton")
 			{
-				success = g_pMeshManager->loadFBXMeshFileIntoGLBuffer(
+				success = g_pMeshManager->loadFBXMesh(
 					meshName,
 					cMeshEntry_node->first_attribute("path")->value(),
 					std::stof(cMeshEntry_node->first_attribute("scale")->value()));

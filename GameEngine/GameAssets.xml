@@ -51,7 +51,7 @@
     <Mesh path="Assets/capsule_1x2.obj" scale="1.0f" name="Capsule" r="0" g="6" b="0"/>
     <Mesh path="Assets/TileMeshes/Stairs/StairsUp.obj" scale="1.0f" name="Stairs" r="0" g="6" b="0"/>
     <Mesh path="Assets/Skeleton/Skeleton_footman.FBX" scale="1.0f" name="Skeleton" r="6" g="0" b="0"/>
-
+    <!--<Mesh path="Assets/Skeleton/RPG-character-walk.FBX" scale="1.0f" name="Skeleton" r="6" g="0" b="0"/>-->
   </Meshes>
 
   <PhysicsMeshes>

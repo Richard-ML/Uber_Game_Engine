@@ -167,6 +167,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cAnimatedMesh.h" />
     <ClInclude Include="cCamera.h" />
     <ClInclude Include="cDebugRenderer.h" />
     <ClInclude Include="cGraphicsEngine.h" />
@@ -185,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
+    <ClCompile Include="cAnimatedMesh.cpp" />
     <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cGraphicsEngine.cpp" />
     <ClCompile Include="cLightManager.cpp" />

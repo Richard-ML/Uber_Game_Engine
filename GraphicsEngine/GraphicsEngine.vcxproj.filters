@@ -94,6 +94,9 @@
     <ClInclude Include="cTextManager.h">
       <Filter>DataModel\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cAnimatedMesh.h">
+      <Filter>DataModel\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -130,6 +133,9 @@
       <Filter>Config\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cTextManager.cpp">
+      <Filter>DataModel\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cAnimatedMesh.cpp">
       <Filter>DataModel\Source Files</Filter>
     </ClCompile>
   </ItemGroup>

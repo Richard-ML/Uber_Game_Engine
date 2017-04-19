@@ -5,6 +5,12 @@
 
 #include <sstream>
 #include <fbxsdk.h>
+#define PRINT_FBX_DEBUG_INFO
+/// <summary>	Number of vertices per polygon (assume triangles for now)  </summary>
+const int POLYGON_VERTEX_COUNT = 3;
+
+
+
 // The PIMPL idiom aka Compilation Firewall
 // Purpose: Encapsulate private member variables. Reduces make-time,
 // compile-time, and the Fragile Binary Interface Problem.
@@ -105,7 +111,7 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 	unsigned int vertexOffset = vertices.size();
 	unsigned int indexOffset = indices.size();
 	unsigned int numgVertices = mesh->mNumVertices;
-	unsigned int numgIndices = 3 * mesh->mNumFaces; // assume triangles
+	unsigned int numgIndices = POLYGON_VERTEX_COUNT * mesh->mNumFaces;
 
 	entryOut.BaseIndex = indexOffset;
 	entryOut.BaseVertex = vertexOffset;
@@ -135,12 +141,6 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 			aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 			// We assume a convention for sampler names in the shader. Each diffuse
 			// texture should be named
-			// as 'texture_diffuseN' where N is a sequential number ranging from 1 to
-			// MAX_SAMPLER_NUMBER.
-			// Same applies to other texture as the following list summarizes:
-			// Diffuse: texture_diffuseN
-			// Specular: texture_specularN
-			// Normal: texture_normalN
 			aiString textureStr;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &textureStr);
 			tempTextureUnit0 = g_pTextureManager->mapTextureNameToMipmapLevel[textureStr.C_Str()];
@@ -277,24 +277,24 @@ FbxString cMeshManager::getAttributeTypeName(FbxNodeAttribute::EType type) {
 	switch (type) {
 	case FbxNodeAttribute::eUnknown: return "UNKNOWN";
 	case FbxNodeAttribute::eNull: return "NULL";
-	case FbxNodeAttribute::eMarker: return "MARKER";
-	case FbxNodeAttribute::eSkeleton: return "SKELETON";
-	case FbxNodeAttribute::eMesh: return "MESH";
-	case FbxNodeAttribute::eNurbs: return "NURBS";
-	case FbxNodeAttribute::eNurbsCurve: return "NURBS_CURVE";
-	case FbxNodeAttribute::eNurbsSurface: return "NURBS_SURFACE";
-	case FbxNodeAttribute::ePatch: return "PATCH";
-	case FbxNodeAttribute::eCamera: return "CAMERA";
-	case FbxNodeAttribute::eCameraStereo: return "CAMERA_STEREO";
-	case FbxNodeAttribute::eCameraSwitcher: return "CAMERA_SWITCHER";
-	case FbxNodeAttribute::eLight: return "LIGHT";
-	case FbxNodeAttribute::eOpticalReference: return "OPTICLAL_REFERENCE";
-	case FbxNodeAttribute::eOpticalMarker: return "OPTICAL_MARKER";
-	case FbxNodeAttribute::eTrimNurbsSurface: return "TRIM_NURBS_SURFACE";
-	case FbxNodeAttribute::eBoundary: return "BOUNDARY";
-	case FbxNodeAttribute::eShape: return "SHAPE";
-	case FbxNodeAttribute::eLODGroup: return "LOD_GROUP";
-	case FbxNodeAttribute::eSubDiv: return "SUB_DIVISION";
+	case FbxNodeAttribute::eMarker: return "Marker";
+	case FbxNodeAttribute::eSkeleton: return "Skeleton";
+	case FbxNodeAttribute::eMesh: return "Mesh";
+	case FbxNodeAttribute::eNurbs: return "Nurbs";
+	case FbxNodeAttribute::eNurbsCurve: return "NurbsCurve";
+	case FbxNodeAttribute::eNurbsSurface: return "NurbsSurface";
+	case FbxNodeAttribute::ePatch: return "Patch";
+	case FbxNodeAttribute::eCamera: return "Camera";
+	case FbxNodeAttribute::eCameraStereo: return "CameraStereo";
+	case FbxNodeAttribute::eCameraSwitcher: return "CameraSwitcher";
+	case FbxNodeAttribute::eLight: return "Light";
+	case FbxNodeAttribute::eOpticalReference: return "OpticalReference";
+	case FbxNodeAttribute::eOpticalMarker: return "OpticalMarker";
+	case FbxNodeAttribute::eTrimNurbsSurface: return "TrimNurbsSurface";
+	case FbxNodeAttribute::eBoundary: return "Boundary";
+	case FbxNodeAttribute::eShape: return "Shape";
+	case FbxNodeAttribute::eLODGroup: return "LODGroup";
+	case FbxNodeAttribute::eSubDiv: return "SubDivision";
 	default: return "DEFAULT_VALUE";
 	}
 }
@@ -313,12 +313,12 @@ void cMeshManager::printAttribute(FbxNodeAttribute* pAttribute) {
 	FbxString attrName = pAttribute->GetName();
 	printTabs();
 	/// <summary> Use Buffer() to retrieve character array of FBX string. </summary>
-	printf("<attribute type='%s' name='%s'/>\n", typeName.Buffer(), attrName.Buffer());
+	printf("<%s name='%s'/>\n", typeName.Buffer(), attrName.Buffer());
 }
 
 ///-------------------------------------------------------------------------------------------------
 /// <summary>
-/// Printing node details to the console. Prints the node, its attributes, and all its children
+/// Printing node details to the console. Prints the node, its attributes, and all of its children
 /// recursively.
 /// </summary>
 ///
@@ -334,18 +334,14 @@ void cMeshManager::printNode(FbxNode* pNode) {
 	FbxDouble3 scale = pNode->LclScaling.Get();
 
 	/// <summary> Print the properties of the node. </summary>
-	printf("<node name='%s' translation='(%f, %f, %f)' rotation='(%f, %f, %f)' scaling='(%f, %f, %f)'>\n",
+	printf("<%s translation='(%f, %f, %f)' rotation='(%f, %f, %f)' scaling='(%f, %f, %f)'>\n",
 		nodeName,
 		translation[0], translation[1], translation[2],
 		rotation[0], rotation[1], rotation[2],
 		scale[0], scale[1], scale[2]
 	);
-	std::string name = nodeName;
-	if (name == "skeleton_footman")
-	{
-		processFBXMeshNode(pNode);
-	}
-	tabs_count++;
+
+	tabs_count++; // Increment the amount of tabs to correctly format the output
 
 	/// <summary> Print each of the node's attributes. </summary>
 	for (int i = 0; i < pNode->GetNodeAttributeCount(); i++)
@@ -357,93 +353,12 @@ void cMeshManager::printNode(FbxNode* pNode) {
 
 	tabs_count--;
 	printTabs();
-	printf("</node>\n");
+	printf("</%s>\n", nodeName);
 }
 
-bool cMeshManager::processFBXMeshNode(FbxNode* meshNode)
-{
-	FbxMesh* pMesh = meshNode->GetMesh();
-	/// <summary> Create and initialize a new Mesh Entry. </summary>
-	cMeshEntry meshEntry;
-	meshEntry.BaseIndex = 0;
-	meshEntry.BaseVertex = 0;
-	meshEntry.NumgIndices = 0;
-
-	unsigned int vertexOffset = vertices.size();
-	unsigned int indexOffset = indices.size();
-	unsigned int numgVertices = pMesh->GetPolygonVertexCount();
-	unsigned int numgIndices = pMesh->GetPolygonCount() * 3;
-
-
-	meshEntry.BaseIndex = indexOffset;
-	meshEntry.BaseVertex = vertexOffset;
-	meshEntry.NumgVertices = numgVertices;
-	meshEntry.NumgIndices = numgIndices;
-
-	// Fill gVertices positions
-	vertices.resize(vertexOffset + pMesh->GetPolygonVertexCount());
-	indices.resize(indexOffset + numgIndices);
-	std::vector<sTriangleFace *> tempVecsTriangleFace;
-	tempVecsTriangleFace.reserve(pMesh->GetPolygonCount());
-
-     FbxLayerElementUV* UVs = pMesh->GetLayer(0)->GetUVs();
-	 FbxLayerElementNormal * normals =  pMesh->GetLayer(0)->GetNormals();
-	 
-	double scale = 0.075;
-	
-		// Get control points (=vertices for a mesh)
-		FbxVector4* fbxControlPoints = pMesh->GetControlPoints();
-
-
-		/// <summary> Load Vertices </summary>
-	for (int ncPolygon = 0; ncPolygon < pMesh->GetPolygonCount(); ncPolygon++) {
-		// For each vertex in the polygon ( assume triangles ) 
-		for (unsigned ncVertex = 0; ncVertex < 3; ncVertex++) {
-			FbxVector4 vert = pMesh->GetControlPointAt((ncPolygon * 3) + ncVertex);
-			sMeshVertex &vert1 = vertices[vertexOffset + (ncPolygon * 3) + ncVertex];
-
-			vert1.textureUnits = g_pTextureManager->mapTextureNameToMipmapLevel["Skeleton"];
-			//int fbxCornerIndex = pMesh->GetPolygonVertex(ncPolygon, ncVertex);
-
-			FbxVector4 fbxVertex = fbxControlPoints[(ncPolygon * 3) + ncVertex];
-			// Get vertex position
-			vert1.Position = glm::vec4((float)fbxVertex.mData[0] * scale, (float)fbxVertex.mData[1] * scale, (float)fbxVertex.mData[2] * scale, 1.f);
-
-			// Get normal
-			FbxVector4 fbxNormal;
-			pMesh->GetPolygonVertexNormal(ncPolygon, ncVertex, fbxNormal);
-			fbxNormal.Normalize();
-			vert1.Normal = glm::vec4((float)fbxNormal.mData[0], (float)fbxNormal.mData[1], (float)fbxNormal.mData[2], (float)fbxNormal.mData[3]);
-
-			// Get texture coordinates
-			FbxLayerElementUV * texCoords =	pMesh->GetLayer(0)->GetUVs();
-			                                   //V Should be ncPolygon TEXTURE COORDINATE ISSUE HERE.
-			int index = pMesh->GetTextureUVIndex(6, ncVertex);
-			vert1.TexCoord = glm::vec4((float)texCoords->GetDirectArray().GetAt(index)[0],(float)texCoords->GetDirectArray().GetAt(index)[1],1.0f, 0.0f);
-		}
-	}
-	
-		for (int nc = 0; nc < pMesh->GetPolygonVertexCount(); nc++)
-		{
-			indices[indexOffset + nc] = pMesh->GetPolygonVertices()[nc];
-		}
-
-
-		
-	meshFaces.push_back(tempVecsTriangleFace);
-	m_MapMeshNameTocMeshEntry["Skeleton"] = meshEntry;
-
-	sBoundingBox boundingBox;
-	boundingBox.scale = (glm::vec3(9.0f, 12.5f, 7.0f)); // NOTE: This is not the boxes half-widths. This is the actual scale factor that is applied to the cube primitive. 
-									 //glm::vec3(max.x - min.x, (max.y - min.y), max.z - min.z);
-	//boundingBox.position = glm::vec3(0.0f);
-	m_MapMeshNameToAABB["Skeleton"] = boundingBox;
-
-	return true;
-}
 
 ///-------------------------------------------------------------------------------------------------
-/// <summary>	Loads FBX mesh file into gl buffer. </summary>
+/// <summary>	Main routine for loading FBX meshes. </summary>
 ///
 /// <remarks>	Richard, 4/12/2017. </remarks>
 ///
@@ -453,7 +368,7 @@ bool cMeshManager::processFBXMeshNode(FbxNode* meshNode)
 ///
 /// <returns>	True if it succeeds, false if it fails. </returns>
 ///-------------------------------------------------------------------------------------------------
-bool cMeshManager::loadFBXMeshFileIntoGLBuffer(std::string name, const char * path, float scale)
+bool cMeshManager::loadFBXMesh(std::string name, const char * path, float scale)
 {
 	/// <summary> Create the SDK manager which handles memory management. </summary>
 	FbxManager* pSdkManager = FbxManager::Create();
@@ -463,33 +378,51 @@ bool cMeshManager::loadFBXMeshFileIntoGLBuffer(std::string name, const char * pa
 
 	/// <summary> Create the importer. </summary>
 	FbxImporter* pImporter = FbxImporter::Create(pSdkManager, "");
-
+	/// <todo>  Convert Axis System to the one that is used in this engine, if needed </todo>
 	/// <summary> Pass filename to the importer. </summary>
 	if (!pImporter->Initialize(path, -1, pSdkManager->GetIOSettings())) {
 		printf("Call to FbxImporter::Initialize() failed.\n");
 		printf("Error returned: %s\n\n", pImporter->GetStatus().GetErrorString());
 		exit(-1);
 	}
-
+	/// <summary> Create a new animated mesh. </summary>
+	cAnimatedMesh* pAnimatedMesh = new cAnimatedMesh();
+	m_mapMeshNameToAnimatedMesh["Skeleton"] = pAnimatedMesh;
 	/// <summary> Create a new Scene. </summary>
 	FbxScene* pScene = FbxScene::Create(pSdkManager, "myScene");
 
 	/// <summary> Import contents of FBX file into the scene. </summary>
 	pImporter->Import(pScene);
 
+	//FbxGeometryConverter lGeomConverter(pSdkManager);
+	// Triangulate mesh? This one is already triangulated..
+	//lGeomConverter.Triangulate(pScene, true);
+	// Separate meshes per material, one material per mesh (for VBO support)
+	//lGeomConverter.SplitMeshesPerMaterial(pScene, true);
+
 	/// <summary> The file is now loaded into the scene. So we no longer need the importer. </summary>
 	pImporter->Destroy();
 
+	/// <summary> Initialize this animated mesh object's scene handle </summary>
+	pAnimatedMesh->initializeSceneHandle(pScene);
+
+	/// <summary> Add pose details to animated mesh object </summary>
+	pAnimatedMesh->loadPoses();
+	
+	pAnimatedMesh->loadMeshes();
+
+#ifdef PRINT_FBX_DEBUG_INFO
 	/// <summary> Print the nodes of the scene and their attributes recursively.
 	/// NOTE: We are not printing the root node because it should
 	///		  not contain any attributes. </summary>
 	FbxNode* pRootNode = pScene->GetRootNode();
 	if (pRootNode) {
-		for (int i = 0; i < pRootNode->GetChildCount(); i++)
-			printNode(pRootNode->GetChild(i));
+		for (int nc = 0; nc < pRootNode->GetChildCount(); nc++)
+			printNode(pRootNode->GetChild(nc));
 	}
+#endif
 	/// <summary> Destroy the SDK manager deleting all objects that belong to it. </summary>
-	pSdkManager->Destroy();
+	//pSdkManager->Destroy();
 
 	return true;
 }

@@ -2,20 +2,7 @@
 #define _cMeshManager_HG_
 #include "stdafx.h"
 #include <fbxsdk.h>
-///-------------------------------------------------------------------------------------------------
-/// <summary>	A mesh entry. </summary>
-///
-/// <remarks>	Richard, 4/12/2017. </remarks>
-///-------------------------------------------------------------------------------------------------
-
-struct cMeshEntry {
-	int NumgIndices;
-	int NumgVertices;
-	int BaseIndex;
-	int BaseVertex;
-};
-
-
+#include "cAnimatedMesh.h"
 ///-------------------------------------------------------------------------------------------------
 /// <summary>	Manager for meshes. </summary>
 ///
@@ -46,12 +33,17 @@ class cMeshManager {
 	///-------------------------------------------------------------------------------------------------
 
 	cMeshManager_Impl *impl();
-	bool processFBXMeshNode(FbxNode* meshNode);
 	void printNode(FbxNode* pNode);
 	void printAttribute(FbxNodeAttribute* pAttribute);
 	FbxString getAttributeTypeName(FbxNodeAttribute::EType type);
 	void printTabs();
 public:
+	
+	struct sAnimatedMesh {
+
+	};
+
+
 
 	///-------------------------------------------------------------------------------------------------
 	/// <summary>	Gets the instance. </summary>
@@ -90,7 +82,7 @@ public:
 	/// <returns>	True if it succeeds, false if it fails. </returns>
 	///-------------------------------------------------------------------------------------------------
 
-	bool loadFBXMeshFileIntoGLBuffer(std::string name, const char *path, float scale);
+	bool loadFBXMesh(std::string name, const char *path, float scale);
 
 	///-------------------------------------------------------------------------------------------------
 	/// <summary>	Loads the world. </summary>
@@ -98,7 +90,7 @@ public:
 	/// <remarks>	Richard, 4/12/2017. </remarks>
 	///-------------------------------------------------------------------------------------------------
 
-	void loadWorld();
+	//void loadWorld();
 
 	// Could be in global.. 
 	std::vector<std::vector<sTriangleFace *>> meshFaces;
@@ -109,6 +101,7 @@ public:
 	// Map... aka "dictionary" "look up table"
 	std::map<std::string, cMeshEntry> m_MapMeshNameTocMeshEntry;
 	std::map<glm::vec3, std::string> m_mapRGBToMeshName;
+	std::map<std::string, cAnimatedMesh*> m_mapMeshNameToAnimatedMesh;
 private:
 	cMeshManager() {
 	} // Constructor is private therefore a new instance can not be made
