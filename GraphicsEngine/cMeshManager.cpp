@@ -5,6 +5,8 @@
 
 #include <sstream>
 #include <fbxsdk.h>
+//#include <fbxsdk\scene\animation\fbxanimstack.h>
+//#include <fbxsdk\core\fbxpropertydef.h>
 #define PRINT_FBX_DEBUG_INFO
 /// <summary>	Number of vertices per polygon (assume triangles for now)  </summary>
 const int POLYGON_VERTEX_COUNT = 3;
@@ -394,28 +396,23 @@ bool cMeshManager::loadFBXMesh(std::string name, const char * path, float scale)
 	/// <summary> Import contents of FBX file into the scene. </summary>
 	pImporter->Import(pScene);
 
-	//FbxGeometryConverter lGeomConverter(pSdkManager);
-	// Triangulate mesh? This one is already triangulated..
-	//lGeomConverter.Triangulate(pScene, true);
-	// Separate meshes per material, one material per mesh (for VBO support)
-	//lGeomConverter.SplitMeshesPerMaterial(pScene, true);
-
 	/// <summary> The file is now loaded into the scene. So we no longer need the importer. </summary>
 	pImporter->Destroy();
-
 	/// <summary> Initialize this animated mesh object's scene handle </summary>
 	pAnimatedMesh->initializeSceneHandle(pScene);
 
 	/// <summary> Add pose details to animated mesh object </summary>
 	pAnimatedMesh->loadPoses();
 	
-	pAnimatedMesh->loadMeshes();
+	pAnimatedMesh->loadMeshes(pScene->GetRootNode());
+
 
 #ifdef PRINT_FBX_DEBUG_INFO
 	/// <summary> Print the nodes of the scene and their attributes recursively.
 	/// NOTE: We are not printing the root node because it should
 	///		  not contain any attributes. </summary>
 	FbxNode* pRootNode = pScene->GetRootNode();
+
 	if (pRootNode) {
 		for (int nc = 0; nc < pRootNode->GetChildCount(); nc++)
 			printNode(pRootNode->GetChild(nc));

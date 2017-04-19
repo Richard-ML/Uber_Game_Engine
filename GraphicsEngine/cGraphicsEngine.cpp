@@ -300,7 +300,8 @@ namespace GraphicsEngine {
 			glBindVertexArray(gCubeVAO);
 			buffersInitialized = true;
 		}
-		deltaTime = deltaTime * 1000.0f;
+		//deltaTime = deltaTime * 1000.0f;
+		g_pMeshManager->m_mapMeshNameToAnimatedMesh["Skeleton"]->update(deltaTime);
 
 		/////////////////////////////////////////////////////////////////////////////////////////
 		// TODO: Create input manager that gets updated each tick //////////////////////////////

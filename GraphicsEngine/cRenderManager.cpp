@@ -231,31 +231,24 @@ void cRenderManager::renderScene()
 				glm::vec3 scale(scaleF);
 
 				if (mesh->meshName == "Skeleton") {
-					transform = glm::rotate(transform, -1.57f, glm::vec3(1.0f, 0.0f, 0.0f)); // So we are not rolling around on floor. Can't make changes to FBX..
+					//transform = glm::rotate(transform, -1.57f, glm::vec3(1.0f, 0.0f, 0.0f)); // So we are not rolling around on floor. Can't make changes to FBX..
 					//g_pMeshManager->m_mapMeshNameToAnimatedMesh["Skeleton"]->draw(transform);
-					
+					// 
+					glm::vec3 box = graphicObject->pState->getBoundingBox().scale;
+					transform[3].y -= 0.5f;
+					float scaleXZ = glm::max(box.x, box.z);
+					transform[3].y -= box.y / 1.75f;
 					glUniformMatrix4fv(
 						gUniformId_ModelMatrix, 1, GL_FALSE,
-						glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
+						glm::value_ptr(glm::scale(transform, glm::vec3(0.075f))));
 					glUniformMatrix4fv(gUniformId_ModelMatrixOrientation, 1, GL_FALSE,
 						glm::value_ptr(glm::mat4()));
 					glUniform4fv(gUniformId_ModelColor, 1,
 						glm::value_ptr(glm::vec4(1.0f)));
 					glUniform1f(gUniformId_Alpha, 1.0f);
 
-					glDrawElementsBaseVertex(
-						GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["skeleton_footman"].NumgIndices, GL_UNSIGNED_INT,
-						(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["skeleton_footman"].BaseIndex),
-						g_pMeshManager->m_MapMeshNameTocMeshEntry["skeleton_footman"].BaseIndex);
 
-
-					glDrawElementsBaseVertex(
-						GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["Skeleton_footman_arrmor"].NumgIndices, GL_UNSIGNED_INT,
-						(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["Skeleton_footman_arrmor"].BaseIndex),
-						g_pMeshManager->m_MapMeshNameTocMeshEntry["Skeleton_footman_arrmor"].BaseIndex);
-
-
-
+					g_pMeshManager->m_mapMeshNameToAnimatedMesh["Skeleton"]->draw(glm::scale(transform, glm::vec3(0.075f)));
 
 					if (graphicObject->pState->getIsColliding())
 					{
@@ -270,14 +263,8 @@ void cRenderManager::renderScene()
 						glDisable(GL_CULL_FACE);
 
 						glm::vec3 box = graphicObject->pState->getBoundingBox().scale;
-						transform = glm::rotate(transform, 1.57f, glm::vec3(1.0f, 0.0f, 0.0f));
-						transform[3].y -= 0.5f;
-						glUniformMatrix4fv(
-							gUniformId_ModelMatrix, 1, GL_FALSE,
-							glm::value_ptr(glm::scale(transform, glm::vec3(scale))));
+						//transform = glm::rotate(transform, 1.57f, glm::vec3(1.0f, 0.0f, 0.0f));
 
-						float scaleXZ = glm::max(box.x, box.z);
-						transform[3].y -= box.y / 1.75;
 						glUniformMatrix4fv(
 							gUniformId_ModelMatrix, 1, GL_FALSE,
 							glm::value_ptr(glm::scale(transform, glm::vec3(scaleXZ, (box.y / 1.63f), scaleXZ))));
