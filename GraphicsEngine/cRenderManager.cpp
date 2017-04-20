@@ -250,31 +250,33 @@ void cRenderManager::renderScene()
 
 					g_pMeshManager->m_mapMeshNameToAnimatedMesh["Skeleton"]->draw(glm::scale(transform, glm::vec3(0.075f)));
 
-					if (graphicObject->pState->getIsColliding())
-					{
-						glUniform1i(gUniformId_Toggle_Textures, false);
-						glUniform1i(gUniformId_Toggle_Lights, false);
-						glUniform4fv(gUniformId_ModelColor, 1,
-							glm::value_ptr(glm::vec3(0.5f, 0.0f, 0.0f)));
+					if (g_bool_toggleDebugShapes) {
+						if (graphicObject->pState->getIsColliding())
+						{
+							glUniform1i(gUniformId_Toggle_Textures, false);
+							glUniform1i(gUniformId_Toggle_Lights, false);
+							glUniform4fv(gUniformId_ModelColor, 1,
+								glm::value_ptr(glm::vec3(0.5f, 0.0f, 0.0f)));
 
-						glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
-														 // you can pass here
-							GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
-						glDisable(GL_CULL_FACE);
+							glPolygonMode(GL_FRONT_AND_BACK, // GL_FRONT_AND_BACK is the only thing
+															 // you can pass here
+								GL_LINE);          // GL_POINT, GL_LINE, or GL_FILL
+							glDisable(GL_CULL_FACE);
 
-						glm::vec3 box = graphicObject->pState->getBoundingBox().scale;
-						//transform = glm::rotate(transform, 1.57f, glm::vec3(1.0f, 0.0f, 0.0f));
+							glm::vec3 box = graphicObject->pState->getBoundingBox().scale;
+							//transform = glm::rotate(transform, 1.57f, glm::vec3(1.0f, 0.0f, 0.0f));
 
-						glUniformMatrix4fv(
-							gUniformId_ModelMatrix, 1, GL_FALSE,
-							glm::value_ptr(glm::scale(transform, glm::vec3(scaleXZ, (box.y / 1.63f), scaleXZ))));
-						glDrawElementsBaseVertex(
-							GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["Capsule"].NumgIndices, GL_UNSIGNED_INT,
-							(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["Capsule"].BaseIndex),
-							g_pMeshManager->m_MapMeshNameTocMeshEntry["Capsule"].BaseIndex);
+							glUniformMatrix4fv(
+								gUniformId_ModelMatrix, 1, GL_FALSE,
+								glm::value_ptr(glm::scale(transform, glm::vec3(scaleXZ, (box.y / 1.63f), scaleXZ))));
+							glDrawElementsBaseVertex(
+								GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["Capsule"].NumgIndices, GL_UNSIGNED_INT,
+								(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["Capsule"].BaseIndex),
+								g_pMeshManager->m_MapMeshNameTocMeshEntry["Capsule"].BaseIndex);
 
-						glUniform1i(gUniformId_Toggle_Textures, true);
-						glUniform1i(gUniformId_Toggle_Lights, true);
+							glUniform1i(gUniformId_Toggle_Textures, true);
+							glUniform1i(gUniformId_Toggle_Lights, true);
+						}
 					}
 				}
 				else {

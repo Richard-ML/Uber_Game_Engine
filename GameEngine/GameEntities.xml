@@ -18,6 +18,47 @@
       </RigidBody>
     </PhysicsComponent>
   </GameEntity>
+
+
+  <GameEntity>
+    <RenderableComponent>
+      <Mesh name="Skeleton" outline="false" />
+    </RenderableComponent>
+    <PhysicsComponent>
+      <RigidBody offsetX="30.668154" offsetY="6.06504" offsetZ="50.5571" mass="1" hingeConstraint="5" >
+        <CollisionInfo collisionMask="1" >
+          <CollidesWith collisionMask="0" />
+          <CollidesWith collisionMask="1" />
+          <CollidesWith collisionMask="2" />
+          <CollidesWith collisionMask="3" />
+          <CollidesWith collisionMask="4" />
+          <CollidesWith collisionMask="5" />
+        </CollisionInfo>
+      </RigidBody>
+    </PhysicsComponent>
+  </GameEntity>
+
+
+
+  <GameEntity>
+    <RenderableComponent>
+      <Mesh name="Skeleton" outline="false" />
+    </RenderableComponent>
+    <PhysicsComponent>
+      <RigidBody offsetX="-30.668154" offsetY="6.06504" offsetZ="50.5571" mass="1" hingeConstraint="5" >
+        <CollisionInfo collisionMask="1" >
+          <CollidesWith collisionMask="0" />
+          <CollidesWith collisionMask="1" />
+          <CollidesWith collisionMask="2" />
+          <CollidesWith collisionMask="3" />
+          <CollidesWith collisionMask="4" />
+          <CollidesWith collisionMask="5" />
+        </CollisionInfo>
+      </RigidBody>
+    </PhysicsComponent>
+  </GameEntity>
+
+
   <GameEntity>
     <RenderableComponent>
       <Mesh name="Arc" outline="false" />

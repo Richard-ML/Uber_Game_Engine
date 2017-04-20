@@ -131,6 +131,15 @@ void callback_KeyPress(GLFWwindow *window, int key, int scancode, int action,
 				glfwTerminate();
 			}
 			break;
+
+
+			case GLFW_KEY_Q:
+			{
+				gToggle_Skybox = !gToggle_Skybox;
+				g_bool_toggleDebugShapes = !g_bool_toggleDebugShapes;
+			}
+			break;
+
 			case GLFW_KEY_DELETE:
 			{
 				g_pWorld->removeObjectsAtSelection();

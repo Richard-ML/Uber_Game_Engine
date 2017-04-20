@@ -14,7 +14,6 @@ struct cMeshEntry {
 	int BaseIndex;
 	int BaseVertex;
 };
-// TODO: Rename to cAnimatedMesh
 class cAnimatedMesh {
 	FbxScene * m_pScene;
 

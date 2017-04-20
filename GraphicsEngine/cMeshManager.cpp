@@ -232,7 +232,7 @@ bool cMeshManager::loadMeshFileIntoGLBuffer(std::string name, const char *path, 
 
 		if (name != "Skeleton" && name != "FloorTile")
 		{
-			std::cout << "Num Verts " << mesh->mNumVertices << std::endl;
+			//std::cout << "Num Verts " << mesh->mNumVertices << std::endl;
 			const unsigned int numIndices = mesh->mNumFaces * 3;
 			const unsigned int numVertices = mesh->mNumVertices;
 			g_pWorld->generatePhysicsMesh(name, &indices[indexOffset], &vertices[vertexOffset], numIndices, numVertices);
@@ -408,15 +408,8 @@ bool cMeshManager::loadFBXMesh(std::string name, const char * path, float scale)
 
 
 #ifdef PRINT_FBX_DEBUG_INFO
-	/// <summary> Print the nodes of the scene and their attributes recursively.
-	/// NOTE: We are not printing the root node because it should
-	///		  not contain any attributes. </summary>
-	FbxNode* pRootNode = pScene->GetRootNode();
-
-	if (pRootNode) {
-		for (int nc = 0; nc < pRootNode->GetChildCount(); nc++)
-			printNode(pRootNode->GetChild(nc));
-	}
+	/// <summary> Print the nodes of the scene and their attributes recursively. </summary>
+			printNode(pScene->GetRootNode());
 #endif
 	/// <summary> Destroy the SDK manager deleting all objects that belong to it. </summary>
 	//pSdkManager->Destroy();
