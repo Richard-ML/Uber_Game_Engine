@@ -301,7 +301,7 @@ namespace GraphicsEngine {
 			buffersInitialized = true;
 		}
 		//deltaTime = deltaTime * 1000.0f;
-		g_pMeshManager->m_mapMeshNameToAnimatedMesh["Skeleton"]->update(deltaTime);
+
 
 		/////////////////////////////////////////////////////////////////////////////////////////
 		// TODO: Create input manager that gets updated each tick //////////////////////////////
@@ -316,10 +316,18 @@ namespace GraphicsEngine {
 		{
 			// TODO: Add velocity based on delta time. 
 			glm::vec3 translation = glm::vec3(0.0f, 0.0f, 1.28f);
+			bool isRunning;
+			bool isBackwards;
 			if (pressS)
+			{
 				translation *= -1.0f;
+				isBackwards = true;
+			}
 			if (pressShift)
+			{
 				translation *= 3.0f;
+				isRunning = true;
+			}
 			for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
 			{
 				glm::mat4 newTrans = glm::translate(controlComponent.pState->getTransform(), translation);
@@ -328,6 +336,20 @@ namespace GraphicsEngine {
 				tempTrans[3] = glm::vec4(0.0f);
 				controlComponent.pState->setImpluse(glm::vec3(glm::translate(tempTrans, translation)[3]));
 				gCamera->setTargetTransform(newTrans);
+				if(isRunning)
+					controlComponent.pState->setBehavioralState(RUN);
+				else
+				controlComponent.pState->setBehavioralState(WALK); // Set character state to walking..
+
+				if (isBackwards)
+					controlComponent.pState->setBehavioralState(WALK_BACKWARDS);
+			}
+		}
+		else
+		{
+			for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
+			{
+				controlComponent.pState->setBehavioralState(IDLE);
 			}
 		}
 
@@ -352,6 +374,7 @@ namespace GraphicsEngine {
 			for each (cPlayerControlComponent controlComponent in g_vec_playerControlComponents)
 			{
 				controlComponent.pState->setImpluse(controlComponent.pState->getImpluse() + glm::vec3(0.0f, 10.0f, 0.0f));
+				controlComponent.pState->setBehavioralState(JUMP);
 			}
 		}
 		// TODO: Fix this so that it does not just set the camera target transform to the last player control component in the vector

@@ -70,7 +70,7 @@ namespace ComponentManager {
 /// <summary>	A macro that defines register component. </summary>
 ///
 /// <remarks>
-/// Richard, 4/12/2017. NOTE: Backslash token must be followed by new line character.
+/// Richard, NOTE: Backslash token must be followed by new line character.
 /// </remarks>
 ///
 /// <param name="COMPONENT_TYPE">	Type of the component. </param>

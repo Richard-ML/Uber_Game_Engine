@@ -166,10 +166,8 @@ void cRenderManager::renderTheSkybox() {
 void cRenderManager::renderScene()
 {
 
-	
 	// Render Skybox
 	renderTheSkybox();
-
 
 	glm::mat4 projectionMatrix;
 	glm::mat4 viewMatrix;
@@ -246,8 +244,12 @@ void cRenderManager::renderScene()
 					glUniform4fv(gUniformId_ModelColor, 1,
 						glm::value_ptr(glm::vec4(1.0f)));
 					glUniform1f(gUniformId_Alpha, 1.0f);
-
-
+					glUniform1i(gUniformId_Toggle_Textures, true);
+					glUniform1i(gUniformId_Toggle_Lights, true);
+					//if (graphicObject->pState->getIsColliding())
+					g_pMeshManager->m_mapMeshNameToAnimatedMesh["Skeleton"]->update(0.016f, graphicObject->pState->getBehavioralState()); // NOTE: Hard-coded delta-time for now..
+					//else
+					//	g_pMeshManager->m_mapMeshNameToAnimatedMesh["Skeleton"]->update(0.016f, JUMP);
 					g_pMeshManager->m_mapMeshNameToAnimatedMesh["Skeleton"]->draw(glm::scale(transform, glm::vec3(0.075f)));
 
 					if (g_bool_toggleDebugShapes) {
@@ -373,7 +375,6 @@ void cRenderManager::renderScene()
 			}
 			glUniform1f(gUniformId_Alpha, 0.65f);
 
-
 			glDrawElementsBaseVertex(
 				GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].NumgIndices, GL_UNSIGNED_INT,
 				(void *)(sizeof(unsigned int) *  g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].BaseIndex),
@@ -424,7 +425,6 @@ void cRenderManager::renderScene()
 			glUniform4fv(gUniformId_ModelColor, 1,
 				glm::value_ptr(shape.color));
 			glUniform1f(gUniformId_Alpha, 0.65f);
-
 
 			glDrawElementsBaseVertex(
 				GL_TRIANGLES, g_pMeshManager->m_MapMeshNameTocMeshEntry["Cube"].NumgIndices, GL_UNSIGNED_INT,

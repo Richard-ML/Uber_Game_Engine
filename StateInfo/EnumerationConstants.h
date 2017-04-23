@@ -85,4 +85,5 @@ struct sTriangleFace {
 
 enum eActiveWorldTileSelection { FLOOR, WALL_LEFT, WALL_RIGHT, WALL_FORWARD, WALL_BACKWARD };
 
+enum eCharacterBehavioralState { IDLE, WALK, WALK_BACKWARDS, RUN, JUMP, CROUCH };
 #endif

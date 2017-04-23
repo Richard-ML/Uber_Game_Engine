@@ -140,10 +140,16 @@ bool cAnimatedMesh::processFBXMeshNode(FbxNode * pMeshNode)
 			const char* lUVSetName = lUVSetNameList.GetStringAt(0);
 			FbxVector2 lUVValue;
 			bool mapped; 
-			
+
+
 			const FbxGeometryElementUV* lUVElement = pMesh->GetNode()->GetMesh()->GetElementUV(lUVSetName);
 			fbxsdk_2015_1::FbxLayerElement::EReferenceMode mode = lUVElement->GetReferenceMode();
+			
+			lUVValue = lUVElement->GetDirectArray().GetAt(ncVertex);
+			vert1.TexCoord = glm::vec4((float)lUVValue.mData[0], (float)lUVValue.mData[1], 1.0f, 1.0f);
 
+#define NO_TEX_COORDS
+#ifdef NO_TEX_COORDS
 				if (!lUVElement)
 					continue;
 				// only support mapping mode eByPolygonVertex and eByControlPoint
@@ -157,15 +163,12 @@ bool cAnimatedMesh::processFBXMeshNode(FbxNode * pMeshNode)
 				const int lPolyCount = pMesh->GetPolygonCount();
 				if (lUVElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
 				{
-				
 							FbxVector2 lUVValue;
 							//get the index of the current vertex in control points array
 							int lPolyVertIndex = pMesh->GetPolygonVertex(ncPolygon, ncVertex);
 							//the UV index depends on the reference mode
 							int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyVertIndex) : lPolyVertIndex;
 							lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
-							//User TODO:
-							//Print out the value of UV(lUVValue) or log it to a file
 							vert1.TexCoord = glm::vec4((float)lUVValue.mData[0], (float)lUVValue.mData[1], 1.0f, 1.0f);
 				}
 				else if (lUVElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
@@ -177,12 +180,11 @@ bool cAnimatedMesh::processFBXMeshNode(FbxNode * pMeshNode)
 								//the UV index depends on the reference mode
 								int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyIndexCounter) : lPolyIndexCounter;
 								lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
-								//User TODO:
-								//Print out the value of UV(lUVValue) or log it to a file
 								vert1.TexCoord = glm::vec4((float)lUVValue.mData[0], (float)lUVValue.mData[1], 1.0f, 1.0f);
 								lPolyIndexCounter++;
 					}
 				}
+#endif
 			}
 	}
 
@@ -298,19 +300,63 @@ bool cAnimatedMesh::processFBXMeshNode(FbxNode * pMeshNode)
 /// <param name="deltaTime">	The delta time. </param>
 ///-------------------------------------------------------------------------------------------------
 
-void cAnimatedMesh::update(float deltaTime)
+void cAnimatedMesh::update(float deltaTime, eCharacterBehavioralState behavioralState)
 {
 	/// <summary> Frame Time. </summary>
 	FbxTime currTime;
 
+
+
+
 	for each(sSkinMeshAnimation* pSkinMesh in m_vec_pSkinMeshAnimations)
 	{
+		float animationBegin = 0.0f;
+		float animationEnd = pSkinMesh->duration;
 		/// <summary> Update the skin mesh's internal time. </summary>
 		pSkinMesh->time += deltaTime * 20.0f;
-		if (pSkinMesh->time >= pSkinMesh->duration)
-			pSkinMesh->time = 0;
+		//if (pSkinMesh->time >= pSkinMesh->duration)
+		//	pSkinMesh->time = 0;
 
-		currTime.SetFrame(pSkinMesh->time, FbxTime::eFrames24);
+
+		switch (behavioralState)
+		{
+		case IDLE:
+			animationBegin = 0.0f;
+			animationEnd = 100.0f;
+			break;
+		case WALK:
+			animationBegin = 2397.0f;
+			animationEnd = 2432.0f;
+			break;
+		case WALK_BACKWARDS:
+			animationBegin = 1337.0f; // 1337 I know.. ;)
+			animationEnd = 1372.0f;
+			break;
+		case RUN:
+			animationBegin = 1651.0f;
+			animationEnd = 1673.0f;
+			break;
+		case JUMP:
+			// Actual jump..
+			animationBegin = 1676.0f;
+			animationEnd = 1716.0f;
+			// Falling
+			animationBegin = 1511.0f;
+			animationEnd = 1551.0f;
+			break;
+		case CROUCH:
+			break;
+		default:
+			animationBegin = 0.0f;
+			animationEnd = 100.0f;
+			break;
+		}
+		if (pSkinMesh->time < animationBegin)
+			pSkinMesh->time = animationBegin;
+		if (pSkinMesh->time >= animationEnd)
+			pSkinMesh->time = animationBegin;
+
+		currTime.SetFrame(pSkinMesh->time, FbxTime::eFrames30);
 		///  <summary> Offset to first vertex in the vertex buffer. </summary>
 		int vertexOffset = g_pMeshManager->m_MapMeshNameTocMeshEntry[pSkinMesh->meshEntryKey].BaseVertex;
 

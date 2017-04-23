@@ -32,6 +32,9 @@ public:
 	virtual void setIsColliding(bool isColliding) = 0; //
 	virtual void setIsMoving(bool isMoving) = 0; // Would be used by both physics and animation
 
+	virtual void setBehavioralState(eCharacterBehavioralState behavioralState) = 0;
+	virtual eCharacterBehavioralState getBehavioralState() = 0;
+
 	virtual bool getIsColliding() = 0;
 	virtual bool getIsMoving() = 0;
 
@@ -81,7 +84,6 @@ public:
 
 	virtual void registerComponentXMLDataCallback(std::function<std::string()> getComponentNode) = 0;
 
-	// TODO Getters! Don't forget to update iStateManager!!
 	virtual void setImpluse(glm::vec3 impluse) = 0;
 	virtual glm::vec3 getImpluse() = 0;
 
@@ -94,9 +96,6 @@ public:
 	virtual void setBoundingBox(sBoundingBox boundingBox) = 0;
 	virtual sBoundingBox getBoundingBox() = 0;
 
-	//virtual void setAABB(sAABB aabb) = 0;
-	//virtual sAABB getAABB() = 0;
-
 	virtual bool getIsColliding() = 0;
 	virtual bool getIsMoving() = 0;
 
@@ -105,4 +104,7 @@ public:
 
 	virtual void setPendingDeletion(bool pendingDeletion) = 0;
 	virtual bool getPendingDeletion() = 0;
+	
+	virtual void setBehavioralState(eCharacterBehavioralState behavioralState) = 0;
+	virtual eCharacterBehavioralState getBehavioralState() = 0;
 };

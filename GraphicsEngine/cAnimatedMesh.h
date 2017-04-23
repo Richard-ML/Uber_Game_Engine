@@ -86,7 +86,7 @@ public:
 	///
 	/// <param name="deltaTime">	The delta time. </param>
 	///-------------------------------------------------------------------------------------------------
-	void update(float deltaTime);
+	void update(float deltaTime, eCharacterBehavioralState behavioralState);
 
 	void draw(glm::mat4 transform);
 

@@ -23,6 +23,8 @@ struct sState {
 	std::string meshName;
 
 	bool pendingDeletion;
+
+	eCharacterBehavioralState behavioralState;
 };
 // Forward declarations
 class iStateNode;
@@ -90,6 +92,9 @@ public:
 
 	virtual void setPendingDeletion(bool pendingDeletion) = 0;
 	virtual bool getPendingDeletion() = 0;
+
+	virtual void setBehavioralState(eCharacterBehavioralState behavioralState) = 0;
+	virtual eCharacterBehavioralState getBehavioralState() = 0;
 };
 
 class cState : public iState {
@@ -210,6 +215,13 @@ public:
 		return m_parentNode->getPendingDeletion();
 	}
 
+	virtual void setBehavioralState(eCharacterBehavioralState behavioralState) {
+		return m_parentNode->setBehavioralState(behavioralState);
+	}
+	virtual eCharacterBehavioralState getBehavioralState() {
+		return m_parentNode->getBehavioralState();
+	}
+
 	cState() {
 
 	}
@@ -233,7 +245,7 @@ private:
 	struct sSpinLock {
 		//volatile LONG isLocked = 0; // 0 unlocked : 1 locked
 		LOCK lock;
-	}m_lock[16]; // 10 locks. One should be used per variable
+	}m_lock[17]; // 10 locks. One should be used per variable
 	virtual void lock(int varNum) {
 #if !defined(SKIP_LOCKING)  
 		while (_InterlockedCompareExchange(&m_lock[varNum].lock, LOCKED, UNLOCKED) == UNLOCKED) {
@@ -388,6 +400,20 @@ public:
 		pendingDeletion = this->_localStateData.pendingDeletion;
 		unlock(15);
 		return pendingDeletion;
+	}
+
+	virtual void setBehavioralState(eCharacterBehavioralState behavioralState) {
+		lock(16);
+		this->_localStateData.behavioralState = behavioralState;
+		unlock(16);
+		return;
+	}
+	virtual eCharacterBehavioralState getBehavioralState() {
+		eCharacterBehavioralState behavioralState;
+		lock(16);
+		behavioralState = this->_localStateData.behavioralState;
+		unlock(16);
+		return behavioralState;
 	}
 
 	cStateNode() {
