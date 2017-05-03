@@ -1,26 +1,7 @@
+NOTE: FBX SDK libs are too large to upload to GitHub. Extract this zip-folder into Uber_Game_Engine\Include\ 
+https://1drv.ms/u/s!AryQ2K6m7lLyged9nA7xSDlvjiDLxw
 
-PHYSICS: 
-WASD to move 
-ARROWS for camera controls
-NUMPAD 1-4 for TOGGLES
-
-Press numpad 4 to render debug shapes
-Press numpad 3 to enable color collision status indicator
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+This MUST be done in order for the game to compile. 
 
 # Uber Game Engine
 ###OpenGL 3D Game-Engine
