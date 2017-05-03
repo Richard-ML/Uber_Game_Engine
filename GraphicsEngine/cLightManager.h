@@ -10,61 +10,61 @@
 
 class cLight {
 public:
-	/// <summary>	The matrix. </summary>
+	// The matrix.
 	glm::mat4 matrix;
-	/// <summary>	The offset. </summary>
+	// The offset.
 	glm::vec3 offset;
-	/// <summary>	The direction. </summary>
+	// The direction.
 	glm::vec3 direction;
-	/// <summary>	The direction offset. </summary>
+	// The direction offset.
 	glm::mat4 directionOffset;
-	/// <summary>	The type flag. </summary>
+	// The type flag.
 	int typeFlag;
-	/// <summary>	True if this object is enabled. </summary>
+	// True if this object is enabled.
 	bool isEnabled;
-	/// <summary>	The cone angle. </summary>
+	// The cone angle.
 	float coneAngle;
-	/// <summary>	The ambient. </summary>
+	// The ambient.
 	glm::vec3 ambient;
-	/// <summary>	The diffuse. </summary>
+	// The diffuse.
 	glm::vec3 diffuse;
-	/// <summary>	The specular. </summary>
+	// The specular.
 	glm::vec3 specular;
-	/// <summary>	The specular power. </summary>
+	// The specular power.
 	GLfloat specularPower;
-	/// <summary>	The attenuation constant. </summary>
+	// The attenuation constant.
 	float attenConst; 
-	/// <summary>	The linear attenuation. </summary>
+	// The linear attenuation.
 	float attenLinear;
-	/// <summary>	The quadratic attenuation. </summary>
+	// The quadratic attenuation.
 	float attenQuad; 
-	/// <summary>	Identifier for the light. </summary>
+	// Identifier for the light.
 	unsigned int lightID;
-	/// <summary>	The uniform identifier type flag. </summary>
+	// The uniform identifier type flag.
 	GLuint gUniformId_TypeFlag;
-	/// <summary>	The uniform identifier is enabled. </summary>
+	// The uniform identifier is enabled.
 	GLuint gUniformId_IsEnabled;
-	/// <summary>	The uniform identifier position. </summary>
+	// The uniform identifier position.
 	GLuint gUniformId_Position;
-	/// <summary>	The uniform identifier direction. </summary>
+	// The uniform identifier direction.
 	GLuint gUniformId_Direction;
-	/// <summary>	The uniform identifier cone angle. </summary>
+	// The uniform identifier cone angle.
 	GLuint gUniformId_ConeAngle;
-	/// <summary>	The uniform identifier ambient. </summary>
+	// The uniform identifier ambient.
 	GLuint gUniformId_Ambient;
-	/// <summary>	The uniform identifier diffuse. </summary>
+	// The uniform identifier diffuse.
 	GLuint gUniformId_Diffuse;
-	/// <summary>	The uniform identifier specular. </summary>
+	//The uniform identifier specular.
 	GLuint gUniformId_Specular;
-	/// <summary>	The uniform identifier specular power. </summary>
+	// The uniform identifier specular power.
 	GLuint gUniformId_SpecularPower;
-	/// <summary>	The uniform identifier attenuation constant. </summary>
+	// The uniform identifier attenuation constant.
 	GLuint gUniformId_AttenuationConst;
-	/// <summary>	The uniform identifier attenuation linear. </summary>
+	// The uniform identifier attenuation linear.
 	GLuint gUniformId_AttenuationLinear;
-	/// <summary>	The uniform identifier attenuation quad. </summary>
+	// The uniform identifier attenuation quad.
 	GLuint gUniformId_AttenuationQuad;
-	/// <summary>	The uniform identifier color. </summary>
+	// The uniform identifier color.
 	GLuint gUniformId_Color;
 	iState* state; // Base transform information
 

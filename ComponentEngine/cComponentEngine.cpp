@@ -95,7 +95,7 @@ namespace ComponentEngine {
 	}
 
 	///-------------------------------------------------------------------------------------------------
-	/// <summary>	Subcribe to state. </summary>
+	/// <summary>	Subscribe to state. </summary>
 	///
 	/// <remarks>	Richard, 4/12/2017. </remarks>
 	///

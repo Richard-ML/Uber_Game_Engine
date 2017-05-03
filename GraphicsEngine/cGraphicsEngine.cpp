@@ -316,8 +316,8 @@ namespace GraphicsEngine {
 		{
 			// TODO: Add velocity based on delta time. 
 			glm::vec3 translation = glm::vec3(0.0f, 0.0f, 1.28f);
-			bool isRunning;
-			bool isBackwards;
+			bool isRunning = false;
+			bool isBackwards = false;
 			if (pressS)
 			{
 				translation *= -1.0f;

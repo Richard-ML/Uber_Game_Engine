@@ -242,7 +242,7 @@ namespace PhysicsEngine {
 
 		virtual PhysicsEngine_API void setCollisionFilter(int collisionMask);
 	//private:
-		/// <summary>	The actual bullet rigid body. </summary>
+		// The actual bullet rigid body.
 		btRigidBody* m_rigidBody;
 
 	};

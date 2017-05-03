@@ -31,7 +31,7 @@ namespace PhysicsEngine {
 
 	class iRigidBody {
 	public:
-		/// <summary>	The state. </summary>
+		// The state.
 		iState* state;
 		// TEMP VARIABLES///////////////////////
 		int collisionMask = 0;

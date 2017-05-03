@@ -29,11 +29,11 @@ public:
 	///-------------------------------------------------------------------------------------------------
 
 	struct sFontData {
-		/// <summary>	The height of the font. </summary>
+		// The height of the font.
 		float height;
-		/// <summary>	The texture id's. </summary>
+		// The texture id's.
 		GLuint * textures;
-		/// <summary>	The first display list id. </summary>
+		// The first display list id.
 		GLuint list_base;
 
 		///-------------------------------------------------------------------------------------------------

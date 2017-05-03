@@ -66,7 +66,7 @@ public:
 
 // Used primary for managing OpenGL FBOs (FrameBuffer Objects)
 class cRenderManager {
-	/// <summary>	Manager for render. </summary>
+	// Manager for render.
 	static cRenderManager *s_cRenderManager;
 
 public:

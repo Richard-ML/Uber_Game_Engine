@@ -7,9 +7,9 @@ void cAnimatedMesh::initializeSceneHandle(FbxScene * pScene)
 }
 void cAnimatedMesh::loadPoses()
 {
-	/// <summary> Get the amount of poses in this scene. </summary>
+	// Get the amount of poses in this scene.
 	int poseCount = m_pScene->GetPoseCount();
-	/// <summary> Add each pose to the vector of poses. </summary>
+	// Add each pose to the vector of poses.
 #ifdef PRINT_ANIMATED_MESH_DEBUG_INFO
 	std::stringstream output;
 	output << "\n\n<Poses>\n";
@@ -17,7 +17,7 @@ void cAnimatedMesh::loadPoses()
 	for (int nc = 0; nc < poseCount; ++nc)
 	{
 		FbxPose* pPose = m_pScene->GetPose(nc);
-		/// <summary> Print out some details about this pose in the console. </summary>
+		// Print out some details about this pose in the console.
 		std::string poseName = pPose->GetName();
 
 #ifdef PRINT_ANIMATED_MESH_DEBUG_INFO
@@ -45,7 +45,7 @@ void cAnimatedMesh::loadPoses()
 
 void cAnimatedMesh::loadMeshes(FbxNode* pNode)
 {
-	/// <summary> Recursively parse the node hierarchy and load any meshes. </summary>
+	// Recursively parse the node hierarchy and load any meshes.
 	for (int nc = 0; nc < pNode->GetChildCount(); nc++)
 	{
 		FbxNode* pNodeChild = pNode->GetChild(nc);
@@ -70,22 +70,20 @@ void cAnimatedMesh::loadMeshes(FbxNode* pNode)
 bool cAnimatedMesh::processFBXMeshNode(FbxNode * pMeshNode)
 {
 	FbxMesh* pMesh = pMeshNode->GetMesh();
-	/// <summary> Create and initialize a new Mesh Entry. </summary>
+	// Create and initialize a new Mesh Entry.
 	cMeshEntry meshEntry;
 	meshEntry.BaseIndex = 0;
 	meshEntry.BaseVertex = 0;
 	meshEntry.NumgIndices = 0;
 
-	/// <summary> Create a new Skin Mesh object. </summary>
+	// Create a new Skin Mesh object.
 	sSkinMeshAnimation* pSkinMeshAnimation = new sSkinMeshAnimation();
 	m_vec_pSkinMeshAnimations.push_back(pSkinMeshAnimation);
 
 	pSkinMeshAnimation->pFbxMesh = pMesh;
 	///-------------------------------------------------------------------------------------------------
-	/// <summary>
 	/// Use the current size of vertices and indices arrays to determine the offset to the current
 	/// mesh's data.
-	/// </summary>
 	///-------------------------------------------------------------------------------------------------
 	unsigned int vertexOffset = g_pMeshManager->vertices.size();
 	unsigned int indexOffset = g_pMeshManager->indices.size();
@@ -98,9 +96,7 @@ bool cAnimatedMesh::processFBXMeshNode(FbxNode * pMeshNode)
 	meshEntry.NumgVertices = numgVertices;
 	meshEntry.NumgIndices = numgIndices;
 
-	///-------------------------------------------------------------------------------------------------
-	/// <summary>	Allocate the array memory, by control point or by polygon vertex. </summary>
-	///-------------------------------------------------------------------------------------------------
+	//	Allocate the array memory, by control point or by polygon vertex.
 	g_pMeshManager->vertices.resize(vertexOffset + numgVertices);
 	g_pMeshManager->indices.resize(indexOffset + numgIndices);
 	//std::vector<sTriangleFace *> tempVecsTriangleFace;
@@ -109,10 +105,10 @@ bool cAnimatedMesh::processFBXMeshNode(FbxNode * pMeshNode)
 	FbxLayerElementUV* UVs = pMesh->GetLayer(0)->GetUVs();
 	FbxLayerElementNormal * normals = pMesh->GetLayer(0)->GetNormals();
 
-	/// <summary>	Get control points (vertices for a mesh) </summary>
+	// Get control points (vertices for a mesh)
 	FbxVector4* fbxControlPoints = pMesh->GetControlPoints();
 
-	/// <summary> Load Vertices </summary>
+	// Load Vertices
 	for (int ncPolygon = 0; ncPolygon < pMesh->GetPolygonCount(); ncPolygon++) {
 		// For each vertex in the polygon ( assume triangles ) 
 		for (unsigned ncVertex = 0; ncVertex < 3; ncVertex++) {
@@ -125,16 +121,16 @@ bool cAnimatedMesh::processFBXMeshNode(FbxNode * pMeshNode)
 
 			FbxVector4 fbxVertex = fbxControlPoints[(ncPolygon * 3) + ncVertex];
 
-			/// <summary> Get vertex position. </summary>
+			// Get vertex position.
 			vert1.Position = glm::vec4((float)fbxVertex.mData[0], (float)fbxVertex.mData[1], (float)fbxVertex.mData[2], 1.f);
 
-			/// <summary> Get the normal </summary>
+			// Get the normal.
 			FbxVector4 fbxNormal;
 			pMesh->GetPolygonVertexNormal(ncPolygon, ncVertex, fbxNormal);
 			fbxNormal.Normalize();
 			vert1.Normal = glm::vec4((float)fbxNormal.mData[0], (float)fbxNormal.mData[1], (float)fbxNormal.mData[2], (float)fbxNormal.mData[3]);
 	
-			/// <summary> Get texture coordinates </summary>
+			// Get texture coordinates.
 			FbxStringList lUVSetNameList;
 			pMesh->GetNode()->GetMesh()->GetUVSetNames(lUVSetNameList);
 			const char* lUVSetName = lUVSetNameList.GetStringAt(0);
@@ -199,49 +195,49 @@ bool cAnimatedMesh::processFBXMeshNode(FbxNode * pMeshNode)
 
 	// LOAD ANIMATION DATA ---------------------------------------------------BEGIN-----
 
-	/// <summary> Get the first animation stack. </summary>
+	// Get the first animation stack.
 	FbxAnimStack* pAnimStack = m_pScene->GetSrcObject<FbxAnimStack>(0);
 	// set its blend mode to Additive
 	//lAnimLayer->BlendMode.Set(FbxAnimLayer::eBlendAdditive);
 
-	/// <summary>  Get the animation's name </summary>
+	// Get the animation's name.
 	pSkinMeshAnimation->animationName = pAnimStack->GetName();
-	/// <summary>  Get take info using the animation's name </summary>
+	// Get take info using the animation's name.
 	FbxTakeInfo* pTakeInfo = m_pScene->GetTakeInfo(pAnimStack->GetName());
 
-	/// <summary> Get the animation's duration. </summary>
+	// Get the animation's duration.
 	FbxTime start = pTakeInfo->mLocalTimeSpan.GetStart();
 	FbxTime end = pTakeInfo->mLocalTimeSpan.GetStop();
 	pSkinMeshAnimation->duration = end.GetFrameCount(FbxTime::eFrames24) - start.GetFrameCount(FbxTime::eFrames24) + 1;
 
-	/// <summary> Get the amount of Deformers. </summary>
+	// Get the amount of Deformers.
 	int deformerCount = pMesh->GetDeformerCount();
-	/// <summary> Iterate through Deformer Nodes to get Skin Cluster information. </summary>
+	// Iterate through Deformer Nodes to get Skin Cluster information.
 	for (unsigned int ncDeformerIndex = 0; ncDeformerIndex < deformerCount; ++ncDeformerIndex)
 	{
-		/// <summary> Verify that this Deformer is a Skin. </summary>
+		// Verify that this Deformer is a Skin.
 		FbxSkin* pSkin = reinterpret_cast<FbxSkin*>(pMesh->GetDeformer(ncDeformerIndex, FbxDeformer::eSkin));
 
 		if (!pSkin)
 			continue;
 
-		/// <summary>	 Get the amount of Clusters in this Skin. </summary>
+		// Get the amount of Clusters in this Skin.
 		int clusterCount = pSkin->GetClusterCount();
 		pSkinMeshAnimation->vec_pClusters.reserve(clusterCount);
-		/// <summary> Process Cluster's Data.  </summary>
+		// Process Cluster's Data.
 		for (unsigned int clusterIndex = 0; clusterIndex < clusterCount; ++clusterIndex)
 		{
-			/// <summary> Get current Cluster from Skin using index. </summary>
+			// Get current Cluster from Skin using index.
 			FbxCluster* pFBXCluster = pSkin->GetCluster(clusterIndex);
 
-			/// <summary>  Create new cluster add it to the vector of clusters for this mesh.  </summary>
+			// Create new cluster add it to the vector of clusters for this mesh.
 			sCluster* pCluster = new sCluster();
 			pSkinMeshAnimation->vec_pClusters.push_back(pCluster);
 
-			/// <summary>  Get Joint's name. </summary>
+			// Get Joint's name.
 			pCluster->name = pFBXCluster->GetLink()->GetName();
 
-			/// <summary> Add handle to the FBX Cluster </summary>
+			// Add handle to the FBX Cluster.
 			pCluster->pFBXCluster = pFBXCluster;
 
 			FbxVector4 translation = pMeshNode->GetGeometricTranslation(FbxNode::eSourcePivot);
@@ -257,27 +253,27 @@ bool cAnimatedMesh::processFBXMeshNode(FbxNode * pMeshNode)
 			pFBXCluster->GetTransformLinkMatrix(transformLinkMatrix);
 			pCluster->transform = transformLinkMatrix.Inverse() * transformMatrix * geometryTransform;
 
-			/// <summary> Associate each Cluster with its Control Points. </summary>
+			// Associate each Cluster with its Control Points.
 			int indicesCount = pFBXCluster->GetControlPointIndicesCount();
 			pCluster->vec_pControlPoints.reserve(indicesCount);
 			for (unsigned int index = 0; index < indicesCount; ++index)//
 			{
 				float blendingWeight = (float)pFBXCluster->GetControlPointWeights()[index];
-				/// <summary> If the blending weight is greater than the minimum </summary>
+				// If the blending weight is greater than the minimum.
 				if (blendingWeight > 0.1f)
 				{
-					/// <summary> Create new Control Point. </summary>
+					// Create new Control Point.
 					sControlPoint * pControlPoint = new sControlPoint();
-					/// <summary>  Add Blending Data to Control Point.  </summary>
+					// Add Blending Data to Control Point.
 					pControlPoint->blendingWeight = blendingWeight;
-					/// <summary> Get the index of this FBX control point </summary> 
+					// Get the index of this FBX control point. 
 					pControlPoint->controlPointIndex = pFBXCluster->GetControlPointIndices()[index];
 
 					FbxVector4 fbxVertex = pMesh->GetControlPointAt(pControlPoint->controlPointIndex);
 					pControlPoint->transform.SetT(fbxVertex);
 
 					pControlPoint->intialPosition = glm::vec4((float)fbxVertex.mData[0], (float)fbxVertex.mData[1], (float)fbxVertex.mData[2], 1.f);
-					/// <summary> Add the Control Point to this Cluster's Control Point array </summary>
+					// Add the Control Point to this Cluster's Control Point array.
 					pCluster->vec_pControlPoints.push_back(pControlPoint);
 				}
 			}
@@ -302,7 +298,7 @@ bool cAnimatedMesh::processFBXMeshNode(FbxNode * pMeshNode)
 
 void cAnimatedMesh::update(float deltaTime, eCharacterBehavioralState behavioralState)
 {
-	/// <summary> Frame Time. </summary>
+	// Frame Time.
 	FbxTime currTime;
 
 
@@ -312,7 +308,7 @@ void cAnimatedMesh::update(float deltaTime, eCharacterBehavioralState behavioral
 	{
 		float animationBegin = 0.0f;
 		float animationEnd = pSkinMesh->duration;
-		/// <summary> Update the skin mesh's internal time. </summary>
+		// Update the skin mesh's internal time.
 		pSkinMesh->time += deltaTime * 20.0f;
 		//if (pSkinMesh->time >= pSkinMesh->duration)
 		//	pSkinMesh->time = 0;
@@ -357,7 +353,7 @@ void cAnimatedMesh::update(float deltaTime, eCharacterBehavioralState behavioral
 			pSkinMesh->time = animationBegin;
 
 		currTime.SetFrame(pSkinMesh->time, FbxTime::eFrames30);
-		///  <summary> Offset to first vertex in the vertex buffer. </summary>
+		// Offset to first vertex in the vertex buffer.
 		int vertexOffset = g_pMeshManager->m_MapMeshNameTocMeshEntry[pSkinMesh->meshEntryKey].BaseVertex;
 
 		FbxAMatrix currentTransformOffset = pSkinMesh->pFbxMesh->GetNode()->EvaluateGlobalTransform(currTime);
@@ -376,7 +372,7 @@ void cAnimatedMesh::update(float deltaTime, eCharacterBehavioralState behavioral
 
 				FbxAMatrix clusterInitPos;
 
-				/// <summary>	The cluster mode. All the links must have the same link mode. </summary>
+				// The cluster mode. All the links must have the same link mode.
 				FbxCluster::ELinkMode clusterMode = ((FbxSkin*)pSkinMesh->pFbxMesh->GetDeformer(0, FbxDeformer::eSkin))->GetCluster(0)->GetLinkMode();
 
 				FbxAMatrix referenceGlobalInitPosition;
@@ -416,17 +412,17 @@ void cAnimatedMesh::update(float deltaTime, eCharacterBehavioralState behavioral
 				{
 					pCluster->pFBXCluster->GetTransformMatrix(referenceGlobalInitPosition);
 					referenceGlobalInitPosition *= geometryTransform;
-					/// <summary> Get the link initial global position and the link current global position. </summary>
+					// Get the link initial global position and the link current global position.
 					pCluster->pFBXCluster->GetTransformLinkMatrix(clusterGlobalInitPosition);
 					clusterGlobalCurrentPosition = pCluster->pFBXCluster->GetLink()->EvaluateGlobalTransform(currTime);
-					/// <summary> Compute the initial position of the link relative to the reference. </summary>
+					// Compute the initial position of the link relative to the reference.
 					clusterRelativeInitPosition = clusterGlobalInitPosition.Inverse() * referenceGlobalInitPosition;
-					/// <summary> Compute the current position of the link relative to the reference. </summary>
+					// Compute the current position of the link relative to the reference.
 					clusterRelativeCurrentPositionInverse = referenceGlobalCurrentPosition.Inverse() * clusterGlobalCurrentPosition;
-					/// <summary> Compute the shift of the link relative to the reference. </summary>
+					// Compute the shift of the link relative to the reference.
 					pVertexTransformMatrix = clusterRelativeCurrentPositionInverse * clusterRelativeInitPosition;
 				}
-				/// <summary> Apply the Cluster's transform to all of its Control Points </summary>
+				// Apply the Cluster's transform to all of its Control Points. 
 				for each(sControlPoint* pControlPoint in pCluster->vec_pControlPoints)
 				{
 						FbxVector4 fbxVertex = pVertexTransformMatrix.MultT(pControlPoint->transform.GetT());

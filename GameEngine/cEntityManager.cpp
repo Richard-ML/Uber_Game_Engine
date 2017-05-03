@@ -14,7 +14,7 @@
 
 class cGameEntity {
 public:
-	/// <summary>	The vector component pointers. </summary>
+	// The vector component pointers.
 	std::vector<std::shared_ptr<cComponent>>
 		vec_pComponents; // Components that belong to this entity..
 	// Used by the entity manager during the save game process..
@@ -72,10 +72,8 @@ inline cEntityManager_Impl *cEntityManager::impl() {
 }
 
 ///-------------------------------------------------------------------------------------------------
-/// <summary>
 /// Collection of game entities. These entities are only stored in this vector in case we need a
 /// handle to save them to XML later.
-/// </summary>
 ///-------------------------------------------------------------------------------------------------
 
 std::vector<cGameEntity*> vec_gameEntities;

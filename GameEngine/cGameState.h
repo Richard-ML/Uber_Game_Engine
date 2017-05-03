@@ -3,7 +3,7 @@
 
 class cGameState : public iGameState {
 private:
-	/// <summary>	State of the game. </summary>
+	// State of the game.
 	eGameState m_gameState;
 
 	eDifficulty m_difficulty = CASUAL;

@@ -36,7 +36,7 @@
 namespace ComponentManager {
 
 
-	/// <summary>	The map component identifier to component. </summary>
+	// The map component identifier to component.
 	static std::map<int, cComponent *> map_ComponentIDToComponent;
 
 	cComponent *create_Component(const std::string &name);

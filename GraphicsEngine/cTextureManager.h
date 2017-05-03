@@ -5,7 +5,7 @@
 // Maps texture with textureID look up
 
 class cTextureManager {
-	/// <summary>	Manager for the textures. </summary>
+	// Manager for the textures.
 	static cTextureManager *s_cTextureManager;
 
 public:
@@ -61,13 +61,13 @@ public:
 	///-------------------------------------------------------------------------------------------------
 
 	GLuint loadCubeMap(rapidxml::xml_node<> *cubeNode);
-	/// <summary>	Identifier for the uniform texture. </summary>
+	// Identifier for the uniform texture.
 	std::vector<GLuint> uniform_TextureID;
-	/// <summary>	Texture name to uniform identifier. </summary>
+	// Texture name to uniform identifier.
 	std::map<std::string, GLuint> mapTextureNameToID;
 	std::map<std::string, glm::vec4> mapTextureNameToMipmapLevel;
 	std::vector<std::vector <std::vector<glm::ivec3>>> worldTiles;
-	/// <summary>	Identifier for the next texture. </summary>
+	// Identifier for the next texture.
 	GLuint nextTextureID;
 	int currentMipmapRow = 0;
 	int currentMipmapCol = 0;

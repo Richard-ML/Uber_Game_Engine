@@ -90,12 +90,12 @@ void cTextManager::loadFont(std::string fontName, const char * path, unsigned in
 	//Allocate some memory to store the texture ids of characters.
 	font.textures = new GLuint[128];
 	font.height = height;
-	/// <summary>	Create and initialize a freetype font library. </summary>
+	// Create and initialize a freetype font library.
 	FT_Library ft_library;
 	if (FT_Init_FreeType(&ft_library))
 		throw std::runtime_error("FT_Init_FreeType failed");
 
-	/// <summary>	The face. </summary>
+	// The face.
 	FT_Face ft_face;
 
 	if (FT_New_Face(ft_library, path, 0, &ft_face))

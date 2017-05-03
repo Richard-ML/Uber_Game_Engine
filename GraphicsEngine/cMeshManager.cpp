@@ -8,7 +8,7 @@
 //#include <fbxsdk\scene\animation\fbxanimstack.h>
 //#include <fbxsdk\core\fbxpropertydef.h>
 #define PRINT_FBX_DEBUG_INFO
-/// <summary>	Number of vertices per polygon (assume triangles for now)  </summary>
+// Number of vertices per polygon (assume triangles for now)
 const int POLYGON_VERTEX_COUNT = 3;
 
 
@@ -335,7 +335,7 @@ void cMeshManager::printNode(FbxNode* pNode) {
 	FbxDouble3 rotation = pNode->LclRotation.Get();
 	FbxDouble3 scale = pNode->LclScaling.Get();
 
-	/// <summary> Print the properties of the node. </summary>
+	// Print the properties of the node.
 	printf("<%s translation='(%f, %f, %f)' rotation='(%f, %f, %f)' scaling='(%f, %f, %f)'>\n",
 		nodeName,
 		translation[0], translation[1], translation[2],
@@ -345,11 +345,11 @@ void cMeshManager::printNode(FbxNode* pNode) {
 
 	tabs_count++; // Increment the amount of tabs to correctly format the output
 
-	/// <summary> Print each of the node's attributes. </summary>
+	// Print each of the node's attributes.
 	for (int i = 0; i < pNode->GetNodeAttributeCount(); i++)
 		printAttribute(pNode->GetNodeAttributeByIndex(i));
 
-	/// <summary> Print each of children with a recursive call to this function. </summary>
+	// Print each of children with a recursive call to this function.
 	for (int j = 0; j < pNode->GetChildCount(); j++)
 		printNode(pNode->GetChild(j));
 
@@ -372,46 +372,46 @@ void cMeshManager::printNode(FbxNode* pNode) {
 ///-------------------------------------------------------------------------------------------------
 bool cMeshManager::loadFBXMesh(std::string name, const char * path, float scale)
 {
-	/// <summary> Create the SDK manager which handles memory management. </summary>
+	// Create the SDK manager which handles memory management.
 	FbxManager* pSdkManager = FbxManager::Create();
-	/// <summary> Create the IO settings object. </summary>
+	// Create the IO settings object.
 	FbxIOSettings *pIO_settings = FbxIOSettings::Create(pSdkManager, IOSROOT);
 	pSdkManager->SetIOSettings(pIO_settings);
 
-	/// <summary> Create the importer. </summary>
+	// Create the importer.
 	FbxImporter* pImporter = FbxImporter::Create(pSdkManager, "");
-	/// <todo>  Convert Axis System to the one that is used in this engine, if needed </todo>
-	/// <summary> Pass filename to the importer. </summary>
+	// TODO: Convert Axis System to the one that is used in this engine, if needed
+	// Pass filename to the importer.
 	if (!pImporter->Initialize(path, -1, pSdkManager->GetIOSettings())) {
 		printf("Call to FbxImporter::Initialize() failed.\n");
 		printf("Error returned: %s\n\n", pImporter->GetStatus().GetErrorString());
 		exit(-1);
 	}
-	/// <summary> Create a new animated mesh. </summary>
+	// Create a new animated mesh.
 	cAnimatedMesh* pAnimatedMesh = new cAnimatedMesh();
 	m_mapMeshNameToAnimatedMesh["Skeleton"] = pAnimatedMesh;
-	/// <summary> Create a new Scene. </summary>
+	// Create a new Scene.
 	FbxScene* pScene = FbxScene::Create(pSdkManager, "myScene");
 
-	/// <summary> Import contents of FBX file into the scene. </summary>
+	// Import contents of FBX file into the scene.
 	pImporter->Import(pScene);
 
-	/// <summary> The file is now loaded into the scene. So we no longer need the importer. </summary>
+	// The file is now loaded into the scene. So we no longer need the importer.
 	pImporter->Destroy();
-	/// <summary> Initialize this animated mesh object's scene handle </summary>
+	// Initialize this animated mesh object's scene handle.
 	pAnimatedMesh->initializeSceneHandle(pScene);
 
-	/// <summary> Add pose details to animated mesh object </summary>
+	// Add pose details to animated mesh object.
 	pAnimatedMesh->loadPoses();
 	
 	pAnimatedMesh->loadMeshes(pScene->GetRootNode());
 
 
 #ifdef PRINT_FBX_DEBUG_INFO
-	/// <summary> Print the nodes of the scene and their attributes recursively. </summary>
+	// Print the nodes of the scene and their attributes recursively.
 			printNode(pScene->GetRootNode());
 #endif
-	/// <summary> Destroy the SDK manager deleting all objects that belong to it. </summary>
+	// Destroy the SDK manager deleting all objects that belong to it.
 	//pSdkManager->Destroy();
 
 	return true;

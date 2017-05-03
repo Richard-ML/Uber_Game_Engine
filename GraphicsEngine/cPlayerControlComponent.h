@@ -9,7 +9,7 @@
 
 class cPlayerControlComponent {
 public:
-	/// <summary>	The state. </summary>
+	// The state.
 	iState* pState;
 
 	///-------------------------------------------------------------------------------------------------

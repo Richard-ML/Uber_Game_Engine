@@ -96,19 +96,19 @@ public:
 
 	void updateView();
 
-	/// <summary>	The width. </summary>
+	// The width.
 	int m_width;
-	/// <summary>	The height. </summary>
+	// The height.
 	int m_height;
-	/// <summary>	Target transform. </summary>
+	// Target transform.
 	glm::mat4 m_targetTransform;
-	/// <summary>	The view matrix. </summary>
+	// The view matrix.
 	glm::mat4 m_viewMatrix;
-	/// <summary>	The camera forward. </summary>
+	// The camera forward.
 	glm::vec3 m_cameraForward;
-	/// <summary>	The view identity matrix. </summary>
+	// The view identity matrix.
 	glm::mat3 m_viewIdentityMatrix;
-	/// <summary>	The eye position. </summary>
+	// The eye position.
 	glm::vec3 m_eyePosition;
 
 	// NOTE: Roll is not being used currently.

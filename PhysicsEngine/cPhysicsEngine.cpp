@@ -45,7 +45,7 @@ namespace PhysicsEngine {
 	inline cPhysicsEngine_Impl *cPhysicsEngine::impl() {
 		return static_cast<cPhysicsEngine_Impl *>(this);
 	}
-	/// <summary>	The vector rigid bodies. </summary>
+	// The vector rigid bodies.
 	std::vector<iRigidBody*> vec_rigidBodies;
 
 	cPhysicsEngine::cPhysicsEngine() {

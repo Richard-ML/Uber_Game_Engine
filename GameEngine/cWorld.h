@@ -57,15 +57,15 @@ class cWorld : public iWorld {
 		glm::vec3 position;
 		glm::vec3 scale = glm::vec3(64.0f, 2.0f, 64.0f);
 	};
-	/// <summary>	The tile selection mode. </summary>
+	// The tile selection mode.
 	eActiveWorldTileSelection m_tileSelectionMode;
 
-	/// <summary>	The vector selected tiles. </summary>
+	// The vector selected tiles.
 	std::vector<sWorldTile> m_vec_SelectedTiles;
-	/// <summary>	The world tiles[ 64][64]. </summary>
+	// The world tiles[ 64][64].
 	sWorldTile m_worldTiles[64][64];
 public:
-	/// <summary>	NOTE: This is public, but only GameEngine uses it! :P. </summary>
+	// NOTE: This is public, but only GameEngine uses it! :P
 	std::function<void()> generateObjectsAtSelectedTiles;
 
 	///-------------------------------------------------------------------------------------------------

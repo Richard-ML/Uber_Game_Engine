@@ -13,7 +13,7 @@ class cEntityManager_Impl; // Purpose: Encapsulate private member variables and
 ///-------------------------------------------------------------------------------------------------
 
 class cEntityManager {
-	/// <summary>	Entity Manager. </summary>
+	// Entity Manager.
 	static cEntityManager *s_cEntityManager;
 	// Boilerplate
 	friend class cEntityManager_Impl; // The PIMPL idiom aka Compilation Firewall
